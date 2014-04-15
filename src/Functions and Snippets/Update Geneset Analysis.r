@@ -1,5 +1,5 @@
 
-source("lib/source/Import.r")
+source("lib/source/import.r")
 
 
 dir.create( paste( files.name, "- Results" ), showWarnings=F )
@@ -18,26 +18,26 @@ preferences$geneset.analysis.exact = T
 
 
 
-source("lib/source/Prepare Annotation.r")
+source("lib/source/prepare_annotation.r")
 
-source("lib/source/Geneset Statistic Samples.r")
-source("lib/source/Geneset Statistic Integral.r")
-source("lib/source/Geneset Overviews.r")
-source("lib/source/Geneset Profiles + Maps.r")
+source("lib/source/geneset_statistic_samples.r")
+source("lib/source/geneset_statistic_integral.r")
+source("lib/source/geneset_overviews.r")
+source("lib/source/geneset_profiles_and_maps.r")
 
-source("lib/source/Gene Lists.r")
+source("lib/source/gene_lists.r")
 
-source("lib/source/Summary Sheets Samples.r")
-source("lib/source/Summary Sheets Integral.r")
+source("lib/source/summary_sheets_samples.r")
+source("lib/source/summary_sheets_integral.r")
 
-source("lib/source/3rd lvl Summary Sheets.r")
+source("lib/source/3rd_lvl_summary_sheets.r")
 
-source("lib/source/HTML Geneset Analysis.r")
+source("lib/source/html_geneset_analysis.r")
 
-source("lib/source/Workspace Cleanup.r")
+source("lib/source/workspace_cleanup.r")
 save.image( paste( files.name, ".RData" , sep="" ) )
 
-source("lib/source/Group Analyses.r")
-source("lib/source/Difference Analyses.r")
+source("lib/source/group_analyses.r")
+source("lib/source/difference_analyses.r")
 
 
