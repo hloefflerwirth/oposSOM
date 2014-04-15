@@ -1,0 +1,7 @@
+# Vim
+*.swp
+*.swo
+
+# R
+*.Rcheck
+*.tar.gz
