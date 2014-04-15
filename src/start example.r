@@ -131,10 +131,10 @@
 
 	# optional for hook-preprocessed data: quantile + camel analysis
 
-		#		source("lib/l - Quantile Normalization.r")
+		#		source("lib/quantile_normalization.r")
 		#		indata = Quantile.Normalization( indata )
 
-		# 	source("lib/l - Camel Analysis.r")
+		# 	source("lib/camel_analysis.r")
 		# 	train.camel = Camel.Analysis( indata )
 		# 	indata = train.camel$Corrected.Data * train.camel$Percent.S
 		# 	indata.original = train.camel$Corrected.Data

@@ -1,6 +1,6 @@
 
 
-source("lib/l - Get Statistic.r")
+source("lib/get_statistic.r")
 require.cran( "fdrtool" )
 
 
