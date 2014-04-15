@@ -27,9 +27,9 @@ thresh.global = max( max(mean.sp.gr.FC), -min(mean.sp.gr.FC) ) / 6
 		GS.infos.overexpression$overview.mask[ -unique( unlist( sapply( GS.infos.overexpression$spots, function(x) x$metagenes ) ) ) ] = NA	
 	
 		
-		source("Functions/f - 3rd lvl Overexpression Summary.r")
-		source("Functions/f - 3rd lvl Overexpression Networks.r")	
-		source("Functions/f - 3rd lvl Overexpression Genenet.r")
+		source("lib/f - 3rd lvl Overexpression Summary.r")
+		source("lib/f - 3rd lvl Overexpression Networks.r")	
+		source("lib/f - 3rd lvl Overexpression Genenet.r")
 
 	
 		pdf( paste( files.name, " - Results/Summary Sheets - Integral/Overexpression filtered.pdf", sep="" ), 29.7/2.54, 21/2.54 )

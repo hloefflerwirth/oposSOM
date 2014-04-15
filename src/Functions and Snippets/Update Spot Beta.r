@@ -1,6 +1,6 @@
 
 
-source("Functions/l - Get Statistic.r")
+source("lib/l - Get Statistic.r")
 require.cran( "fdrtool" )
 
 
@@ -39,7 +39,7 @@ for( i in 1:length(GS.infos.kmeans$spots) )
 dir.create( paste( files.name, "- Results" ), showWarnings=F )
 dir.create( paste( files.name, "- Results/CSV Sheets" ), showWarnings=F )
 
-source("Functions/f - Summary Sheets Integral.r")
+source("lib/f - Summary Sheets Integral.r")
 
 
 

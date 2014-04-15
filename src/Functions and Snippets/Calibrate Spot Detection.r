@@ -38,7 +38,7 @@
 	preferences$group.spot.core = 3
 	preferences$group.spot.threshold = 0.88
 
-	source("Functions/f - Detect Spots Integral.r")
+	source("lib/f - Detect Spots Integral.r")
 	
 	colramp = colorRampPalette( c( "darkblue","blue","lightblue","green","yellow","red","darkred" ) )
 
@@ -71,7 +71,7 @@
 
 # Re-run necessary parts of the pipeline
 
-source("Functions/f - Import.r")
+source("lib/f - Import.r")
 
 
 dir.create( paste( files.name, "- Results" ), showWarnings=F )
@@ -81,27 +81,27 @@ dir.create( paste( files.name, "- Results/CSV Sheets" ), showWarnings=F )
 if( preferences$geneset.analysis )
 {
 	dir.create( paste( files.name, "- Results/Geneset Analysis" ), showWarnings=F )
-	source("Functions/f - Geneset Statistic Integral.r")
-	source("Functions/f - Geneset Overviews.r")
-	source("Functions/f - Geneset Profiles + Maps.r")
+	source("lib/f - Geneset Statistic Integral.r")
+	source("lib/f - Geneset Overviews.r")
+	source("lib/f - Geneset Profiles + Maps.r")
 }
 
-source("Functions/f - Gene Lists.r")
-source("Functions/f - Summary Sheets Integral.r")
+source("lib/f - Gene Lists.r")
+source("lib/f - Summary Sheets Integral.r")
 
 dir.create( paste( files.name, "- Results/3rd lvl Spot Analysis" ), showWarnings=F )
-source("Functions/f - 3rd lvl Chromosomal Enrichment.r")	
-source("Functions/f - 3rd lvl Summary Sheets.r")		
-source("Functions/f - 3rd lvl Networks.r")	
+source("lib/f - 3rd lvl Chromosomal Enrichment.r")	
+source("lib/f - 3rd lvl Summary Sheets.r")		
+source("lib/f - 3rd lvl Networks.r")	
 
-source("Functions/f - HTML Integral Summary.r")	
+source("lib/f - HTML Integral Summary.r")	
 
-source("Functions/f - Workspace Cleanup.r")
+source("lib/f - Workspace Cleanup.r")
 save.image( paste( files.name, ".RData" , sep="" ) )
 
 
-#source("Functions/f - 3rd lvl Overexpression Genenet.r")	
-source("Functions/f - Signature Sets.r")
+#source("lib/f - 3rd lvl Overexpression Genenet.r")	
+source("lib/f - Signature Sets.r")
 
 
 

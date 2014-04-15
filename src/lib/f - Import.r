@@ -1,11 +1,11 @@
 
 
-source( "Functions/l - Quantile Normalization.r" )
-source( "Functions/l - GeneSet Analysis.r" )
-source( "Functions/l - Get.Running.Average.r" )
-source( "Functions/l - Get.Area.r" )                                                 
-source( "Functions/l - Get Statistic.r" )                                                 	
-source( "Functions/l - Heatmaps.r" )    
+source( "lib/l - Quantile Normalization.r" )
+source( "lib/l - GeneSet Analysis.r" )
+source( "lib/l - Get.Running.Average.r" )
+source( "lib/l - Get.Area.r" )                                                 
+source( "lib/l - Get Statistic.r" )                                                 	
+source( "lib/l - Heatmaps.r" )    
 
 
 

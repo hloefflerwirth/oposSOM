@@ -16,7 +16,7 @@ preferences$feature.mean.normalization = F
 preferences$training.extension = 4
 
 
-source( "Functions/pipeline.r")
+source( "lib/pipeline.r")
 
 
 

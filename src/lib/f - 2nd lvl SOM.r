@@ -173,7 +173,7 @@
 	
 	##### Plot SmoothSupersom ######
 	
-	source( "Functions/l - Smooth Scatterplot.r" )
+	source( "lib/l - Smooth Scatterplot.r" )
 	
 	for( i in 1:length(unique(group.labels)) )
 	{
