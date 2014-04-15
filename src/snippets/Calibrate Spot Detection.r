@@ -38,7 +38,7 @@
 	preferences$group.spot.core = 3
 	preferences$group.spot.threshold = 0.88
 
-	source("lib/source/detect_spots_integral.r")
+	source("R/source/detect_spots_integral.r")
 
 	colramp = colorRampPalette( c( "darkblue","blue","lightblue","green","yellow","red","darkred" ) )
 
@@ -71,7 +71,7 @@
 
 # Re-run necessary parts of the pipeline
 
-source("lib/source/import.r")
+source("R/source/import.r")
 
 
 dir.create( paste( files.name, "- Results" ), showWarnings=F )
@@ -81,27 +81,27 @@ dir.create( paste( files.name, "- Results/CSV Sheets" ), showWarnings=F )
 if( preferences$geneset.analysis )
 {
 	dir.create( paste( files.name, "- Results/Geneset Analysis" ), showWarnings=F )
-	source("lib/source/geneset_statistic_integral.r")
-	source("lib/source/geneset_overviews.r")
-	source("lib/source/geneset_profiles_and_maps.r")
+	source("R/source/geneset_statistic_integral.r")
+	source("R/source/geneset_overviews.r")
+	source("R/source/geneset_profiles_and_maps.r")
 }
 
-source("lib/source/gene_lists.r")
-source("lib/source/summary_sheets_integral.r")
+source("R/source/gene_lists.r")
+source("R/source/summary_sheets_integral.r")
 
 dir.create( paste( files.name, "- Results/3rd lvl Spot Analysis" ), showWarnings=F )
-source("lib/source/3rd_lvl_chromosomal_enrichment.r")
-source("lib/source/3rd_lvl_summary_sheets.r")
-source("lib/source/3rd_lvl_networks.r")
+source("R/source/3rd_lvl_chromosomal_enrichment.r")
+source("R/source/3rd_lvl_summary_sheets.r")
+source("R/source/3rd_lvl_networks.r")
 
-source("lib/source/html_integral_summary.r")
+source("R/source/html_integral_summary.r")
 
-source("lib/source/workspace_cleanup.r")
+source("R/source/workspace_cleanup.r")
 save.image( paste( files.name, ".RData" , sep="" ) )
 
 
-#source("lib/source/3rd_lvl_overexpression_genenet.r")
-source("lib/source/signature_sets.r")
+#source("R/source/3rd_lvl_overexpression_genenet.r")
+source("R/source/signature_sets.r")
 
 
 

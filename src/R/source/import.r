@@ -1,10 +1,10 @@
 # Import libraries
-source("lib/quantile_normalization.r")
-source("lib/geneset_analysis.r")
-source("lib/get_running_average.r")
-source("lib/get_area.r")
-source("lib/get_statistic.r")
-source("lib/heatmaps.r")
+source("R/quantile_normalization.r")
+source("R/geneset_analysis.r")
+source("R/get_running_average.r")
+source("R/get_area.r")
+source("R/get_statistic.r")
+source("R/heatmaps.r")
 
 # Installs CRAN packages if necessary
 require.cran = function( package )

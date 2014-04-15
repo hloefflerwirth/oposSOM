@@ -28,7 +28,7 @@
 
 	geneset.custom.selection = c(  "H.Tiss", "Lymphoma", "MMML CGS", "Pathw Act",  "Cancer", "Disease",  "TF",  "Glio",  "GSEA C2", "miRNA target", "miRNA target starBase", "miRNA 3UTR", "TF Tissue", "miRNA Disease", "Toxic" )
 
-	source("lib/source/load_custom_genesets.r")
+	source("R/source/load_custom_genesets.r")
 
 
 
@@ -131,10 +131,10 @@
 
 	# optional for hook-preprocessed data: quantile + camel analysis
 
-		#		source("lib/quantile_normalization.r")
+		#		source("R/quantile_normalization.r")
 		#		indata = Quantile.Normalization( indata )
 
-		# 	source("lib/camel_analysis.r")
+		# 	source("R/camel_analysis.r")
 		# 	train.camel = Camel.Analysis( indata )
 		# 	indata = train.camel$Corrected.Data * train.camel$Percent.S
 		# 	indata.original = train.camel$Corrected.Data
@@ -144,7 +144,7 @@
 
 	# Lets rock!
 
-	source("lib/pipeline.r")
+	source("R/pipeline.r")
 
 
 

@@ -138,17 +138,17 @@ perform.differences.analyses = function()
  	
  	
 	capture.output({	
-	 	source("lib/source/detect_spots_samples.r", local=T);
+	 	source("R/source/detect_spots_samples.r", local=T);
 	 	
 	 	if( preferences$geneset.analysis )
 	 	{
 			if( ncol(t.g.m) == 1 ) t.g.m = cbind(t.g.m,t.g.m)			# crack for by command, which requires >=2 columns
-			source("lib/source/geneset_statistic_samples.r", local=T);
+			source("R/source/geneset_statistic_samples.r", local=T);
 	 	}
 	 	
-	 	source("lib/source/gene_lists.r", local=T);	
+	 	source("R/source/gene_lists.r", local=T);	
 	 	
-	 	source("lib/source/summary_sheets_samples.r", local=T);
+	 	source("R/source/summary_sheets_samples.r", local=T);
 	}) 	
  	 	
 }

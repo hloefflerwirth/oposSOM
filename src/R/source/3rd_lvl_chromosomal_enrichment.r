@@ -103,7 +103,7 @@
 
 
 		
-		source("lib/source/3rd_lvl_chromosome_association_maps.r",local=T)
+		source("R/source/3rd_lvl_chromosome_association_maps.r",local=T)
 		
 		
 		

@@ -1,6 +1,6 @@
 
 
-	source("lib/source/import.r")
+	source("R/source/import.r")
 
 
 
@@ -202,7 +202,7 @@
 
 	indata.sample.mean = colMeans(indata)
 
-	source("lib/source/quality_check.r")
+	source("R/source/quality_check.r")
 
 
 
@@ -266,7 +266,7 @@
 
 
 	cat( "\n\nLoad Annotation Data\n\n" ); flush.console()
-	source("lib/source/prepare_annotation.r")
+	source("R/source/prepare_annotation.r")
 
 
 
@@ -387,35 +387,35 @@
 
 
 	cat( "Processing Differential Expression\n" ); flush.console()
-	source("lib/source/calc_statistics.r")
+	source("R/source/calc_statistics.r")
 
 
 	cat( "Spot Detection\n" ); flush.console()
-	source("lib/source/detect_spots_samples.r")
-	source("lib/source/detect_spots_integral.r")
+	source("R/source/detect_spots_samples.r")
+	source("R/source/detect_spots_integral.r")
 
 
-	source("lib/source/group_assignment.r")
+	source("R/source/group_assignment.r")
 
 
 	cat( "Plotting Sample Portraits\n" ); flush.console()
-	source("lib/source/sample_expression_portraits.r")
-	source("lib/source/sample_rank_maps.r")
+	source("R/source/sample_expression_portraits.r")
+	source("R/source/sample_rank_maps.r")
 
 
 	cat( "Processing Supporting Information\n" ); flush.console()
-	source("lib/source/supporting_maps.r")
-	source("lib/source/entropy_profiles.r")
-	source("lib/source/topology_profiles.r")
+	source("R/source/supporting_maps.r")
+	source("R/source/entropy_profiles.r")
+	source("R/source/topology_profiles.r")
 
 
 	cat( "Processing 2nd level Metagene Analysis\n" ); flush.console()
 	dir.create( paste( files.name, "- Results/2nd lvl Metagene Analysis" ), showWarnings=F )
 
-	source("lib/source/2nd_lvl_similarity_analysis.r")
-	source("lib/source/2nd_lvl_correlation_analysis.r")
-	source("lib/source/2nd_lvl_component_analysis.r")
-	source("lib/source/2nd_lvl_som.r")
+	source("R/source/2nd_lvl_similarity_analysis.r")
+	source("R/source/2nd_lvl_correlation_analysis.r")
+	source("R/source/2nd_lvl_component_analysis.r")
+	source("R/source/2nd_lvl_som.r")
 
 
 
@@ -423,48 +423,48 @@
 	{
 		dir.create( paste( files.name, "- Results/Geneset Analysis" ), showWarnings=F )
 
-		source("lib/source/geneset_statistic_samples.r")
-		source("lib/source/geneset_statistic_integral.r")
-		source("lib/source/geneset_overviews.r")
-		source("lib/source/geneset_profiles_and_maps.r")
+		source("R/source/geneset_statistic_samples.r")
+		source("R/source/geneset_statistic_integral.r")
+		source("R/source/geneset_overviews.r")
+		source("R/source/geneset_profiles_and_maps.r")
 
-		source("lib/source/cancer_hallmarks.r")
-		source("lib/source/chromosome_expression_reports.r")
+		source("R/source/cancer_hallmarks.r")
+		source("R/source/chromosome_expression_reports.r")
 	}
 
 
 
 	cat( "Gene Lists\n" ); flush.console()
-	source("lib/source/gene_lists.r")
+	source("R/source/gene_lists.r")
 
 	cat( "Summary Sheets: Samples\n" ); flush.console()
-	source("lib/source/summary_sheets_samples.r")
+	source("R/source/summary_sheets_samples.r")
 
 	cat( "Summary Sheets: Spots\n" ); flush.console()
-	source("lib/source/summary_sheets_integral.r")
+	source("R/source/summary_sheets_integral.r")
 
 
 
 	cat( "Processing 3rd level Spot Analysis\n" ); flush.console()
 	dir.create( paste( files.name, "- Results/3rd lvl Spot Analysis" ), showWarnings=F )
 
-	source("lib/source/3rd_lvl_chromosomal_enrichment.r")
-	source("lib/source/3rd_lvl_summary_sheets.r")
-	source("lib/source/3rd_lvl_networks.r")
+	source("R/source/3rd_lvl_chromosomal_enrichment.r")
+	source("R/source/3rd_lvl_summary_sheets.r")
+	source("R/source/3rd_lvl_networks.r")
 
 
 
 
 	cat( "Generating HTML Report\n" ); flush.console()
-	source("lib/source/html_summary.r")
-	source("lib/source/html_sample_summary.r")
-	source("lib/source/html_integral_summary.r")
-	source("lib/source/html_geneset_analysis.r")
+	source("R/source/html_summary.r")
+	source("R/source/html_sample_summary.r")
+	source("R/source/html_integral_summary.r")
+	source("R/source/html_geneset_analysis.r")
 
 
 
 	cat( "Clean and store Workspace\n" ); flush.console()
-	source("lib/source/workspace_cleanup.r")
+	source("R/source/workspace_cleanup.r")
 	save.image( paste( files.name, ".RData" , sep="" ) )
 
 
@@ -476,16 +476,16 @@
 
 	## additional scripts
 
-	source("lib/source/group_analyses.r")
+	source("R/source/group_analyses.r")
 
-	source("lib/source/difference_analyses.r")
+	source("R/source/difference_analyses.r")
 
 
 
 #	cat( "Spot Filtering\n" ); flush.console()
-#	source("lib/source/3rd_lvl_overexpression_genenet.r")
-#	source("lib/source/3rd_lvl_spot_filter.r")
-	source("lib/source/signature_sets.r")
+#	source("R/source/3rd_lvl_overexpression_genenet.r")
+#	source("R/source/3rd_lvl_spot_filter.r")
+	source("R/source/signature_sets.r")
 
 
 
