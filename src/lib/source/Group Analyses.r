@@ -10,12 +10,12 @@ perform.group.analyses = function()
 	if( preferences$geneset.analysis ) 
 	{
 		dir.create( paste( files.name, "- Results/Summary Sheets - Groups/Geneset Analysis" ), showWarnings=F )
-		source("lib/f - Group Specific Genesets.r")
+		source("lib/source/Group Specific Genesets.r")
 	}	
 	
 	
 	
-	source("lib/f - Summary Sheets Groups.r")	
+	source("lib/source/Summary Sheets Groups.r")	
 
 	
 	
@@ -49,19 +49,19 @@ perform.group.analyses = function()
 	preferences$error.model = "replicates"
 	
 	capture.output({ 
-		source("lib/f - Calc Statistics.r", local=T);		
+		source("lib/source/Calc Statistics.r", local=T);		
 
-		source("lib/f - Detect Spots Samples.r", local=T);
+		source("lib/source/Detect Spots Samples.r", local=T);
 
 		if( preferences$geneset.analysis ) 
 		{
-			source("lib/f - Geneset Statistic Samples.r", local=T);
+			source("lib/source/Geneset Statistic Samples.r", local=T);
 		}
 
 		
-		source("lib/f - Gene Lists.r", local=T);
+		source("lib/source/Gene Lists.r", local=T);
 
-		source("lib/f - Summary Sheets Samples.r", local=T);
+		source("lib/source/Summary Sheets Samples.r", local=T);
 	})
 	
 }

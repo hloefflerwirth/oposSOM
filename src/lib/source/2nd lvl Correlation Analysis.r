@@ -248,7 +248,7 @@
 		if( i <= 2 )
 		{
 			def.par <- par(no.readonly = TRUE)
-			source("lib/f - 2nd lvl Module Correlation Map.r")
+			source("lib/source/2nd lvl Module Correlation Map.r")
 			par(def.par) 
 		}
 		
