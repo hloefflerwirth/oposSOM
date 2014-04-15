@@ -1,6 +1,6 @@
 
 
-	geneset.custom.matrix = read.csv2( "Functions and Snippets/oposSOM Geneset Collection.csv", as.is=T )
+	geneset.custom.matrix = read.csv2("data/geneset_collection.csv", as.is=T )
 
 
 	# collapse gene sets in more than one cell
@@ -12,7 +12,7 @@
 		{
 			geneset.custom.matrix[i,4] = paste( geneset.custom.matrix[i,c(4:(4+n.id.cells-1))], collapse="," )
 		}
-		
+
 	}
 
 
@@ -24,12 +24,12 @@
 	geneset.custom.list = apply( geneset.custom.matrix[ selection, ], 1, function(x){ list( Genes=as.vector(x["Genes"]), Type=as.vector(x["Type"]) ) })
 
 	names(geneset.custom.list) = geneset.custom.matrix[ selection, "Name" ]
-	
-	
-	
+
+
+
 	geneset.custom.list = lapply( geneset.custom.list, function(x)
-	{ 
-		x$Genes = strsplit( x$Genes, "," )[[1]] 
+	{
+		x$Genes = strsplit( x$Genes, "," )[[1]]
 		return(x)
 	} )
 

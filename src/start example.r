@@ -28,7 +28,7 @@
 
 	geneset.custom.selection = c(  "H.Tiss", "Lymphoma", "MMML CGS", "Pathw Act",  "Cancer", "Disease",  "TF",  "Glio",  "GSEA C2", "miRNA target", "miRNA target starBase", "miRNA 3UTR", "TF Tissue", "miRNA Disease", "Toxic" )
 
-	source("Functions and Snippets/f - Load Custom Genesets.r")
+	source("lib/source/load_custom_genesets.r")
 
 
 
