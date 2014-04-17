@@ -1,1 +1,1 @@
-exportPattern(".")
+exportPattern("^opossom.[[:alpha:]]+")

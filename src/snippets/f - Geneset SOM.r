@@ -16,7 +16,7 @@ preferences$feature.mean.normalization = F
 preferences$training.extension = 4
 
 
-source("R/pipeline.r")
+source("R/source/pipeline.r")
 
 
 
@@ -28,7 +28,7 @@ source("R/pipeline.r")
 
 #require.bioconductor("GO.db")
 
-#unlist( as.list(GOBPOFFSPRING["GO:0033059"]) ) 
+#unlist( as.list(GOBPOFFSPRING["GO:0033059"]) )
 
 #gs.def.list = list()
 

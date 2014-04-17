@@ -1,36 +1,5 @@
 
-	rm(list=ls(all=TRUE))
-
-
-
-	# which custom geneset types shall be loaded
-
-
-	# Gene sets:
-
-		# "H.Tiss" 		- 	extracted from Human Tissue SOM analysis
-		# "Lymphoma", "MMML CGS"	- 	published or curated sets for Lymphoma
-		# "Pathw Act"		- 	cancer cell-line activation patterns
-		# "Cancer"		-	cancer modules published (various papers)
-		# "Disease"		- 	various disease signatures
-		# "Glio"		-	glioblastome moudules
-		# "GSEA C2"		-	curated gene sets from Broad Institute - GSEA
-		# "TF", "TF Tissues"    -	transcription factors general and tissue specific
-		# "miRNA target"	-       genes tageted by diverse miRNA
-		# "miRNA target starBase"-      genes tageted by diverse miRNA, derived from starBase DB
-		# "miRNA 3UTR"		-       genes tageted by diverse miRNA, detected by 3'UTR
-		# "Toxic"		-	Mouse gene targets of contaminants
-
-	# miRNA sets:
-
-		# "miRNA Disease"	-     	miRNAs reported as differentially expressed in various deseases
-
-
-	geneset.custom.selection = c(  "H.Tiss", "Lymphoma", "MMML CGS", "Pathw Act",  "Cancer", "Disease",  "TF",  "Glio",  "GSEA C2", "miRNA target", "miRNA target starBase", "miRNA 3UTR", "TF Tissue", "miRNA Disease", "Toxic" )
-
-	source("R/source/load_custom_genesets.r")
-
-
+  rm(list=ls(all=TRUE))
 
 	# Biomart parameter: #
 	######################
@@ -70,35 +39,30 @@
 
 	# Parameters
 
-	preferences = list( dataset.name="Test",
+  pipeline <- opossom.new(list(dataset.name        = "Test",
+                               error.model         = "all.samples",	# "replicates", "all.samples" or "groups"
+								               dim.som1            = 20,
+                               dim.som2            = 20,
+                               training.extension  = 1,
 
-								error.model="all.samples",	# "replicates", "all.samples" or "groups"
+								               rotate.som1			   = 0,
+								               flip.som1           = F,
 
-								dim.som1 			= 20,
-								dim.som2 			= 20,
-								training.extension		= 1,
+								               ensembl.dataset 		 = "hsapiens_gene_ensembl",
+								               ensembl.rowname.ids = "affy_hg_u133_plus_2",
 
-								rotate.som1			= 0,
-								flip.som1			= F,
+                               geneset.analysis		 = T,
+                               geneset.analysis.exact = F,
 
+                               max.parallel.cores = 4,
+                               sample.spot.cutoff	= 0.65,
+                               summary.spot.core  = 5,
+                               summary.spot.threshold = 0.95,
+                               group.spot.core = 5,
+                               group.spot.threshold = 0.75,
 
-								ensembl.dataset 		= "hsapiens_gene_ensembl",
-								ensembl.rowname.ids		= "affy_hg_u133_plus_2",
-
-								geneset.analysis		= T,
-								geneset.analysis.exact		= F,
-								geneset.custom.list		= geneset.custom.list,
-
-								max.parallel.cores = 4,
-
-								sample.spot.cutoff		= 0.65,
-								summary.spot.core = 5,
-								summary.spot.threshold = 0.95,
-								group.spot.core = 5,
-								group.spot.threshold = 0.75,
-
-								feature.mean.normalization = T,
-								sample.quantile.normalization = T )
+                               feature.mean.normalization = T,
+                               sample.quantile.normalization = T ))
 
 #								differences.list = list("group1 vs group2" = list( c(1:3), c(4:6) ),
 #										 										"group1 vs group3" = list( c(1:3), 7 ) ) )
@@ -110,8 +74,7 @@
 
 	# Load Data
 
-	indata = .......
-
+	pipeline$indata <- .......
 
 		# new hook readin:
 
@@ -123,7 +86,7 @@
 
 	# Set group labels and colors for each column in data
 
-	group.labels = .....
+	pipeline$group.labels <- .....
 
 		# group.colors = c("col1","col2",...)[ match( group.labels, unique(group.labels) ) ]
 
@@ -144,8 +107,7 @@
 
 	# Lets rock!
 
-	source("R/pipeline.r")
-
+  opossom.run(pipeline)
 
 
 

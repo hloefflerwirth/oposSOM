@@ -173,7 +173,7 @@
 
 	##### Plot SmoothSupersom ######
 
-	source("R/smooth_scatterplot.r")
+	source("R/smooth_scatterplot.r", local=TRUE)
 
 	for( i in 1:length(unique(group.labels)) )
 	{
