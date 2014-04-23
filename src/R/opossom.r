@@ -65,6 +65,7 @@ opossom.new <- function(preferences)
   opossom$Fdr.g.m <- NULL
   opossom$mean.LPE2 <- NULL
   opossom$GS.infos.samples <- NULL
+  opossom$GS.infos.overexpression <- NULL
 
   # Generate some additional letters
   opossom$LETTERS <- c(LETTERS, as.vector(sapply(1:10, function(x) {
