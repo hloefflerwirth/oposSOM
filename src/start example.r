@@ -62,10 +62,10 @@
                                group.spot.threshold = 0.75,
 
                                feature.mean.normalization = T,
-                               sample.quantile.normalization = T ))
+                               sample.quantile.normalization = T))
 
-#                differences.list = list("group1 vs group2" = list( c(1:3), c(4:6) ),
-#                                         "group1 vs group3" = list( c(1:3), 7 ) ) )
+#                differences.list = list("group1 vs group2" = list(c(1:3), c(4:6)),
+#                                         "group1 vs group3" = list(c(1:3), 7)))
 
 
 
@@ -78,9 +78,9 @@
 
     # new hook readin:
 
-    # indata = log10( read.table( "allExpresssionMeasures.dat", sep="\t", comment="", header=T, row.names=1, check.names=F) )
-    # colnames(indata) = sub( "/blabla/", "", colnames(indata) )
-    # colnames(indata) = sub( ".CEL", "", colnames(indata) )
+    # indata = log10(read.table("allExpresssionMeasures.dat", sep="\t", comment="", header=T, row.names=1, check.names=F))
+    # colnames(indata) = sub("/blabla/", "", colnames(indata))
+    # colnames(indata) = sub(".CEL", "", colnames(indata))
 
 
 
@@ -88,20 +88,20 @@
 
   pipeline$group.labels <- .....
 
-    # group.colors = c("col1","col2",...)[ match( group.labels, unique(group.labels) ) ]
+    # group.colors = c("col1","col2",...)[match(group.labels, unique(group.labels))]
 
 
 
   # optional for hook-preprocessed data: quantile + camel analysis
 
     #    source("R/quantile_normalization.r")
-    #    indata = Quantile.Normalization( indata )
+    #    indata = Quantile.Normalization(indata)
 
     #   source("R/camel_analysis.r")
-    #   train.camel = Camel.Analysis( indata )
+    #   train.camel = Camel.Analysis(indata)
     #   indata = train.camel$Corrected.Data * train.camel$Percent.S
     #   indata.original = train.camel$Corrected.Data
-    #   rm( train.camel )
+    #   rm(train.camel)
 
 
 

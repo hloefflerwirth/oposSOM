@@ -24,25 +24,25 @@ smoothScatter = function (x, y = NULL, nbin = 128, bandwidth, colramp = colorRam
                          , drop = FALSE]
   if (!missing(xlim)) {
     stopifnot(is.numeric(xlim), length(xlim) == 2, is.finite(xlim))
-    x <- x[min(xlim) <= x[, 1] & x[, 1] <= max(xlim), ]
+    x <- x[min(xlim) <= x[, 1] & x[, 1] <= max(xlim),]
   }
   else {
     xlim <- range(x[, 1])
   }
   if (!missing(ylim)) {
     stopifnot(is.numeric(ylim), length(ylim) == 2, is.finite(ylim))
-    x <- x[min(ylim) <= x[, 2] & x[, 2] <= max(ylim), ]
+    x <- x[min(ylim) <= x[, 2] & x[, 2] <= max(ylim),]
   }
   else {
     ylim <- range(x[, 2])
   }
-  map <- grDevices:::.smoothScatterCalcDensity(x, nbin, bandwidth, list(xlim,ylim) )
+  map <- grDevices:::.smoothScatterCalcDensity(x, nbin, bandwidth, list(xlim,ylim))
   xm <- map$x1
   ym <- map$x2
   dens <- map$fhat
   dens[] <- transformation(dens)
   dens[which(dens<0.1)]=NA    
-  col = paste( colramp(256), "90", sep="" )
+  col = paste(colramp(256), "90", sep="")
   image(xm, ym, z = dens, col = col, xlab = xlab, 
         ylab = ylab, xlim = xlim, ylim = ylim, xaxs = xaxs, yaxs = yaxs, ...)
   if (!is.null(postPlotHook)) 
@@ -56,7 +56,7 @@ smoothScatter = function (x, y = NULL, nbin = 128, bandwidth, colramp = colorRam
     iym <- 1L + as.integer((ny - 1) * (x[, 2] - ym[1])/(ym[ny] - 
       ym[1]))
     sel <- order(dens[cbind(ixm, iym)])[seq_len(nrpoints)]
-    points(x[sel, ], pch = pch, cex = cex, col = col)
+    points(x[sel,], pch = pch, cex = cex, col = col)
   }
 }
 

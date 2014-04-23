@@ -27,10 +27,10 @@ pipeline.calcStatistics <- function()
   t.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
   p.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
 
-  n.0.m <<- rep( NA, ncol(indata))
+  n.0.m <<- rep(NA, ncol(indata))
   names(n.0.m) <<- colnames(indata)
 
-  perc.DE.m <<- rep( NA, ncol(indata))
+  perc.DE.m <<- rep(NA, ncol(indata))
   names(perc.DE.m) <<- colnames(indata)
 
 
@@ -51,7 +51,7 @@ pipeline.calcStatistics <- function()
       e.r.g.m <- as.matrix(indata.original[,m])
     }
 
-    e.g.m[,m] <<- rowMeans( e.r.g.m )
+    e.g.m[,m] <<- rowMeans(e.r.g.m)
 
     delta.e.r.g.m <- e.r.g.m - mean.e.g
     delta.e.g.m[,m] <<- rowMeans(delta.e.r.g.m)
@@ -77,9 +77,9 @@ pipeline.calcStatistics <- function()
     sd.shrink.g.m <- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
 
 
-    for(m in 1:ncol(indata))
+    for (m in 1:ncol(indata))
     {
-      if(R.m[m] > 1)
+      if (R.m[m] > 1)
       {
         e.r.g.m <- as.matrix(indata.original[,which(colnames(indata.original) == unique(colnames(indata))[m]), drop=F])
 
@@ -275,9 +275,9 @@ pipeline.calcStatistics <- function()
       {
         gene.expression.order <- colnames(indata)[order(indata[i,])]
 
-        for(m in no.sd.samples)
+        for (m in no.sd.samples)
         {
-          position <- which( gene.expression.order == m )
+          position <- which(gene.expression.order == m)
 
           gene.expression.order.help <- gene.expression.order
           gene.expression.order.help[gene.expression.order.help %in% no.sd.samples] <- NA
@@ -295,7 +295,7 @@ pipeline.calcStatistics <- function()
         }
       }
 
-      for(m in no.sd.samples)
+      for (m in no.sd.samples)
       {
         o <- order(e.g.m[,m])
 
@@ -389,8 +389,8 @@ pipeline.calcStatistics <- function()
         mtext(expression(sigma), side=2, line=4, cex= 2, las=2)
 
         a <- round(mean.LPE2[colnames(indata)[m]], 2)
-        expr <- paste( "paste(\"<\", sigma[LPE] ,\"> = ", a, " \", sep=\"\")", sep="" )
-        mtext(eval(parse(text=paste("expression(", expr, ")", sep=""))), line=-1.7, cex=2 )
+        expr <- paste("paste(\"<\", sigma[LPE] ,\"> = ", a, " \", sep=\"\")", sep="")
+        mtext(eval(parse(text=paste("expression(", expr, ")", sep=""))), line=-1.7, cex=2)
 
         points(LPE.g.m[,m] ~ e.g.m[,m], col="green", pch=16)
         dev.off()
@@ -467,7 +467,7 @@ pipeline.calcStatistics <- function()
       }, silent=T)
     })
 
-    if(class(try.res) != "try-error")
+    if (class(try.res) != "try-error")
     {
       p.m[which(!is.na(t.m[,m])),m] <- fdrtool.result$pval
       fdr.m[which(!is.na(t.m[,m])),m] <- fdrtool.result$lfdr

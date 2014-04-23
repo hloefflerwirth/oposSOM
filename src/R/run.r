@@ -111,7 +111,7 @@ pipeline.run <- function() {
     {
       group.colors <<- apply(col2rgb(group.colors), 2, function(x) { rgb(x[1]/255, x[2]/255, x[3]/255) })
     }
-    names(group.colors) <<- colnames( indata )
+    names(group.colors) <<- colnames(indata)
   } else
   {
     group.labels <<- rep("sample", ncol(indata))
@@ -186,7 +186,7 @@ pipeline.run <- function() {
 
   if (preferences$rotate.som1 > 0)
   {
-    for(i in 1:preferences$rotate.som1)
+    for (i in 1:preferences$rotate.som1)
     {
       o <- matrix(c(1:(preferences$dim.som1^2)), preferences$dim.som1, preferences$dim.som1, byrow=T)
       o <- o[rev(1:preferences$dim.som1),]
@@ -194,7 +194,7 @@ pipeline.run <- function() {
     }
   }
 
-  if(preferences$flip.som1)
+  if (preferences$flip.som1)
   {
     o <- matrix(c(1:(preferences$dim.som1^2)), preferences$dim.som1, preferences$dim.som1, byrow=T)
     som.result <<- som.result[as.vector(o),]
@@ -219,7 +219,7 @@ pipeline.run <- function() {
                            inv.alp.c=nrow(indata)*10*preferences$training.extension/100)
 
   # TODO Can we throw this in the bin?
-  #som.result <<- som( indata, xdim=preferences$dim.som1, ydim=preferences$dim.som1 )
+  #som.result <<- som(indata, xdim=preferences$dim.som1, ydim=preferences$dim.som1)
 
   metadata <<- som.result$code
   colnames(metadata) <<- colnames(indata)
@@ -230,7 +230,7 @@ pipeline.run <- function() {
   {
     meta.sign <- sign(x)
     meta <- log10(abs(x))
-    meta <- meta - min( meta, na.rm=T )
+    meta <- meta - min(meta, na.rm=T)
     return(meta * meta.sign)
   })
 
@@ -279,19 +279,19 @@ pipeline.run <- function() {
   source("R/source/group_assignment.r", local=TRUE)
 
 
-  cat( "Plotting Sample Portraits\n" ); flush.console()
+  cat("Plotting Sample Portraits\n"); flush.console()
   source("R/source/sample_expression_portraits.r", local=TRUE)
   source("R/source/sample_rank_maps.r", local=TRUE)
 
 
-  cat( "Processing Supporting Information\n" ); flush.console()
+  cat("Processing Supporting Information\n"); flush.console()
   source("R/source/supporting_maps.r", local=TRUE)
   source("R/source/entropy_profiles.r", local=TRUE)
   source("R/source/topology_profiles.r", local=TRUE)
 
 
-  cat( "Processing 2nd level Metagene Analysis\n" ); flush.console()
-  dir.create( paste( files.name, "- Results/2nd lvl Metagene Analysis" ), showWarnings=F )
+  cat("Processing 2nd level Metagene Analysis\n"); flush.console()
+  dir.create(paste(files.name, "- Results/2nd lvl Metagene Analysis"), showWarnings=F)
 
   source("R/source/2nd_lvl_similarity_analysis.r", local=TRUE)
   source("R/source/2nd_lvl_correlation_analysis.r", local=TRUE)
@@ -300,9 +300,9 @@ pipeline.run <- function() {
 
 
 
-  if( preferences$geneset.analysis )
+  if (preferences$geneset.analysis)
   {
-    dir.create( paste( files.name, "- Results/Geneset Analysis" ), showWarnings=F )
+    dir.create(paste(files.name, "- Results/Geneset Analysis"), showWarnings=F)
 
     source("R/source/geneset_statistic_samples.r", local=TRUE)
     source("R/source/geneset_statistic_integral.r", local=TRUE)
@@ -315,19 +315,19 @@ pipeline.run <- function() {
 
 
 
-  cat( "Gene Lists\n" ); flush.console()
+  cat("Gene Lists\n"); flush.console()
   source("R/source/gene_lists.r", local=TRUE)
 
-  cat( "Summary Sheets: Samples\n" ); flush.console()
+  cat("Summary Sheets: Samples\n"); flush.console()
   source("R/source/summary_sheets_samples.r", local=TRUE)
 
-  cat( "Summary Sheets: Spots\n" ); flush.console()
+  cat("Summary Sheets: Spots\n"); flush.console()
   source("R/source/summary_sheets_integral.r", local=TRUE)
 
 
 
-  cat( "Processing 3rd level Spot Analysis\n" ); flush.console()
-  dir.create( paste( files.name, "- Results/3rd lvl Spot Analysis" ), showWarnings=F )
+  cat("Processing 3rd level Spot Analysis\n"); flush.console()
+  dir.create(paste(files.name, "- Results/3rd lvl Spot Analysis"), showWarnings=F)
 
   source("R/source/3rd_lvl_chromosomal_enrichment.r", local=TRUE)
   source("R/source/3rd_lvl_summary_sheets.r", local=TRUE)
@@ -336,7 +336,7 @@ pipeline.run <- function() {
 
 
 
-  cat( "Generating HTML Report\n" ); flush.console()
+  cat("Generating HTML Report\n"); flush.console()
   source("R/source/html_summary.r", local=TRUE)
   source("R/source/html_sample_summary.r", local=TRUE)
   source("R/source/html_integral_summary.r", local=TRUE)
@@ -344,13 +344,13 @@ pipeline.run <- function() {
 
 
 
-  cat( "Clean and store Workspace\n" ); flush.console()
+  cat("Clean and store Workspace\n"); flush.console()
   source("R/source/workspace_cleanup.r", local=TRUE)
-  save.image( paste( files.name, ".RData" , sep="" ) )
+  save.image(paste(files.name, ".RData" , sep=""))
 
 
-  if( file.exists( paste( files.name, " pre.RData" , sep="") ) && file.exists( paste( files.name, ".RData" , sep="") ) )
-    r = file.remove( paste( files.name, " pre.RData" , sep="") )
+  if (file.exists(paste(files.name, " pre.RData" , sep="")) && file.exists(paste(files.name, ".RData" , sep="")))
+    r = file.remove(paste(files.name, " pre.RData" , sep=""))
 
 
 
@@ -362,14 +362,14 @@ pipeline.run <- function() {
 
 
 
-#  cat( "Spot Filtering\n" ); flush.console()
+#  cat("Spot Filtering\n"); flush.console()
 #  source("R/source/3rd_lvl_overexpression_genenet.r", local=TRUE)
 #  source("R/source/3rd_lvl_spot_filter.r", local=TRUE)
   source("R/source/signature_sets.r", local=TRUE)
 
 
 
-  cat( "Finished:", format(Sys.time(), "%a %b %d %X\n\n" ) )
+  cat("Finished:", format(Sys.time(), "%a %b %d %X\n\n"))
   flush.console()
 
 

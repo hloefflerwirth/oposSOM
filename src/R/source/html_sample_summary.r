@@ -2,9 +2,9 @@
 
 
 
-outfile = file( paste( files.name, " - Results/Summary Sheets - Samples/0verview.html",sep=""), "w" )
+outfile = file(paste(files.name, " - Results/Summary Sheets - Samples/0verview.html",sep=""), "w")
             
-  cat( "
+  cat("
     <html> <head> <TITLE>Sample Summary of ",files.name,"dataset</TITLE>
     </head> <body bgcolor=#FFFFFF >
     <style type=text/css> p{ margin-top: 1px; margin-bottom: 1px; padding-left: 10px; text-indent: -10px }
@@ -18,27 +18,27 @@ outfile = file( paste( files.name, " - Results/Summary Sheets - Samples/0verview
     </colgroup>", sep="", file = outfile)
 
 
-  if( preferences$error.model == "replicates" )
+  if (preferences$error.model == "replicates")
   {
-    cat( "
+    cat("
       <TR><TD>Error estimation model:</TD>
       <TD>Shrinkage: SD(replicates) vs. LPE</TD></TR>", sep="", file = outfile)
   } else
-  if( preferences$error.model == "all.samples" )
+  if (preferences$error.model == "all.samples")
   {
-    cat( "
+    cat("
       <TR><TD>Error estimation model:</TD>
       <TD>LPE: SD(all genes) vs. <e>(all genes)</TD></TR>", sep="", file = outfile)
   } else
-  if( preferences$error.model == "groups" )
+  if (preferences$error.model == "groups")
   {
-    cat( "
+    cat("
       <TR><TD>Error estimation model:</TD>
       <TD>Shrinkage: SD(categories) vs. LPE</TD></TR>", sep="", file = outfile)
   }
 
 
-  cat( "
+  cat("
     <TR>
     <TD>LPE error plot for all samples:</TD>
     <TD><a href=\"../LPE/Sigma_LPE.pdf\" target=\"_blank\">PDF</a></TD>
@@ -78,10 +78,10 @@ outfile = file( paste( files.name, " - Results/Summary Sheets - Samples/0verview
 
 
 # <TD><a href=\"LPE/", colnames(indata)[m], ".bmp\" target=\"_blank\">BMP</a></TD>
-  for( m in 1:ncol(indata) )
+  for (m in 1:ncol(indata))
   {
 
-    cat( "<TR>
+    cat("<TR>
       <TD>", colnames(indata)[m], "</TD>
       <TD>", group.labels[m], "</TD>
       <TD><a href=\"", colnames(indata)[m], ".pdf\" target=\"_blank\">PDF</a></TD>
@@ -90,13 +90,13 @@ outfile = file( paste( files.name, " - Results/Summary Sheets - Samples/0verview
       <TD>", sep="", file = outfile)
 
   
-    for( spot.i in 1:length( GS.infos.samples[[m]]$spots ) )
+    for (spot.i in 1:length(GS.infos.samples[[m]]$spots))
     {
-      cat( "<a href=\"../CSV Sheets/Gene Lists - Local/", colnames(indata)[m], ".", spot.i, ".csv\" >CSV ",spot.i,"</a>&nbsp;&nbsp;&nbsp;", sep="", file = outfile)
+      cat("<a href=\"../CSV Sheets/Gene Lists - Local/", colnames(indata)[m], ".", spot.i, ".csv\" >CSV ",spot.i,"</a>&nbsp;&nbsp;&nbsp;", sep="", file = outfile)
 
     }
 
-    cat( "</TD></TR>", sep="", file = outfile)
+    cat("</TD></TR>", sep="", file = outfile)
 
   }
 

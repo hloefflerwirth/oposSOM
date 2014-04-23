@@ -1,6 +1,6 @@
 heatmap.A4 = function (...) 
 {
-  heatmap( ..., ratio=c(21,29.7), cexDend=3 )
+  heatmap(..., ratio=c(21,29.7), cexDend=3)
 }
 
 
@@ -90,13 +90,13 @@ heatmap = function (x, Rowv = NULL, Colv = if (symm) "Rowv" else NULL,
         x <- sweep(x, 2L, sx, "/", check.margin = FALSE)
     }
     lmat <- rbind(c(NA, 3), 2:1)
-    lwid <- c(if (doRdend) cexDend else 0.05, ratio[1] )
-    lhei <- c((if (doCdend) cexDend else 0.05) + if (!is.null(main)) 0.2 else 0, ratio[2] )
+    lwid <- c(if (doRdend) cexDend else 0.05, ratio[1])
+    lhei <- c((if (doCdend) cexDend else 0.05) + if (!is.null(main)) 0.2 else 0, ratio[2])
     if (!missing(ColSideColors)) {
         if (!is.character(ColSideColors) || length(ColSideColors) != 
             nc) 
             stop("'ColSideColors' must be a character vector of length ncol(x)")
-        lmat <- rbind(lmat[1, ] + 1, c(NA, 1), lmat[2, ] + 1)
+        lmat <- rbind(lmat[1,] + 1, c(NA, 1), lmat[2,] + 1)
         lhei <- c(lhei[1L], 0.2, lhei[2L])
     }
     if (!missing(RowSideColors)) {

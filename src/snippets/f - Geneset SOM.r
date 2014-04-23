@@ -1,10 +1,10 @@
 
 indata = samples.GSZ.scores
-rm( indata.original )
-rm( colramp )
+rm(indata.original)
+rm(colramp)
 
 
-preferences$dataset.name = paste( preferences$dataset.name, "GenesetSOM" )
+preferences$dataset.name = paste(preferences$dataset.name, "GenesetSOM")
 
 preferences$error.model = "all.samples"
 
@@ -28,7 +28,7 @@ source("R/source/pipeline.r")
 
 #require.bioconductor("GO.db")
 
-#unlist( as.list(GOBPOFFSPRING["GO:0033059"]) )
+#unlist(as.list(GOBPOFFSPRING["GO:0033059"]))
 
 #gs.def.list = list()
 

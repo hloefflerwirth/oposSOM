@@ -1,9 +1,9 @@
 
 
 
-outfile = file( paste( files.name, " - Results/Summary.html",sep=""), "w" )
+outfile = file(paste(files.name, " - Results/Summary.html",sep=""), "w")
             
-cat( "
+cat("
   <html> <head> <TITLE>Summary of ",files.name," dataset</TITLE>
   </head> <body bgcolor=#FFFFFF >
   <style type=text/css> p{ margin-top: 1px; margin-bottom: 1px; padding-left: 10px; text-indent: -10px }
@@ -12,7 +12,7 @@ cat( "
 
 
 
-cat( "<H1>General Information</H1>
+cat("<H1>General Information</H1>
   <TABLE BORDER=2, WIDTH=90%>
   <colgroup>
     <col width=\"50%\">
@@ -44,7 +44,7 @@ cat( "<H1>General Information</H1>
 
 
 
-cat( "<TABLE BORDER=2, WIDTH=90%>
+cat("<TABLE BORDER=2, WIDTH=90%>
   <colgroup>
     <col width=\"50%\">
     <col width=\"50%\">
@@ -68,7 +68,7 @@ cat( "<TABLE BORDER=2, WIDTH=90%>
 
 
 
-cat( "<H1>Results</H1>
+cat("<H1>Results</H1>
 
   <TABLE BORDER=2 , WIDTH=90%>
   <colgroup>
@@ -151,7 +151,7 @@ cat( "<H1>Results</H1>
 
 
 
-  if( preferences$geneset.analysis )
+  if (preferences$geneset.analysis)
   {
      
     cat("
@@ -202,17 +202,17 @@ cat( "<H1>Results</H1>
  
   <TR>  
   <TD><a href=\"2nd lvl Metagene Analysis/Similarity Analysis.pdf\" target=\"_blank\">
-    Similarity based methods ( Neighbor Joining & Hierarchical Clustering )</a></TD>
+    Similarity based methods (Neighbor Joining & Hierarchical Clustering)</a></TD>
   </TR>
 
   <TR>
   <TD><a href=\"2nd lvl Metagene Analysis/Correlation Analysis.pdf\" target=\"_blank\">
-    Correlation based methods ( MST, Correlation Graphs, PCM )</a></TD>
+    Correlation based methods (MST, Correlation Graphs, PCM)</a></TD>
   </TR>
 
   <TR>
   <TD><a href=\"2nd lvl Metagene Analysis/Component Analysis.pdf\" target=\"_blank\">
-    Component based methods ( 2d-ICA, 3d-ICA )</a></TD>
+    Component based methods (2d-ICA, 3d-ICA)</a></TD>
   </TR>
 
 

@@ -1,9 +1,9 @@
 
   
 
-outfile = file( paste( files.name, " - Results/Summary Sheets - Integral/0verview.html",sep=""), "w" )
+outfile = file(paste(files.name, " - Results/Summary Sheets - Integral/0verview.html",sep=""), "w")
             
-  cat( "
+  cat("
     <html> <head> <title>Spot Summary of ",files.name,"dataset</title>
     </head> <body bgcolor=#FFFFFF >
     <style type=text/css> p{ margin-top: 1px; margin-bottom: 1px; padding-left: 10px; text-indent: -10px }
@@ -40,9 +40,9 @@ outfile = file( paste( files.name, " - Results/Summary Sheets - Integral/0vervie
   <td><a href=\"Overexpression.pdf\" target=\"_blank\">PDF</a></td>
   <td>&nbsp", sep="", file = outfile)
 
-  for( m in 1:length(GS.infos.overexpression$spots) )
+  for (m in 1:length(GS.infos.overexpression$spots))
   {
-    cat( "<a href=\"../CSV Sheets/Spot Lists/Sample-Overexpression ",names(GS.infos.overexpression$spots)[m],".csv\" target=\"_blank\">",names(GS.infos.overexpression$spots)[m],"</a>&nbsp;&nbsp;", sep="", file = outfile)
+    cat("<a href=\"../CSV Sheets/Spot Lists/Sample-Overexpression ",names(GS.infos.overexpression$spots)[m],".csv\" target=\"_blank\">",names(GS.infos.overexpression$spots)[m],"</a>&nbsp;&nbsp;", sep="", file = outfile)
   }
 
   cat(
@@ -54,9 +54,9 @@ outfile = file( paste( files.name, " - Results/Summary Sheets - Integral/0vervie
   <td><a href=\"Underexpression.pdf\" target=\"_blank\">PDF</a></td>
   <td>&nbsp", sep="", file = outfile)
 
-  for( m in 1:length(GS.infos.underexpression$spots) )
+  for (m in 1:length(GS.infos.underexpression$spots))
   {
-    cat( "<a href=\"../CSV Sheets/Spot Lists/Sample-Underexpression ",names(GS.infos.underexpression$spots)[m],".csv\" target=\"_blank\">",names(GS.infos.underexpression$spots)[m],"</a>&nbsp;&nbsp;", sep="", file = outfile)
+    cat("<a href=\"../CSV Sheets/Spot Lists/Sample-Underexpression ",names(GS.infos.underexpression$spots)[m],".csv\" target=\"_blank\">",names(GS.infos.underexpression$spots)[m],"</a>&nbsp;&nbsp;", sep="", file = outfile)
   }
 
 
@@ -69,9 +69,9 @@ outfile = file( paste( files.name, " - Results/Summary Sheets - Integral/0vervie
 #   <td><a href=\"Positive Metagenepeaks.pdf\" target=\"_blank\">PDF</a></td>
 #   <td>&nbsp", sep="", file = outfile)
 # 
-#   for( m in 1:length(GS.infos.positivepeaks$spots) )
+#   for (m in 1:length(GS.infos.positivepeaks$spots))
 #   {
-#     cat( "<a href=\"../CSV Sheets/Spot Lists/Metagene Maxima ",names(GS.infos.positivepeaks$spots)[m],".csv\" target=\"_blank\">",names(GS.infos.positivepeaks$spots)[m],"</a>&nbsp;&nbsp;", sep="", file = outfile)
+#     cat("<a href=\"../CSV Sheets/Spot Lists/Metagene Maxima ",names(GS.infos.positivepeaks$spots)[m],".csv\" target=\"_blank\">",names(GS.infos.positivepeaks$spots)[m],"</a>&nbsp;&nbsp;", sep="", file = outfile)
 #   }
 # 
 #   cat(
@@ -83,9 +83,9 @@ outfile = file( paste( files.name, " - Results/Summary Sheets - Integral/0vervie
 #   <td><a href=\"Negative Metagenepeaks.pdf\" target=\"_blank\">PDF</a></td>
 #   <td>&nbsp", sep="", file = outfile)
 # 
-#   for( m in 1:length(GS.infos.negativepeaks$spots) )
+#   for (m in 1:length(GS.infos.negativepeaks$spots))
 #   {
-#     cat( "<a href=\"../CSV Sheets/Spot Lists/Metagene Minima ",names(GS.infos.negativepeaks$spots)[m],".csv\" target=\"_blank\">",names(GS.infos.negativepeaks$spots)[m],"</a>&nbsp;&nbsp;", sep="", file = outfile)
+#     cat("<a href=\"../CSV Sheets/Spot Lists/Metagene Minima ",names(GS.infos.negativepeaks$spots)[m],".csv\" target=\"_blank\">",names(GS.infos.negativepeaks$spots)[m],"</a>&nbsp;&nbsp;", sep="", file = outfile)
 #   }
 
   cat(
@@ -98,9 +98,9 @@ outfile = file( paste( files.name, " - Results/Summary Sheets - Integral/0vervie
   <td><a href=\"Correlation Cluster.pdf\" target=\"_blank\">PDF</a></td>
   <td>&nbsp", sep="", file = outfile)
 
-  for( m in 1:length(GS.infos.correlation$spots) )
+  for (m in 1:length(GS.infos.correlation$spots))
   {
-    cat( "<a href=\"../CSV Sheets/Spot Lists/Correlation Cluster ",names(GS.infos.correlation$spots)[m],".csv\" target=\"_blank\">",names(GS.infos.correlation$spots)[m],"</a>&nbsp;&nbsp;", sep="", file = outfile)
+    cat("<a href=\"../CSV Sheets/Spot Lists/Correlation Cluster ",names(GS.infos.correlation$spots)[m],".csv\" target=\"_blank\">",names(GS.infos.correlation$spots)[m],"</a>&nbsp;&nbsp;", sep="", file = outfile)
   }
 
   cat(
@@ -113,9 +113,9 @@ outfile = file( paste( files.name, " - Results/Summary Sheets - Integral/0vervie
   <td><a href=\"K-Means Cluster.pdf\" target=\"_blank\">PDF</a></td>
   <td>&nbsp", sep="", file = outfile)
 
-  for( m in 1:length(GS.infos.kmeans$spots) )
+  for (m in 1:length(GS.infos.kmeans$spots))
   {
-    cat( "<a href=\"../CSV Sheets/Spot Lists/K-Means Cluster ",names(GS.infos.kmeans$spots)[m],".csv\" target=\"_blank\">",names(GS.infos.kmeans$spots)[m],"</a>&nbsp;&nbsp;", sep="", file = outfile)
+    cat("<a href=\"../CSV Sheets/Spot Lists/K-Means Cluster ",names(GS.infos.kmeans$spots)[m],".csv\" target=\"_blank\">",names(GS.infos.kmeans$spots)[m],"</a>&nbsp;&nbsp;", sep="", file = outfile)
   }
 
 
@@ -129,9 +129,9 @@ outfile = file( paste( files.name, " - Results/Summary Sheets - Integral/0vervie
   <td><a href=\"Group Overexpression.pdf\" target=\"_blank\">PDF</a></td>
   <td>&nbsp", sep="", file = outfile)
 
-  for( m in 1:length(GS.infos.group.overexpression$spots) )
+  for (m in 1:length(GS.infos.group.overexpression$spots))
   {
-    cat( "<a href=\"../CSV Sheets/Spot Lists/Group Overexpression ",names(GS.infos.group.overexpression$spots)[m],".csv\" target=\"_blank\">",names(GS.infos.group.overexpression$spots)[m],"</a>&nbsp;&nbsp;", sep="", file = outfile)
+    cat("<a href=\"../CSV Sheets/Spot Lists/Group Overexpression ",names(GS.infos.group.overexpression$spots)[m],".csv\" target=\"_blank\">",names(GS.infos.group.overexpression$spots)[m],"</a>&nbsp;&nbsp;", sep="", file = outfile)
   }
 
   cat(

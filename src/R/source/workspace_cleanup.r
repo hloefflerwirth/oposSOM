@@ -1,6 +1,6 @@
 
 
-remove.list = ls()[ which( !( ls() %in% c(
+remove.list = ls()[which(!(ls() %in% c(
 
   ## Functions
     
@@ -117,10 +117,10 @@ remove.list = ls()[ which( !( ls() %in% c(
     
     "output.paths"
       
-) ) ) ]      
+)))]      
       
 
-rm( list = remove.list )
+rm(list = remove.list)
 
 gc()
 

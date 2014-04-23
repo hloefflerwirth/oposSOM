@@ -17,7 +17,7 @@ rm(t.m)
 gc()
 
 
-save.image( paste( files.name, " slim.RData" , sep="" ) )
+save.image(paste(files.name, " slim.RData" , sep=""))
 
 
 

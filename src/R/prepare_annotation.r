@@ -20,7 +20,7 @@ pipeline.prepareAnnotation <- function()
     return()
   }
 
-  require.bioconductor( "biomaRt" )
+  require.bioconductor("biomaRt")
 
   mart<-useMart('ensembl')
   mart<-useDataset(preferences$ensembl.dataset, mart=mart)
@@ -95,9 +95,9 @@ pipeline.prepareAnnotation <- function()
     biomart.table[,4] <- sub("molecular_function", "MF", biomart.table[,4])
     biomart.table[,4] <- sub("cellular_component", "CC", biomart.table[,4])
 
-    for(i in 1:length(gs.def.list))
+    for (i in 1:length(gs.def.list))
     {
-      o <- match( names(gs.def.list)[i], biomart.table[,2])
+      o <- match(names(gs.def.list)[i], biomart.table[,2])
       names(gs.def.list)[i] <<- biomart.table[o, 3]
       gs.def.list[[i]]$Type <<- biomart.table[o, 4]
     }
@@ -112,14 +112,14 @@ pipeline.prepareAnnotation <- function()
   names(chr.gs.list) <- paste("Chr", names(gene.positions.list))
   gs.def.list <<- c(gs.def.list, chr.gs.list)
 
-  small.gs <- which(sapply( sapply( gs.def.list, head, 1 ), length ) < 10)
+  small.gs <- which(sapply(sapply(gs.def.list, head, 1), length) < 10)
 
   if (length(small.gs) > 0)
   {
     gs.def.list <<- gs.def.list[- small.gs]
   }
 
-  if(length(preferences$geneset.custom.list) > 0)
+  if (length(preferences$geneset.custom.list) > 0)
   {
     gs.def.list <<- c(gs.def.list, preferences$geneset.custom.list)
   }

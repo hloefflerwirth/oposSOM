@@ -53,7 +53,7 @@ get.neighbors <- function(x, y, dim)
   {
     if (x > 1)
     {
-      ret[['l']] <- c( x-1, y)
+      ret[['l']] <- c(x-1, y)
     }
 
     if (x < dim)
@@ -130,12 +130,12 @@ pipeline.detectSpotsSamples <- function()
       start.pix <- which(mask == -1, arr.ind=T)[1,]
       spot.i <- spot.i + 1
       mask <- col.pix(mask, start.pix[1], start.pix[2], spot.i, preferences$dim.som1)
-      spot.updown  <- c( spot.updown, "overexpressed" )
+      spot.updown  <- c(spot.updown, "overexpressed")
     }
 
     while (nrow(which(mask == -2, arr.ind=T)) > 0)
     {
-      start.pix <- which(mask == -2, arr.ind=T )[1,]
+      start.pix <- which(mask == -2, arr.ind=T)[1,]
       spot.i <- spot.i + 1
       mask <- col.pix(mask, start.pix[1], start.pix[2], spot.i, preferences$dim.som1)
       spot.updown <- c(spot.updown, "underexpressed")
@@ -145,7 +145,7 @@ pipeline.detectSpotsSamples <- function()
 
     if (spot.i > 0)
     {
-      for(spot.ii in 1:spot.i)
+      for (spot.ii in 1:spot.i)
       {
         GS.infos.samples[[j]]$spots[[spot.ii]] <<- list()
         GS.infos.samples[[j]]$spots[[spot.ii]]$type <<- spot.updown[spot.ii]
