@@ -101,10 +101,10 @@ opossom.new <- function(preferences)
     opossom$preferences[key] <- preferences[key]
   }
 
-	if (!opossom$preferences$error.model %in% c("replicates", "all.samples", "groups")) {
-		opossom$preferences$error.model <- "all.samples"
-		util.warn("Invalid value of \"error.model\". Using \"all.samples\"")
-	}
+  if (!opossom$preferences$error.model %in% c("replicates", "all.samples", "groups")) {
+    opossom$preferences$error.model <- "all.samples"
+    util.warn("Invalid value of \"error.model\". Using \"all.samples\"")
+  }
 
   # Load opossom genesets
   data(opossom.genesets)
@@ -116,8 +116,8 @@ opossom.new <- function(preferences)
 # Executes the oposSOM pipeline.
 opossom.run <- function(opossom)
 {
-	opossom$preferences$system.info <- Sys.info()
-	opossom$preferences$started <- format(Sys.time(), "%a %b %d %X\n")
+  opossom$preferences$system.info <- Sys.info()
+  opossom$preferences$started <- format(Sys.time(), "%a %b %d %X\n")
   environment(pipeline.run) <- opossom
   pipeline.run()
 }

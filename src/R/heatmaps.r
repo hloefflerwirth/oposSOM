@@ -1,6 +1,6 @@
 heatmap.A4 = function (...) 
 {
-	heatmap( ..., ratio=c(21,29.7), cexDend=3 )
+  heatmap( ..., ratio=c(21,29.7), cexDend=3 )
 }
 
 

@@ -5,92 +5,92 @@
 hallmark.sets.names = list(
 
 
-	'Angiogenesis' = c(
-		
-		"positive regulation of angiogenesis",
-		"blood vessel development",
-		"sprouting angiogenesis"
-		
-	),
-	
-		
-	'Contr. Genomic Instability' = c(
-		
-		"DNA repair",
-		"response to DNA damage stimulus",
-		"response to UV",
-		"response to ionizing radiation"	
-		
-	),	
-	
-	
-	'Glucose Energetics' = c(
-		
-		"glycolysis",
-		"positive regulation of glycolysis"
-		
-	),
-	
+  'Angiogenesis' = c(
+    
+    "positive regulation of angiogenesis",
+    "blood vessel development",
+    "sprouting angiogenesis"
+    
+  ),
+  
+    
+  'Contr. Genomic Instability' = c(
+    
+    "DNA repair",
+    "response to DNA damage stimulus",
+    "response to UV",
+    "response to ionizing radiation"  
+    
+  ),  
+  
+  
+  'Glucose Energetics' = c(
+    
+    "glycolysis",
+    "positive regulation of glycolysis"
+    
+  ),
+  
 
-	'Inflammation' = c(
-		
-		"inflammatory response",
-		"positive regulation of inflammatory response"
-		
-	),
-	
-	
-	'Invasion and Metastasis' = c(
-		
-		"ALONSO_METASTASIS_EMT_UP",
-		"CROMER_METASTASIS_UP",
-		"ODONNELL_METASTASIS_UP",
-		"JAEGER_METASTASIS_UP",
-		"VICENT_METASTASIS_UP",
-		"BIDUS_METASTASIS_UP",
-		"RAMASWAMY_METASTASIS_UP",
-		"ALONSO_METASTASIS_UP",
-		"negative regulation of cell adhesion",
-		"negative regulation of cell-cell adhesion",
-		"negative regulation of cell-matrix adhesion",
-		"cell motility"
-		
-	),	
-		
-	
-	'Proliferation' = c(
-		
-		"positive regulation of cell proliferation",
-		"positive regulation of cell growth",
-		"cell cycle",
-		"DNA replication"
-		
-	),
+  'Inflammation' = c(
+    
+    "inflammatory response",
+    "positive regulation of inflammatory response"
+    
+  ),
+  
+  
+  'Invasion and Metastasis' = c(
+    
+    "ALONSO_METASTASIS_EMT_UP",
+    "CROMER_METASTASIS_UP",
+    "ODONNELL_METASTASIS_UP",
+    "JAEGER_METASTASIS_UP",
+    "VICENT_METASTASIS_UP",
+    "BIDUS_METASTASIS_UP",
+    "RAMASWAMY_METASTASIS_UP",
+    "ALONSO_METASTASIS_UP",
+    "negative regulation of cell adhesion",
+    "negative regulation of cell-cell adhesion",
+    "negative regulation of cell-matrix adhesion",
+    "cell motility"
+    
+  ),  
+    
+  
+  'Proliferation' = c(
+    
+    "positive regulation of cell proliferation",
+    "positive regulation of cell growth",
+    "cell cycle",
+    "DNA replication"
+    
+  ),
 
-	
-	'Replicative Immortality' = c(
-		
-		"telomere maintenance",
-		"chromosome, telomeric region",
-		"REACTOME_EXTENSION_OF_TELOMERES",
-		"DAIRKEE_TERT_TARGETS_UP", 
-		"KANG_IMMORTALIZED_BY_TERT_UP"
-		
-	),
-	
-	
-	'Resisting Death' = c(
-		
-		"negative regulation of apoptotic process",
-		"negative regulation of autophagy"
-		
-	)
+  
+  'Replicative Immortality' = c(
+    
+    "telomere maintenance",
+    "chromosome, telomeric region",
+    "REACTOME_EXTENSION_OF_TELOMERES",
+    "DAIRKEE_TERT_TARGETS_UP", 
+    "KANG_IMMORTALIZED_BY_TERT_UP"
+    
+  ),
+  
+  
+  'Resisting Death' = c(
+    
+    "negative regulation of apoptotic process",
+    "negative regulation of autophagy"
+    
+  )
  
-	
-)	
-	
-	
-	
+  
+)  
+  
+  
+  
 
 
 
@@ -100,7 +100,7 @@ hallmark.sets.names = list(
 
 hallmark.sets.genes = lapply( hallmark.sets.names, function(x) unique( unlist( sapply( gs.def.list[x], function(y) y$Genes ) ) ) )
 hallmark.sets.ids = lapply( hallmark.sets.genes, function(x) unique( names(gene.ids)[ which( gene.ids %in% x ) ] ) )
-	
+  
 
 
 
@@ -113,17 +113,17 @@ hallmark.sets.list = lapply( hallmark.sets.genes, function(x) list(Genes=x,Type=
 try({ stopCluster(cl) }, silent=T )
 cl <- makeCluster( preferences$max.parallel.cores ) 
 
-	hallmark.GSZ.matrix = sapply( 1:ncol( indata ), function(m)
-	{
-		return( GeneSet.GSZ( unique.protein.ids, batch.t.g.m[ , m  ], hallmark.sets.list, sort=F, cluster=cl ) )
-	})
+  hallmark.GSZ.matrix = sapply( 1:ncol( indata ), function(m)
+  {
+    return( GeneSet.GSZ( unique.protein.ids, batch.t.g.m[ , m  ], hallmark.sets.list, sort=F, cluster=cl ) )
+  })
 
 
-	hallmark.spot.enrichment = sapply( GS.infos.overexpression$spots, function(x)
-	{
-		spot.ens.ids = unique( na.omit( gene.ids[ x$genes ] ) )
-		return( GeneSet.Fisher( spot.ens.ids, unique.protein.ids, hallmark.sets.list, sort=F, cluster=cl ) )
-	})
+  hallmark.spot.enrichment = sapply( GS.infos.overexpression$spots, function(x)
+  {
+    spot.ens.ids = unique( na.omit( gene.ids[ x$genes ] ) )
+    return( GeneSet.Fisher( spot.ens.ids, unique.protein.ids, hallmark.sets.list, sort=F, cluster=cl ) )
+  })
 
 
 try({ stopCluster(cl) }, silent=T )
@@ -135,8 +135,8 @@ try({ stopCluster(cl) }, silent=T )
 hallmark.sets.profiles = list()
 for( i in 1:nrow(hallmark.GSZ.matrix) )
 {
-	hallmark.sets.profiles[[rownames(hallmark.GSZ.matrix)[i]]] = hallmark.GSZ.matrix[i,]
-	names(hallmark.sets.profiles[[rownames(hallmark.GSZ.matrix)[i]]]) = colnames(indata)
+  hallmark.sets.profiles[[rownames(hallmark.GSZ.matrix)[i]]] = hallmark.GSZ.matrix[i,]
+  names(hallmark.sets.profiles[[rownames(hallmark.GSZ.matrix)[i]]]) = colnames(indata)
 }
 
 
@@ -152,34 +152,34 @@ layout( matrix( c(1:8),4, byrow=T ), widths=c(3,1) )
 
 for( i in 1:length(hallmark.sets.profiles) )
 {
-	
-	hallmark.sets.group.profiles = tapply( hallmark.sets.profiles[[i]], group.labels, c )[unique(group.labels)]
+  
+  hallmark.sets.group.profiles = tapply( hallmark.sets.profiles[[i]], group.labels, c )[unique(group.labels)]
 
-	
-	
-	par( mar=c(5,3,4,2) )
-	
-	boxplot( hallmark.sets.group.profiles, col=unique.group.colors, las=2, main=names(hallmark.sets.names)[i], ylim=range(hallmark.GSZ.matrix) )	
-	abline( h=0, lty=2 )	
-	
-	n.map = matrix(0,preferences$dim.som1,preferences$dim.som1)
-	gs.nodes = som.nodes[  hallmark.sets.ids[[i]]  ]
-	n.map[ as.numeric( names(table( gs.nodes )) ) ] = table( gs.nodes )
-	n.map[which(n.map==0)] = NA
-	n.map = matrix( n.map, preferences$dim.som1 )
-	
-	
-	par( mar=c(5,1,4,1) )
-	
-	lim = c(1,preferences$dim.som1) + preferences$dim.som1*0.01*c(-1,1)
-	plot( which( !is.na(n.map), arr.ind=T ), xlim=lim, ylim=lim, pch=16,
-				axes=F, xlab="",ylab="", xaxs="i", yaxs="i",
-				col = colramp(1000)[ ( na.omit( as.vector( n.map ) ) - min(n.map,na.rm=T) ) / max( 1, ( max(n.map,na.rm=T) - min(n.map,na.rm=T) ) )* 999 + 1 ],
-				cex = 0.5 + na.omit( as.vector( n.map ) ) / max(n.map,na.rm=T) * 2.8 )
-	
-	title(sub=paste( "# features =", length(hallmark.sets.ids[[i]]), ", max =", max(n.map,na.rm=T) ),line=0)
-	box()
-	
+  
+  
+  par( mar=c(5,3,4,2) )
+  
+  boxplot( hallmark.sets.group.profiles, col=unique.group.colors, las=2, main=names(hallmark.sets.names)[i], ylim=range(hallmark.GSZ.matrix) )  
+  abline( h=0, lty=2 )  
+  
+  n.map = matrix(0,preferences$dim.som1,preferences$dim.som1)
+  gs.nodes = som.nodes[  hallmark.sets.ids[[i]]  ]
+  n.map[ as.numeric( names(table( gs.nodes )) ) ] = table( gs.nodes )
+  n.map[which(n.map==0)] = NA
+  n.map = matrix( n.map, preferences$dim.som1 )
+  
+  
+  par( mar=c(5,1,4,1) )
+  
+  lim = c(1,preferences$dim.som1) + preferences$dim.som1*0.01*c(-1,1)
+  plot( which( !is.na(n.map), arr.ind=T ), xlim=lim, ylim=lim, pch=16,
+        axes=F, xlab="",ylab="", xaxs="i", yaxs="i",
+        col = colramp(1000)[ ( na.omit( as.vector( n.map ) ) - min(n.map,na.rm=T) ) / max( 1, ( max(n.map,na.rm=T) - min(n.map,na.rm=T) ) )* 999 + 1 ],
+        cex = 0.5 + na.omit( as.vector( n.map ) ) / max(n.map,na.rm=T) * 2.8 )
+  
+  title(sub=paste( "# features =", length(hallmark.sets.ids[[i]]), ", max =", max(n.map,na.rm=T) ),line=0)
+  box()
+  
 }
 
 
