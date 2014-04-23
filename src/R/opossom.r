@@ -29,6 +29,7 @@ opossom.new <- function(preferences)
   opossom$group.labels <- NULL
   opossom$group.colors <- NULL
   opossom$group.metadata <- NULL
+  opossom$group.bootstrap.score <- NULL
   opossom$unique.group.colors <- NULL
   opossom$files.name <- NULL
   opossom$output.paths <- NULL
@@ -66,6 +67,10 @@ opossom.new <- function(preferences)
   opossom$mean.LPE2 <- NULL
   opossom$GS.infos.samples <- NULL
   opossom$GS.infos.overexpression <- NULL
+  opossom$GS.infos.underexpression <- NULL
+  opossom$GS.infos.correlation <- NULL
+  opossom$GS.infos.kmeans <- NULL
+  opossom$GS.infos.group.overexpression <- NULL
 
   # Generate some additional letters
   opossom$LETTERS <- c(LETTERS, as.vector(sapply(1:10, function(x) {

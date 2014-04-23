@@ -261,7 +261,7 @@ pipeline.run <- function() {
 
   util.info("Saving workspace image:", files.name, "pre.RData")
   # TODO Save opossom environment only?
-  save.image(paste(files.name, " pre.RData" , sep=""))
+  save.image(paste(files.name, " pre.RData", sep=""))
 
   util.info("Processing Differential Expression")
   environment(pipeline.calcStatistics) <- environment()
@@ -274,10 +274,10 @@ pipeline.run <- function() {
   environment(pipeline.detectSpotsIntegral) <- environment()
   pipeline.detectSpotsIntegral()
 
+  environment(pipeline.groupAssignment) <- environment()
+  pipeline.groupAssignment()
+
 ############### TODO ###
-
-  source("R/source/group_assignment.r", local=TRUE)
-
 
   cat("Plotting Sample Portraits\n"); flush.console()
   source("R/source/sample_expression_portraits.r", local=TRUE)
