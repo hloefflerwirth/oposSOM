@@ -30,7 +30,7 @@ pipeline.detectSpotsIntegral <- function()
       start.pix = which( core == -1, arr.ind=T )[1,]
 
       spot.i = spot.i + 1
-      core = col.pix( core, start.pix[1], start.pix[2], spot.i )
+      core = col.pix( core, start.pix[1], start.pix[2], spot.i, preferences$dim.som1 )
     }
 
 
@@ -56,7 +56,7 @@ pipeline.detectSpotsIntegral <- function()
       start.pix = which( core == -1, arr.ind=T )[1,]
 
       spot.i = spot.i + 1
-      core = col.pix( core, start.pix[1], start.pix[2], spot.i )
+      core = col.pix( core, start.pix[1], start.pix[2], spot.i, preferences$dim.som1 )
     }
 
 
@@ -78,7 +78,7 @@ pipeline.detectSpotsIntegral <- function()
       start.pix = which( !is.na( sample.spot.core.list[[n.sample.modules]] ) , arr.ind=T )
       start.pix = start.pix[ which.max( sample.spot.core.list[[n.sample.modules]][start.pix] ), ]
 
-      spot = col.pix( spot, start.pix[1], start.pix[2], 1 )
+      spot = col.pix( spot, start.pix[1], start.pix[2], 1, preferences$dim.som1 )
 
 
       sample.spot.list[[n.sample.modules]] = matrix( NA, preferences$dim.som1, preferences$dim.som1 )
@@ -312,7 +312,7 @@ pipeline.detectSpotsIntegral <- function()
       start.pix = which( core == -1, arr.ind=T )[1,]
 
       spot.i = spot.i + 1
-      core = col.pix( core, start.pix[1], start.pix[2], spot.i )
+      core = col.pix( core, start.pix[1], start.pix[2], spot.i, preferences$dim.som1 )
     }
 
 
@@ -335,7 +335,7 @@ pipeline.detectSpotsIntegral <- function()
       start.pix = which( core == -1, arr.ind=T )[1,]
 
       spot.i = spot.i + 1
-      core = col.pix( core, start.pix[1], start.pix[2], spot.i )
+      core = col.pix( core, start.pix[1], start.pix[2], spot.i, preferences$dim.som1 )
     }
 
 
@@ -357,7 +357,7 @@ pipeline.detectSpotsIntegral <- function()
       start.pix = which( !is.na( sample.spot.core.list[[n.sample.modules]] ) , arr.ind=T )
       start.pix = start.pix[ which.max( sample.spot.core.list[[n.sample.modules]][start.pix] ), ]
 
-      spot = col.pix( spot, start.pix[1], start.pix[2], 1 )
+      spot = col.pix( spot, start.pix[1], start.pix[2], 1, spot.i, preferences$dim.som1 )
 
 
       sample.spot.list[[n.sample.modules]] = matrix( NA, preferences$dim.som1, preferences$dim.som1 )
@@ -568,163 +568,6 @@ pipeline.detectSpotsIntegral <- function()
 
 
 
-#
-#
-#
-#   ##### Positive Peaks ######
-#
-#
-#   peaks = apply( metadata, 1, max )
-#
-#
-#   GS.infos.positivepeaks = list()
-#   GS.infos.positivepeaks$overview.map = peaks
-#   GS.infos.positivepeaks$overview.mask = rep( NA, preferences$dim.som1^2 )
-#   GS.infos.positivepeaks$filtered = F
-#   GS.infos.positivepeaks$spots = list()
-#
-#
-#   peaks = matrix( peaks, preferences$dim.som1, preferences$dim.som1 )
-#   peaks[ which( peaks < quantile( peaks, preferences$summary.spot.threshold ) ) ] = NA
-#
-#   e.cluster = matrix( NA, preferences$dim.som1, preferences$dim.som1 )
-#   e.cluster[ which( !is.na(peaks) ) ] = -1
-#   count.cluster = 1
-#
-#
-#   while( any( !is.na( peaks ) ) )
-#   {
-#
-#     start.pix = which( peaks == max(peaks,na.rm=T), arr.ind=T )[1,]
-#
-#     e.cluster = col.pix( e.cluster, start.pix[1], start.pix[2], count.cluster )
-#
-#     peaks[ which( e.cluster == count.cluster ) ] = NA
-#
-#     count.cluster = count.cluster + 1
-#   }
-#
-#
-#
-#   e.cluster = as.vector( e.cluster )
-#
-#   for( i in 1:length( na.omit( unique( e.cluster ) ) ) )
-#   {
-#     nodes = which( e.cluster == i )
-#
-#
-#     geneset.genes = rownames( indata )[ which( som.nodes %in% nodes ) ]
-#
-#
-#     GS.infos.positivepeaks$overview.mask[ as.numeric( nodes ) ] = i
-#
-#     GS.infos.positivepeaks$spots[[ LETTERS[i] ]] = list()
-#
-#     GS.infos.positivepeaks$spots[[ LETTERS[i] ]]$metagenes = as.numeric( nodes )
-#     GS.infos.positivepeaks$spots[[ LETTERS[i] ]]$genes = geneset.genes
-#
-#     GS.infos.positivepeaks$spots[[ LETTERS[i] ]]$mask = rep( NA, (preferences$dim.som1*preferences$dim.som1) )
-#     GS.infos.positivepeaks$spots[[ LETTERS[i] ]]$mask[ as.numeric( nodes ) ] = 1
-#
-#     GS.infos.positivepeaks$spots[[ LETTERS[i] ]]$position = apply( apply( som.result$code.sum[ nodes, 1:2 ], 2, range ), 2, mean ) + 0.5
-#
-#     GS.infos.positivepeaks$spots[[ LETTERS[i] ]]$beta.statistic = get.beta.statistic( set.data=metadata[ GS.infos.positivepeaks$spots[[ LETTERS[i] ]]$metagenes,,drop=F ], weights=som.result$code.sum[ GS.infos.positivepeaks$spots[[ LETTERS[i] ]]$metagenes, ]$nobs )
-#   }
-#
-#   GS.infos.positivepeaks$spotdata = t( sapply( GS.infos.positivepeaks$spots, function(x) if( length( x$genes > 0 ) )  colMeans(indata[x$genes,,drop=F]) else rep( 0, ncol(indata) ) ) )
-#   colnames(GS.infos.positivepeaks$spotdata) = colnames(indata)
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#   ##### Negative Peaks ######
-#
-#
-#   peaks = apply( metadata, 1, min )
-#
-#
-#   GS.infos.negativepeaks = list()
-#   GS.infos.negativepeaks$overview.map = peaks
-#   GS.infos.negativepeaks$overview.mask = rep( NA, preferences$dim.som1^2 )
-#   GS.infos.negativepeaks$filtered = F
-#   GS.infos.negativepeaks$spots = list()
-#
-#
-#
-#
-#   peaks = matrix( peaks, preferences$dim.som1, preferences$dim.som1 )
-#   peaks[ which( peaks > quantile( peaks, 1-preferences$summary.spot.threshold ) ) ] = NA
-#
-#   e.cluster = matrix( NA, preferences$dim.som1, preferences$dim.som1 )
-#   e.cluster[ which( !is.na(peaks) ) ] = -1
-#   count.cluster = 1
-#
-#
-#   while( any( !is.na( peaks ) ) )
-#   {
-#
-#     start.pix = which( peaks == min(peaks,na.rm=T), arr.ind=T )[1,]
-#
-#     e.cluster = col.pix( e.cluster, start.pix[1], start.pix[2], count.cluster )
-#
-#     peaks[ which( e.cluster == count.cluster ) ] = NA
-#
-#     count.cluster = count.cluster + 1
-#   }
-#
-#
-#
-#   e.cluster = as.vector( e.cluster )
-#
-#   for( i in 1:length( na.omit( unique( e.cluster ) ) ) )
-#   {
-#     nodes = which( e.cluster == i )
-#
-#
-#     geneset.genes = rownames( indata )[ which( som.nodes %in% nodes ) ]
-#
-#
-#     GS.infos.negativepeaks$overview.mask[ as.numeric( nodes ) ] = i
-#
-#     GS.infos.negativepeaks$spots[[ letters[i] ]] = list()
-#
-#     GS.infos.negativepeaks$spots[[ letters[i] ]]$metagenes = as.numeric( nodes )
-#     GS.infos.negativepeaks$spots[[ letters[i] ]]$genes = geneset.genes
-#
-#     GS.infos.negativepeaks$spots[[ letters[i] ]]$mask = rep( NA, (preferences$dim.som1*preferences$dim.som1) )
-#     GS.infos.negativepeaks$spots[[ letters[i] ]]$mask[ as.numeric( nodes ) ] = 1
-#
-#     GS.infos.negativepeaks$spots[[ letters[i] ]]$position = apply( apply( som.result$code.sum[ nodes, 1:2 ], 2, range ), 2, mean ) + 0.5
-#
-#     GS.infos.negativepeaks$spots[[ letters[i] ]]$beta.statistic = get.beta.statistic( set.data=metadata[ GS.infos.negativepeaks$spots[[ letters[i] ]]$metagenes,,drop=F ], weights=som.result$code.sum[ GS.infos.negativepeaks$spots[[ letters[i] ]]$metagenes, ]$nobs )
-#   }
-#
-#   GS.infos.negativepeaks$spotdata = t( sapply( GS.infos.negativepeaks$spots, function(x) if( length( x$genes > 0 ) )  colMeans(indata[x$genes,,drop=F]) else rep( 0, ncol(indata) ) ) )
-#   colnames(GS.infos.negativepeaks$spotdata) = colnames(indata)
-#
-#
-
-
-
-
-
-
-
-
-
-
-
-
 
   ##### Correlation Cluster ######
 
@@ -904,7 +747,7 @@ pipeline.detectSpotsIntegral <- function()
         start.pix = which( core == -1, arr.ind=T )[1,]
 
         spot.i = spot.i + 1
-        core = col.pix( core, start.pix[1], start.pix[2], spot.i )
+        core = col.pix( core, start.pix[1], start.pix[2], spot.i, preferences$dim.som1 )
       }
 
 
@@ -930,7 +773,7 @@ pipeline.detectSpotsIntegral <- function()
         start.pix = which( core == -1, arr.ind=T )[1,]
 
         spot.i = spot.i + 1
-        core = col.pix( core, start.pix[1], start.pix[2], spot.i )
+        core = col.pix( core, start.pix[1], start.pix[2], spot.i, preferences$dim.som1 )
       }
 
 
@@ -952,7 +795,7 @@ pipeline.detectSpotsIntegral <- function()
         start.pix = which( !is.na( sample.spot.core.list[[n.sample.modules]] ) , arr.ind=T )
         start.pix = start.pix[ which.max( sample.spot.core.list[[n.sample.modules]][start.pix] ), ]
 
-        spot = col.pix( spot, start.pix[1], start.pix[2], 1 )
+        spot = col.pix( spot, start.pix[1], start.pix[2], 1, preferences$dim.som1 )
 
 
         sample.spot.list[[n.sample.modules]] = matrix( NA, preferences$dim.som1, preferences$dim.som1 )

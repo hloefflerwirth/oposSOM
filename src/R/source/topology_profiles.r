@@ -49,7 +49,7 @@ pdf( paste( files.name, "- Results/Supporting Maps&Profiles/Topology Profiles.pd
     n = names(n.spots.groups)
     n.spots.groups = matrix(n.spots.groups,nrow=1)
     colnames(n.spots.groups) = n
-  } 
+  }
   n.spots.groups = sapply( unique(group.labels), function(x) return( n.spots.groups[,x] / table(group.labels)[x] ) )
 
   par(mfrow=c(1,1))
@@ -156,12 +156,12 @@ pdf( paste( files.name, "- Results/Supporting Maps&Profiles/Topology Profiles.pd
     m = matrix( x, preferences$dim.som1, preferences$dim.som1 )
     m[ which( m < 0.9 ) ] = NA
 
-    count.border.metagenes = 0 
+    count.border.metagenes = 0
     for( i in 1:preferences$dim.som1 )
       for( j in 1:preferences$dim.som1 )
         if( !is.na( m[i,j]) )
         {
-          neighbours = sapply( get.neighbors( i, j ), function(x){ m[x[1],x[2]] }) 
+          neighbours = sapply( get.neighbors( i, j, preferences$dim.som1 ), function(x){ m[x[1],x[2]] })
 
           if( length( which( is.na( neighbours ) ) ) )
           {
@@ -172,7 +172,7 @@ pdf( paste( files.name, "- Results/Supporting Maps&Profiles/Topology Profiles.pd
             count.border.metagenes = count.border.metagenes + 1
           }
         }
-    
+
 
     return( count.border.metagenes )
 
@@ -202,12 +202,12 @@ pdf( paste( files.name, "- Results/Supporting Maps&Profiles/Topology Profiles.pd
     m = matrix( x, preferences$dim.som1, preferences$dim.som1 )
     m[ which( m < 0.9 ) ] = NA
 
-    count.border.metagenes = 0 
+    count.border.metagenes = 0
     for( i in 1:preferences$dim.som1 )
       for( j in 1:preferences$dim.som1 )
         if( !is.na( m[i,j]) )
         {
-          neighbours = sapply( get.neighbors( i, j ), function(x){ m[x[1],x[2]] }) 
+          neighbours = sapply( get.neighbors( i, j, preferences$dim.som1 ), function(x){ m[x[1],x[2]] })
 
           if( length( which( is.na( neighbours ) ) ) )
           {
@@ -218,7 +218,7 @@ pdf( paste( files.name, "- Results/Supporting Maps&Profiles/Topology Profiles.pd
             count.border.metagenes = count.border.metagenes + 1
           }
         }
-    
+
 
     return( count.border.metagenes )
 
@@ -291,7 +291,7 @@ pdf( paste( files.name, "- Results/Supporting Maps&Profiles/Topology Profiles.pd
   ### Shape of spots ###
 
 
-  C = ( K.red * preferences$dim.som1^2 ) / K.border^2 
+  C = ( K.red * preferences$dim.som1^2 ) / K.border^2
 
 
   barplot( C, col=group.colors, main="Shape of spots (logFC)", names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2, cex.names=1.2, border = if( ncol(indata) < 80 ) "black" else NA )
@@ -307,7 +307,7 @@ pdf( paste( files.name, "- Results/Supporting Maps&Profiles/Topology Profiles.pd
 
 
 
-  C = ( K.red.loglog * preferences$dim.som1^2 ) / K.border.loglog^2 
+  C = ( K.red.loglog * preferences$dim.som1^2 ) / K.border.loglog^2
 
 
   barplot( C, col=group.colors, main="Shape of spots (loglogFC)", names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2, cex.names=1.2, border = if( ncol(indata) < 80 ) "black" else NA )
