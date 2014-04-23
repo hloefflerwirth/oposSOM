@@ -271,10 +271,10 @@ pipeline.run <- function() {
   environment(pipeline.detectSpotsSamples) <- environment()
   pipeline.detectSpotsSamples()
 
+  environment(pipeline.detectSpotsIntegral) <- environment()
+  pipeline.detectSpotsIntegral()
+
 ############### TODO ###
-
-  source("R/source/detect_spots_integral.r", local=TRUE)
-
 
   source("R/source/group_assignment.r", local=TRUE)
 

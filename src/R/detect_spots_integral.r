@@ -1,5 +1,7 @@
+pipeline.detectSpotsIntegral <- function()
+{
 
-
+  ############### TODO #############
   metadata.scaled = apply( metadata, 2, function(x) (x-min(x))/(max(x)-min(x)) )
 
 
@@ -1173,4 +1175,4 @@
 
 
 
-
+}
