@@ -127,7 +127,6 @@ pipeline.run <- function() {
 	# prepare data
 
 	indata.sample.mean <<- colMeans(indata)
-
   environment(pipeline.qualityCheck) <- environment()
   pipeline.qualityCheck()
 
@@ -268,12 +267,12 @@ pipeline.run <- function() {
   environment(pipeline.calcStatistics) <- environment()
   pipeline.calcStatistics()
 
-
+  util.info("Detecting Spots")
+	environment(pipeline.detectSpotsSamples) <- environment()
+  pipeline.detectSpotsSamples()
 
 ############### TODO ###
 
-	cat( "Spot Detection\n" ); flush.console()
-	source("R/source/detect_spots_samples.r", local=TRUE)
 	source("R/source/detect_spots_integral.r", local=TRUE)
 
 

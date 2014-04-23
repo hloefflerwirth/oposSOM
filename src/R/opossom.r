@@ -50,10 +50,29 @@ opossom.new <- function(preferences)
   opossom$WAD.metadata <- NULL
   opossom$WAD.group.metadata <- NULL
   opossom$genes.coordinates <- NULL
+  opossom$mean.e.g <- NULL
+  opossom$e.g.m <- NULL
+  opossom$delta.e.g.m <- NULL
+  opossom$sd.g.m <- NULL
+  opossom$LPE.g.m <- NULL
+  opossom$WAD.g.m <- NULL
+  opossom$t.g.m <- NULL
+  opossom$p.g.m <- NULL
+  opossom$w.g.m <- NULL
+  opossom$n.0.m <- NULL
+  opossom$perc.DE.m <- NULL
+  opossom$fdr.g.m <- NULL
+  opossom$Fdr.g.m <- NULL
+  opossom$mean.LPE2 <- NULL
 
   # Generate some additional letters
-  opossom$LETTERS <- c(LETTERS, as.vector(sapply(1:10, function(x) { paste(LETTERS, x, sep="") })))
-	opossom$letters <- c(letters, as.vector(sapply(1:10, function(x) { paste(letters, x, sep="") })))
+  opossom$LETTERS <- c(LETTERS, as.vector(sapply(1:10, function(x) {
+    paste(LETTERS, x, sep="")
+  })))
+
+  opossom$letters <- c(letters, as.vector(sapply(1:10, function(x) {
+    paste(letters, x, sep="")
+  })))
 
   # Set default preferences
   opossom$preferences <- list(dataset.name = "Unnamed",
