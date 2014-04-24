@@ -1,5 +1,6 @@
+pipeline.2ndLvlSimilarityAnalysis <- function()
+{
 
-  
 
 
   ## Heatmap Wrapper cause bad Parameter-Handling Row/ColSideColors
@@ -20,8 +21,8 @@
         heatmap(ColSideColors=ColSideColors, ...)
         return(NULL)
       }
-    }  
-    
+    }
+
     heatmap(...)
   }
 
@@ -37,17 +38,17 @@
 
   spot.metagenes = unique(unlist(sapply(GS.infos.overexpression$spots, function(x) x$metagenes)))
   metagene.filter.list[[2]] = list(s = spot.metagenes, n = paste(length(spot.metagenes), "Spot-Metagenes"))
-  
 
-  if (preferences$dim.som1^2 > 1000) 
+
+  if (preferences$dim.som1^2 > 1000)
     metagene.filter.list[[length(metagene.filter.list) + 1]] = list(s = order(apply(abs(metadata), 1, max), decreasing=T)[1:1000], n = "High Expression: 1000 Metagenes")
-  if (preferences$dim.som1^2 > 100) 
+  if (preferences$dim.som1^2 > 100)
     metagene.filter.list[[length(metagene.filter.list) + 1]] = list(s = order(apply(abs(metadata), 1, max), decreasing=T)[1:100], n = "High Expression: 100 Metagenes")
 
 
-  if (preferences$dim.som1^2 > 1000) 
+  if (preferences$dim.som1^2 > 1000)
     metagene.filter.list[[length(metagene.filter.list) + 1]] = list(s = order(apply(abs(metadata), 1, var), decreasing=T)[1:1000], n = "Variance: 1000 Metagenes")
-  if (preferences$dim.som1^2 > 100) 
+  if (preferences$dim.som1^2 > 100)
     metagene.filter.list[[length(metagene.filter.list) + 1]] = list(s = order(apply(abs(metadata), 1, var), decreasing=T)[1:100], n = "Variance: 100 Metagenes")
 
 
@@ -69,30 +70,30 @@
   {
 
     s = metadata[metagene.filter.list[[i]]$s ,]
-    par(mar=c(1,1,1,1)) 
+    par(mar=c(1,1,1,1))
 
 
-    
+
     if (ncol(metadata) > 2)
-    {  
+    {
       phylo.tree = nj(dist(t(s)))
       phylo.tree$tip.label = colnames(indata)
-    
+
       plot.phylo(phylo.tree, "unrooted", cex=0.5, tip.color=group.colors)
         title(metagene.filter.list[[i]]$n)
         box()
     }
-    
+
 
     heatmap.wrap(x=s, col=colramp(1000), main=metagene.filter.list[[i]]$n, margins = c(10, 5), scale="n", labRow=NA, ColSideColors=group.colors)
       par(new=T)
       plot(0,type="n", axes=F, xlab="", ylab="")
-      legend("bottomright", as.character(unique(group.labels)), cex=0.5, text.col=unique.group.colors, bg="white")  
+      legend("bottomright", as.character(unique(group.labels)), cex=0.5, text.col=unique.group.colors, bg="white")
 
     heatmap.wrap(x=s, col=colramp(1000), main=metagene.filter.list[[i]]$n, margins = c(10, 5), scale="n", labRow=NA, ColSideColors=group.colors, Colv=NA)
       par(new=T)
       plot(0,type="n", axes=F, xlab="", ylab="")
-      legend("bottomright", as.character(unique(group.labels)), cex=0.5, text.col=unique.group.colors, bg="white")  
+      legend("bottomright", as.character(unique(group.labels)), cex=0.5, text.col=unique.group.colors, bg="white")
 
 
   }
@@ -105,4 +106,4 @@
 
 
 
-
+}

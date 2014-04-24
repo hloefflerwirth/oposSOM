@@ -292,15 +292,17 @@ pipeline.run <- function() {
   environment(pipeline.entropyProfiles) <- environment()
   pipeline.entropyProfiles()
 
+  environment(pipeline.topologyProfiles) <- environment()
+  pipeline.topologyProfiles()
+
+  util.info("Processing 2nd level Metagene Analysis")
+  dir.create(file.path(paste(files.name, "- Results"), "2nd lvl Metagene Analysis"), showWarnings=F)
+
+  environment(pipeline.2ndLvlSimilarityAnalysis) <- environment()
+  pipeline.2ndLvlSimilarityAnalysis()
+
 ############### TODO ###
 
-  source("R/source/topology_profiles.r", local=TRUE)
-
-
-  cat("Processing 2nd level Metagene Analysis\n"); flush.console()
-  dir.create(paste(files.name, "- Results/2nd lvl Metagene Analysis"), showWarnings=F)
-
-  source("R/source/2nd_lvl_similarity_analysis.r", local=TRUE)
   source("R/source/2nd_lvl_correlation_analysis.r", local=TRUE)
   source("R/source/2nd_lvl_component_analysis.r", local=TRUE)
   source("R/source/2nd_lvl_som.r", local=TRUE)
