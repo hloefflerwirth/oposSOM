@@ -61,6 +61,9 @@ opossom.new <- function(preferences)
   opossom$p.g.m <- NULL
   opossom$w.g.m <- NULL
   opossom$n.0.m <- NULL
+  opossom$t.m <- NULL
+  opossom$p.m <- NULL
+  opossom$fdr.m <- NULL
   opossom$perc.DE.m <- NULL
   opossom$fdr.g.m <- NULL
   opossom$Fdr.g.m <- NULL

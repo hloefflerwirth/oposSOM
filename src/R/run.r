@@ -76,7 +76,8 @@ pipeline.run <- function() {
                                    "yellow", "red", "darkred"))
   }
 
-  if (length(group.labels) != ncol(indata) || length(group.colors) != ncol(indata))
+  if ((!is.null(group.labels) && length(group.labels) != ncol(indata)) ||
+      (!is.null(group.colors) && length(group.colors) != ncol(indata)))
   {
     group.labels <<- NULL
     group.colors <<- NULL
@@ -277,12 +278,14 @@ pipeline.run <- function() {
   environment(pipeline.groupAssignment) <- environment()
   pipeline.groupAssignment()
 
+  util.info("Plotting Sample Portraits")
+  environment(pipeline.sampleExpressionPortraits) <- environment()
+  pipeline.sampleExpressionPortraits()
+
+  environment(pipeline.sampleRankMaps) <- environment()
+  pipeline.sampleRankMaps()
+
 ############### TODO ###
-
-  cat("Plotting Sample Portraits\n"); flush.console()
-  source("R/source/sample_expression_portraits.r", local=TRUE)
-  source("R/source/sample_rank_maps.r", local=TRUE)
-
 
   cat("Processing Supporting Information\n"); flush.console()
   source("R/source/supporting_maps.r", local=TRUE)
