@@ -285,10 +285,12 @@ pipeline.run <- function() {
   environment(pipeline.sampleRankMaps) <- environment()
   pipeline.sampleRankMaps()
 
+  util.info("Processing Supporting Information")
+  environment(pipeline.supportingMaps) <- environment()
+  pipeline.supportingMaps()
+
 ############### TODO ###
 
-  cat("Processing Supporting Information\n"); flush.console()
-  source("R/source/supporting_maps.r", local=TRUE)
   source("R/source/entropy_profiles.r", local=TRUE)
   source("R/source/topology_profiles.r", local=TRUE)
 
