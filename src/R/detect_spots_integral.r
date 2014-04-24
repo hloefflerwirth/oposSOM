@@ -28,7 +28,7 @@ pipeline.detectSpotsIntegral <- function()
     }
 
     # shrink each separate region to core size
-    for (s.i in 1:max(core,na.rm=T))
+    for (s.i in 1:max(core, na.rm=T))
     {
       if (sum(core == s.i, na.rm=T) > preferences$summary.spot.core)
       {
@@ -95,7 +95,7 @@ pipeline.detectSpotsIntegral <- function()
     n.sample.modules <- length(sample.spot.list)
   }
 
-  o <- order(sapply(sample.spot.core.list, function(x) { mean(x,na.rm=T) }), decreasing=T)
+  o <- order(sapply(sample.spot.core.list, function(x) { mean(x, na.rm=T) }), decreasing=T)
   sample.spot.list <- sample.spot.list[o]
   sample.spot.core.list <- sample.spot.core.list[o]
 
@@ -301,7 +301,7 @@ pipeline.detectSpotsIntegral <- function()
       start.pix <- which(!is.na(sample.spot.core.list[[n.sample.modules]]), arr.ind=T)
       start.pix <- start.pix[which.max(sample.spot.core.list[[n.sample.modules]][start.pix]),]
 
-      spot <- col.pix(spot, start.pix[1], start.pix[2], 1, spot.i, preferences$dim.som1)
+      spot <- col.pix(spot, start.pix[1], start.pix[2], 1, preferences$dim.som1)
 
 
       sample.spot.list[[n.sample.modules]] <- matrix(NA, preferences$dim.som1, preferences$dim.som1)
@@ -461,7 +461,7 @@ pipeline.detectSpotsIntegral <- function()
 
   o <- order(sapply(GS.infos.underexpression$spots, function(x)
   {
-    which.mean(apply(metadata[x$metagenes,,drop=F], 2, mean))
+    which.min(apply(metadata[x$metagenes,,drop=F], 2, mean))
   }))
 
   GS.infos.underexpression$spots <<- GS.infos.underexpression$spots[o]

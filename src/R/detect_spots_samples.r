@@ -1,7 +1,7 @@
 col.pix <- function(m, x, y, col, dim, threshold=NA)
 {
   hash.list <- c(x + y * dim)
-  pos.list <- list(c(x,y))
+  pos.list <- list(c(x, y))
 
   while (length(hash.list) > 0)
   {
@@ -15,7 +15,7 @@ col.pix <- function(m, x, y, col, dim, threshold=NA)
 
       if (x-1 > 0 && length(intersect((x-1) + (y) * dim, hash.list)) == 0)
       {
-        hash.list <- c(hash.list, (x-1) + (y)*dim)
+        hash.list <- c(hash.list, (x-1) + (y) * dim)
         pos.list[[length(pos.list)+1]] <- c(x-1, y)
       }
 
