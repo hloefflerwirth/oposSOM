@@ -62,7 +62,7 @@ pipeline.2ndLvlSimilarityAnalysis <- function()
            n="Variance: 100 Metagenes")
   }
 
-  filename <- file.path(paste(files.name, "- Results", "2nd lvl Metagene Analysis", "Similarity Analysis.pdf"))
+  filename <- file.path(paste(files.name, "- Results"), "2nd lvl Metagene Analysis", "Similarity Analysis.pdf")
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
 
