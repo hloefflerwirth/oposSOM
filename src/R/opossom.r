@@ -46,6 +46,7 @@ opossom.new <- function(preferences)
   opossom$som.result <- NULL
   opossom$som.nodes <- NULL
   opossom$metadata <- NULL
+  opossom$metagene.filter.list <- NULL
   opossom$loglog.metadata <- NULL
   opossom$loglog.group.metadata <- NULL
   opossom$WAD.metadata <- NULL

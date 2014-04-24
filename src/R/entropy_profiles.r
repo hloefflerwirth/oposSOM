@@ -32,7 +32,7 @@ pipeline.entropyProfiles <- function()
 
   if (length(unique(group.labels)) > 1)
   {
-    mean.sd.boxes < by(apply(metadata, 2, var), group.labels, c)[unique(group.labels)]
+    mean.sd.boxes <- by(apply(metadata, 2, var), group.labels, c)[unique(group.labels)]
 
     boxplot(mean.sd.boxes, col=unique.group.colors, las=2,
             main="Metagene Variance", cex.main=2.5, cex.axis=2, xaxt="n")
