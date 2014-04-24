@@ -372,7 +372,10 @@ pipeline.calcStatistics <- function()
     {
       for (m in 1:ncol(indata))
       {
-        bmp(file.path(output.paths["LPE"], paste(colnames(indata[m]), ".bmp", sep="")), 600, 600)
+        filename <- file.path(output.paths["LPE"], paste(colnames(indata[m]), ".bmp", sep=""))
+        util.info("Writing:", filename)
+
+        bmp(filename, 600, 600)
         par(mar=c(5, 6, 4, 5))
 
         plot(sd.g.m[,m] ~ e.g.m[,m],
@@ -397,7 +400,10 @@ pipeline.calcStatistics <- function()
       }
     } else if (preferences$error.model == "all.samples")
     {
-      bmp(file.path(output.paths["LPE"], "all_samples.bmp"), 600, 600)
+      filename <- file.path(output.paths["LPE"], "all_samples.bmp")
+      util.info("Writing:", filename)
+
+      bmp(filename, 600, 600)
       par(mar=c(5, 6, 4, 5))
 
       plot(apply(indata.original, 1, sd) ~ apply(indata.original, 1, mean),
@@ -417,7 +423,11 @@ pipeline.calcStatistics <- function()
       for (m in 1:length(unique(group.labels)))
       {
         plot.sample <- which(group.labels == unique(group.labels)[m])[1]
-        bmp(file.path(output.paths["LPE"], paste(unique(group.labels)[m], ".bmp", sep="")), 600, 600)
+
+        filename <- file.path(output.paths["LPE"], paste(unique(group.labels)[m], ".bmp", sep=""))
+        util.info("Writing:", filename)
+
+        bmp(filename, 600, 600)
         par(mar=c(5, 6, 4, 5))
 
         plot(sd.g.m[,plot.sample] ~ e.g.m[,plot.sample],
@@ -484,7 +494,10 @@ pipeline.calcStatistics <- function()
 
   if (verbose)
   {
-    pdf(file.path(output.paths["LPE"], "Sigma_LPE.pdf"), 8, 8)
+    filename <- file.path(output.paths["LPE"], "Sigma_LPE.pdf")
+    util.info("Writing:", filename)
+
+    pdf(filename, 8, 8)
     par(mar=c(10, 6, 4, 5))
     mean.LPE.string <- expression(paste("<", sigma[LPE], ">", sep=""))
 
