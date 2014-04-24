@@ -289,9 +289,11 @@ pipeline.run <- function() {
   environment(pipeline.supportingMaps) <- environment()
   pipeline.supportingMaps()
 
+  environment(pipeline.entropyProfiles) <- environment()
+  pipeline.entropyProfiles()
+
 ############### TODO ###
 
-  source("R/source/entropy_profiles.r", local=TRUE)
   source("R/source/topology_profiles.r", local=TRUE)
 
 
