@@ -11,7 +11,7 @@ pipeline.genesetProfilesAndMaps <- function()
   write.csv2(samples.GSZ.scores, filename)
 
   progress.current <- 0
-  progress.max <- nrow(samples.GSZ.scores) + gs.def.list
+  progress.max <- nrow(samples.GSZ.scores) + length(gs.def.list)
   util.progress(progress.current, progress.max)
 
   ## Geneset Profiles over Samples

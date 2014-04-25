@@ -333,9 +333,11 @@ pipeline.run <- function()
     environment(pipeline.genesetProfilesAndMaps) <- environment()
     pipeline.genesetProfilesAndMaps()
 
+    environment(pipeline.cancerHallmarks) <- environment()
+    pipeline.cancerHallmarks()
+
 ############### TODO ###
 
-    source("R/source/cancer_hallmarks.r", local=TRUE)
     source("R/source/chromosome_expression_reports.r", local=TRUE)
   }
 
