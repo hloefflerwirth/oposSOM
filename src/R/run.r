@@ -310,13 +310,17 @@ pipeline.run <- function() {
   environment(pipeline.2ndLvlSom) <- environment()
   pipeline.2ndLvlSom()
 
-############### TODO ###
 
   if (preferences$geneset.analysis)
   {
+    util.info("Processing Geneset Analysis")
     dir.create(paste(files.name, "- Results/Geneset Analysis"), showWarnings=F)
 
-    source("R/source/geneset_statistic_samples.r", local=TRUE)
+    environment(pipeline.genesetStatisticSamples) <- environment()
+    pipeline.genesetStatisticSamples()
+
+############### TODO ###
+
     source("R/source/geneset_statistic_integral.r", local=TRUE)
     source("R/source/geneset_overviews.r", local=TRUE)
     source("R/source/geneset_profiles_and_maps.r", local=TRUE)

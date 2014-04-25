@@ -1,4 +1,5 @@
-
+pipeline.genesetStatisticSamples <- function()
+{
 
 
 
@@ -7,17 +8,17 @@ for (i in 1:50) cat(" ")
 cat("|\n|")
 flush.console()
 
-  
-  
+
+
   ### init parallel computing ###
 
   try({ stopCluster(cl) }, silent=T)
 
-  cl <- parallel::makeCluster(preferences$max.parallel.cores) 
-  
-  
-  
-  
+  cl <- parallel::makeCluster(preferences$max.parallel.cores)
+
+
+
+
   ### perform GS analysis ###
 
 
@@ -35,10 +36,10 @@ flush.console()
     gs.null.list = list()
     for (i in 1:length(gs.def.list))
     {
-      gs.null.list[[i]] = list(Genes = sample(unique.protein.ids, length(gs.def.list[[i]]$Genes)))   
+      gs.null.list[[i]] = list(Genes = sample(unique.protein.ids, length(gs.def.list[[i]]$Genes)))
     }
 
-  
+
     null.scores = c()
 
     for (m in 1:ncol(indata))
@@ -47,7 +48,7 @@ flush.console()
       all.gene.statistic = batch.t.g.m[, m]
 
       spot.gene.ids = unique.protein.ids
-  
+
       null.scores = c(null.scores, GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.null.list, cluster=cl))
 
       for (spot.i in 1:length(GS.infos.samples[[m]]$spots))
@@ -64,9 +65,9 @@ flush.console()
     cat(paste(rep("#",length(which(out.intervals == m))), collapse=""));  flush.console()
 
     }
-    
+
     null.culdensity = ecdf(abs(null.scores))
-    
+
   }
 
 
@@ -85,16 +86,16 @@ flush.console()
 
 
     GS.infos.samples[[m]]$GSZ.score = GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.def.list, sort=F, cluster=cl)
-    
-    
-    
+
+
+
     if (preferences$geneset.analysis.exact)
     {
       GS.infos.samples[[m]]$GSZ.p.value = 1 - null.culdensity(abs(GS.infos.samples[[m]]$GSZ.score))
       names(GS.infos.samples[[m]]$GSZ.p.value) = names(GS.infos.samples[[m]]$GSZ.score)
     }
 
-  
+
     for (spot.i in 1:length(GS.infos.samples[[m]]$spots))
     {
 
@@ -136,8 +137,8 @@ flush.console()
 
 
 
-  
-  ### stop parallel computing ###
-  
-  try({ stopCluster(cl) }, silent=T)
 
+  ### stop parallel computing ###
+
+  try({ stopCluster(cl) }, silent=T)
+}
