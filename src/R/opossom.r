@@ -65,9 +65,11 @@ opossom.new <- function(preferences)
   opossom$t.m <- NULL
   opossom$p.m <- NULL
   opossom$fdr.m <- NULL
+  opossom$batch.t.g.m <- NULL
   opossom$perc.DE.m <- NULL
   opossom$fdr.g.m <- NULL
   opossom$Fdr.g.m <- NULL
+  opossom$all.gene.statistic <- NULL
   opossom$mean.LPE2 <- NULL
   opossom$GS.infos.samples <- NULL
   opossom$GS.infos.overexpression <- NULL
