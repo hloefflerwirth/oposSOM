@@ -329,9 +329,11 @@ pipeline.run <- function()
     environment(pipeline.genesetOverviews) <- environment()
     pipeline.genesetOverviews()
 
-############### TODO ###
+    util.info("Processing Geneset Profiles and Maps")
+    environment(pipeline.genesetProfilesAndMaps) <- environment()
+    pipeline.genesetProfilesAndMaps()
 
-    source("R/source/geneset_profiles_and_maps.r", local=TRUE)
+############### TODO ###
 
     source("R/source/cancer_hallmarks.r", local=TRUE)
     source("R/source/chromosome_expression_reports.r", local=TRUE)
