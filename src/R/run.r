@@ -333,9 +333,11 @@ pipeline.run <- function()
     environment(pipeline.genesetProfilesAndMaps) <- environment()
     pipeline.genesetProfilesAndMaps()
 
+    util.info("Processing Cancer Hallmarks")
     environment(pipeline.cancerHallmarks) <- environment()
     pipeline.cancerHallmarks()
 
+    util.info("Processing Chromosome Expression Reports")
     environment(pipeline.chromosomeExpressionReports) <- environment()
     pipeline.chromosomeExpressionReports()
   }
