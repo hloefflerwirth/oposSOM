@@ -34,7 +34,7 @@ pipeline.genesetProfilesAndMaps <- function()
   }
 
   dirname <- file.path(paste(files.name, "- Results"), "Geneset Analysis")
-  util.info("Writing:", file.path(dirname, "*{.csv,profile.pdf}"))
+  util.info("Writing:", file.path(dirname, "*.{csv,pdf}"))
 
   for (i in 1:nrow(samples.GSZ.scores))
   {
@@ -137,8 +137,6 @@ pipeline.genesetProfilesAndMaps <- function()
   }
 
   ## Gensets Population Maps
-  util.info("Writing:", file.path(dirname, "*map.pdf"))
-
   for (i in 1:length(gs.def.list))
   {
     filename <- paste(substring(make.names(names(gs.def.list)[i]), 1, 100), "map.pdf")

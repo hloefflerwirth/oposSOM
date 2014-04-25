@@ -101,7 +101,10 @@ pipeline.chromosomeExpressionReports <- function()
   try({ stopCluster(cl) }, silent=T)
 
   # Heatmap Outputs
-  filename <- file.path(paste(files.name, "- Results"), "Geneset Analysis", "0verview Chromosome Expression.pdf")
+  filename <- file.path(paste(files.name, "- Results"),
+                        "Geneset Analysis",
+                        "0verview Chromosome Expression.pdf")
+
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 21/2.54)
 
