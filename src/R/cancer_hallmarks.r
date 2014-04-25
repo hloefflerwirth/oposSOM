@@ -124,7 +124,7 @@ pipeline.cancerHallmarks <- function()
                           999 + 1]
 
     plot(which(!is.na(n.map), arr.ind=T), xlim=lim, ylim=lim, pch=16,
-         axes=F, xlab="",ylab="", xaxs="i", yaxs="i", col=colr
+         axes=F, xlab="",ylab="", xaxs="i", yaxs="i", col=colr,
          cex=0.5 + na.omit(as.vector(n.map)) / max(n.map,na.rm=T) * 2.8)
 
     title(sub=paste("# features =", length(hallmark.sets.ids[[i]]), ", max =",

@@ -336,12 +336,11 @@ pipeline.run <- function()
     environment(pipeline.cancerHallmarks) <- environment()
     pipeline.cancerHallmarks()
 
-############### TODO ###
-
-    source("R/source/chromosome_expression_reports.r", local=TRUE)
+    environment(pipeline.chromosomeExpressionReports) <- environment()
+    pipeline.chromosomeExpressionReports()
   }
 
-
+############### TODO ###
 
   cat("Gene Lists\n"); flush.console()
   source("R/source/gene_lists.r", local=TRUE)
