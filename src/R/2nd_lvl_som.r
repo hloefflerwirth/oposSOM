@@ -1,4 +1,5 @@
-
+pipeline.2ndLvlSom <- function()
+{
 
 
   supersom.custom = som(t(metadata), xdim=preferences$dim.som2, ydim=preferences$dim.som2)
@@ -276,4 +277,4 @@
 
 
 
-
+}

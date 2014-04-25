@@ -304,12 +304,13 @@ pipeline.run <- function() {
   environment(pipeline.2ndLvlCorrelationAnalysis) <- environment()
   pipeline.2ndLvlCorrelationAnalysis()
 
+  environment(pipeline.2ndLvlComponentAnalysis) <- environment()
+  pipeline.2ndLvlComponentAnalysis()
+
+  environment(pipeline.2ndLvlSom) <- environment()
+  pipeline.2ndLvlSom()
+
 ############### TODO ###
-
-  source("R/source/2nd_lvl_component_analysis.r", local=TRUE)
-  source("R/source/2nd_lvl_som.r", local=TRUE)
-
-
 
   if (preferences$geneset.analysis)
   {
