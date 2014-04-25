@@ -17,7 +17,8 @@ pipeline.genesetStatisticSamples <- function()
 
     for (i in 1:length(gs.def.list))
     {
-      gs.null.list[[i]] <- list(Genes=sample(unique.protein.ids, length(gs.def.list[[i]]$Genes)))
+      gs.null.list[[i]] <-
+        list(Genes=sample(unique.protein.ids, length(gs.def.list[[i]]$Genes)))
     }
 
     null.scores <- c()
@@ -57,8 +58,10 @@ pipeline.genesetStatisticSamples <- function()
 
     if (preferences$geneset.analysis.exact)
     {
-      GS.infos.samples[[m]]$GSZ.p.value <- 1 - null.culdensity(abs(GS.infos.samples[[m]]$GSZ.score))
-      names(GS.infos.samples[[m]]$GSZ.p.value) <- names(GS.infos.samples[[m]]$GSZ.score)
+      GS.infos.samples[[m]]$GSZ.p.value <<-
+        1 - null.culdensity(abs(GS.infos.samples[[m]]$GSZ.score))
+
+      names(GS.infos.samples[[m]]$GSZ.p.value) <<- names(GS.infos.samples[[m]]$GSZ.score)
     }
 
     for (spot.i in 1:length(GS.infos.samples[[m]]$spots))
