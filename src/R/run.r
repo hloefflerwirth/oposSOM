@@ -1,5 +1,5 @@
-pipeline.run <- function() {
-
+pipeline.run <- function()
+{
   # output some info
   util.info("Started:", format(Sys.time(), "%a %b %d %X"))
   util.info("Setting:", preferences$dataset.name)
@@ -62,10 +62,11 @@ pipeline.run <- function() {
     files.name <<- paste(files.name, "+", sep="")
   }
 
-  output.paths <<- c("LPE" = paste(files.name, "- Results/LPE"),
-                     "CSV" = paste(files.name, "- Results/CSV Sheets"),
-                     "Summary Sheets Samples"= paste(files.name, "- Results/Summary Sheets - Samples"),
-                     "Summary Sheets Integral"= paste(files.name, "- Results/Summary Sheets - Integral"))
+  output.paths <<-
+    c("LPE"=paste(files.name, "- Results/LPE"),
+      "CSV"=paste(files.name, "- Results/CSV Sheets"),
+      "Summary Sheets Samples"=paste(files.name, "- Results/Summary Sheets - Samples"),
+      "Summary Sheets Integral"=paste(files.name, "- Results/Summary Sheets - Integral"))
 
   # create output dirs
   dir.create(paste(files.name, "- Results"), showWarnings=F)
@@ -242,11 +243,14 @@ pipeline.run <- function() {
 
   if (length(unique(group.labels)) > 1) # mean group metagenes
   {
-    group.metadata <<- do.call(cbind, by(t(metadata), group.labels, colMeans))[,unique(group.labels)]
+    group.metadata <<-
+      do.call(cbind, by(t(metadata), group.labels, colMeans))[,unique(group.labels)]
 
-    loglog.group.metadata <<- do.call(cbind, by(t(loglog.metadata), group.labels, colMeans))[,unique(group.labels)]
+    loglog.group.metadata <<-
+      do.call(cbind, by(t(loglog.metadata), group.labels, colMeans))[,unique(group.labels)]
 
-    WAD.group.metadata <<- do.call(cbind, by(t(WAD.metadata), group.labels, colMeans))[,unique(group.labels)]
+    WAD.group.metadata <<-
+      do.call(cbind, by(t(WAD.metadata), group.labels, colMeans))[,unique(group.labels)]
   }
 
 
@@ -322,9 +326,11 @@ pipeline.run <- function() {
     environment(pipeline.genesetStatisticIntegral) <- environment()
     pipeline.genesetStatisticIntegral()
 
+    environment(pipeline.genesetOverviews) <- environment()
+    pipeline.genesetOverviews()
+
 ############### TODO ###
 
-    source("R/source/geneset_overviews.r", local=TRUE)
     source("R/source/geneset_profiles_and_maps.r", local=TRUE)
 
     source("R/source/cancer_hallmarks.r", local=TRUE)
