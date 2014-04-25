@@ -319,9 +319,11 @@ pipeline.run <- function() {
     environment(pipeline.genesetStatisticSamples) <- environment()
     pipeline.genesetStatisticSamples()
 
+    environment(pipeline.genesetStatisticIntegral) <- environment()
+    pipeline.genesetStatisticIntegral()
+
 ############### TODO ###
 
-    source("R/source/geneset_statistic_integral.r", local=TRUE)
     source("R/source/geneset_overviews.r", local=TRUE)
     source("R/source/geneset_profiles_and_maps.r", local=TRUE)
 

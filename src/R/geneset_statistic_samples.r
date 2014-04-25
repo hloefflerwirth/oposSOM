@@ -5,7 +5,6 @@ pipeline.genesetStatisticSamples <- function()
   util.progress(progress.current, progress.max)
 
   ### init parallel computing ###
-  try({ stopCluster(cl) }, silent=T)
   cl <- parallel::makeCluster(preferences$max.parallel.cores)
 
   ### perform GS analysis ###
