@@ -6,3 +6,6 @@
 *.Rcheck
 *.tar.gz
 .Rhistory
+
+# Package
+/oposSOM
