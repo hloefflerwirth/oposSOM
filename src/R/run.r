@@ -342,13 +342,15 @@ pipeline.run <- function()
     pipeline.chromosomeExpressionReports()
   }
 
+  util.info("Processing Gene Lists")
+  environment(pipeline.geneLists) <- environment()
+  pipeline.geneLists()
+
+  util.info("Processing Summary Sheets (Samples)")
+  environment(pipeline.summarySheetsSamples) <- environment()
+  pipeline.summarySheetsSamples()
+
 ############### TODO ###
-
-  cat("Gene Lists\n"); flush.console()
-  source("R/source/gene_lists.r", local=TRUE)
-
-  cat("Summary Sheets: Samples\n"); flush.console()
-  source("R/source/summary_sheets_samples.r", local=TRUE)
 
   cat("Summary Sheets: Spots\n"); flush.console()
   source("R/source/summary_sheets_integral.r", local=TRUE)

@@ -1,4 +1,5 @@
-
+pipeline.summarySheetsSamples <- function()
+{
 
 dir.create(output.paths["Summary Sheets Samples"], showWarnings=F)
 
@@ -8,12 +9,12 @@ dir.create(output.paths["Summary Sheets Samples"], showWarnings=F)
 ### init parallel computing ###
 
 # try({ stopCluster(cl) }, silent=T)
-# 
+#
 # if (Sys.info()["sysname"] == "Windows")
-# {  
+# {
 #   cl<-makeCluster(preferences$max.parallel.cores)
 #   registerDoSNOW(cl)
-#   
+#
 # } else
 # {
 #   registerDoMC(preferences$max.parallel.cores)
@@ -38,7 +39,7 @@ if (preferences$geneset.analysis)
 
 
 ylim.max = 0
-for (m in 1:ncol(indata)) 
+for (m in 1:ncol(indata))
 {
   h = hist(p.g.m[,m], bre=20, plot=F)
 
@@ -49,7 +50,7 @@ for (m in 1:ncol(indata))
 
 
 
-  
+
 
 
 
@@ -76,9 +77,9 @@ for (m in 1:ncol(indata))
 
   plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
-    text(0.1, 0.94, colnames(indata)[m] , cex=3, adj=0)  
+    text(0.1, 0.94, colnames(indata)[m] , cex=3, adj=0)
 
-     text(0.1, 0.8, "Global Summary" , cex=1.8, adj=0)  
+     text(0.1, 0.8, "Global Summary" , cex=1.8, adj=0)
 
     text(0.1, 0.7,  paste("%DE =", round(perc.DE.m[colnames(indata)[m]], 2)), adj=0)
 
@@ -128,16 +129,16 @@ for (m in 1:ncol(indata))
     axis(2, seq(0, 1, length.out = preferences$dim.som1/10+1), c(1, seq(10, preferences$dim.som1, length.out = preferences$dim.som1/10)), cex.axis=1.0, las=1)
     box()
 
-  
+
   par(mar=c(2,8,3,6))
 
 #   image(matrix(1:100, 1, 100), col = colramp(1000), axes=F)
-#     axis(2, at=c(0,0.5,1), round(c(min(metadata[,m]), 0, max(metadata[,m])), 2), las=2, tick=T, cex.axis=1.0)  
+#     axis(2, at=c(0,0.5,1), round(c(min(metadata[,m]), 0, max(metadata[,m])), 2), las=2, tick=T, cex.axis=1.0)
 #     box()
   plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
 
-  
+
   par(mar=c(0,0,0,0))
 
   n.genes = 20
@@ -151,12 +152,12 @@ for (m in 1:ncol(indata))
 
   plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
-    
+
     text(0, 0.88, "Global Genelist", cex=1.8, adj=0)
 
 
     text(x.coords, rep(c(0.82, 0.80), 4)[1:7], c("Rank", "ID", "log(FC)", "p-value", "fdr", "Metagene", "Description"), cex=1, adj=0)
-    
+
     text(x.coords[1], y.coords, c(1:n.genes), adj=0)
 
     text(x.coords[2], y.coords, rownames(indata)[o], cex=0.6, adj=0)
@@ -200,7 +201,7 @@ for (m in 1:ncol(indata))
   {
 
   n.sets=20
-  
+
 
   top.gs.score = sort(GS.infos.samples[[m]]$GSZ.score, decreasing=T)[1:n.sets]
   top.gs.p = GS.infos.samples[[m]]$GSZ.p.value[names(top.gs.score)]
@@ -218,7 +219,7 @@ for (m in 1:ncol(indata))
 
   plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
-    
+
     text(0, 0.88, "Global Geneset Analysis", cex=1.8, adj=0)
 
     text(x.coords, 0.82, c("Rank", "GSZ", "p-value", "#all", "Geneset", ""), cex=1, adj=0)
@@ -248,7 +249,7 @@ for (m in 1:ncol(indata))
 
     text(x.coords[1], 0.37, "Underexpressed", cex=0.8, adj=0, font=3)
 
-    text(x.coords[1], y.coords, c(1:n.genes), adj=0)    
+    text(x.coords[1], y.coords, c(1:n.genes), adj=0)
     text(x.coords[2], y.coords, round(top.gs.score, 2), cex=0.6, adj=0)
     text(x.coords[3], y.coords, format(top.gs.p, digits=1), cex=0.6, adj=0)
     text(x.coords[4], y.coords, sapply(gs.def.list[names(top.gs.score)], function(x){ length(x$Genes) }), cex=0.6, adj=0)
@@ -295,10 +296,10 @@ for (m in 1:ncol(indata))
 
 
 
-  } 
-  
+  }
 
-      
+
+
 
 
 
@@ -322,9 +323,9 @@ for (m in 1:ncol(indata))
 
     local.fdr = fdrtool.result$lfdr
     local.Fdr = fdrtool.result$qval
-  
-    names(local.fdr) = spot.genes 
-    names(local.Fdr) = spot.genes 
+
+    names(local.fdr) = spot.genes
+    names(local.Fdr) = spot.genes
 
 
     local.n.0 = fdrtool.result$param[1,"eta0"]
@@ -344,9 +345,9 @@ for (m in 1:ncol(indata))
 
   plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
-    text(0.1, 0.94, colnames(indata)[m] , cex=3, adj=0)  
+    text(0.1, 0.94, colnames(indata)[m] , cex=3, adj=0)
 
-    text(0.1, 0.8, "Local Summary" , cex=1.8, adj=0)  
+    text(0.1, 0.8, "Local Summary" , cex=1.8, adj=0)
 
     text(0.1, 0.7,  paste("%DE =", round(local.perc.DE, 2)), adj=0)
 
@@ -423,12 +424,12 @@ for (m in 1:ncol(indata))
 
   plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
-    
+
     text(0, 0.88, "Local Genelist", cex=1.8, adj=0)
 
 
     text(x.coords, rep(c(0.82, 0.80), 4)[1:7], c("Rank", "ID", "log(FC)", "p-value", "fdr", "Metagene", "Description"), cex=1, adj=0)
-    
+
     text(x.coords[1], y.coords, c(1:n.genes), adj=0)
 
     text(x.coords[2], y.coords, o, cex=0.6, adj=0)
@@ -490,7 +491,7 @@ for (m in 1:ncol(indata))
 
 
       plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
-    
+
         text(0, 0.88, "Local Geneset Analysis", cex=1.8, adj=0)
         text(x.coords[1], 0.84, "Overexpression", cex=0.9, adj=0, font=3)
         text(x.coords, 0.79, c("Rank", "GSZ", "p-value", "#in/all", "Geneset", ""), cex=1, adj=0)
@@ -595,4 +596,4 @@ dev.off()
 
 
 
-
+}
