@@ -350,12 +350,11 @@ pipeline.run <- function()
   environment(pipeline.summarySheetsSamples) <- environment()
   pipeline.summarySheetsSamples()
 
+  util.info("Processing Summary Sheets (Spots)")
+  environment(pipeline.summarySheetsIntegral) <- environment()
+  pipeline.summarySheetsIntegral()
+
 ############### TODO ###
-
-  cat("Summary Sheets: Spots\n"); flush.console()
-  source("R/source/summary_sheets_integral.r", local=TRUE)
-
-
 
   cat("Processing 3rd level Spot Analysis\n"); flush.console()
   dir.create(paste(files.name, "- Results/3rd lvl Spot Analysis"), showWarnings=F)

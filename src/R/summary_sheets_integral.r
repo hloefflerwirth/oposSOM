@@ -1,4 +1,5 @@
-
+pipeline.summarySheetsIntegral <- function()
+{
 
   dir.create(output.paths["Summary Sheets Integral"], showWarnings=F)
   dir.create(paste(files.name, "- Results/CSV Sheets/Spot Lists"), showWarnings=F)
@@ -643,5 +644,4 @@
 
 
 
-
-
+}
