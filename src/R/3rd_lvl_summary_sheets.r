@@ -422,10 +422,10 @@ pipeline.3rdLvlSummarySheets <- function()
   filename <-
     if (GS.infos.overexpression$filtered)
     {
-      filepath(dirname, "Overexpression Spot Report filtered.pdf")
+      file.path(dirname, "Overexpression Spot Report filtered.pdf")
     } else
     {
-      filepath(dirname, "Overexpression Spot Report.pdf")
+      file.path(dirname, "Overexpression Spot Report.pdf")
     }
 
   util.info("Writing:", filename)
@@ -436,10 +436,10 @@ pipeline.3rdLvlSummarySheets <- function()
   filename <-
     if (GS.infos.underexpression$filtered)
     {
-      filepath(dirname, "Underexpression Spot Report filtered.pdf")
+      file.path(dirname, "Underexpression Spot Report filtered.pdf")
     } else
     {
-      filepath(dirname, "Underexpression Spot Report.pdf")
+      file.path(dirname, "Underexpression Spot Report.pdf")
     }
 
   util.info("Writing:", filename)

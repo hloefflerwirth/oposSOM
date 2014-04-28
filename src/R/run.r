@@ -366,10 +366,12 @@ pipeline.run <- function()
   environment(pipeline.3rdLvlNetworks) <- environment()
   pipeline.3rdLvlNetworks()
 
+  util.info("Generating HTML Report")
+  environment(pipeline.htmlSummary) <- environment()
+  pipeline.htmlSummary()
+
   ############### TODO ###
 
-  cat("Generating HTML Report\n"); flush.console()
-  source("R/source/html_summary.r", local=TRUE)
   source("R/source/html_sample_summary.r", local=TRUE)
   source("R/source/html_integral_summary.r", local=TRUE)
   source("R/source/html_geneset_analysis.r", local=TRUE)
