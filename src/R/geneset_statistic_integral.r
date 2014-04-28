@@ -56,7 +56,7 @@ pipeline.genesetStatisticIntegral <- function()
   }
 
   util.progress(100, 100)
-  util.cat("")
+  cat("\n")
 
   ### stop parallel computing ###
   try({ stopCluster(cl) }, silent=T)

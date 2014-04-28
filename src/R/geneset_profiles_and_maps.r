@@ -213,5 +213,5 @@ pipeline.genesetProfilesAndMaps <- function()
     util.progress(progress.current, progress.max)
   }
 
-  util.cat("")
+  cat("\n")
 }

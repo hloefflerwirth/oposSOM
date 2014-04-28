@@ -96,7 +96,7 @@ pipeline.chromosomeExpressionReports <- function()
     util.progress(progress.current, progress.max)
   }
 
-  util.cat("")
+  cat("\n")
 
   try({ stopCluster(cl) }, silent=T)
 
