@@ -395,15 +395,7 @@ pipeline.run <- function()
 
   source("R/source/group_analyses.r", local=TRUE)
   source("R/source/difference_analyses.r", local=TRUE)
-
-
-
-#  cat("Spot Filtering\n"); flush.console()
-#  source("R/source/3rd_lvl_overexpression_genenet.r", local=TRUE)
-#  source("R/source/3rd_lvl_spot_filter.r", local=TRUE)
   source("R/source/signature_sets.r", local=TRUE)
-
-
 
   cat("Finished:", format(Sys.time(), "%a %b %d %X\n\n"))
   flush.console()
