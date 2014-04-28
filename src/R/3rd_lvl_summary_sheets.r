@@ -434,7 +434,7 @@ pipeline.3rdLvlSummarySheets <- function()
   dev.off()
 
   filename <-
-    if (GS.infos.overexpression$filtered)
+    if (GS.infos.underexpression$filtered)
     {
       filepath(dirname, "Underexpression Spot Report filtered.pdf")
     } else

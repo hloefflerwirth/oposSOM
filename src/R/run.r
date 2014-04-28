@@ -360,13 +360,13 @@ pipeline.run <- function()
   environment(pipeline.3rdLvlChromosomalEnrichment) <- environment()
   pipeline.3rdLvlChromosomalEnrichment()
 
+  environment(pipeline.3rdLvlSummarySheets) <- environment()
+  pipeline.3rdLvlSummarySheets()
+
+  environment(pipeline.3rdLvlNetworks) <- environment()
+  pipeline.3rdLvlNetworks()
+
   ############### TODO ###
-
-  source("R/source/3rd_lvl_summary_sheets.r", local=TRUE)
-  source("R/source/3rd_lvl_networks.r", local=TRUE)
-
-
-
 
   cat("Generating HTML Report\n"); flush.console()
   source("R/source/html_summary.r", local=TRUE)
