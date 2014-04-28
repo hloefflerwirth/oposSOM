@@ -4,7 +4,7 @@ pipeline.htmlSummary <- function()
   util.info("Writing:", filename)
   outfile <- file(filename, "w")
 
-  cat("<DOCTYPE html>
+  cat("<!DOCTYPE html>
 <html>
   <head>
     <title>Summary of ", files.name, " dataset</title>
