@@ -354,12 +354,14 @@ pipeline.run <- function()
   environment(pipeline.summarySheetsIntegral) <- environment()
   pipeline.summarySheetsIntegral()
 
-############### TODO ###
-
-  cat("Processing 3rd level Spot Analysis\n"); flush.console()
+  util.info("Processing 3rd level Spot Analysis")
   dir.create(paste(files.name, "- Results/3rd lvl Spot Analysis"), showWarnings=F)
 
-  source("R/source/3rd_lvl_chromosomal_enrichment.r", local=TRUE)
+  environment(pipeline.3rdLvlChromosomalEnrichment) <- environment()
+  pipeline.3rdLvlChromosomalEnrichment()
+
+  ############### TODO ###
+
   source("R/source/3rd_lvl_summary_sheets.r", local=TRUE)
   source("R/source/3rd_lvl_networks.r", local=TRUE)
 
