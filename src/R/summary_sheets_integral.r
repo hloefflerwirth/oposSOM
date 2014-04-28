@@ -600,7 +600,6 @@ pipeline.summarySheetsIntegral <- function()
                      "Description"=gene.descriptions[o])
 
         basename <- paste(main, " ", names(set.list$spots)[m], ".csv", sep="")
-        util.info("Writing:", file.path(dirnames["spots"], basename))
         write.csv2(out, file.path(dirnames["spots"], basename))
       }
     }
@@ -641,6 +640,7 @@ pipeline.summarySheetsIntegral <- function()
   plot.set.list(set.list=GS.infos.group.overexpression, main="Group Overexpression")
   dev.off()
 
+  util.info("Writing:", file.path(dirnames["spots"], "*.csv"))
   csv.set.list(set.list=GS.infos.overexpression, main="Sample-Overexpression")
   csv.set.list(set.list=GS.infos.underexpression, main="Sample-Underexpression")
   csv.set.list(set.list=GS.infos.correlation, main="Correlation Cluster")
