@@ -373,9 +373,11 @@ pipeline.run <- function()
   environment(pipeline.htmlSampleSummary) <- environment()
   pipeline.htmlSampleSummary()
 
+  environment(pipeline.htmlIntegralSummary) <- environment()
+  pipeline.htmlIntegralSummary()
+
   ############### TODO ###
 
-  source("R/source/html_integral_summary.r", local=TRUE)
   source("R/source/html_geneset_analysis.r", local=TRUE)
 
 
