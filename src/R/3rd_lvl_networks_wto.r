@@ -1,4 +1,4 @@
-pipeline.3rdLvlNetworksWto <- function(set.list)
+pipeline.3rdLvlNetworksWto <- function(set.list, sample.spot.matrix)
 {
   if (length(set.list$spots) < 3)
   {

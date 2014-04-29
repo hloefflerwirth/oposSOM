@@ -97,7 +97,7 @@ pipeline.3rdLvlNetworks <- function()
       pattern.adj.matrix[is.na(pattern.adj.matrix)] <- 2 * max(pattern.adj.matrix, na.rm=T)
 
       environment(pipeline.3rdLvlNetworksWto) <- environment()
-      pipeline.3rdLvlNetworksWto(set.list)
+      pipeline.3rdLvlNetworksWto(set.list, sample.spot.matrix)
 
       # plot single spot MST
       mean.spot.expression <- matrix(NA, ncol(indata), 0)
