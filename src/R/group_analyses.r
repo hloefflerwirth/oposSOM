@@ -22,14 +22,13 @@ pipeline.groupAnalysis <- function()
 
   metadata <<- do.call(cbind, by(t(metadata), group.labels, colMeans)[unique(group.labels)])
 
-  indata.original <<- indata.original
   colnames(indata.original) <<- group.labels[colnames(indata.original)]
 
   indata <<- do.call(cbind, by(t(indata.original),
-                              colnames(indata.original),
-                              colMeans)[unique(group.labels)])
+                               colnames(indata.original),
+                               colMeans)[unique(group.labels)])
 
-  indata.mean.level <- rowMeans(indata)
+  indata.mean.level <<- rowMeans(indata)
 
   if (preferences$feature.mean.normalization)
   {

@@ -80,7 +80,7 @@ pipeline.differenceAnalyses = function()
   indata <<- indata
   metadata <<- metadata
 
-  for (d in 1:length(ifferences.list))
+  for (d in 1:length(differences.list))
   {
     samples.indata <-
       list(differences.list[[d]][[1]], differences.list[[d]][[2]])
