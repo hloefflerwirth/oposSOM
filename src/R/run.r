@@ -376,11 +376,10 @@ pipeline.run <- function()
   environment(pipeline.htmlIntegralSummary) <- environment()
   pipeline.htmlIntegralSummary()
 
+  environment(pipeline.htmlGenesetAnalysis) <- environment()
+  pipeline.htmlGenesetAnalysis()
+
   ############### TODO ###
-
-  source("R/source/html_geneset_analysis.r", local=TRUE)
-
-
 
   cat("Clean and store Workspace\n"); flush.console()
   source("R/source/workspace_cleanup.r", local=TRUE)

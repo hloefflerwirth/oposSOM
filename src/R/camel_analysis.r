@@ -7,7 +7,7 @@ CountExtrema = function(v)
   return(sum(changes))
 }
 
-GetFirstPeak = function(v) 
+GetFirstPeak = function(v)
 {
   v.1 = v[2:length(v)] - v [1:(length(v)-1)]
   changes = sign(v.1[2:length(v.1)]) != sign(v.1[1:(length(v.1)-1)])
@@ -34,8 +34,8 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
     dir.create(folder, showWarnings=F)
 
     dens.list = list()
-    for (i in 1:ncol(data)) 
-      dens.list[[i]] = density(data[,i]) 
+    for (i in 1:ncol(data))
+      dens.list[[i]] = density(data[,i])
     max.y <- max(unlist(lapply(dens.list,function(elem) max(elem$y))))
          max.x <- max(unlist(lapply(dens.list,function(elem) max(elem$x))))
          min.x <- min(unlist(lapply(dens.list,function(elem) min(elem$x))))
@@ -50,9 +50,9 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
 
 
     outfile = file(paste(folder,"/Summary.html",sep=""), "w")
-            
+
     cat("
-      <html> <head> <TITLE>Density Analysis Summary</TITLE> </head> <body bgcolor=#FFFFFF ><H1 ALIGN=CENTER >Density Analysis Summary</H1>
+      <html> <head> <TITLE>Density Analysis Summary</TITLE> </head> <body bgcolor=#FFFFFF ><h1 ALIGN=CENTER >Density Analysis Summary</h1>
       <style type=text/css> p{ margin-top: 1px; margin-bottom: 1px; padding-left: 10px; text-indent: -10px }
       </style> ", file = outfile)
 
@@ -79,7 +79,7 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
     adj = 0.1
     while (CountExtrema(density(data[,i], adjust=adj)$y) > 3)
     {
-      adj = adj+0.1  
+      adj = adj+0.1
     }
 
 
@@ -91,7 +91,7 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
 
 
     p95 = N.peak.y * 0.95
-        
+
 
 
     E95.U = min(which(den$y > p95))
@@ -112,9 +112,9 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
     for (xi in E95.U:E95.O)
     {
       sum.E.p = sum.E.p + den$x[xi] * den$y[xi]
-      sum.p = sum.p + den$y[xi]    
+      sum.p = sum.p + den$y[xi]
     }
-    
+
     E.max.N = sum.E.p / sum.p
 
     E.max.N = den$x[which.max(den$y[E95.U:E95.O]) + E95.U]
@@ -132,7 +132,7 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
 
     E.max.i = 1
     while (den$x[E.max.i] < E.max.N)
-    {  
+    {
       E.max.i = E.max.i+1
     }
 
@@ -141,7 +141,7 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
     den.unspec$y = den$y[c(1:E.max.i , E.max.i:1)]
 
     if (length(den.unspec$x) > length(den$x))
-    {  
+    {
       den.unspec$x = den.unspec$x[1:length(den$x)]
       den.unspec$y = den.unspec$y[1:length(den$x)]
     }
@@ -152,7 +152,7 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
     for (xi in 1:length(den.unspec$x))
     {
       den.spec$y[xi] = den.spec$y[xi] - den.unspec$y[xi]
-      
+
       if (den.spec$y[xi] < 0)
         den.spec$y[xi] = 0
     }
@@ -164,7 +164,7 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
     den.spec$y = den.spec$y[-(1:E.max.i)]
 
 
-    
+
     if (verbose)
     {
       dir.create(paste(folder,"/Chip ",i,sep=""), showWarnings=F)
@@ -179,7 +179,7 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
 
 
     p95 = quantile(den.spec$y, 0.95)
-        
+
     E95.U = min(which(den.spec$y > p95))
     E95.O = max(which(den.spec$y > p95))
 
@@ -192,9 +192,9 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
     for (xi in E95.U:E95.O)
     {
       sum.E.p = sum.E.p + den.spec$x[xi] * den.spec$y[xi]
-      sum.p = sum.p + den.spec$y[xi]    
+      sum.p = sum.p + den.spec$y[xi]
     }
-    
+
     E.max.S = sum.E.p / sum.p
 
     E.max.S = den.spec$x[which.max(den.spec$y[E95.U:E95.O]) + E95.U]
@@ -212,7 +212,7 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
       I.N = I.N +  den.unspec$y[xi] * (den.unspec$x[xi] - den.unspec$x[xi-1])
     }
 
-    R = I.S / (I.S + I.N) 
+    R = I.S / (I.S + I.N)
 
 
 
@@ -226,9 +226,9 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
     for (xi in 1:length(den.spec$x))
     {
       sum.E.p = sum.E.p + den.spec$x[xi] * den.spec$y[xi]
-      sum.p = sum.p + den.spec$y[xi]    
+      sum.p = sum.p + den.spec$y[xi]
     }
-    
+
     center.S = sum.E.p / sum.p
 
 
@@ -239,9 +239,9 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
     for (xi in 1:length(den.unspec$x))
     {
       sum.E.p = sum.E.p + den.unspec$x[xi] * den.unspec$y[xi]
-      sum.p = sum.p + den.unspec$y[xi]    
+      sum.p = sum.p + den.unspec$y[xi]
     }
-    
+
     center.N = sum.E.p / sum.p
 
 
@@ -250,7 +250,7 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
 
 
     h50 = max(den.spec$y) / 2
-        
+
     E50.U = min(which(den.spec$y > h50))
     E50.O = max(which(den.spec$y > h50))
 
@@ -260,7 +260,7 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
 
 
     mix.perc = den.unspec$y[which(den.unspec$x %in% den.spec$x)] / (den.unspec$y[which(den.unspec$x %in% den.spec$x)] + den.spec$y[which(den.spec$x %in% den.unspec$x)])
-    percent.S[,i] = 1 - approx(x = den.spec$x[which(den.spec$x %in% den.unspec$x)], y = mix.perc, xout = corrected.data[,i], rule=2)$y 
+    percent.S[,i] = 1 - approx(x = den.spec$x[which(den.spec$x %in% den.unspec$x)], y = mix.perc, xout = corrected.data[,i], rule=2)$y
 
 
 
@@ -296,7 +296,7 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
       dev.off()
 
 
-      
+
       write.table(cbind(den$x , den$y), file=paste(folder,"/Chip ",i,"/total.txt",sep=""), sep="\t", row.names=F, col.names=F)
       write.table(cbind(den.unspec$x , den.unspec$y), file=paste(folder,"/Chip ",i,"/N.txt",sep=""), sep="\t", row.names=F, col.names=F)
       write.table(cbind(den.spec$x , den.spec$y), file=paste(folder,"/Chip ",i,"/S.txt",sep=""), sep="\t", row.names=F, col.names=F)
@@ -304,14 +304,14 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
 
 
       cat("<h2>Chip ",i," : ",colnames(data)[i],"</h2><CENTER> <TABLE BORDER=4>
-        <TR><TD><CENTER><img SRC=\"Chip ",i,"/densities.bmp\" BORDER=0 width=400 heigth=400 ></CENTER> 
+        <TR><TD><CENTER><img SRC=\"Chip ",i,"/densities.bmp\" BORDER=0 width=400 heigth=400 ></CENTER>
         </TD></TR></TABLE></CENTER> ", sep="", file = outfile)
 
       cat("<CENTER><TABLE BORDER=4>
         <TR><TD> delta log Emax N </TD><TD> log Emax S </TD><TD> Integral N </TD><TD> Integral S </TD><TD> rel. Expression </TD><TD> Center N </TD><TD> Center S </TD><TD> Width S.50 left </TD><TD> Width S.50 right </TD></TR>
         <TR><TD>",E.max.N.old,"</TD><TD>",E.max.S,"</TD><TD>",I.N,"</TD><TD>",I.S,"</TD><TD>",R,"</TD><TD>",center.N,"</TD><TD>",center.S,"</TD><TD>",summary[8, i],"</TD><TD>",summary[9, i],"</TD></TR>
         </TABLE></CENTER></CENTER><br><br><br><br><br><br> ", file = outfile)
- 
+
     }
 
 
@@ -326,9 +326,9 @@ Camel.Analysis = function(data, verbose=F, folder="Density Analysis")
 
 
 
-  if (verbose) 
+  if (verbose)
   {
-    cat("<h2>All Chips</h2><CENTER> <TABLE BORDER=4> 
+    cat("<h2>All Chips</h2><CENTER> <TABLE BORDER=4>
       <TR><TD></TD><TD> delta log Emax N </TD><TD> log Emax S </TD><TD> Integral N </TD><TD> Integral S </TD><TD> rel. Expression </TD><TD> Center N </TD><TD> Center S </TD><TD> Width S.50 left </TD><TD> Width S.50 right </TD></TR> ", file = outfile)
 
 
