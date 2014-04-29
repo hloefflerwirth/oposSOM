@@ -277,7 +277,7 @@ pipeline.summarySheetsIntegral <- function()
         sample.with.spot <- set.list$spotdata[m,] > sd(as.vector(set.list$spotdata))
       }
 
-      layout(matrix(c(1,2,4,1,3,4,5,5,6,7,7,8), 3, 4), width=c(1,1,2,2), heights=c(2,1,1))
+      layout(matrix(c(1,2,4,1,3,4,5,5,6,7,7,8), 3, 4), widths=c(1,1,2,2), heights=c(2,1,1))
 
       par(mar=c(0,0,0,0))
       plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))

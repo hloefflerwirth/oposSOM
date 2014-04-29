@@ -389,8 +389,9 @@ pipeline.run <- function()
   }
 
   ## additional scripts
+  environment(pipeline.groupAnalysis) <- environment()
+  pipeline.groupAnalysis()
 
-  source("R/source/group_analyses.r", local=TRUE)
   source("R/source/difference_analyses.r", local=TRUE)
   source("R/source/signature_sets.r", local=TRUE)
 

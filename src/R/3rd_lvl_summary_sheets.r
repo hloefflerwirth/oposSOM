@@ -99,7 +99,7 @@ pipeline.3rdLvlSummarySheets <- function()
     text(do.call(rbind, lapply(set.list$spots, function(x) x$position)), names(set.list$spots), col="white")
 
     ## plot single spot overview
-    layout(matrix(1:18, 6, 3, byrow=T), width=c(1,4,1.5))
+    layout(matrix(1:18, 6, 3, byrow=T), widths=c(1,4,1.5))
 
     for (i in 1:N.spots)
     {

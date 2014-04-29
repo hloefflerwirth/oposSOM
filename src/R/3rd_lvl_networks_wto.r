@@ -49,8 +49,15 @@ pipeline.3rdLvlNetworksWto <- function(set.list, sample.spot.matrix)
   {
     E(g)$color <- c("red2","green2")[1.5 + sign(E(g)$weight) / 2]
     E(g)$width <- abs(E(g)$weight)
-    E(g)$width <- 5 * (E(g)$width-min(E(g)$width)) /
-                  (max(E(g)$width)-min(E(g)$width)) + 0.5
+
+    if (max(E(g)$width) == min(E(g)$width))
+    {
+      E(g)$width <- 3
+    } else
+    {
+      E(g)$width <- 5 * (E(g)$width-min(E(g)$width)) /
+                    (max(E(g)$width)-min(E(g)$width)) + 0.5
+    }
   }
 
   par(mar=c(1,1,1,1), mfrow=c(1,1))

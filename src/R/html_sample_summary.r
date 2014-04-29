@@ -1,6 +1,6 @@
 pipeline.htmlSampleSummary <- function()
 {
-  filename <- file.path(paste(files.name, "-Results"), "Summary Sheets - Samples", "0verview.html")
+  filename <- file.path(paste(files.name, "- Results"), "Summary Sheets - Samples", "0verview.html")
   util.info("Writing:", filename)
   outfile <- file(filename, "w")
 

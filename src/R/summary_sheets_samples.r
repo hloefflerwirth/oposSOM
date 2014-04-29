@@ -31,7 +31,7 @@ pipeline.summarySheetsSamples <- function()
     pdf(file.path(output.paths["Summary Sheets Samples"], basename), 29.7/2.54, 21/2.54)
 
     ## Global Sheet
-    layout(matrix(c(1,2,4,1,3,0,5,5,6,7,7,8), 3, 4), width=c(1,1,2,2), heights=c(2,1,1))
+    layout(matrix(c(1,2,4,1,3,0,5,5,6,7,7,8), 3, 4), widths=c(1,1,2,2), heights=c(2,1,1))
     par(mar=c(0,0,0,0))
     plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
@@ -283,7 +283,7 @@ pipeline.summarySheetsSamples <- function()
 
       o <- names(sort(local.p))[1:n.genes]
 
-      layout(matrix(c(1,2,0,1,3,0,4,4,5,6,6,7), 3, 4), width=c(1,1,2,2), heights=c(2,1,1))
+      layout(matrix(c(1,2,0,1,3,0,4,4,5,6,6,7), 3, 4), widths=c(1,1,2,2), heights=c(2,1,1))
 
       par(mar=c(0,0,0,0))
       plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
