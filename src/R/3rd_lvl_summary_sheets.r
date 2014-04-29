@@ -71,7 +71,7 @@ pipeline.3rdLvlSummarySheets <- function()
         sample.spot.matrix[s,] <- as.numeric(set.list$spotdata[s,] < -thresh.global)
       } else
       {
-        sample.spot.matrix[s,] = as.numeric(set.list$spotdata[s,] > thresh.global)
+        sample.spot.matrix[s,] <- as.numeric(set.list$spotdata[s,] > thresh.global)
       }
     }
 

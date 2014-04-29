@@ -21,7 +21,8 @@ pipeline.3rdLvlNetworksWto <- function(set.list, sample.spot.matrix)
     for (j in 1: nrow(set.list$spotdata))
     {
       omega[i,j] <-
-        (b[i,j] + adj_matrix[i,j]) / (min(k_sum[i],k_sum[j]) + 1 - abs(adj_matrix[i,j]))
+        (b[i,j] + adj_matrix[i,j]) /
+        (min(k_sum[i],k_sum[j]) + 1 - abs(adj_matrix[i,j]))
     }
   }
 
@@ -35,13 +36,21 @@ pipeline.3rdLvlNetworksWto <- function(set.list, sample.spot.matrix)
 
   V(g)$label <- names(set.list$spots)
   n.spot <- apply(sample.spot.matrix, 1, sum)
-  V(g)$size <- 8*(n.spot-min(n.spot))/(max(n.spot)-min(n.spot))+6
+
+  if (max(n.spot) == min(n.spot))
+  {
+    V(g)$size <- 10
+  } else
+  {
+    V(g)$size <- 8 * (n.spot-min(n.spot)) / (max(n.spot)-min(n.spot)) + 6
+  }
 
   if (length(E(g)) > 0)
   {
     E(g)$color <- c("red2","green2")[1.5 + sign(E(g)$weight) / 2]
     E(g)$width <- abs(E(g)$weight)
-    E(g)$width <- 5*(E(g)$width-min(E(g)$width))/(max(E(g)$width)-min(E(g)$width))+0.5
+    E(g)$width <- 5 * (E(g)$width-min(E(g)$width)) /
+                  (max(E(g)$width)-min(E(g)$width)) + 0.5
   }
 
   par(mar=c(1,1,1,1), mfrow=c(1,1))
