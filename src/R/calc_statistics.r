@@ -104,7 +104,7 @@ pipeline.calcStatistics <- function()
         LPE.g.m[o, m] <<- SD2
 
         lambda <- 0.5
-        sd.shrink.g.m[, m] <- sqrt(lambda * sd.g.m[,] ^ 2 + (1 - lambda) * LPE.g.m[, m] ^ 2)
+        sd.shrink.g.m[, m] <- sqrt(lambda * sd.g.m[,m] ^ 2 + (1 - lambda) * LPE.g.m[, m] ^ 2)
       }
       progress.current <- progress.current + 0.5
       util.progress(progress.current, progress.max)
