@@ -20,52 +20,51 @@ pipeline.groupAnalysis <- function()
   environment(pipeline.summarySheetsGroups) <- environment()
   pipeline.summarySheetsGroups()
 
-  e <- new.env()
-  e$metadata <- do.call(cbind, by(t(metadata), group.labels, colMeans)[unique(group.labels)])
+  metadata <- do.call(cbind, by(t(metadata), group.labels, colMeans)[unique(group.labels)])
 
-  e$indata.original <- indata.original
-  colnames(e$indata.original) <- group.labels[colnames(e$indata.original)]
+  indata.original <- indata.original
+  colnames(indata.original) <- group.labels[colnames(indata.original)]
 
-  e$indata <- do.call(cbind, by(t(e$indata.original),
-                                colnames(e$indata.original),
-                                colMeans)[unique(group.labels)])
+  indata <- do.call(cbind, by(t(indata.original),
+                              colnames(indata.original),
+                              colMeans)[unique(group.labels)])
 
-  e$indata.mean.level <- rowMeans(e$indata)
+  indata.mean.level <- rowMeans(indata)
 
   if (preferences$feature.mean.normalization)
   {
-    e$indata <- e$indata - e$indata.mean.level
+    indata <- indata - indata.mean.level
   }
 
-  e$group.colors <- group.colors[match(colnames(e$indata), group.labels)]
-  e$group.labels <- group.labels[match(colnames(e$indata), group.labels)]
-  names(e$group.labels) <- e$group.labels
-  names(e$group.colors) <- e$group.labels
+  group.colors <- group.colors[match(colnames(indata), group.labels)]
+  group.labels <- group.labels[match(colnames(indata), group.labels)]
+  names(group.labels) <- group.labels
+  names(group.colors) <- group.labels
 
-  e$output.paths <- c("LPE" = "",
-                      "CSV" = paste(files.name, "- Results/Summary Sheets - Groups/CSV Sheets"),
-                      "Summary Sheets Samples"= paste(files.name, "- Results/Summary Sheets - Groups/Reports"))
+  output.paths <- c("LPE" = "",
+                    "CSV" = paste(files.name, "- Results/Summary Sheets - Groups/CSV Sheets"),
+                    "Summary Sheets Samples"= paste(files.name, "- Results/Summary Sheets - Groups/Reports"))
 
-  e$preferences <- preferences
-  e$preferences$error.model <- "replicates"
+  preferences <- preferences
+  preferences$error.model <- "replicates"
 
   capture.output({
-    environment(pipeline.calcStatistics) <- e
+    environment(pipeline.calcStatistics) <- environment()
     pipeline.calcStatistics()
 
-    environment(pipeline.detectSpotsSamples) <- e
+    environment(pipeline.detectSpotsSamples) <- environment()
     pipeline.detectSpotsSamples()
 
     if (preferences$geneset.analysis)
     {
-      environment(pipeline.genesetStatisticSamples) <- e
+      environment(pipeline.genesetStatisticSamples) <- environment()
       pipeline.genesetStatisticSamples()
     }
 
-    environment(pipeline.geneLists) <- e
+    environment(pipeline.geneLists) <- environment()
     pipeline.geneLists()
 
-    environment(pipeline.summarySheetsSamples) <- e
+    environment(pipeline.summarySheetsSamples) <- environment()
     pipeline.summarySheetsGroups()
   })
 }

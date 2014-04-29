@@ -1,13 +1,6 @@
-pipeline.run <- function()
+pipeline.prepare <- function()
 {
-  # output some info
-  util.info("Started:", format(Sys.time(), "%a %b %d %X"))
-  util.info("Setting:", preferences$dataset.name)
-  util.info("1SOM Dim:", preferences$dim.som1)
-  util.info("2SOM Dim:", preferences$dim.som2)
-
   # check input parameters/data
-
   if (is.null(indata))
   {
     util.fatal("No indata supplied!")
@@ -20,7 +13,6 @@ pipeline.run <- function()
     indata <<- apply(indata, 2, function(x){ as.numeric(as.vector(x)) })
     rownames(indata) <<- rn
     storage.mode(indata) <<- "numeric"
-    #util.warn("Converted indata to numerical matrix")
   }
 
   if (length(rownames(indata)) == 0)
@@ -260,140 +252,4 @@ pipeline.run <- function()
 
   som.nodes <<- (som.result$visual[,"x"] + 1) + som.result$visual[,"y"] * preferences$dim.som1
   names(som.nodes) <<- rownames(indata)
-
-
-  ## Output
-
-  util.info("Saving workspace image:", files.name, "pre.RData")
-  # TODO Save opossom environment only?
-  save.image(paste(files.name, " pre.RData", sep=""))
-
-  util.info("Processing Differential Expression")
-  environment(pipeline.calcStatistics) <- environment()
-  pipeline.calcStatistics()
-
-  util.info("Detecting Spots")
-  environment(pipeline.detectSpotsSamples) <- environment()
-  pipeline.detectSpotsSamples()
-
-  environment(pipeline.detectSpotsIntegral) <- environment()
-  pipeline.detectSpotsIntegral()
-
-  environment(pipeline.groupAssignment) <- environment()
-  pipeline.groupAssignment()
-
-  util.info("Plotting Sample Portraits")
-  environment(pipeline.sampleExpressionPortraits) <- environment()
-  pipeline.sampleExpressionPortraits()
-
-  environment(pipeline.sampleRankMaps) <- environment()
-  pipeline.sampleRankMaps()
-
-  util.info("Processing Supporting Information")
-  environment(pipeline.supportingMaps) <- environment()
-  pipeline.supportingMaps()
-
-  environment(pipeline.entropyProfiles) <- environment()
-  pipeline.entropyProfiles()
-
-  environment(pipeline.topologyProfiles) <- environment()
-  pipeline.topologyProfiles()
-
-  util.info("Processing 2nd level Metagene Analysis")
-  dir.create(file.path(paste(files.name, "- Results"), "2nd lvl Metagene Analysis"), showWarnings=F)
-
-  environment(pipeline.2ndLvlSimilarityAnalysis) <- environment()
-  pipeline.2ndLvlSimilarityAnalysis()
-
-  environment(pipeline.2ndLvlCorrelationAnalysis) <- environment()
-  pipeline.2ndLvlCorrelationAnalysis()
-
-  environment(pipeline.2ndLvlComponentAnalysis) <- environment()
-  pipeline.2ndLvlComponentAnalysis()
-
-  environment(pipeline.2ndLvlSom) <- environment()
-  pipeline.2ndLvlSom()
-
-
-  if (preferences$geneset.analysis)
-  {
-    util.info("Processing Geneset Analysis")
-    dir.create(paste(files.name, "- Results/Geneset Analysis"), showWarnings=F)
-
-    environment(pipeline.genesetStatisticSamples) <- environment()
-    pipeline.genesetStatisticSamples()
-
-    environment(pipeline.genesetStatisticIntegral) <- environment()
-    pipeline.genesetStatisticIntegral()
-
-    environment(pipeline.genesetOverviews) <- environment()
-    pipeline.genesetOverviews()
-
-    util.info("Processing Geneset Profiles and Maps")
-    environment(pipeline.genesetProfilesAndMaps) <- environment()
-    pipeline.genesetProfilesAndMaps()
-
-    util.info("Processing Cancer Hallmarks")
-    environment(pipeline.cancerHallmarks) <- environment()
-    pipeline.cancerHallmarks()
-
-    util.info("Processing Chromosome Expression Reports")
-    environment(pipeline.chromosomeExpressionReports) <- environment()
-    pipeline.chromosomeExpressionReports()
-  }
-
-  util.info("Processing Gene Lists")
-  environment(pipeline.geneLists) <- environment()
-  pipeline.geneLists()
-
-  util.info("Processing Summary Sheets (Samples)")
-  environment(pipeline.summarySheetsSamples) <- environment()
-  pipeline.summarySheetsSamples()
-
-  util.info("Processing Summary Sheets (Spots)")
-  environment(pipeline.summarySheetsIntegral) <- environment()
-  pipeline.summarySheetsIntegral()
-
-  util.info("Processing 3rd level Spot Analysis")
-  dir.create(paste(files.name, "- Results/3rd lvl Spot Analysis"), showWarnings=F)
-
-  environment(pipeline.3rdLvlChromosomalEnrichment) <- environment()
-  pipeline.3rdLvlChromosomalEnrichment()
-
-  environment(pipeline.3rdLvlSummarySheets) <- environment()
-  pipeline.3rdLvlSummarySheets()
-
-  environment(pipeline.3rdLvlNetworks) <- environment()
-  pipeline.3rdLvlNetworks()
-
-  util.info("Generating HTML Report")
-  environment(pipeline.htmlSummary) <- environment()
-  pipeline.htmlSummary()
-
-  environment(pipeline.htmlSampleSummary) <- environment()
-  pipeline.htmlSampleSummary()
-
-  environment(pipeline.htmlIntegralSummary) <- environment()
-  pipeline.htmlIntegralSummary()
-
-  environment(pipeline.htmlGenesetAnalysis) <- environment()
-  pipeline.htmlGenesetAnalysis()
-
-  # TODO: Save opossom environment only?
-  save.image(paste(files.name, ".RData" , sep=""))
-
-  if (file.exists(paste(files.name, " pre.RData" , sep="")) &&
-      file.exists(paste(files.name, ".RData" , sep="")))
-  {
-    file.remove(paste(files.name, " pre.RData" , sep=""))
-  }
-
-  ## additional scripts
-  environment(pipeline.groupAnalysis) <- environment()
-  pipeline.groupAnalysis()
-
-  source("R/source/difference_analyses.r", local=TRUE)
-  source("R/source/signature_sets.r", local=TRUE)
-
-  util.info("Finished:", format(Sys.time(), "%a %b %d %X"))
 }
