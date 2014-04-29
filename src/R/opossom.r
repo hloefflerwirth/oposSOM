@@ -145,8 +145,8 @@ opossom.run <- function(opossom)
     return()
   }
 
-  util.info("Saving workspace image:", files.name, "pre.RData")
-  save(opossom, file=paste(files.name, "pre.RData"))
+  util.info("Saving workspace image:", opossom$files.name, "pre.RData")
+  save(opossom, file=paste(opossom$files.name, "pre.RData"))
 
   # Execute the pipeline
   util.info("Processing Differential Expression")
@@ -181,7 +181,7 @@ opossom.run <- function(opossom)
   pipeline.topologyProfiles()
 
   util.info("Processing 2nd level Metagene Analysis")
-  dir.create(file.path(paste(files.name, "- Results"),
+  dir.create(file.path(paste(opossom$files.name, "- Results"),
                        "2nd lvl Metagene Analysis"), showWarnings=F)
 
   environment(pipeline.2ndLvlSimilarityAnalysis) <- opossom
@@ -200,7 +200,8 @@ opossom.run <- function(opossom)
   if (preferences$geneset.analysis)
   {
     util.info("Processing Geneset Analysis")
-    dir.create(paste(files.name, "- Results/Geneset Analysis"), showWarnings=F)
+    dir.create(paste(opossom$files.name, "- Results/Geneset Analysis"),
+               showWarnings=F)
 
     environment(pipeline.genesetStatisticSamples) <- opossom
     pipeline.genesetStatisticSamples()
@@ -237,7 +238,8 @@ opossom.run <- function(opossom)
   pipeline.summarySheetsIntegral()
 
   util.info("Processing 3rd level Spot Analysis")
-  dir.create(paste(files.name, "- Results/3rd lvl Spot Analysis"), showWarnings=F)
+  dir.create(paste(opossom$files.name, "- Results/3rd lvl Spot Analysis"),
+             showWarnings=F)
 
   environment(pipeline.3rdLvlChromosomalEnrichment) <- opossom
   pipeline.3rdLvlChromosomalEnrichment()
