@@ -379,18 +379,14 @@ pipeline.run <- function()
   environment(pipeline.htmlGenesetAnalysis) <- environment()
   pipeline.htmlGenesetAnalysis()
 
-  ############### TODO ###
-
-  cat("Clean and store Workspace\n"); flush.console()
-  source("R/source/workspace_cleanup.r", local=TRUE)
+  # TODO: Save opossom environment only?
   save.image(paste(files.name, ".RData" , sep=""))
 
-
-  if (file.exists(paste(files.name, " pre.RData" , sep="")) && file.exists(paste(files.name, ".RData" , sep="")))
-    r = file.remove(paste(files.name, " pre.RData" , sep=""))
-
-
-
+  if (file.exists(paste(files.name, " pre.RData" , sep="")) &&
+      file.exists(paste(files.name, ".RData" , sep="")))
+  {
+    file.remove(paste(files.name, " pre.RData" , sep=""))
+  }
 
   ## additional scripts
 
