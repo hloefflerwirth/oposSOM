@@ -20,12 +20,12 @@ pipeline.groupAnalysis <- function()
   environment(pipeline.summarySheetsGroups) <- environment()
   pipeline.summarySheetsGroups()
 
-  metadata <- do.call(cbind, by(t(metadata), group.labels, colMeans)[unique(group.labels)])
+  metadata <<- do.call(cbind, by(t(metadata), group.labels, colMeans)[unique(group.labels)])
 
-  indata.original <- indata.original
-  colnames(indata.original) <- group.labels[colnames(indata.original)]
+  indata.original <<- indata.original
+  colnames(indata.original) <<- group.labels[colnames(indata.original)]
 
-  indata <- do.call(cbind, by(t(indata.original),
+  indata <<- do.call(cbind, by(t(indata.original),
                               colnames(indata.original),
                               colMeans)[unique(group.labels)])
 
@@ -33,38 +33,35 @@ pipeline.groupAnalysis <- function()
 
   if (preferences$feature.mean.normalization)
   {
-    indata <- indata - indata.mean.level
+    indata <<- indata - indata.mean.level
   }
 
-  group.colors <- group.colors[match(colnames(indata), group.labels)]
-  group.labels <- group.labels[match(colnames(indata), group.labels)]
-  names(group.labels) <- group.labels
-  names(group.colors) <- group.labels
+  group.colors <<- group.colors[match(colnames(indata), group.labels)]
+  group.labels <<- group.labels[match(colnames(indata), group.labels)]
+  names(group.labels) <<- group.labels
+  names(group.colors) <<- group.labels
 
-  output.paths <- c("LPE" = "",
-                    "CSV" = paste(files.name, "- Results/Summary Sheets - Groups/CSV Sheets"),
-                    "Summary Sheets Samples"= paste(files.name, "- Results/Summary Sheets - Groups/Reports"))
+  output.paths <<- c("LPE" = "",
+                     "CSV" = paste(files.name, "- Results/Summary Sheets - Groups/CSV Sheets"),
+                     "Summary Sheets Samples"= paste(files.name, "- Results/Summary Sheets - Groups/Reports"))
 
-  preferences <- preferences
-  preferences$error.model <- "replicates"
+  preferences$error.model <<- "replicates"
 
-  capture.output({
-    environment(pipeline.calcStatistics) <- environment()
-    pipeline.calcStatistics()
+  environment(pipeline.calcStatistics) <- environment()
+  pipeline.calcStatistics()
 
-    environment(pipeline.detectSpotsSamples) <- environment()
-    pipeline.detectSpotsSamples()
+  environment(pipeline.detectSpotsSamples) <- environment()
+  pipeline.detectSpotsSamples()
 
-    if (preferences$geneset.analysis)
-    {
-      environment(pipeline.genesetStatisticSamples) <- environment()
-      pipeline.genesetStatisticSamples()
-    }
+  if (preferences$geneset.analysis)
+  {
+    environment(pipeline.genesetStatisticSamples) <- environment()
+    pipeline.genesetStatisticSamples()
+  }
 
-    environment(pipeline.geneLists) <- environment()
-    pipeline.geneLists()
+  environment(pipeline.geneLists) <- environment()
+  pipeline.geneLists()
 
-    environment(pipeline.summarySheetsSamples) <- environment()
-    pipeline.summarySheetsGroups()
-  })
+  environment(pipeline.summarySheetsSamples) <- environment()
+  pipeline.summarySheetsGroups()
 }
