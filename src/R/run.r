@@ -394,11 +394,5 @@ pipeline.run <- function()
   source("R/source/difference_analyses.r", local=TRUE)
   source("R/source/signature_sets.r", local=TRUE)
 
-  cat("Finished:", format(Sys.time(), "%a %b %d %X\n\n"))
-  flush.console()
-
-
-
-
-
+  util.info("Finished:", format(Sys.time(), "%a %b %d %X"))
 }
