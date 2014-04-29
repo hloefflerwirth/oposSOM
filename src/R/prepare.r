@@ -4,7 +4,7 @@ pipeline.prepare <- function()
   if (is.null(indata))
   {
     util.fatal("No indata supplied!")
-    return()
+    return(F)
   }
 
   if (class(indata) != "matrix" || mode(indata) != "numeric" || storage.mode(indata) != "numeric")
@@ -252,4 +252,6 @@ pipeline.prepare <- function()
 
   som.nodes <<- (som.result$visual[,"x"] + 1) + som.result$visual[,"y"] * preferences$dim.som1
   names(som.nodes) <<- rownames(indata)
+
+  return(T)
 }
