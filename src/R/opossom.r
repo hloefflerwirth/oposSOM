@@ -197,7 +197,7 @@ opossom.run <- function(opossom)
   pipeline.2ndLvlSom()
 
 
-  if (preferences$geneset.analysis)
+  if (opossom$preferences$geneset.analysis)
   {
     util.info("Processing Geneset Analysis")
     dir.create(paste(opossom$files.name, "- Results/Geneset Analysis"),
