@@ -3,7 +3,7 @@ Title: Package for analysis and visualization of metagenes
 Version: 0.3.0
 Description: This package translates microarray expression data into metagenes
   and provides various visualizations and second level analyses..
-Depends: R (>= 3.0.0)
+Depends: R (>= 2.10.0)
 License: GPL (>=2)
 Author: Henry Wirth <wirth@izbi.uni-leipzig.de>
 Maintainer: Martin Kalcher <mkalcher@porkbox.net>
