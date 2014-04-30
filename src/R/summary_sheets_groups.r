@@ -317,7 +317,7 @@ pipeline.summarySheetsGroups <- function()
 
     par(mar=c(10,6,4,5))
 
-    barplot(group.bootstrap.score, col=group.colors, main="Group Bootstrapping", names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2, cex.names=1.2, border = if (ncol(indata) < 80) "black" else NA)
+    barplot(group.bootstrap.score, col=group.colors, main="Group Bootstrapping", names.arg=names(group.bootstrap.score), las=2, cex.main=2.5, cex.lab=2, cex.axis=2, cex.names=1.2, border = if (ncol(indata) < 80) "black" else NA)
 
 
     mean.bs.boxes = by(group.bootstrap.score, group.labels, c)[unique(group.labels)]
