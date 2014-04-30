@@ -145,8 +145,9 @@ opossom.run <- function(opossom)
     return()
   }
 
-  util.info("Saving workspace image:", opossom$files.name, "pre.RData")
-  save(opossom, file=paste(opossom$files.name, "pre.RData"))
+  imagename <- paste(opossom$files.name, "pre.RData")
+  util.info("Saving environment image:", imagename)
+  save(opossom, file=imagename)
 
   # Execute the pipeline
   util.info("Processing Differential Expression")
@@ -265,7 +266,13 @@ opossom.run <- function(opossom)
 
   # Save the opossom environment
   filename <- paste(opossom$files.name, ".RData", sep="")
+  util.info("Saving environment image:", filename)
   save(opossom, file=filename)
+
+  if (file.exists(imagename) && file.exists(filename))
+  {
+    file.remove(imagename)
+  }
 
   # Run additional functions. (NOTE: They are changing the environment)
   environment(pipeline.groupAnalysis) <- opossom
