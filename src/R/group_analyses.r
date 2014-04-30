@@ -62,5 +62,5 @@ pipeline.groupAnalysis <- function()
   pipeline.geneLists()
 
   environment(pipeline.summarySheetsSamples) <- environment()
-  pipeline.summarySheetsGroups()
+  pipeline.summarySheetsSamples()
 }
