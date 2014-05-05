@@ -12,7 +12,7 @@ if (file.exists(dirname)) {
 dir.create("oposSOM")
 
 # Copy everything we need
-for (f in c("R", "DESCRIPTION", "NAMESPACE")) {
+for (f in c("R", "man", "DESCRIPTION", "NAMESPACE")) {
   cat("* copy", f, "\n")
   file.copy(file.path("src", f), file.path(dirname), recursive=T)
 }
@@ -20,6 +20,10 @@ for (f in c("R", "DESCRIPTION", "NAMESPACE")) {
 # Move data into the package
 cat("* create data dir:", datadir, "\n")
 dir.create(datadir)
+
+filename <- "opossom.tissues.RData"
+cat("* copy", filename, "\n")
+file.copy(file.path("src", "data", filename), datadir) -> x
 
 filename <- file.path("src", "data", "geneset_collection.csv")
 cat("* load", filename, "\n")

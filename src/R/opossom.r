@@ -119,7 +119,7 @@ opossom.new <- function(preferences)
     util.warn("Invalid value of \"error.model\". Using \"all.samples\"")
   }
 
-  # Load opossom genesets
+  # Load custom genesets
   data(opossom.genesets)
   opossom$preferences$geneset.custom.list <- opossom.genesets
 
