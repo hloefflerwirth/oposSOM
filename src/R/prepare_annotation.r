@@ -119,10 +119,9 @@ pipeline.prepareAnnotation <- function()
     gs.def.list <<- gs.def.list[- small.gs]
   }
 
-  if (length(preferences$geneset.custom.list) > 0)
-  {
-    gs.def.list <<- c(gs.def.list, preferences$geneset.custom.list)
-  }
+  # load custom genesets
+  data(opossom.genesets)
+  gs.def.list  <<- c(gs.def.list, opossom.genesets)
 
   gs.def.list <<- lapply(gs.def.list, function(x) {
     x$Genes <- intersect(x$Genes, unique.protein.ids)

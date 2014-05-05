@@ -15,7 +15,7 @@
 
     \itemize{
       \item{dataset.name}: name of the dataset
-      \item{error.model}: error model to use (character \{\code{"all.samples"},\code{"replicates"},\code{"groups"})
+      \item{error.model}: error model to use (character \{\code{"all.samples"},\code{"replicates"},\code{"groups"}\})
       \item{dim.som1}: dimensions of primary SOM in x and y range (numerical)
       \item{dim.som2}: dimensions of second level SOM in x and y range (numerical)
       \item{training.extension}: factor to extend the number of iterations in SOM trainin (numerical)
