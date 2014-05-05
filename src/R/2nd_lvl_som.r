@@ -1,13 +1,13 @@
 pipeline.2ndLvlSom <- function()
 {
-  supersom.custom <- som(t(metadata), xdim=preferences$dim.som2, ydim=preferences$dim.som2)
+  supersom.custom <<- som(t(metadata), xdim=preferences$dim.som2, ydim=preferences$dim.som2)
 
   if (preferences$dim.som2 == 20)
   {
-    supersom.20 <- supersom.custom
+    supersom.20 <<- supersom.custom
   } else
   {
-    supersom.20 <- som(t(metadata), xdim=20, ydim=20)
+    supersom.20 <<- som(t(metadata), xdim=20, ydim=20)
   }
 
   filename <- file.path(paste(files.name, "- Results"), "2nd lvl Metagene Analysis", "2nd lvl SOM.pdf")

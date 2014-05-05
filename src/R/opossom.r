@@ -69,6 +69,8 @@ opossom.new <- function(preferences)
   opossom$GS.infos.correlation <- NULL
   opossom$GS.infos.kmeans <- NULL
   opossom$GS.infos.group.overexpression <- NULL
+  opossom$supersom.20 <- NULL
+  opossom$supersom.custom <- NULL
 
   # Generate some additional letters
   opossom$LETTERS <- c(LETTERS, as.vector(sapply(1:10, function(x) {
