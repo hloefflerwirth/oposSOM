@@ -25,7 +25,7 @@ pipeline.genesetStatisticSamples <- function()
 
     for (m in 1:ncol(indata))
     {
-      all.gene.statistic <<- batch.t.g.m[, m]
+      all.gene.statistic <- batch.t.g.m[, m]
       spot.gene.ids <- unique.protein.ids
 
       null.scores <- c(null.scores, GeneSet.GSZ(spot.gene.ids, all.gene.statistic,
@@ -35,7 +35,7 @@ pipeline.genesetStatisticSamples <- function()
       {
         spot.genes <- GS.infos.samples[[m]]$spots[[spot.i]]$genes
         spot.gene.ids <- unique(na.omit(gene.ids[spot.genes]))
-        all.gene.statistic <<- batch.t.g.m[, m]
+        all.gene.statistic <- batch.t.g.m[, m]
 
         null.scores <- c(null.scores,  GeneSet.GSZ(spot.gene.ids, all.gene.statistic,
                                                    gs.null.list, cluster=cl))
@@ -50,7 +50,7 @@ pipeline.genesetStatisticSamples <- function()
 
   for (m in 1:ncol(indata))
   {
-    all.gene.statistic <<- batch.t.g.m[, m]
+    all.gene.statistic <- batch.t.g.m[, m]
     spot.gene.ids <- unique.protein.ids
 
     GS.infos.samples[[m]]$GSZ.score <<-

@@ -55,7 +55,7 @@ pipeline.qualityCheck <- function()
 
 
 
-  indata.sample.var <<- apply(indata, 2, var)
+  indata.sample.var <- apply(indata, 2, var)
 
   par(mar=c(5,3,3,2))
 

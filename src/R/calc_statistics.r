@@ -15,12 +15,12 @@ pipeline.calcStatistics <- function()
   util.info("Processing Single Genes")
   util.progress(0, 48)
 
-  mean.e.g <<- rowMeans(indata.original)
-  e.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
-  delta.e.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
+  mean.e.g <- rowMeans(indata.original)
+  e.g.m <- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
+  delta.e.g.m <- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
 
   sd.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
-  LPE.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
+  LPE.g.m <- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
 
   WAD.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
 
@@ -37,8 +37,8 @@ pipeline.calcStatistics <- function()
   fdr.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
   Fdr.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
 
-  mean.LPE2 <<- rep(NA, ncol(indata))
-  names(mean.LPE2) <<- colnames(indata)
+  mean.LPE2 <- rep(NA, ncol(indata))
+  names(mean.LPE2) <- colnames(indata)
 
 
   for (m in 1:ncol(indata))
@@ -51,12 +51,12 @@ pipeline.calcStatistics <- function()
       e.r.g.m <- as.matrix(indata.original[,m])
     }
 
-    e.g.m[,m] <<- rowMeans(e.r.g.m)
+    e.g.m[,m] <- rowMeans(e.r.g.m)
 
     delta.e.r.g.m <- e.r.g.m - mean.e.g
-    delta.e.g.m[,m] <<- rowMeans(delta.e.r.g.m)
+    delta.e.g.m[,m] <- rowMeans(delta.e.r.g.m)
 
-    w.g.m <<- (delta.e.g.m[,m] - min(delta.e.g.m[,m])) / (max(delta.e.g.m[,m]) - min(delta.e.g.m[,m]))
+    w.g.m <- (delta.e.g.m[,m] - min(delta.e.g.m[,m])) / (max(delta.e.g.m[,m]) - min(delta.e.g.m[,m]))
     WAD.g.m[,m] <<- w.g.m * delta.e.g.m[,m]
   }
 
@@ -90,7 +90,7 @@ pipeline.calcStatistics <- function()
           sqrt(sum((e.r.g.m[x,] - e.g.m[x,m]) ^ 2) / R.m[m])
         })
 
-        LPE.g.m[o, m] <<- Get.Running.Average(sd.g.m[o, m], min(200, round(nrow(indata) * 0.02)))
+        LPE.g.m[o, m] <- Get.Running.Average(sd.g.m[o, m], min(200, round(nrow(indata) * 0.02)))
 
         SD2 <- LPE.g.m[o, m]
 
@@ -101,7 +101,7 @@ pipeline.calcStatistics <- function()
             SD2[j] <- SD2[j+1]
           }
         }
-        LPE.g.m[o, m] <<- SD2
+        LPE.g.m[o, m] <- SD2
 
         lambda <- 0.5
         sd.shrink.g.m[, m] <- sqrt(lambda * sd.g.m[,m] ^ 2 + (1 - lambda) * LPE.g.m[, m] ^ 2)
@@ -143,7 +143,7 @@ pipeline.calcStatistics <- function()
       {
         o <- order(e.g.m[, m])
 
-        LPE.g.m[o, m] <<- Get.Running.Average(sd.g.m[o, m], min(200, round(nrow(indata) * 0.02)))
+        LPE.g.m[o, m] <- Get.Running.Average(sd.g.m[o, m], min(200, round(nrow(indata) * 0.02)))
 
         SD2 <- LPE.g.m[o, m]
 
@@ -154,7 +154,7 @@ pipeline.calcStatistics <- function()
             SD2[j] <- SD2[j+1]
           }
         }
-        LPE.g.m[o, m] <<- SD2
+        LPE.g.m[o, m] <- SD2
 
         lambda <- 0.5
         sd.shrink.g.m[, m] <- sqrt(lambda * sd.g.m[, m] ^ 2 + (1 - lambda) * LPE.g.m[, m] ^ 2)
@@ -187,9 +187,9 @@ pipeline.calcStatistics <- function()
       o <- order(apply(indata.original, 1, mean))
       sd <- apply(indata.original, 1, sd)
 
-      LPE.g.m[o, m] <<- Get.Running.Average(sd[o], min(200, round(nrow(indata) * 0.02)))
-      LPE.g.m[which(is.nan(LPE.g.m[,m])),m] <<- 0.0000000001
-      LPE.g.m[which(LPE.g.m[,m] == 0),m] <<- 0.0000000001
+      LPE.g.m[o, m] <- Get.Running.Average(sd[o], min(200, round(nrow(indata) * 0.02)))
+      LPE.g.m[which(is.nan(LPE.g.m[,m])),m] <- 0.0000000001
+      LPE.g.m[which(LPE.g.m[,m] == 0),m] <- 0.0000000001
 
       SD2 <- LPE.g.m[o,m]
 
@@ -201,7 +201,7 @@ pipeline.calcStatistics <- function()
         }
       }
 
-      LPE.g.m[o,m] <<- SD2
+      LPE.g.m[o,m] <- SD2
       rm(SD2)
 
       progress.current <- progress.current + 0.5
@@ -245,7 +245,7 @@ pipeline.calcStatistics <- function()
           sqrt(sum((e.r.g.m[x,] - e.g.m[x,m]) ^ 2) / R.m[m])
         })
 
-        LPE.g.m[o, m] <<- Get.Running.Average(sd.g.m[o,m], min(200, round(nrow(indata) * 0.02)))
+        LPE.g.m[o, m] <- Get.Running.Average(sd.g.m[o,m], min(200, round(nrow(indata) * 0.02)))
 
         SD2 <- LPE.g.m[o, m]
 
@@ -256,7 +256,7 @@ pipeline.calcStatistics <- function()
             SD2[j] <- SD2[j+1]
           }
         }
-        LPE.g.m[o, m] <<- SD2
+        LPE.g.m[o, m] <- SD2
 
         lambda <- 0.5
         sd.shrink.g.m[, m] <- sqrt(lambda * sd.g.m[, m] ^ 2 + (1 - lambda) * LPE.g.m[, m] ^ 2)
@@ -299,7 +299,7 @@ pipeline.calcStatistics <- function()
       {
         o <- order(e.g.m[,m])
 
-        LPE.g.m[o, m] <<- Get.Running.Average(sd.g.m[o,m], min(200, round(nrow(indata) * 0.02)))
+        LPE.g.m[o, m] <- Get.Running.Average(sd.g.m[o,m], min(200, round(nrow(indata) * 0.02)))
 
         SD2 <- LPE.g.m[o, m]
 
@@ -310,7 +310,7 @@ pipeline.calcStatistics <- function()
             SD2[j] <- SD2[j+1]
           }
         }
-        LPE.g.m[o,m] <<- SD2
+        LPE.g.m[o,m] <- SD2
 
         lambda <- 0.5
         sd.shrink.g.m[,m] <- sqrt(lambda * sd.g.m[,m] ^ 2 + (1 - lambda) * LPE.g.m[,m] ^ 2)
@@ -355,7 +355,7 @@ pipeline.calcStatistics <- function()
       perc.DE.m[m] <<- 1 - n.0.m[m]
     }
 
-    mean.LPE2[m] <<- sqrt(Get.Area(e.g.m[,m], LPE.g.m[,m] ^ 2) / (max(e.g.m[,m]) - min(e.g.m[,m])))
+    mean.LPE2[m] <- sqrt(Get.Area(e.g.m[,m], LPE.g.m[,m] ^ 2) / (max(e.g.m[,m]) - min(e.g.m[,m])))
 
     progress.current <- progress.current + 0.4
     util.progress(progress.current, progress.max)

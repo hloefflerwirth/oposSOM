@@ -134,7 +134,7 @@ pipeline.differenceAnalyses = function()
     delta.e.g.m <- rowMeans(indata.original[,samples.indata.original[[1]],drop=F]) -
                      rowMeans(indata.original[,samples.indata.original[[2]],drop=F])
 
-    w.g.m <<- (delta.e.g.m - min(delta.e.g.m)) / (max(delta.e.g.m) - min(delta.e.g.m))
+    w.g.m <- (delta.e.g.m - min(delta.e.g.m)) / (max(delta.e.g.m) - min(delta.e.g.m))
     WAD.g.m[,d] <<- w.g.m * delta.e.g.m
   }
 

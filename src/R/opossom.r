@@ -24,7 +24,6 @@ opossom.new <- function(preferences)
   opossom$indata <- NULL
   opossom$indata.original <- NULL
   opossom$indata.sample.mean <- NULL
-  opossom$indata.sample.var <- NULL
   opossom$indata.mean.level <- NULL
   opossom$group.labels <- NULL
   opossom$group.colors <- NULL
@@ -52,15 +51,10 @@ opossom.new <- function(preferences)
   opossom$WAD.metadata <- NULL
   opossom$WAD.group.metadata <- NULL
   opossom$genes.coordinates <- NULL
-  opossom$mean.e.g <- NULL
-  opossom$e.g.m <- NULL
-  opossom$delta.e.g.m <- NULL
   opossom$sd.g.m <- NULL
-  opossom$LPE.g.m <- NULL
   opossom$WAD.g.m <- NULL
   opossom$t.g.m <- NULL
   opossom$p.g.m <- NULL
-  opossom$w.g.m <- NULL
   opossom$n.0.m <- NULL
   opossom$t.m <- NULL
   opossom$p.m <- NULL
@@ -69,8 +63,6 @@ opossom.new <- function(preferences)
   opossom$perc.DE.m <- NULL
   opossom$fdr.g.m <- NULL
   opossom$Fdr.g.m <- NULL
-  opossom$all.gene.statistic <- NULL
-  opossom$mean.LPE2 <- NULL
   opossom$GS.infos.samples <- NULL
   opossom$GS.infos.overexpression <- NULL
   opossom$GS.infos.underexpression <- NULL
