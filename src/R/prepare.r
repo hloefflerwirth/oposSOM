@@ -7,9 +7,15 @@ pipeline.prepare <- function()
     return(F)
   }
 
+  if (class(indata) != "matrix" && (is.null(dim(indata)) || dim(indata) < 1))
+  {
+    util.fatal("Invalid indata supplied!")
+    return(F)
+  }
+
   if (class(indata) != "matrix" || mode(indata) != "numeric" || storage.mode(indata) != "numeric")
   {
-    rn = rownames(indata)
+    rn <- rownames(indata)
     indata <<- apply(indata, 2, function(x){ as.numeric(as.vector(x)) })
     rownames(indata) <<- rn
     storage.mode(indata) <<- "numeric"

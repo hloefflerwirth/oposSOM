@@ -24,23 +24,25 @@ pipeline.prepareAnnotation <- function()
 
   if (!preferences$ensembl.dataset %in% c("auto", ""))
   {
+    biomart.table <- NULL
     require.bioconductor("biomaRt")
-    mart <- useMart('ensembl')
-    mart <- useDataset(preferences$ensembl.dataset, mart=mart)
 
     try({
+      mart <- useMart('ensembl')
+      mart <- useDataset(preferences$ensembl.dataset, mart=mart)
+
       biomart.table <-
         getBM(c(preferences$ensembl.rowname.ids, "external_gene_id"),
               preferences$ensembl.rowname.ids,
               rownames(indata)[seq(1,nrow(indata),length.out=100)],
               mart, checkFilters=F)
-
-      if (nrow(biomart.table) == 0)
-      {
-        util.warn("Invalid annotation parameters. Try autodetection...")
-        preferences$ensembl.dataset <<- "auto"
-      }
     }, silent=T)
+
+    if (is.null(biomart.table) || nrow(biomart.table) == 0)
+    {
+      util.warn("Invalid annotation parameters. Try to autodetect...")
+      preferences$ensembl.dataset <<- "auto"
+    }
   }
 
   if (preferences$ensembl.dataset == "auto")
