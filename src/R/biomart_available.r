@@ -1,5 +1,7 @@
 biomart.available <- function()
 {
+  test.table <- NULL
+
   test.rownames <- c("ENSG00000115415",
                      "ENSG00000049541",
                      "ENSG00000143384",
@@ -12,15 +14,16 @@ biomart.available <- function()
                      "ENSG00000162511")
 
   require.bioconductor("biomaRt")
-  mart <- useMart('ensembl')
-  mart <- useDataset("hsapiens_gene_ensembl", mart=mart)
 
   try({
+    mart <- useMart('ensembl')
+    mart <- useDataset("hsapiens_gene_ensembl", mart=mart)
+
     test.table <- getBM("external_gene_id",
                         "ensembl_gene_id",
                         test.rownames,
                         mart=mart)
   }, silent=T)
 
-  return(nrow(test.table) > 0)
+  return(!is.null(test.table) && nrow(test.table) > 0)
 }

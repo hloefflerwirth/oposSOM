@@ -2,7 +2,7 @@ pipeline.detectEnsemblDataset <- function()
 {
   preferences$ensembl.dataset <<- ""
 
-  util.info("Autodetecting ensembl dataset")
+  util.info("Autodetecting annotation paramters")
 
   auto.datasets <-
     list("hsapiens_gene_ensembl"=c("affy_hg_u133a",
@@ -36,7 +36,8 @@ pipeline.detectEnsemblDataset <- function()
 
         if (nrow(biomart.table) > 0)
         {
-          util.info("Autodetected ensembl dataset:", ds)
+          util.info("Detected annotation dataset:", ds)
+          util.info("Detected annotation filter:", id)
           preferences$ensembl.dataset <<- ds
           preferences$ensembl.rowname.ids <<- id
           return()
