@@ -20,7 +20,9 @@ opossom.run(opossom)
   }
 }
 \author{
-  Martin Kalcher <mkalcher@porkbox.net>
+Author: Henry Wirth <wirth@izbi.uni-leipzig.de>
+
+Maintainer: Martin Kalcher <mkalcher@porkbox.net>
 }
 \examples{
 pipeline <- opossom.new(list(dataset.name="Example",

@@ -41,7 +41,9 @@
   A new oposSOM environment you can modify and pass to \code{opossom.run}.
 }
 \author{
-  Martin Kalcher <mkalcher@porkbox.net>
+Author: Henry Wirth <wirth@izbi.uni-leipzig.de>
+
+Maintainer: Martin Kalcher <mkalcher@porkbox.net>
 }
 \examples{
 opossom <- opossom.new(list(dataset.name="Example",

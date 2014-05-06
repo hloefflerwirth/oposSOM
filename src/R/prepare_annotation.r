@@ -14,31 +14,66 @@ pipeline.prepareAnnotation <- function()
   gene.positions.table <<- matrix(0,0,0)
   gene.positions.list <<- list()
 
-  if (preferences$ensembl.dataset == "" || preferences$ensembl.rowname.ids == "")
+  if (!biomart.available())
   {
+    util.warn("biomaRt seems to be down.")
+    util.warn("Disabling geneset analysis.")
     preferences$geneset.analysis <<- F
     return()
   }
 
-  require.bioconductor("biomaRt")
+  if (!preferences$ensembl.dataset %in% c("auto", ""))
+  {
+    require.bioconductor("biomaRt")
+    mart <- useMart('ensembl')
+    mart <- useDataset(preferences$ensembl.dataset, mart=mart)
 
-  mart<-useMart('ensembl')
-  mart<-useDataset(preferences$ensembl.dataset, mart=mart)
+    try({
+      biomart.table <-
+        getBM(c(preferences$ensembl.rowname.ids, "external_gene_id"),
+              preferences$ensembl.rowname.ids,
+              rownames(indata)[seq(1,nrow(indata),length.out=100)],
+              mart, checkFilters=F)
 
-  biomart.table = getBM(c(preferences$ensembl.rowname.ids,
-                          "external_gene_id",
-                          "description",
-                          "ensembl_gene_id",
-                          "chromosome_name",
-                          "band"),
-                        preferences$ensembl.rowname.ids,
-                        rownames(indata), mart, checkFilters=F)
+      if (nrow(biomart.table) == 0)
+      {
+        util.warn("Invalid annotation parameters. Try autodetection...")
+        preferences$ensembl.dataset <<- "auto"
+      }
+    }, silent=T)
+  }
 
+  if (preferences$ensembl.dataset == "auto")
+  {
+    environment(pipeline.detectEnsemblDataset) <- environment()
+    pipeline.detectEnsemblDataset()
+  }
+
+  if (preferences$ensembl.dataset == "" || preferences$ensembl.rowname.ids == "")
+  {
+    util.warn("Could not find valid annotation parameters.")
+    util.warn("Disabling geneset analysis.")
+    preferences$geneset.analysis <<- F
+    return()
+  }
+
+  mart <- useMart('ensembl')
+  mart <- useDataset(preferences$ensembl.dataset, mart=mart)
+
+  biomart.table <- getBM(c(preferences$ensembl.rowname.ids,
+                           "external_gene_id",
+                           "description",
+                           "ensembl_gene_id",
+                           "chromosome_name",
+                           "band"),
+                         preferences$ensembl.rowname.ids,
+                         rownames(indata), mart, checkFilters=F)
 
   if (nrow(biomart.table) == 0)
   {
-    preferences$geneset.analysis <<- F
     util.warn("Could not resolve rownames. Possibly wrong ensembl.rowname.ids")
+    util.warn("Disabling geneset analysis.")
+    preferences$geneset.analysis <<- F
   } else
   {
     h <- biomart.table[,2]
