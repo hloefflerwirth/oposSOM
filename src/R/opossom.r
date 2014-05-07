@@ -21,56 +21,56 @@ opossom.new <- function(preferences)
 
   # Init the environment
   opossom <- new.env()
-  opossom$indata <- NULL
-  opossom$indata.original <- NULL
-  opossom$indata.sample.mean <- NULL
-  opossom$indata.mean.level <- NULL
-  opossom$group.labels <- NULL
-  opossom$group.colors <- NULL
-  opossom$group.metadata <- NULL
-  opossom$group.bootstrap.score <- NULL
-  opossom$unique.group.colors <- NULL
-  opossom$files.name <- NULL
-  opossom$output.paths <- NULL
+  opossom$batch.t.g.m <- NULL
   opossom$colramp <- NULL
+  opossom$Fdr.g.m <- NULL
+  opossom$fdr.g.m <- NULL
+  opossom$fdr.m <- NULL
+  opossom$files.name <- NULL
+  opossom$gene.descriptions <- NULL
   opossom$gene.ids <- NULL
   opossom$gene.names <- NULL
-  opossom$gene.descriptions <- NULL
   opossom$gene.positions <- NULL
   opossom$gene.positions.list <- NULL
   opossom$gene.positions.table <- NULL
+  opossom$genes.coordinates <- NULL
+  opossom$group.bootstrap.score <- NULL
+  opossom$group.colors <- NULL
+  opossom$group.labels <- NULL
+  opossom$group.metadata <- NULL
   opossom$gs.def.list <- NULL
   opossom$gs.def.list.categories <- NULL
-  opossom$unique.protein.ids <- NULL
-  opossom$som.result <- NULL
-  opossom$som.nodes <- NULL
+  opossom$GS.infos.correlation <- NULL
+  opossom$GS.infos.group.overexpression <- NULL
+  opossom$GS.infos.kmeans <- NULL
+  opossom$GS.infos.overexpression <- NULL
+  opossom$GS.infos.samples <- NULL
+  opossom$GS.infos.underexpression <- NULL
+  opossom$indata <- NULL
+  opossom$indata.mean.level <- NULL
+  opossom$indata.original <- NULL
+  opossom$indata.sample.mean <- NULL
+  opossom$loglog.group.metadata <- NULL
+  opossom$loglog.metadata <- NULL
   opossom$metadata <- NULL
   opossom$metagene.filter.list <- NULL
-  opossom$loglog.metadata <- NULL
-  opossom$loglog.group.metadata <- NULL
-  opossom$WAD.metadata <- NULL
-  opossom$WAD.group.metadata <- NULL
-  opossom$genes.coordinates <- NULL
-  opossom$sd.g.m <- NULL
-  opossom$WAD.g.m <- NULL
-  opossom$t.g.m <- NULL
-  opossom$p.g.m <- NULL
   opossom$n.0.m <- NULL
-  opossom$t.m <- NULL
+  opossom$output.paths <- NULL
+  opossom$p.g.m <- NULL
   opossom$p.m <- NULL
-  opossom$fdr.m <- NULL
-  opossom$batch.t.g.m <- NULL
   opossom$perc.DE.m <- NULL
-  opossom$fdr.g.m <- NULL
-  opossom$Fdr.g.m <- NULL
-  opossom$GS.infos.samples <- NULL
-  opossom$GS.infos.overexpression <- NULL
-  opossom$GS.infos.underexpression <- NULL
-  opossom$GS.infos.correlation <- NULL
-  opossom$GS.infos.kmeans <- NULL
-  opossom$GS.infos.group.overexpression <- NULL
+  opossom$sd.g.m <- NULL
+  opossom$som.nodes <- NULL
+  opossom$som.result <- NULL
   opossom$supersom.20 <- NULL
   opossom$supersom.custom <- NULL
+  opossom$t.g.m <- NULL
+  opossom$t.m <- NULL
+  opossom$unique.group.colors <- NULL
+  opossom$unique.protein.ids <- NULL
+  opossom$WAD.g.m <- NULL
+  opossom$WAD.group.metadata <- NULL
+  opossom$WAD.metadata <- NULL
 
   # Generate some additional letters
   opossom$LETTERS <- c(LETTERS, as.vector(sapply(1:10, function(x) {
@@ -259,7 +259,7 @@ opossom.run <- function(opossom)
     file.remove(imagename)
   }
 
-  # Run additional functions. (NOTE: They are changing the environment)
+  # Run additional functions. (NOTE: They alter the environment)
   environment(pipeline.groupAnalysis) <- opossom
   pipeline.groupAnalysis()
 
