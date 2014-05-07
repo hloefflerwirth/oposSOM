@@ -1,5 +1,142 @@
 pipeline.prepare <- function()
 {
+  ## check preferences
+  if (!is.character(preferences$dataset.name))
+  {
+    util.warn("Invalid value of \"dataset.name\". Using \"Unnamed\"")
+    preferences$dataset.name <<- "Unnamed"
+  }
+
+  if (!preferences$error.model %in% c("replicates", "all.samples", "groups")) {
+    util.warn("Invalid value of \"error.model\". Using \"all.samples\"")
+    preferences$error.model <<- "all.samples"
+  }
+
+  if (!is.numeric(preferences$dim.som1) || preferences$dim.som1 < 1)
+  {
+    util.warn("Invalid value of \"dim.som1\". Using 20")
+    preferences$dim.som1 <<- 20
+  }
+
+  if (!is.numeric(preferences$dim.som2) || preferences$dim.som2 < 1)
+  {
+    util.warn("Invalid value of \"dim.som2\". Using 20")
+    preferences$dim.som2 <<- 20
+  }
+
+  if (!is.numeric(preferences$training.extension) ||
+      preferences$training.extension < 1)
+  {
+    util.warn("Invalid value of \"dim.som2\". Using 20")
+    preferences$dim.som2 <<- 20
+  }
+
+  if (!is.numeric(preferences$training.extension) ||
+      preferences$training.extension < 1 ||
+      preferences$training.extension > 10)
+  {
+    util.warn("Invalid value of \"training.extension\". Using 1")
+    preferences$training.extension <<- 1
+  }
+
+  if (!is.numeric(preferences$rotate.som1) ||
+      preferences$rotate.som1 < 0 ||
+      preferences$rotate.som1 > 4)
+  {
+    util.warn("Invalid value of \"rotate.som1\". Using 0")
+    preferences$rotate.som1 <<- 0
+  }
+
+  if (!is.logical(preferences$flip.som1))
+  {
+    util.warn("Invalid value of \"flip.som1\". Using FALSE")
+    preferences$flip.som1 <<- F
+  }
+
+  if (!is.character(preferences$ensembl.dataset))
+  {
+    util.warn("Invalid value of \"ensembl.dataset\". Using \"\"")
+    preferences$ensembl.dataset <<- ""
+  }
+
+  if (!is.character(preferences$ensembl.rowname.ids))
+  {
+    util.warn("Invalid value of \"ensembl.rowname.ids\". Using \"\"")
+    preferences$ensembl.rowname.ids <<- ""
+  }
+
+  if (!is.logical(preferences$geneset.analysis))
+  {
+    util.warn("Invalid value of \"geneset.analysis\". Using FALSE")
+    preferences$geneset.analysis <<- F
+  }
+
+  if (!is.logical(preferences$geneset.analysis.exact))
+  {
+    util.warn("Invalid value of \"geneset.analysis.exact\". Using FALSE")
+    preferences$geneset.analysis.exact <<- F
+  }
+
+  if (!is.numeric(preferences$max.parallel.cores) ||
+      preferences$max.parallel.cores < 1)
+  {
+    preferences$max.parallel.cores <<- detectCores() / 2
+    util.warn("Invalid value of \"max.parallel.cores\". Using",
+              preferences$max.parallel.cores)
+  }
+
+  if (!is.numeric(preferences$sample.spot.cutoff) ||
+      preferences$sample.spot.cutoff <= 0 ||
+      preferences$sample.spot.cutoff >= 1)
+  {
+    util.warn("Invalid value of \"sample.spot.cutoff\". Using 0.65")
+    preferences$sample.spot.cutoff <<- 0.65
+  }
+
+  if (!is.numeric(preferences$summary.spot.core) ||
+      preferences$summary.spot.core < 1 ||
+      preferences$summary.spot.core > 10)
+  {
+    util.warn("Invalid value of \"summary.spot.core\". Using 3")
+    preferences$summary.spot.core <<- 3
+  }
+
+  if (!is.numeric(preferences$summary.spot.threshold) ||
+      preferences$summary.spot.threshold <= 0 ||
+      preferences$summary.spot.threshold >= 1)
+  {
+    util.warn("Invalid value of \"summary.spot.threshold\". Using 0.95")
+    preferences$summary.spot.threshold <<- 0.95
+  }
+
+  if (!is.numeric(preferences$group.spot.core) ||
+      preferences$group.spot.core < 1 ||
+      preferences$group.spot.core > 10)
+  {
+    util.warn("Invalid value of \"group.spot.core\". Using 5")
+    preferences$group.spot.core <<- 5
+  }
+
+  if (!is.numeric(preferences$group.spot.threshold) ||
+      preferences$group.spot.threshold <= 0 ||
+      preferences$group.spot.threshold >= 1)
+  {
+    util.warn("Invalid value of \"group.spot.threshold\". Using 0.75")
+    preferences$group.spot.threshold <<- 0.75
+  }
+
+  if (!is.logical(preferences$feature.mean.normalization))
+  {
+    util.warn("Invalid value of \"feature.mean.normalization\". Using TRUE")
+    preferences$feature.mean.normalization <<- T
+  }
+
+  if (!is.logical(preferences$sample.quantile.normalization))
+  {
+    util.warn("Invalid value of \"sample.quantile.normalization\". Using TRUE")
+    preferences$sample.quantile.normalization <<- T
+  }
+
   # check input parameters/data
   if (is.null(indata))
   {

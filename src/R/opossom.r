@@ -108,11 +108,6 @@ opossom.new <- function(preferences)
     opossom$preferences[key] <- preferences[key]
   }
 
-  if (!opossom$preferences$error.model %in% c("replicates", "all.samples", "groups")) {
-    opossom$preferences$error.model <- "all.samples"
-    util.warn("Invalid value of \"error.model\". Using \"all.samples\"")
-  }
-
   return(opossom)
 }
 
