@@ -7,7 +7,7 @@ pipeline.htmlSampleSummary <- function()
   cat("<!DOCTYPE html>
 <html>
   <head>
-    <title>Sample Summary of ", files.name, "dataset</title>
+    <title>Sample Summary of ", files.name, " dataset</title>
     <style>
       body {
         margin: 0;
