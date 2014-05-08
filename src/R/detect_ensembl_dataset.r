@@ -2,7 +2,7 @@ pipeline.detectEnsemblDataset <- function()
 {
   preferences$ensembl.dataset <<- ""
 
-  util.info("Autodetecting annotation paramters")
+  util.info("Autodetecting annotation parameters")
 
   auto.datasets <-
     list("hsapiens_gene_ensembl"=c("affy_hg_u133a",

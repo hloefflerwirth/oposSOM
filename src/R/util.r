@@ -28,8 +28,17 @@ util.fatal <- function(..., suffix="\n") {
 
 # outputs a progress bar
 util.progress <- function(cur, max, len=48) {
-  # TODO: only cat() on change
-  x <- round((cur * len) / max, 0)
+  x <- 1
+
+  if (max <= len) {
+    x <- round((cur * len) / max)
+  } else {
+    x <- which(floor(seq(0, max, length.out=len+1)) == floor(cur))[1] - 1
+  }
+
+  if (is.na(x)) {
+    return()
+  }
 
   util.info(paste("[",
                   paste(rep("#", x), collapse=""),

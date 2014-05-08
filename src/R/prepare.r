@@ -25,13 +25,6 @@ pipeline.prepare <- function()
   }
 
   if (!is.numeric(preferences$training.extension) ||
-      preferences$training.extension < 1)
-  {
-    util.warn("Invalid value of \"dim.som2\". Using 20")
-    preferences$dim.som2 <<- 20
-  }
-
-  if (!is.numeric(preferences$training.extension) ||
       preferences$training.extension < 1 ||
       preferences$training.extension > 10)
   {
@@ -183,7 +176,7 @@ pipeline.prepare <- function()
   {
     indata <<- indata[-na.rows,]
 
-    if (exists("indata.original")) {
+    if (!is.null(indata.original)) {
       indata.original <<- indata.original[-na.rows,]
     }
     util.warn("Removed NAs from data set")
