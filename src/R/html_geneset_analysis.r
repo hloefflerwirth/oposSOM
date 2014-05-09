@@ -92,7 +92,7 @@ pipeline.htmlGenesetAnalysis <- function()
                table(gs.def.list.categories), sep=" ("), collapse=") , ") , ")</dd>
         <dt>Table of all GSZ scores</dt>
         <dd>
-          <a href=\"../CSV sheets/Sample GSZ scores.csv\" target=\"_blank\">
+          <a href=\"../CSV Sheets/Sample GSZ scores.csv\" target=\"_blank\">
             Sample GSZ Scores.csv
           </a>
         </dd>
@@ -100,6 +100,18 @@ pipeline.htmlGenesetAnalysis <- function()
         <dd>
           <a href=\"0verview Heatmaps.pdf\" target=\"_blank\">
             Overview Heatmaps.pdf
+          </a>
+        </dd>
+        <dt>Cancer Hallmarks</dt>
+        <dd>
+          <a href=\"0verview Cancer Hallmarks.pdf\" target=\"_blank\">
+            Overview Cancer Hallmarks.pdf
+          </a>
+        </dd>
+        <dt>Chromosome Expression</dt>
+        <dd>
+          <a href=\"0verview Chromosome Expression.pdf\" target=\"_blank\">
+            Overview Chromosome Expression.pdf
           </a>
         </dd>
       </dl>
