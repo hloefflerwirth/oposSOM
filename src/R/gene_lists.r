@@ -37,7 +37,7 @@ pipeline.geneLists <- function()
                  Chromosome=gene.positions[rownames(indata)[o]],
                  Description=gene.descriptions[o])
 
-    basename <- paste(colnames(indata)[m], ".csv", sep="")
+    basename <- paste(make.names(colnames(indata)[m]), ".csv", sep="")
     f <- file(file.path(dirnames["global"], basename), "w")
 
     writeLines("Sample Summary:", f)
@@ -113,7 +113,7 @@ pipeline.geneLists <- function()
                    Chromosome=gene.positions[o],
                    Description=gene.descriptions[o])
 
-      basename <- paste(colnames(indata)[m], ".", spot.i, ".csv", sep="")
+      basename <- paste(make.names(colnames(indata)[m]), ".", spot.i, ".csv", sep="")
       f <- file(file.path(dirnames["local"], basename), "w")
 
       writeLines("Spot Summary:", f)
@@ -170,7 +170,7 @@ pipeline.geneLists <- function()
                             Downregulated=names(neg.gs.info),
                             "GSZ."=neg.gs.info)
 
-      basename <- paste(colnames(indata)[m], ".csv", sep="")
+      basename <- paste(make.names(colnames(indata)[m]), ".csv", sep="")
       write.csv2(gs.info, file.path(dirnames["set"], basename), row.names=F)
     }
   }

@@ -69,6 +69,14 @@ pipeline.htmlSummary <- function()
 
       <h1>Results</h1>
 
+      <ul>
+        <li>
+          <a href=\"LPE/data distribution.pdf\" target=\"_blank\">
+            Data Distribution.pdf
+          </a>
+        </li>
+      </ul>
+
       <h2>1st Level SOM Analysis</h2>
 
       <p>
@@ -98,11 +106,6 @@ pipeline.htmlSummary <- function()
       </ul>
 
       <ul>
-        <li>
-          <a href=\"Summary Sheets - Groups/Expression Portraits Groups.pdf\" target=\"_blank\">
-            1st Level SOM Expression Images - Group Specific
-          </a>
-        </li>
         <li>
           <a href=\"Supporting Maps&amp;Profiles/Supporting Maps.pdf\" target=\"_blank\">
             Supporting Maps
@@ -204,6 +207,34 @@ pipeline.htmlSummary <- function()
         <li>
           <a href=\"Summary Sheets - Integral/0verview.html\" target=\"_blank\">
             Spot Report Sheets
+          </a>
+        </li>
+      </ul>
+
+      <h2>Group Analysis</h2>
+
+      <p>
+        Some text...
+      </p>
+
+      <ul>
+        <li>
+          <a href=\"Summary Sheets - Groups/0verview.html\">
+            Group Analysis Sheets
+          </a>
+        </li>
+      </ul>
+
+      <h2>Differences Analyses</h2>
+
+      <p>
+        Some text...
+      </p>
+
+      <ul>
+        <li>
+          <a href=\"Summary Sheets - Differences/0verview.html\">
+            Differences Analyses Sheets
           </a>
         </li>
       </ul>

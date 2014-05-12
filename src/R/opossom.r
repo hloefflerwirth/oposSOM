@@ -263,9 +263,15 @@ opossom.run <- function(opossom)
   environment(pipeline.groupAnalysis) <- opossom
   pipeline.groupAnalysis()
 
+  environment(pipeline.htmlGroupSummary) <- opossom
+  pipeline.htmlGroupSummary()
+
   load(filename) # Reload opossom
   environment(pipeline.differenceAnalyses) <- opossom
   pipeline.differenceAnalyses()
+
+  environment(pipeline.htmlDifferencesSummary) <- opossom
+  pipeline.htmlDifferencesSummary()
 
   load(filename) # Reload opossom
   environment(pipeline.signatureSets) <- opossom

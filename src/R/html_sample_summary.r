@@ -1,6 +1,9 @@
 pipeline.htmlSampleSummary <- function()
 {
-  filename <- file.path(paste(files.name, "- Results"), "Summary Sheets - Samples", "0verview.html")
+  filename <- file.path(paste(files.name, "- Results"),
+                        "Summary Sheets - Samples",
+                        "0verview.html")
+
   util.info("Writing:", filename)
   outfile <- file(filename, "w")
 
@@ -156,23 +159,27 @@ pipeline.htmlSampleSummary <- function()
             <th>Summary Sheets</th>
             <th>Global Gene List</th>
             <th>Local Gene List</th>
+            <th>Gene Set List</th>
           </tr>
         </thead>
         <tbody>", sep="", file=outfile)
 
   for (m in 1:ncol(indata))
   {
+    name <- colnames(indata)[m]
+    fname <- make.names(name)
+
     cat("
           <tr>
-            <td>", colnames(indata)[m], "</td>
+            <td>", name, "</td>
             <td> ", group.labels[m], "</td>
             <td>
-              <a href=\"", colnames(indata)[m], ".pdf\" target=\"_blank\">
+              <a href=\"", fname, ".pdf\" target=\"_blank\">
                 PDF
               </a>
             </td>
             <td>
-              <a href=\"../CSV Sheets/Gene Lists - Global/", colnames(indata)[m], ".csv\" >
+              <a href=\"../CSV Sheets/Gene Lists - Global/", fname, ".csv\" >
                 CSV
               </a>
             </td>
@@ -181,12 +188,17 @@ pipeline.htmlSampleSummary <- function()
     for (spot.i in 1:length(GS.infos.samples[[m]]$spots))
     {
       cat("
-              <a href=\"../CSV Sheets/Gene Lists - Local/", colnames(indata)[m], ".", spot.i, ".csv\">
+              <a href=\"../CSV Sheets/Gene Lists - Local/", fname, ".", spot.i, ".csv\">
                 CSV ", spot.i, "
               </a>", sep="", file=outfile)
     }
 
     cat("
+            </td>
+            <td>
+              <a href=\"../CSV Sheets/Gene Set Lists - Global/", fname, ".csv\" target=\"_blank\">
+                CSV
+              </a>
             </td>
           </tr>", sep="", file=outfile)
   }

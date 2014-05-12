@@ -27,7 +27,7 @@ pipeline.summarySheetsSamples <- function()
 
   for (m in 1:ncol(indata))
   {
-    basename <- paste(make.unique(colnames(indata))[m], ".pdf", sep="")
+    basename <- paste(make.names(make.unique(colnames(indata))[m]), ".pdf", sep="")
     pdf(file.path(output.paths["Summary Sheets Samples"], basename), 29.7/2.54, 21/2.54)
 
     ## Global Sheet
