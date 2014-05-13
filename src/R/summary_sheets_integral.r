@@ -633,7 +633,7 @@ pipeline.summarySheetsIntegral <- function()
   util.info("Writing:", filename)
 
   pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list(set.list=GS.infos.correlation, main="Correlation Cluster")
+  plot.set.list(set.list=spot.list.correlation, main="Correlation Cluster")
   dev.off()
 
   filename <- file.path(dirnames["ssi"], "K-Means Cluster.pdf")
@@ -653,7 +653,7 @@ pipeline.summarySheetsIntegral <- function()
   util.info("Writing:", file.path(dirnames["spots"], "*.csv"))
   csv.set.list(set.list=GS.infos.overexpression, main="Sample-Overexpression")
   csv.set.list(set.list=GS.infos.underexpression, main="Sample-Underexpression")
-  csv.set.list(set.list=GS.infos.correlation, main="Correlation Cluster")
+  csv.set.list(set.list=spot.list.correlation, main="Correlation Cluster")
   csv.set.list(set.list=GS.infos.kmeans, main="K-Means Cluster")
 
   if (length(unique(group.labels)) > 1)

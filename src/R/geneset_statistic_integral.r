@@ -24,13 +24,13 @@ pipeline.genesetStatisticIntegral <- function()
 
   util.progress(97, 100)
 
-  if (length(GS.infos.correlation$spots) > 0)
+  if (length(spot.list.correlation$spots) > 0)
   {
-    for (i in 1:length(GS.infos.correlation$spots))
+    for (i in 1:length(spot.list.correlation$spots))
     {
-      geneset.ids <- unique(na.omit(gene.ids[GS.infos.correlation$spots[[i]]$genes]))
+      geneset.ids <- unique(na.omit(gene.ids[spot.list.correlation$spots[[i]]$genes]))
 
-      GS.infos.correlation$spots[[i]]$Fisher.p <<-
+      spot.list.correlation$spots[[i]]$Fisher.p <<-
         GeneSet.Fisher(geneset.ids, unique.protein.ids, gs.def.list, sort=T, cluster=cl)
     }
   }

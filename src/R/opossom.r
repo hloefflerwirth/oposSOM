@@ -40,7 +40,7 @@ opossom.new <- function(preferences)
   opossom$group.metadata <- NULL
   opossom$gs.def.list <- NULL
   opossom$gs.def.list.categories <- NULL
-  opossom$GS.infos.correlation <- NULL
+  opossom$spot.list.correlation <- NULL
   opossom$GS.infos.group.overexpression <- NULL
   opossom$GS.infos.kmeans <- NULL
   opossom$GS.infos.overexpression <- NULL

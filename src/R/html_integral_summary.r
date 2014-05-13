@@ -170,11 +170,11 @@ pipeline.htmlIntegralSummary <- function()
             </td>
             <td>", sep="", file=outfile)
 
-  for (m in 1:length(GS.infos.correlation$spots))
+  for (m in 1:length(spot.list.correlation$spots))
   {
     cat("<a href=\"../CSV Sheets/Spot Lists/Correlation Cluster ",
-        names(GS.infos.correlation$spots)[m],".csv\" target=\"_blank\">",
-        names(GS.infos.correlation$spots)[m],"</a>", sep="", file=outfile)
+        names(spot.list.correlation$spots)[m],".csv\" target=\"_blank\">",
+        names(spot.list.correlation$spots)[m],"</a>", sep="", file=outfile)
   }
 
   cat("</td>
