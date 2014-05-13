@@ -159,15 +159,18 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
 
   dev.off()
 
-  filename <- file.path(dirnames["pdf"], "Group Overexpression Chromosomal Enrichment.pdf")
-  util.info("Writing:", filename)
-  pdf(filename, 21/2.54, 29.7/2.54)
-
-  if (length(gene.positions.list) > 0)
+  if (length(unique(group.labels)) > 1)
   {
-    plot.set.list.chromosomes(set.list=spot.list.group.overexpression,
-                              main="Group Overexpression Chromosome Map")
-  }
+    filename <- file.path(dirnames["pdf"], "Group Overexpression Chromosomal Enrichment.pdf")
+    util.info("Writing:", filename)
+    pdf(filename, 21/2.54, 29.7/2.54)
 
-  dev.off()
+    if (length(gene.positions.list) > 0)
+    {
+      plot.set.list.chromosomes(set.list=spot.list.group.overexpression,
+                                main="Group Overexpression Chromosome Map")
+    }
+
+    dev.off()
+  }
 }
