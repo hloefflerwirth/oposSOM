@@ -43,25 +43,27 @@ get.SD.estimate = function(data, samples, lambda=0.5)
 
 pipeline.differenceAnalyses = function()
 {
-  differences.list <- list()
-
-  if (length(unique(group.labels)) < 8)
+  if (length(unique(group.labels)) < 2)
   {
-    differences.list <- apply(combn(unique(group.labels), 2), 2, function(x)
-    {
-      list(which(group.labels==x[1]), which(group.labels==x[2]))
-    })
-
-    names(differences.list) <-
-      apply(combn(unique(group.labels), 2), 2, paste, collapse=" vs ")
-
-    differences.list <- c(preferences$pairwise.comparison.list, differences.list)
-  }
-
-  if (length(differences.list) <= 0)
-  {
+    util.warn("Skip differences analyses: not enough unique group labels")
     return()
   }
+
+  if (length(unique(group.labels)) > 7)
+  {
+    util.warn("Skip differences analyses: too many unique group labels")
+    return()
+  }
+
+  differences.list <- apply(combn(unique(group.labels), 2), 2, function(x)
+  {
+    list(which(group.labels==x[1]), which(group.labels==x[2]))
+  })
+
+  names(differences.list) <-
+    apply(combn(unique(group.labels), 2), 2, paste, collapse=" vs ")
+
+  differences.list <- c(preferences$pairwise.comparison.list, differences.list)
 
   util.info("Processing Differences Analyses")
   dir.create(paste(files.name, "- Results/Summary Sheets - Differences"), showWarnings=F)
