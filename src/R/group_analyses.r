@@ -28,11 +28,11 @@ pipeline.groupAnalysis <- function()
                                colnames(indata.original),
                                colMeans)[unique(group.labels)])
 
-  indata.mean.level <<- rowMeans(indata)
+  indata.gene.mean <<- rowMeans(indata)
 
   if (preferences$feature.centralization)
   {
-    indata <<- indata - indata.mean.level
+    indata <<- indata - indata.gene.mean
   }
 
   group.colors <<- group.colors[match(colnames(indata), group.labels)]

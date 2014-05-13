@@ -47,7 +47,7 @@ opossom.new <- function(preferences)
   opossom$spot.list.samples <- NULL
   opossom$spot.list.underexpression <- NULL
   opossom$indata <- NULL
-  opossom$indata.mean.level <- NULL
+  opossom$indata.gene.mean <- NULL
   opossom$indata.original <- NULL
   opossom$indata.sample.mean <- NULL
   opossom$loglog.group.metadata <- NULL

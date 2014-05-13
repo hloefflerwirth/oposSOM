@@ -295,11 +295,11 @@ pipeline.prepare <- function()
     names(group.colors) <<- make.unique(names(group.colors))
   }
 
-  indata.mean.level <<- rowMeans(indata)
+  indata.gene.mean <<- rowMeans(indata)
 
   if (preferences$feature.centralization)
   {
-    indata <<- indata - indata.mean.level
+    indata <<- indata - indata.gene.mean
   }
 
   util.info("Load Annotation Data")

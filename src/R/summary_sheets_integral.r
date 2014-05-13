@@ -594,13 +594,13 @@ pipeline.summarySheetsIntegral <- function()
         out <-cbind(out, Type = gs.def.list.categories[o])
       }
 
-      high.low.threshold <- mean(indata.mean.level)
+      high.low.threshold <- mean(indata.gene.mean)
 
       out <- cbind(out,
-                   "mean expression"=indata.mean.level[o],
+                   "mean expression"=indata.gene.mean[o],
                    "max delta e"=apply(indata[o, ,drop=F], 1, max),
                    "min delta e"=apply(indata[o, ,drop=F], 1, min),
-                   "% high expressed"=round(apply(indata[o, ,drop=F] + indata.mean.level[o], 1, function(x)  sum(x > high.low.threshold) / length(x) * 100)),
+                   "% high expressed"=round(apply(indata[o, ,drop=F] + indata.gene.mean[o], 1, function(x)  sum(x > high.low.threshold) / length(x) * 100)),
                    "correlation"=r.genes[o],
                    "->t.score"=r.t[o],
                    "->p.value"=r.p[o],
