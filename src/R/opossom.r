@@ -90,7 +90,7 @@ opossom.new <- function(preferences)
                               rotate.som1 = 0,
                               flip.som1 = F,
                               database.dataset = "",
-                              ensembl.rowname.ids = "",
+                              database.id.type = "",
                               geneset.analysis = F,
                               geneset.analysis.exact = F,
                               max.parallel.cores = detectCores() / 2,

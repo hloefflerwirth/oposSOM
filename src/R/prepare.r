@@ -52,10 +52,10 @@ pipeline.prepare <- function()
     preferences$database.dataset <<- ""
   }
 
-  if (!is.character(preferences$ensembl.rowname.ids))
+  if (!is.character(preferences$database.id.type))
   {
-    util.warn("Invalid value of \"ensembl.rowname.ids\". Using \"\"")
-    preferences$ensembl.rowname.ids <<- ""
+    util.warn("Invalid value of \"database.id.type\". Using \"\"")
+    preferences$database.id.type <<- ""
   }
 
   if (!is.logical(preferences$geneset.analysis))

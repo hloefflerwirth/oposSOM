@@ -39,7 +39,7 @@ pipeline.detectEnsemblDataset <- function()
           util.info("Detected annotation dataset:", ds)
           util.info("Detected annotation filter:", id)
           preferences$database.dataset <<- ds
-          preferences$ensembl.rowname.ids <<- id
+          preferences$database.id.type <<- id
           return()
         }
       }, silent=T)

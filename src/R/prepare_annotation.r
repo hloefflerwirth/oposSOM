@@ -32,8 +32,8 @@ pipeline.prepareAnnotation <- function()
       mart <- useDataset(preferences$database.dataset, mart=mart)
 
       biomart.table <-
-        getBM(c(preferences$ensembl.rowname.ids, "external_gene_id"),
-              preferences$ensembl.rowname.ids,
+        getBM(c(preferences$database.id.type, "external_gene_id"),
+              preferences$database.id.type,
               rownames(indata)[seq(1,nrow(indata),length.out=100)],
               mart, checkFilters=F)
     }, silent=T)
@@ -51,7 +51,7 @@ pipeline.prepareAnnotation <- function()
     pipeline.detectEnsemblDataset()
   }
 
-  if (preferences$database.dataset == "" || preferences$ensembl.rowname.ids == "")
+  if (preferences$database.dataset == "" || preferences$database.id.type == "")
   {
     util.warn("Could not find valid annotation parameters.")
     util.warn("Disabling geneset analysis.")
@@ -62,18 +62,18 @@ pipeline.prepareAnnotation <- function()
   mart <- useMart('ensembl')
   mart <- useDataset(preferences$database.dataset, mart=mart)
 
-  biomart.table <- getBM(c(preferences$ensembl.rowname.ids,
+  biomart.table <- getBM(c(preferences$database.id.type,
                            "external_gene_id",
                            "description",
                            "ensembl_gene_id",
                            "chromosome_name",
                            "band"),
-                         preferences$ensembl.rowname.ids,
+                         preferences$database.id.type,
                          rownames(indata), mart, checkFilters=F)
 
   if (nrow(biomart.table) == 0)
   {
-    util.warn("Could not resolve rownames. Possibly wrong ensembl.rowname.ids")
+    util.warn("Could not resolve rownames. Possibly wrong database.id.type")
     util.warn("Disabling geneset analysis.")
     preferences$geneset.analysis <<- F
   } else
