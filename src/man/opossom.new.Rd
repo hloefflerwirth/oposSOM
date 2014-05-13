@@ -21,7 +21,7 @@
       \item{training.extension}: factor to extend the number of iterations in SOM trainin (numerical)
       \item{rotate.som1}: number of roations of the primary SOM in counter-clockwise fashion (numerical \{0,1,2,3\})
       \item{flip.som1}: mirroring the primary SOM along the bottom-left to top-right diagonal (boolean)
-      \item{ensembl.dataset}: type of ensemble dataset addressed with biomaRt interface (character)
+      \item{database.dataset}: type of ensemble dataset addressed with biomaRt interface (character)
       \item{ensembl.rowname.ids}: type of rowname identifier in biomaRt database (character)
       \item{geneset.analysis}: enables geneset analysis (boolean)
       \item{geneset.analysis.exact}: enables p-value and fdr calculation in geneset analysis (boolean)

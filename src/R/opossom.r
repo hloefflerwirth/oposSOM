@@ -89,7 +89,7 @@ opossom.new <- function(preferences)
                               training.extension = 1,
                               rotate.som1 = 0,
                               flip.som1 = F,
-                              ensembl.dataset = "",
+                              database.dataset = "",
                               ensembl.rowname.ids = "",
                               geneset.analysis = F,
                               geneset.analysis.exact = F,

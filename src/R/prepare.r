@@ -46,10 +46,10 @@ pipeline.prepare <- function()
     preferences$flip.som1 <<- F
   }
 
-  if (!is.character(preferences$ensembl.dataset))
+  if (!is.character(preferences$database.dataset))
   {
-    util.warn("Invalid value of \"ensembl.dataset\". Using \"\"")
-    preferences$ensembl.dataset <<- ""
+    util.warn("Invalid value of \"database.dataset\". Using \"\"")
+    preferences$database.dataset <<- ""
   }
 
   if (!is.character(preferences$ensembl.rowname.ids))

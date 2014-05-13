@@ -22,14 +22,14 @@ pipeline.prepareAnnotation <- function()
     return()
   }
 
-  if (!preferences$ensembl.dataset %in% c("auto", ""))
+  if (!preferences$database.dataset %in% c("auto", ""))
   {
     biomart.table <- NULL
     require.bioconductor("biomaRt")
 
     try({
       mart <- useMart('ensembl')
-      mart <- useDataset(preferences$ensembl.dataset, mart=mart)
+      mart <- useDataset(preferences$database.dataset, mart=mart)
 
       biomart.table <-
         getBM(c(preferences$ensembl.rowname.ids, "external_gene_id"),
@@ -41,17 +41,17 @@ pipeline.prepareAnnotation <- function()
     if (is.null(biomart.table) || nrow(biomart.table) == 0)
     {
       util.warn("Invalid annotation parameters. Try to autodetect...")
-      preferences$ensembl.dataset <<- "auto"
+      preferences$database.dataset <<- "auto"
     }
   }
 
-  if (preferences$ensembl.dataset == "auto")
+  if (preferences$database.dataset == "auto")
   {
     environment(pipeline.detectEnsemblDataset) <- environment()
     pipeline.detectEnsemblDataset()
   }
 
-  if (preferences$ensembl.dataset == "" || preferences$ensembl.rowname.ids == "")
+  if (preferences$database.dataset == "" || preferences$ensembl.rowname.ids == "")
   {
     util.warn("Could not find valid annotation parameters.")
     util.warn("Disabling geneset analysis.")
@@ -60,7 +60,7 @@ pipeline.prepareAnnotation <- function()
   }
 
   mart <- useMart('ensembl')
-  mart <- useDataset(preferences$ensembl.dataset, mart=mart)
+  mart <- useDataset(preferences$database.dataset, mart=mart)
 
   biomart.table <- getBM(c(preferences$ensembl.rowname.ids,
                            "external_gene_id",

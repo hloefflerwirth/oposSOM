@@ -1,6 +1,6 @@
 pipeline.detectEnsemblDataset <- function()
 {
-  preferences$ensembl.dataset <<- ""
+  preferences$database.dataset <<- ""
 
   util.info("Autodetecting annotation parameters")
 
@@ -38,7 +38,7 @@ pipeline.detectEnsemblDataset <- function()
         {
           util.info("Detected annotation dataset:", ds)
           util.info("Detected annotation filter:", id)
-          preferences$ensembl.dataset <<- ds
+          preferences$database.dataset <<- ds
           preferences$ensembl.rowname.ids <<- id
           return()
         }
