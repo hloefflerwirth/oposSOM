@@ -63,7 +63,7 @@ opossom.new <- function(preferences)
   opossom$som.nodes <- NULL
   opossom$som.result <- NULL
   opossom$2ndLvlSom.20.20 <- NULL
-  opossom$supersom.custom <- NULL
+  opossom$2ndLvlSom.custom <- NULL
   opossom$t.g.m <- NULL
   opossom$t.m <- NULL
   opossom$unique.group.colors <- NULL
