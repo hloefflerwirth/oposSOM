@@ -127,7 +127,11 @@ pipeline.htmlIntegralSummary <- function()
               </a>
             </td>
             <td></td>
-          </tr>
+          </tr>", sep="", file=outfile)
+
+  if (length(unique(group.labels)) > 1)
+  {
+    cat("
           <tr>
             <td>
               <a href=\"Group Overexpression.pdf\" target=\"_blank\">
@@ -136,15 +140,18 @@ pipeline.htmlIntegralSummary <- function()
             </td>
             <td>", sep="", file=outfile)
 
-  for (m in 1:length(spot.list.group.overexpression$spots))
-  {
-    cat("<a href=\"../CSV Sheets/Spot Lists/Group Overexpression ",
-        names(spot.list.group.overexpression$spots)[m],".csv\" target=\"_blank\">",
-        names(spot.list.group.overexpression$spots)[m],"</a>", sep="", file=outfile)
+    for (m in 1:length(spot.list.group.overexpression$spots))
+    {
+      cat("<a href=\"../CSV Sheets/Spot Lists/Group Overexpression ",
+          names(spot.list.group.overexpression$spots)[m],".csv\" target=\"_blank\">",
+          names(spot.list.group.overexpression$spots)[m],"</a>", sep="", file=outfile)
+    }
+
+    cat("</td>
+          </tr>", sep="", file=outfile)
   }
 
-  cat("</td>
-          </tr>
+  cat("
           <tr>
             <td>
               <a href=\"Underexpression.pdf\" target=\"_blank\">
@@ -221,11 +228,19 @@ pipeline.htmlIntegralSummary <- function()
           <a href=\"../3rd lvl Spot Analysis/K-Means Cluster Report.pdf\" target=\"_blank\">
             K-Means Cluster Report (PDF)
           </a>
-        </li>
+        </li>", sep="", file=outfile)
+
+  if (length(unique(group.labels)) > 1)
+  {
+    cat("
         <li>
           <a href=\"../3rd lvl Spot Analysis/Group Overexpression Report.pdf\" target=\"_blank\">
             Group Overexpression Report (PDF)
           </a>
+        </li>", sep="", file=outfile)
+  }
+
+  cat("
       </ul>
 
       <h1>Spot Module Network Analysis</h1>
@@ -251,12 +266,19 @@ pipeline.htmlIntegralSummary <- function()
           <a href=\"../3rd lvl Spot Analysis/K-Means Cluster Networks.pdf\" target=\"_blank\">
             K-Means Cluster Networks (PDF)
           </a>
-        </li>
+        </li>", sep="", file=outfile)
+
+  if (length(unique(group.labels)) > 1)
+  {
+    cat("
         <li>
           <a href=\"../3rd lvl Spot Analysis/Group Overexpression Networks.pdf\" target=\"_blank\">
             Group Overexpression Networks (PDF)
           </a>
-        </li>
+        </li>", sep="", file=outfile)
+  }
+
+  cat("
       </ul>
 
       <h1>Chromosomal Enrichment</h1>
@@ -271,7 +293,11 @@ pipeline.htmlIntegralSummary <- function()
           <a href=\"../3rd lvl Spot Analysis/Overexpression Chromosomal Enrichment.pdf\" target=\"_blank\">
             Overexpression Chromosomal Enrichment (PDF)
           </a>
-        </li>
+        </li>", sep="", file=outfile)
+
+  if (length(unique(group.labels)) > 1)
+  {
+    cat("
         <li>
           <a href=\"../3rd lvl Spot Analysis/Group Overexpression Chromosomal Enrichment.pdf\" target=\"_blank\">
             Group Overexpression Chromosomal Enrichment (PDF)
@@ -281,7 +307,10 @@ pipeline.htmlIntegralSummary <- function()
           <a href=\"../CSV Sheets/Chromosomal Enrichment/Group Overexpression Chromosome Map.csv\" target=\"_blank\">
             Group Overexpression Spot Chromosome Map (CSV)
           </a>
-        </li>
+        </li>", sep="", file=outfile)
+  }
+
+  cat("
         <li>
           <a href=\"../CSV Sheets/Chromosomal Enrichment/Overexpression Spot Chromosome Map.csv\" target=\"_blank\">
             Overexpression Spot Chromosome Map (CSV)
