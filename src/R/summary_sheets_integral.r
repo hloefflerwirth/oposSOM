@@ -643,11 +643,11 @@ pipeline.summarySheetsIntegral <- function()
   plot.set.list(set.list=spot.list.kmeans, main="K-Means Cluster")
   dev.off()
 
-  filename <- file.path(dirnames["ssi"], "Group Overexpression.pdf")
-  util.info("Writing:", filename)
-
   if (length(unique(group.labels)) > 1)
   {
+    filename <- file.path(dirnames["ssi"], "Group Overexpression.pdf")
+    util.info("Writing:", filename)
+
     pdf(filename, 29.7/2.54, 21/2.54)
     plot.set.list(set.list=spot.list.group.overexpression, main="Group Overexpression")
     dev.off()
