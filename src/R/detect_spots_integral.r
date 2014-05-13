@@ -30,10 +30,10 @@ pipeline.detectSpotsIntegral <- function()
     # shrink each separate region to core size
     for (s.i in 1:max(core, na.rm=T))
     {
-      if (sum(core == s.i, na.rm=T) > preferences$summary.spot.core)
+      if (sum(core == s.i, na.rm=T) > preferences$spot.coresize.modules)
       {
         core.metagenes <- which(core == s.i)
-        o <- order(metadata[core.metagenes,m], decreasing=T)[1:preferences$summary.spot.core]
+        o <- order(metadata[core.metagenes,m], decreasing=T)[1:preferences$spot.coresize.modules]
         core[setdiff(core.metagenes, core.metagenes[o])] <- NA
       }
     }
@@ -270,10 +270,10 @@ pipeline.detectSpotsIntegral <- function()
     # shrink each separate region to core size
     for (s.i in 1:max(core,na.rm=T))
     {
-      if (sum(core == s.i, na.rm=T) > preferences$summary.spot.core)
+      if (sum(core == s.i, na.rm=T) > preferences$spot.coresize.modules)
       {
         core.metagenes <- which(core == s.i)
-        o <- order(metadata[core.metagenes,m], decreasing=F)[1:preferences$summary.spot.core]
+        o <- order(metadata[core.metagenes,m], decreasing=F)[1:preferences$spot.coresize.modules]
         core[setdiff(core.metagenes, core.metagenes[o])] <- NA
       }
     }

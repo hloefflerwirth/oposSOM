@@ -95,7 +95,7 @@ opossom.new <- function(preferences)
                               geneset.analysis.exact = F,
                               max.parallel.cores = detectCores() / 2,
                               spot.threshold.samples = 0.65,
-                              summary.spot.core = 3,
+                              spot.coresize.modules = 3,
                               summary.spot.threshold = 0.95,
                               spot.coresize.groupmap = 5,
                               spot.threshold.groupmap = 0.75,

@@ -86,12 +86,12 @@ pipeline.prepare <- function()
     preferences$spot.threshold.samples <<- 0.65
   }
 
-  if (!is.numeric(preferences$summary.spot.core) ||
-      preferences$summary.spot.core < 1 ||
-      preferences$summary.spot.core > 10)
+  if (!is.numeric(preferences$spot.coresize.modules) ||
+      preferences$spot.coresize.modules < 1 ||
+      preferences$spot.coresize.modules > 10)
   {
-    util.warn("Invalid value of \"summary.spot.core\". Using 3")
-    preferences$summary.spot.core <<- 3
+    util.warn("Invalid value of \"spot.coresize.modules\". Using 3")
+    preferences$spot.coresize.modules <<- 3
   }
 
   if (!is.numeric(preferences$summary.spot.threshold) ||
