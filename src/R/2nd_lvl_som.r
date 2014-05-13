@@ -1,13 +1,13 @@
 pipeline.2ndLvlSom <- function()
 {
-  2ndLvlSom.custom <<- som(t(metadata), xdim=preferences$dim.2ndLvlSom, ydim=preferences$dim.2ndLvlSom)
+  secLvlSom.custom <<- som(t(metadata), xdim=preferences$dim.2ndLvlSom, ydim=preferences$dim.2ndLvlSom)
 
   if (preferences$dim.2ndLvlSom == 20)
   {
-    2ndLvlSom.20.20 <<- 2ndLvlSom.custom
+    secLvlSom.20.20 <<- secLvlSom.custom
   } else
   {
-    2ndLvlSom.20.20 <<- som(t(metadata), xdim=20, ydim=20)
+    secLvlSom.20.20 <<- som(t(metadata), xdim=20, ydim=20)
   }
 
   filename <- file.path(paste(files.name, "- Results"), "2nd lvl Metagene Analysis", "2nd lvl SOM.pdf")
@@ -16,10 +16,10 @@ pipeline.2ndLvlSom <- function()
 
   ##### Plot Supersom #####
   par(mar=c(1, 1, 1, 1))
-  xl <- c(min(2ndLvlSom.custom$visual[,"x"])-1.2, max(2ndLvlSom.custom$visual[,"x"])+1.2)
-  yl <- c(min(-2ndLvlSom.custom$visual[,"y"])-1.2, max(-2ndLvlSom.custom$visual[,"y"])+1.2)
+  xl <- c(min(secLvlSom.custom$visual[,"x"])-1.2, max(secLvlSom.custom$visual[,"x"])+1.2)
+  yl <- c(min(-secLvlSom.custom$visual[,"y"])-1.2, max(-secLvlSom.custom$visual[,"y"])+1.2)
 
-  plot(2ndLvlSom.custom$visual[,"x"], -2ndLvlSom.custom$visual[,"y"], type="n",
+  plot(secLvlSom.custom$visual[,"x"], -secLvlSom.custom$visual[,"y"], type="n",
        axes=F, xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i")
 
   if (ncol(indata) < 100)
@@ -34,12 +34,12 @@ pipeline.2ndLvlSom <- function()
            text.col=groupwise.group.colors, bg="white")
   }
 
-  for (j in 1:nrow(2ndLvlSom.custom$code.sum))
+  for (j in 1:nrow(secLvlSom.custom$code.sum))
   {
 
     which.samples <-
-      intersect(which(2ndLvlSom.custom$visual[,"x"] == 2ndLvlSom.custom$code.sum[j,"x"]),
-                which(2ndLvlSom.custom$visual[,"y"] == 2ndLvlSom.custom$code.sum[j,"y"]))
+      intersect(which(secLvlSom.custom$visual[,"x"] == secLvlSom.custom$code.sum[j,"x"]),
+                which(secLvlSom.custom$visual[,"y"] == secLvlSom.custom$code.sum[j,"y"]))
 
     if (!is.na(which.samples[1]))
     {
@@ -49,23 +49,23 @@ pipeline.2ndLvlSom <- function()
       x.seq <- rep(c(-0.2, 0.2), 2)[1:length(which.samples)]
       y.seq <- c(rep(0.2, 2), rep(-0.2, 2))[1:length(which.samples)]
 
-      points(2ndLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
-             -2ndLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
+      points(secLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
+             -secLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
              pch=16, col=group.colors[which.samples], cex=2.5)
 
-      points(2ndLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
-             -2ndLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
+      points(secLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
+             -secLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
              pch=1, col="gray20", cex=2.5, lwd=1)
 
-      text(2ndLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
-           -2ndLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
+      text(secLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
+           -secLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
            which.samples, col="gray20", cex=0.8)
     }
   }
 
   box()
 
-  plot(2ndLvlSom.custom$visual[,"x"], -2ndLvlSom.custom$visual[,"y"], type="n",
+  plot(secLvlSom.custom$visual[,"x"], -secLvlSom.custom$visual[,"y"], type="n",
        axes=F, xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i")
 
   if (length(unique(group.labels)) > 1)
@@ -74,12 +74,12 @@ pipeline.2ndLvlSom <- function()
            text.col=groupwise.group.colors, bg="white")
   }
 
-  for (j in 1:nrow(2ndLvlSom.custom$code.sum))
+  for (j in 1:nrow(secLvlSom.custom$code.sum))
   {
 
     which.samples <-
-      intersect(which(2ndLvlSom.custom$visual[,"x"] == 2ndLvlSom.custom$code.sum[j,"x"]),
-                which(2ndLvlSom.custom$visual[,"y"] == 2ndLvlSom.custom$code.sum[j,"y"]))
+      intersect(which(secLvlSom.custom$visual[,"x"] == secLvlSom.custom$code.sum[j,"x"]),
+                which(secLvlSom.custom$visual[,"y"] == secLvlSom.custom$code.sum[j,"y"]))
 
     if (!is.na(which.samples[1]))
     {
@@ -89,16 +89,16 @@ pipeline.2ndLvlSom <- function()
       x.seq <- rep(c(-0.2, 0.2), 2) [1:length(which.samples)]
       y.seq <- c(rep(0.2, 2), rep(-0.2, 2)) [1:length(which.samples)]
 
-      points(2ndLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
-             -2ndLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
+      points(secLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
+             -secLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
              pch=16, col=group.colors[which.samples], cex=2.5)
 
-      points(2ndLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
-             -2ndLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
+      points(secLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
+             -secLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
              pch=1, col="gray20", cex=2.5, lwd=1)
 
-      text(2ndLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
-           -2ndLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
+      text(secLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
+           -secLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
            colnames(indata)[which.samples], col="gray20", cex=0.8)
     }
   }
@@ -115,20 +115,20 @@ pipeline.2ndLvlSom <- function()
 
     names(transparent.group.colors) <- unique(group.labels)
 
-    plot(2ndLvlSom.custom$visual[,"x"], -2ndLvlSom.custom$visual[,"y"],
+    plot(secLvlSom.custom$visual[,"x"], -secLvlSom.custom$visual[,"y"],
          type="n", axes=F, xlab="", ylab="", cex=4, col=group.colors, pch=16,
          xaxs="i", yaxs="i", xlim=xl, ylim=yl)
 
     for (i in 1:length(unique(group.labels)))
     {
       group.member <- which(group.labels==unique(group.labels)[i])
-      group.centroid <- colMeans(2ndLvlSom.custom$visual[group.member, 1:2])
+      group.centroid <- colMeans(secLvlSom.custom$visual[group.member, 1:2])
 
-      hull <- chull(2ndLvlSom.custom$visual[group.member, 1],
-                    -2ndLvlSom.custom$visual[group.member, 2])
+      hull <- chull(secLvlSom.custom$visual[group.member, 1],
+                    -secLvlSom.custom$visual[group.member, 2])
 
-      polygon(2ndLvlSom.custom$visual[group.member[hull], 1],
-              -2ndLvlSom.custom$visual[group.member[hull], 2],
+      polygon(secLvlSom.custom$visual[group.member[hull], 1],
+              -secLvlSom.custom$visual[group.member[hull], 2],
               col=transparent.group.colors[i], lty=1,
               border=groupwise.group.colors[i])
     }
@@ -143,7 +143,7 @@ pipeline.2ndLvlSom <- function()
   for (i in 1:length(unique(group.labels)))
   {
     col <- colorRampPalette(c("white", groupwise.group.colors[i]))
-    coords <- cbind(2ndLvlSom.custom$visual[,"x"], -2ndLvlSom.custom$visual[,"y"])
+    coords <- cbind(secLvlSom.custom$visual[,"x"], -secLvlSom.custom$visual[,"y"])
     coords <- coords[which(group.labels==unique(group.labels)[i]) , ,drop=F]
 
     if (nrow(coords) == 1)
@@ -163,7 +163,7 @@ pipeline.2ndLvlSom <- function()
 
   par(new=T)
 
-  plot(2ndLvlSom.custom$visual[,"x"], -2ndLvlSom.custom$visual[,"y"],
+  plot(secLvlSom.custom$visual[,"x"], -secLvlSom.custom$visual[,"y"],
        pch=16, col=group.colors, axes=F, xlab="",ylab="", xlim=xl,ylim=yl,
        xaxs="i", yaxs="i")
 
@@ -175,10 +175,10 @@ pipeline.2ndLvlSom <- function()
 
   ##### Plot Supersom with real expression profiles ######
   par(mar=c(1,1,1,1))
-  xl <- c(min(2ndLvlSom.20.20$visual[,"x"])-1, max(2ndLvlSom.20.20$visual[,"x"])+1)
-  yl <- c(min(-2ndLvlSom.20.20$visual[,"y"])-1, max(-2ndLvlSom.20.20$visual[,"y"])+1)
+  xl <- c(min(secLvlSom.20.20$visual[,"x"])-1, max(secLvlSom.20.20$visual[,"x"])+1)
+  yl <- c(min(-secLvlSom.20.20$visual[,"y"])-1, max(-secLvlSom.20.20$visual[,"y"])+1)
 
-  plot(2ndLvlSom.20.20$visual[,"x"], -2ndLvlSom.20.20$visual[,"y"], type="p", axes=F,
+  plot(secLvlSom.20.20$visual[,"x"], -secLvlSom.20.20$visual[,"y"], type="p", axes=F,
        xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i")
 
   if (ncol(indata) < 100)
@@ -194,11 +194,11 @@ pipeline.2ndLvlSom <- function()
            text.col=groupwise.group.colors, bg="white")
   }
 
-  for (j in 1:nrow(2ndLvlSom.20.20$code.sum))
+  for (j in 1:nrow(secLvlSom.20.20$code.sum))
   {
     which.samples <-
-      intersect(which(2ndLvlSom.20.20$visual[,"x"] == 2ndLvlSom.20.20$code.sum[j,"x"]),
-                which(2ndLvlSom.20.20$visual[,"y"] == 2ndLvlSom.20.20$code.sum[j,"y"]))
+      intersect(which(secLvlSom.20.20$visual[,"x"] == secLvlSom.20.20$code.sum[j,"x"]),
+                which(secLvlSom.20.20$visual[,"y"] == secLvlSom.20.20$code.sum[j,"y"]))
 
     if (!is.na(which.samples[1]))
     {
@@ -213,24 +213,24 @@ pipeline.2ndLvlSom <- function()
       x <- pixmapIndexed(m , col = colramp(1000))
 
       addlogo(x,
-              2ndLvlSom.20.20$visual[which.samples[1], "x"]+c(-0.45,0.455),
-              -2ndLvlSom.20.20$visual[which.samples[1], "y"]+c(-0.45,0.45))
+              secLvlSom.20.20$visual[which.samples[1], "x"]+c(-0.45,0.455),
+              -secLvlSom.20.20$visual[which.samples[1], "y"]+c(-0.45,0.45))
 
       which.samples <- which.samples[1:min(4, length(which.samples))]
 
       x.seq <- rep(c(-0.2, 0.2), 2) [1:length(which.samples)]
       y.seq <- c(rep(0.2, 2), rep(-0.2, 2)) [1:length(which.samples)]
 
-      points(2ndLvlSom.20.20$visual[which.samples[1], "x"]+x.seq,
-             -2ndLvlSom.20.20$visual[which.samples[1], "y"]+y.seq,
+      points(secLvlSom.20.20$visual[which.samples[1], "x"]+x.seq,
+             -secLvlSom.20.20$visual[which.samples[1], "y"]+y.seq,
              pch=16, col=group.colors[which.samples], cex=2.5)
 
-      points(2ndLvlSom.20.20$visual[which.samples[1], "x"]+x.seq,
-             -2ndLvlSom.20.20$visual[which.samples[1], "y"]+y.seq,
+      points(secLvlSom.20.20$visual[which.samples[1], "x"]+x.seq,
+             -secLvlSom.20.20$visual[which.samples[1], "y"]+y.seq,
              pch=1, col="gray20", cex=2.5, lwd=1)
 
-      text(2ndLvlSom.20.20$visual[which.samples[1], "x"]+x.seq,
-           -2ndLvlSom.20.20$visual[which.samples[1], "y"]+y.seq,
+      text(secLvlSom.20.20$visual[which.samples[1], "x"]+x.seq,
+           -secLvlSom.20.20$visual[which.samples[1], "y"]+y.seq,
            which.samples, col="gray20", cex=0.8)
     }
   }
