@@ -54,7 +54,7 @@ opossom.run(pipeline)
 #                             geneset.analysis=TRUE,
 #                             group.spot.core=5,
 #                             group.spot.threshold=0.75,
-#                             differences.list=list(
+#                             pairwise.comparison.list=list(
 #                               list("Homeostasis"=c(1, 2), "Imune System"=c(9, 10)),
 #                               list("Homeostasis"=c(1, 2), "Muscle"=c(8))
 #                             )))

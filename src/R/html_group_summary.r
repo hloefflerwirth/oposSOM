@@ -1,5 +1,10 @@
 pipeline.htmlGroupSummary <- function()
 {
+  if (length(unique(group.labels)) <= 1)
+  {
+    return()
+  }
+
   filename <- file.path(paste(files.name, "- Results"),
                         "Summary Sheets - Groups",
                         "0verview.html")

@@ -55,7 +55,7 @@ pipeline.differenceAnalyses = function()
     names(differences.list) <-
       apply(combn(unique(group.labels), 2), 2, paste, collapse=" vs ")
 
-    differences.list <- c(preferences$differences.list, differences.list)
+    differences.list <- c(preferences$pairwise.comparison.list, differences.list)
   }
 
   if (length(differences.list) <= 0)

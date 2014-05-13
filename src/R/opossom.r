@@ -101,7 +101,7 @@ opossom.new <- function(preferences)
                               group.spot.threshold = 0.75,
                               feature.mean.normalization = T,
                               sample.quantile.normalization = T,
-                              differences.list = list())
+                              pairwise.comparison.list = list())
 
   # Merge user supplied preferences
   for (key in intersect(names(opossom$preferences), names(preferences))) {

@@ -202,8 +202,11 @@ pipeline.htmlSummary <- function()
             Spot Reports (HTML)
           </a>
         </li>
-      </ul>
+      </ul>", sep="", file=outfile)
 
+  if (length(unique(group.labels)) > 1)
+  {
+    cat("
       <h2>Group Analyses</h2>
 
       <p>
@@ -217,8 +220,13 @@ pipeline.htmlSummary <- function()
             Group Analysis Reports (HTML)
           </a>
         </li>
-      </ul>
+      </ul>", sep="", file=outfile)
+  }
 
+  if (file.exists(file.path(paste(files.name, "- Results"),
+                            "Summary Sheets - Differences")))
+  {
+    cat("
       <h2>Pairwise Differences Analyses</h2>
 
       <p>
@@ -232,7 +240,10 @@ pipeline.htmlSummary <- function()
             Differences Analysis Reports (HTML)
           </a>
         </li>
-      </ul>
+      </ul>", sep="", file=outfile)
+  }
+
+  cat("
     </div>
   </body>
 </html>", sep="", file=outfile)

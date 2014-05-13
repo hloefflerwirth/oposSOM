@@ -33,7 +33,7 @@
       \item{group.spot.threshold}: spot detection in group-specific summary maps, expression threshold (numerical)
       \item{feature.mean.normalization}: enables centralization of the features (boolean)
       \item{sample.quantile.normalization}: enables quantile normalization to the samples (boolean)
-      \item{differences.list}: group list for pairwise analyses (list, see below)
+      \item{pairwise.comparison.list}: group list for pairwise analyses (list, see below)
     }
   }
 }
@@ -50,7 +50,7 @@ opossom <- opossom.new(list(dataset.name="Example",
                             error.model="all.samples",
                             dim.som1=10,
                             dim.som2=10,
-                            differences.list=list(
+                            pairwise.comparison.list=list(
                               list("groupA"=c("sample1", "sample2"),
                                    "groupB"=c("sample3", "sample4")))))
 }

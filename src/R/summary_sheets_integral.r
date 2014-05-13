@@ -655,5 +655,9 @@ pipeline.summarySheetsIntegral <- function()
   csv.set.list(set.list=GS.infos.underexpression, main="Sample-Underexpression")
   csv.set.list(set.list=GS.infos.correlation, main="Correlation Cluster")
   csv.set.list(set.list=GS.infos.kmeans, main="K-Means Cluster")
-  csv.set.list(set.list=GS.infos.group.overexpression, main="Group Overexpression")
+
+  if (length(unique(group.labels)) > 1)
+  {
+    csv.set.list(set.list=GS.infos.group.overexpression, main="Group Overexpression")
+  }
 }

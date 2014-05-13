@@ -1,9 +1,14 @@
 pipeline.htmlDifferencesSummary <- function()
 {
-  filename <- file.path(paste(files.name, "- Results"),
-                        "Summary Sheets - Differences",
-                        "0verview.html")
+  dirname <- file.path(paste(files.name, "- Results"),
+                       "Summary Sheets - Differences")
 
+  if (!file.exists(dirname))
+  {
+    return()
+  }
+
+  filename <- file.path(dirname, "0verview.html")
   util.info("Writing:", filename)
   f <- file(filename, "w")
 
