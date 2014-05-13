@@ -56,8 +56,8 @@ pipeline.htmlSummary <- function()
 
       <dl>
         <dt>Number of samples</dt>
-        <dd>", ncol(indata), " (all replicates: ", ncol(indata.original), ")</dd>
-        <dt>Number of categories</dt>
+        <dd>", ncol(indata), "</dd>
+        <dt>Number of groups</dt>
         <dd>", length(unique(group.labels)), "</dd>
         <dt>Number of genes</dt>
         <dd>", nrow(indata), "</dd>
@@ -72,7 +72,7 @@ pipeline.htmlSummary <- function()
       <ul>
         <li>
           <a href=\"LPE/data distribution.pdf\" target=\"_blank\">
-            Data Distribution.pdf
+            Raw Data (PDF)
           </a>
         </li>
       </ul>
@@ -80,27 +80,25 @@ pipeline.htmlSummary <- function()
       <h2>1st Level SOM Analysis</h2>
 
       <p>
-        These reports show the collection of first level SOM images of all
-        tissue samples. Alternative SOM images are shown with different color
-        scales and also as rank SOM using FC-, WAD-, and Shrinkage-t-scores.
-        Further, supporting maps, entropy and topology profiles provide
+        These reports comprise the SOM portraits in standard and alternative
+        color scales, as well as supporting maps and profiles which provide
         supplementary information about the 1st level SOM.
       </p>
 
       <ul>
         <li>
           <a href=\"Expression Portraits.pdf\" target=\"_blank\">
-            1st Level SOM Expression Images
+            1st Level SOM Expression Portraits (PDF)
           </a>
         </li>
         <li>
           <a href=\"Expression Portraits alternative.pdf\" target=\"_blank\">
-            Alternative Color Scales
+            Alternative Color Scales: absolute, WAD, loglogFC (PDF)
           </a>
         </li>
         <li>
           <a href=\"Rank Maps.pdf\" target=\"_blank\">
-            Rank Profiles
+            Rank Portraits: FC, WAD, shrinkage-t (PDF)
           </a>
         </li>
       </ul>
@@ -108,7 +106,7 @@ pipeline.htmlSummary <- function()
       <ul>
         <li>
           <a href=\"Supporting Maps&amp;Profiles/Supporting Maps.pdf\" target=\"_blank\">
-            Supporting Maps
+            Supporting Maps (PDF)
           </a>
         </li>
       </ul>
@@ -116,12 +114,12 @@ pipeline.htmlSummary <- function()
       <ul>
         <li>
           <a href=\"Supporting Maps&amp;Profiles/Entropy Profiles.pdf\" target=\"_blank\">
-            Entropy Profiles
+            Entropy Profiles (PDF)
           </a>
         </li>
         <li>
           <a href=\"Supporting Maps&amp;Profiles/Topology Profiles.pdf\" target=\"_blank\">
-            Topology Profiles
+            Topology Profiles (PDF)
           </a>
         </li>
       </ul>
@@ -129,14 +127,13 @@ pipeline.htmlSummary <- function()
       <h2>Sample Summaries</h2>
 
       <p>
-        For each sample a report sheet is created which summarizes the most
-        relevant information.
+        Summary page for the individual samples.
       </p>
 
       <ul>
         <li>
           <a href=\"Summary Sheets - Samples/0verview.html\" target=\"_blank\">
-            Sample Report Sheets
+            Sample Reports (HTML)
           </a>
         </li>
       </ul>", sep="", file=outfile)
@@ -147,94 +144,92 @@ pipeline.htmlSummary <- function()
       <h2>Geneset Enrichment Analysis</h2>
 
       <p>
-        Enrichment of predefined gene sets in the samples is calculated and
-        visualized as heatmaps, profile plots and population maps.
+        Functional analyses using predefined gene sets. The results are
+        visualized in terms of heatmaps, profile plots and population maps.
       </p>
 
       <ul>
         <li>
           <a href=\"Geneset Analysis/0verview.html\" target=\"_blank\">
-            Geneset Analysis Results
+            Functional Analysis (HTML)
           </a>
         </li>
       </ul>", sep="", file=outfile)
   }
 
   cat("
-      <h2>2nd Level Metagene Analysis</h2>
+      <h2>2nd Level Analysis</h2>
 
       <p>
-        Several agglomerative methods based either on distance or on
-        correlation metrics are applied to the samples using filtered subsets
-        of metagenes.
-        The reports show cluster heatmaps and dendrograms, pairwise
-        correlation maps, correlation spanning trees and ICA results.
+        Sample similarity analyses based on different metrics applied, using
+        the metadata as input.
       </p>
 
       <ul>
         <li>
           <a href=\"2nd lvl Metagene Analysis/2nd lvl SOM.pdf\" target=\"_blank\">
-            2nd Level SOM
+            2nd Level SOM (PDF)
           </a>
         </li>
         <li>
           <a href=\"2nd lvl Metagene Analysis/Similarity Analysis.pdf\" target=\"_blank\">
-            Similarity Based Methods (Neighbor Joining &amp; Hierarchical Clustering)
+            Similarity Based Methods: Neighbor Joining, Hierarchical Clustering (PDF)
           </a>
         </li>
         <li>
           <a href=\"2nd lvl Metagene Analysis/Correlation Analysis.pdf\" target=\"_blank\">
-            Correlation Based Methods (MST, Correlation Graphs, PCM)
+            Correlation Based Methods: Spanning Tree, Networks, Maps (PDF)
           </a>
         </li>
         <li>
           <a href=\"2nd lvl Metagene Analysis/Component Analysis.pdf\" target=\"_blank\">
-            Component Based Methods (2d-ICA, 3d-ICA)
+            Component Based Methods: 2d-ICA, 3d-ICA (PDF)
           </a>
         </li>
       </ul>
 
-      <h2>3rd Level Spot Analysis</h2>
+      <h2>3rd Level Analysis</h2>
 
       <p>
-        Different criteria of spot selection such as overexpression or
+        Different criteria of spot module definition such as overexpression or
         mutual correlations between the metagenes where applied.
-        Summary sheets of integral SOM maps and subsequent analyses base on
-        this third level information.
+        The reports comprise integrated portraits, functional analyses.
       </p>
 
       <ul>
         <li>
           <a href=\"Summary Sheets - Integral/0verview.html\" target=\"_blank\">
-            Spot Report Sheets
+            Spot Reports (HTML)
           </a>
         </li>
       </ul>
 
-      <h2>Group Analysis</h2>
+      <h2>Group Analyses</h2>
 
       <p>
-        Some text...
+        Analyses based on group-wise aggregated data, including portraits,
+        clustering and functional analyses.
       </p>
 
       <ul>
         <li>
           <a href=\"Summary Sheets - Groups/0verview.html\">
-            Group Analysis Sheets
+            Group Analysis Reports (HTML)
           </a>
         </li>
       </ul>
 
-      <h2>Differences Analyses</h2>
+      <h2>Pairwise Differences Analyses</h2>
 
       <p>
-        Some text...
+        Analyses based on pairwise comparisons, including portraits,
+        clustering and functional analyses.
       </p>
 
       <ul>
         <li>
           <a href=\"Summary Sheets - Differences/0verview.html\">
-            Differences Analyses Sheets
+            Differences Analysis Reports (HTML)
           </a>
         </li>
       </ul>
