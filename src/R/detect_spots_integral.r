@@ -651,10 +651,10 @@ pipeline.detectSpotsIntegral <- function()
       # shrink each separate region to core size
       for (s.i in 1:max(core,na.rm=T))
       {
-        if (sum(core == s.i, na.rm=T) > preferences$group.spot.core)
+        if (sum(core == s.i, na.rm=T) > preferences$spot.coresize.groupmap)
         {
           core.metagenes <- which(core == s.i)
-          o <- order(group.metadata[core.metagenes,m], decreasing=T)[1:preferences$group.spot.core]
+          o <- order(group.metadata[core.metagenes,m], decreasing=T)[1:preferences$spot.coresize.groupmap]
           core[setdiff(core.metagenes, core.metagenes[o])] <- NA
         }
       }

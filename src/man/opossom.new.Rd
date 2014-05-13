@@ -29,7 +29,7 @@
       \item{sample.spot.cutoff}: spot detection threshold in single sample portraits (numerical)
       \item{summary.spot.core}: spot detection in summary maps , minimum size (numerical)
       \item{summary.spot.threshold}: spot detection in summary maps, expression threshold (numerical)
-      \item{group.spot.core}: spot detection in group-specific summary maps , minimum size (numerical)
+      \item{spot.coresize.groupmap}: spot detection in group-specific summary maps , minimum size (numerical)
       \item{group.spot.threshold}: spot detection in group-specific summary maps, expression threshold (numerical)
       \item{feature.centralization}: enables centralization of the features (boolean)
       \item{sample.quantile.normalization}: enables quantile normalization to the samples (boolean)

@@ -102,12 +102,12 @@ pipeline.prepare <- function()
     preferences$summary.spot.threshold <<- 0.95
   }
 
-  if (!is.numeric(preferences$group.spot.core) ||
-      preferences$group.spot.core < 1 ||
-      preferences$group.spot.core > 10)
+  if (!is.numeric(preferences$spot.coresize.groupmap) ||
+      preferences$spot.coresize.groupmap < 1 ||
+      preferences$spot.coresize.groupmap > 10)
   {
-    util.warn("Invalid value of \"group.spot.core\". Using 5")
-    preferences$group.spot.core <<- 5
+    util.warn("Invalid value of \"spot.coresize.groupmap\". Using 5")
+    preferences$spot.coresize.groupmap <<- 5
   }
 
   if (!is.numeric(preferences$group.spot.threshold) ||
