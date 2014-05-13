@@ -247,7 +247,7 @@ pipeline.3rdLvlSummarySheets <- function()
       spot.group.assoc <- spot.group.assoc[unique(group.labels) , ,drop=F]
       colnames(spot.group.assoc) <- names(set.list$spots)
 
-      spot.goup.mean.number <- sapply(GS.infos.samples, function(x)
+      spot.goup.mean.number <- sapply(spot.list.samples, function(x)
       {
         sum (sapply(x$spots, function(y)
         {
@@ -420,7 +420,7 @@ pipeline.3rdLvlSummarySheets <- function()
   dirname <- file.path(paste(files.name, "- Results"), "3rd lvl Spot Analysis")
 
   filename <-
-    if (GS.infos.overexpression$filtered)
+    if (spot.list.overexpression$filtered)
     {
       file.path(dirname, "Overexpression Spot Report filtered.pdf")
     } else
@@ -430,11 +430,11 @@ pipeline.3rdLvlSummarySheets <- function()
 
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list.reports(set.list=GS.infos.overexpression, main="Sample-Overexpression")
+  plot.set.list.reports(set.list=spot.list.overexpression, main="Sample-Overexpression")
   dev.off()
 
   filename <-
-    if (GS.infos.underexpression$filtered)
+    if (spot.list.underexpression$filtered)
     {
       file.path(dirname, "Underexpression Spot Report filtered.pdf")
     } else
@@ -444,13 +444,13 @@ pipeline.3rdLvlSummarySheets <- function()
 
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list.reports(set.list=GS.infos.underexpression, main="Sample-Underexpression")
+  plot.set.list.reports(set.list=spot.list.underexpression, main="Sample-Underexpression")
   dev.off()
 
   filename <- file.path(dirname, "K-Means Cluster Report.pdf")
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list.reports(set.list=GS.infos.kmeans, main="K-Means Cluster")
+  plot.set.list.reports(set.list=spot.list.kmeans, main="K-Means Cluster")
   dev.off()
 
   filename <- file.path(dirname, "Group Overexpression Report.pdf")

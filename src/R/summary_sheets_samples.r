@@ -103,9 +103,9 @@ pipeline.summarySheetsSamples <- function()
 
     par(new=T)
 
-    mask <- GS.infos.samples[[m]]$regulated
-    mask[which(is.na(GS.infos.samples[[m]]$regulated))] <- 1
-    mask[which(!is.na(GS.infos.samples[[m]]$regulated))] <- NA
+    mask <- spot.list.samples[[m]]$regulated
+    mask[which(is.na(spot.list.samples[[m]]$regulated))] <- 1
+    mask[which(!is.na(spot.list.samples[[m]]$regulated))] <- NA
 
     image(matrix(mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
           axes=F, col = "white")
@@ -174,8 +174,8 @@ pipeline.summarySheetsSamples <- function()
     {
       n.sets <- 20
 
-      top.gs.score <- sort(GS.infos.samples[[m]]$GSZ.score, decreasing=T)[1:n.sets]
-      top.gs.p <- GS.infos.samples[[m]]$GSZ.p.value[names(top.gs.score)]
+      top.gs.score <- sort(spot.list.samples[[m]]$GSZ.score, decreasing=T)[1:n.sets]
+      top.gs.p <- spot.list.samples[[m]]$GSZ.p.value[names(top.gs.score)]
 
       par(mar=c(0,0,0,0))
 
@@ -198,8 +198,8 @@ pipeline.summarySheetsSamples <- function()
       text(x.coords[5], y.coords, gs.def.list.categories[names(top.gs.score)], cex=0.6, adj=0)
       text(x.coords[6], y.coords, names(top.gs.score), cex=0.6, adj=0)
 
-      top.gs.score <- sort(GS.infos.samples[[m]]$GSZ.score, decreasing=F)[1:n.sets]
-      top.gs.p <- GS.infos.samples[[m]]$GSZ.p.value[names(top.gs.score)]
+      top.gs.score <- sort(spot.list.samples[[m]]$GSZ.score, decreasing=F)[1:n.sets]
+      top.gs.p <- spot.list.samples[[m]]$GSZ.p.value[names(top.gs.score)]
 
       y.coords <- seq(0.35, 0.02, length.out=n.sets)
 
@@ -216,14 +216,14 @@ pipeline.summarySheetsSamples <- function()
 
       if (preferences$geneset.analysis.exact)
       {
-        p <- GS.infos.samples[[m]]$GSZ.p.value
+        p <- spot.list.samples[[m]]$GSZ.p.value
 
         fdrtool.result <- suppressWarnings(fdrtool(p, statistic="pvalue", verbose=F, plot=F))
-        fdr.GS.infos.samples <- fdrtool.result$lfdr
-        Fdr.GS.infos.samples <- fdrtool.result$qval
+        fdr.spot.list.samples <- fdrtool.result$lfdr
+        Fdr.spot.list.samples <- fdrtool.result$qval
 
-        n.0.GS.infos.samples <- fdrtool.result$param[1,"eta0"]
-        perc.DE.GS.infos.samples <- 1 - n.0.GS.infos.samples
+        n.0.spot.list.samples <- fdrtool.result$param[1,"eta0"]
+        perc.DE.spot.list.samples <- 1 - n.0.spot.list.samples
 
         par(mar=c(3,6,2,6))
 
@@ -233,16 +233,16 @@ pipeline.summarySheetsSamples <- function()
         box()
         mtext("Density", side=2, line=3, cex=1)
         mtext("FDR", side=4, line=3, cex=1)
-        mtext(paste("%DE =", round(perc.DE.GS.infos.samples ,2)), line=-1.2, cex=0.5)
+        mtext(paste("%DE =", round(perc.DE.spot.list.samples ,2)), line=-1.2, cex=0.5)
 
-        abline(h=n.0.GS.infos.samples , col="gray", lwd=2)
+        abline(h=n.0.spot.list.samples , col="gray", lwd=2)
 
         par(new=T)
         plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=F)
         axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=1)
         o = order(p)
-        lines(p[o], Fdr.GS.infos.samples[o], lty=2, lwd=2)
-        lines(p[o], fdr.GS.infos.samples[o], lty=3, lwd=3)
+        lines(p[o], Fdr.spot.list.samples[o], lty=2, lwd=2)
+        lines(p[o], fdr.spot.list.samples[o], lty=3, lwd=3)
 
         legend("topright",
                c("p", expression(eta[0]), "Fdr", "fdr"),
@@ -252,20 +252,20 @@ pipeline.summarySheetsSamples <- function()
     }
 
     ## Spot Sheets
-    if (length(GS.infos.samples[[m]]$spots) <= 0)
+    if (length(spot.list.samples[[m]]$spots) <= 0)
     {
       next
     }
 
-    for (spot.i in 1:length(GS.infos.samples[[m]]$spots))
+    for (spot.i in 1:length(spot.list.samples[[m]]$spots))
     {
-      if (length(GS.infos.samples[[m]]$spots[[spot.i]]$genes) <= 1)
+      if (length(spot.list.samples[[m]]$spots[[spot.i]]$genes) <= 1)
       {
         next
       }
 
-      spot.genes <- GS.infos.samples[[m]]$spots[[spot.i]]$genes
-      spot.metagenes <- GS.infos.samples[[m]]$spots[[spot.i]]$metagenes
+      spot.genes <- spot.list.samples[[m]]$spots[[spot.i]]$genes
+      spot.metagenes <- spot.list.samples[[m]]$spots[[spot.i]]$metagenes
 
       n.genes <- min(20, length(spot.genes))
       local.p <- p.g.m[spot.genes, m]
@@ -362,9 +362,9 @@ pipeline.summarySheetsSamples <- function()
             axes=F, col = colramp(1000), main="Spot", cex.main=1.5)
 
       par(new=T)
-      mask <- GS.infos.samples[[m]]$spots[[spot.i]]$mask
-      mask[which(is.na(GS.infos.samples[[m]]$spots[[spot.i]]$mask))] <- 1
-      mask[which(!is.na(GS.infos.samples[[m]]$spots[[spot.i]]$mask))] <- NA
+      mask <- spot.list.samples[[m]]$spots[[spot.i]]$mask
+      mask[which(is.na(spot.list.samples[[m]]$spots[[spot.i]]$mask))] <- 1
+      mask[which(!is.na(spot.list.samples[[m]]$spots[[spot.i]]$mask))] <- NA
       image(matrix(mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom), axes=F, col="white")
 
       axis(1, seq(0, 1, length.out=preferences$dim.1stLvlSom/10+1),
@@ -437,13 +437,13 @@ pipeline.summarySheetsSamples <- function()
         x.coords <- c(0, 0.1, 0.18, 0.30, 0.39, 0.47)
         y.coords <- seq(0.75, 0.02, length.out=n.sets)
 
-        if (GS.infos.samples[[m]]$spots[[spot.i]]$type == "overexpressed")
+        if (spot.list.samples[[m]]$spots[[spot.i]]$type == "overexpressed")
         {
           top.gs.score <-
-            sort(GS.infos.samples[[m]]$spots[[spot.i]]$GSZ.score, decreasing=T)[1:n.sets]
+            sort(spot.list.samples[[m]]$spots[[spot.i]]$GSZ.score, decreasing=T)[1:n.sets]
 
           top.gs.p <-
-            GS.infos.samples[[m]]$spots[[spot.i]]$GSZ.p.value[names(top.gs.score)]
+            spot.list.samples[[m]]$spots[[spot.i]]$GSZ.p.value[names(top.gs.score)]
 
           plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
@@ -468,10 +468,10 @@ pipeline.summarySheetsSamples <- function()
         } else
         {
           top.gs.score <-
-            sort(GS.infos.samples[[m]]$spots[[spot.i]]$GSZ.score, decreasing=F)[1:n.sets]
+            sort(spot.list.samples[[m]]$spots[[spot.i]]$GSZ.score, decreasing=F)[1:n.sets]
 
           top.gs.p <-
-            GS.infos.samples[[m]]$spots[[spot.i]]$GSZ.p.value[names(top.gs.score)]
+            spot.list.samples[[m]]$spots[[spot.i]]$GSZ.p.value[names(top.gs.score)]
 
 
           plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
@@ -498,14 +498,14 @@ pipeline.summarySheetsSamples <- function()
 
         if (preferences$geneset.analysis.exact)
         {
-          p <- GS.infos.samples[[m]]$spots[[spot.i]]$GSZ.p.value
+          p <- spot.list.samples[[m]]$spots[[spot.i]]$GSZ.p.value
 
           fdrtool.result <- suppressWarnings(fdrtool(p, statistic="pvalue", verbose=F, plot=F))
-          fdr.GS.infos.samples <- fdrtool.result$lfdr
-          Fdr.GS.infos.samples <- fdrtool.result$qval
+          fdr.spot.list.samples <- fdrtool.result$lfdr
+          Fdr.spot.list.samples <- fdrtool.result$qval
 
-          n.0.GS.infos.samples <- fdrtool.result$param[1,"eta0"]
-          perc.DE.GS.infos.samples <- 1 - n.0.GS.infos.samples
+          n.0.spot.list.samples <- fdrtool.result$param[1,"eta0"]
+          perc.DE.spot.list.samples <- 1 - n.0.spot.list.samples
 
           par(mar=c(3,6,2,6))
 
@@ -515,16 +515,16 @@ pipeline.summarySheetsSamples <- function()
           box()
           mtext("Density", side=2, line=3, cex=1)
           mtext("FDR", side=4, line=3, cex=1)
-          mtext(paste("%DE =", round(perc.DE.GS.infos.samples ,2)), line=-1.2, cex=0.5)
+          mtext(paste("%DE =", round(perc.DE.spot.list.samples ,2)), line=-1.2, cex=0.5)
 
-          abline(h = n.0.GS.infos.samples , col="gray", lwd=2)
+          abline(h = n.0.spot.list.samples , col="gray", lwd=2)
 
           par(new=T)
           plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=F)
           axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=1)
           o = order(p)
-          lines(p[o], Fdr.GS.infos.samples[o], lty=2, lwd=2)
-          lines(p[o], fdr.GS.infos.samples[o], lty=3, lwd=3)
+          lines(p[o], Fdr.spot.list.samples[o], lty=2, lwd=2)
+          lines(p[o], fdr.spot.list.samples[o], lty=3, lwd=3)
 
           legend("topright", c("p", expression(eta[0]), "Fdr", "fdr"),
                  col=c("black","gray","black","black"), lty=c(1,1,2,3),

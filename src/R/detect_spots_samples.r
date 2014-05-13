@@ -101,11 +101,11 @@ get.neighbors <- function(x, y, dim)
 
 pipeline.detectSpotsSamples <- function()
 {
-  GS.infos.samples <<- list()
+  spot.list.samples <<- list()
 
   for (j in 1:ncol(indata))
   {
-    GS.infos.samples[[j]] <<- list()
+    spot.list.samples[[j]] <<- list()
 
     mask <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
     blob <- matrix(metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
@@ -120,7 +120,7 @@ pipeline.detectSpotsSamples <- function()
       mask[which(blob < quantile(blob,0.1))] <- -2
     }
 
-    GS.infos.samples[[j]]$regulated <<- mask
+    spot.list.samples[[j]]$regulated <<- mask
 
     spot.i <- 0
     spot.updown <- c()
@@ -141,26 +141,26 @@ pipeline.detectSpotsSamples <- function()
       spot.updown <- c(spot.updown, "underexpressed")
     }
 
-    GS.infos.samples[[j]]$spots <<- list()
+    spot.list.samples[[j]]$spots <<- list()
 
     if (spot.i > 0)
     {
       for (spot.ii in 1:spot.i)
       {
-        GS.infos.samples[[j]]$spots[[spot.ii]] <<- list()
-        GS.infos.samples[[j]]$spots[[spot.ii]]$type <<- spot.updown[spot.ii]
-        GS.infos.samples[[j]]$spots[[spot.ii]]$metagenes <<- which(mask == spot.ii)
+        spot.list.samples[[j]]$spots[[spot.ii]] <<- list()
+        spot.list.samples[[j]]$spots[[spot.ii]]$type <<- spot.updown[spot.ii]
+        spot.list.samples[[j]]$spots[[spot.ii]]$metagenes <<- which(mask == spot.ii)
 
-        GS.infos.samples[[j]]$spots[[spot.ii]]$genes <<-
+        spot.list.samples[[j]]$spots[[spot.ii]]$genes <<-
           names(som.nodes)[which(som.nodes %in% which(mask == spot.ii))]
 
-        GS.infos.samples[[j]]$spots[[spot.ii]]$mask <<-
+        spot.list.samples[[j]]$spots[[spot.ii]]$mask <<-
           matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
 
-        GS.infos.samples[[j]]$spots[[spot.ii]]$mask[which(mask == spot.ii)] <<- 1
+        spot.list.samples[[j]]$spots[[spot.ii]]$mask[which(mask == spot.ii)] <<- 1
       }
     }
   }
 
-  names(GS.infos.samples) <<- colnames(indata)
+  names(spot.list.samples) <<- colnames(indata)
 }

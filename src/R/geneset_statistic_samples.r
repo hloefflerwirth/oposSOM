@@ -31,9 +31,9 @@ pipeline.genesetStatisticSamples <- function()
       null.scores <- c(null.scores, GeneSet.GSZ(spot.gene.ids, all.gene.statistic,
                                                 gs.null.list, cluster=cl))
 
-      for (spot.i in 1:length(GS.infos.samples[[m]]$spots))
+      for (spot.i in 1:length(spot.list.samples[[m]]$spots))
       {
-        spot.genes <- GS.infos.samples[[m]]$spots[[spot.i]]$genes
+        spot.genes <- spot.list.samples[[m]]$spots[[spot.i]]$genes
         spot.gene.ids <- unique(na.omit(gene.ids[spot.genes]))
         all.gene.statistic <- batch.t.g.m[, m]
 
@@ -53,44 +53,44 @@ pipeline.genesetStatisticSamples <- function()
     all.gene.statistic <- batch.t.g.m[, m]
     spot.gene.ids <- unique.protein.ids
 
-    GS.infos.samples[[m]]$GSZ.score <<-
+    spot.list.samples[[m]]$GSZ.score <<-
       GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.def.list, sort=F, cluster=cl)
 
     if (preferences$geneset.analysis.exact)
     {
-      GS.infos.samples[[m]]$GSZ.p.value <<-
-        1 - null.culdensity(abs(GS.infos.samples[[m]]$GSZ.score))
+      spot.list.samples[[m]]$GSZ.p.value <<-
+        1 - null.culdensity(abs(spot.list.samples[[m]]$GSZ.score))
 
-      names(GS.infos.samples[[m]]$GSZ.p.value) <<- names(GS.infos.samples[[m]]$GSZ.score)
+      names(spot.list.samples[[m]]$GSZ.p.value) <<- names(spot.list.samples[[m]]$GSZ.score)
     }
 
-    for (spot.i in 1:length(GS.infos.samples[[m]]$spots))
+    for (spot.i in 1:length(spot.list.samples[[m]]$spots))
     {
-      spot.genes <- GS.infos.samples[[m]]$spots[[spot.i]]$genes
+      spot.genes <- spot.list.samples[[m]]$spots[[spot.i]]$genes
       spot.gene.ids <- unique(na.omit(gene.ids[spot.genes]))
 
       if (length(spot.gene.ids) > 0)
       {
-        GS.infos.samples[[m]]$spots[[spot.i]]$GSZ.score <<-
+        spot.list.samples[[m]]$spots[[spot.i]]$GSZ.score <<-
           GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.def.list, sort=F, cluster=cl)
 
-        GS.infos.samples[[m]]$spots[[spot.i]]$Fisher.p <<-
+        spot.list.samples[[m]]$spots[[spot.i]]$Fisher.p <<-
           GeneSet.Fisher(spot.gene.ids, unique.protein.ids, gs.def.list, sort=T, cluster=cl)
       } else
       {
-        GS.infos.samples[[m]]$spots[[spot.i]]$GSZ.score <<- rep(0, length(gs.def.list))
-        names(GS.infos.samples[[m]]$spots[[spot.i]]$GSZ.score) <<- names(gs.def.list)
-        GS.infos.samples[[m]]$spots[[spot.i]]$Fisher.p <<- rep(1, length(gs.def.list))
-        names(GS.infos.samples[[m]]$spots[[spot.i]]$Fisher.p) <<- names(gs.def.list)
+        spot.list.samples[[m]]$spots[[spot.i]]$GSZ.score <<- rep(0, length(gs.def.list))
+        names(spot.list.samples[[m]]$spots[[spot.i]]$GSZ.score) <<- names(gs.def.list)
+        spot.list.samples[[m]]$spots[[spot.i]]$Fisher.p <<- rep(1, length(gs.def.list))
+        names(spot.list.samples[[m]]$spots[[spot.i]]$Fisher.p) <<- names(gs.def.list)
       }
 
       if (preferences$geneset.analysis.exact)
       {
-        GS.infos.samples[[m]]$spots[[spot.i]]$GSZ.p.value <<-
-          1 - null.culdensity(abs(GS.infos.samples[[m]]$spots[[spot.i]]$GSZ.score))
+        spot.list.samples[[m]]$spots[[spot.i]]$GSZ.p.value <<-
+          1 - null.culdensity(abs(spot.list.samples[[m]]$spots[[spot.i]]$GSZ.score))
 
-        names(GS.infos.samples[[m]]$spots[[spot.i]]$GSZ.p.value) <<-
-          names(GS.infos.samples[[m]]$spots[[spot.i]]$GSZ.score)
+        names(spot.list.samples[[m]]$spots[[spot.i]]$GSZ.p.value) <<-
+          names(spot.list.samples[[m]]$spots[[spot.i]]$GSZ.score)
       }
     }
 

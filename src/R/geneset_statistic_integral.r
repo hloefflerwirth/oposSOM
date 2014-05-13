@@ -4,21 +4,21 @@ pipeline.genesetStatisticIntegral <- function()
   cl <- makeCluster(preferences$max.parallel.cores)
 
   ### perform GS analysis ###
-  for (i in 1:length(GS.infos.overexpression$spots))
+  for (i in 1:length(spot.list.overexpression$spots))
   {
-    geneset.ids <- unique(na.omit(gene.ids[GS.infos.overexpression$spots[[i]]$genes]))
+    geneset.ids <- unique(na.omit(gene.ids[spot.list.overexpression$spots[[i]]$genes]))
 
-    GS.infos.overexpression$spots[[i]]$Fisher.p <<-
+    spot.list.overexpression$spots[[i]]$Fisher.p <<-
       GeneSet.Fisher(geneset.ids, unique.protein.ids, gs.def.list, sort=T, cluster=cl)
   }
 
   util.progress(96, 100)
 
-  for (i in 1:length(GS.infos.underexpression$spots))
+  for (i in 1:length(spot.list.underexpression$spots))
   {
-    geneset.ids <- unique(na.omit(gene.ids[GS.infos.underexpression$spots[[i]]$genes]))
+    geneset.ids <- unique(na.omit(gene.ids[spot.list.underexpression$spots[[i]]$genes]))
 
-    GS.infos.underexpression$spots[[i]]$Fisher.p <<-
+    spot.list.underexpression$spots[[i]]$Fisher.p <<-
       GeneSet.Fisher(geneset.ids, unique.protein.ids, gs.def.list, sort=T, cluster=cl)
   }
 
@@ -37,11 +37,11 @@ pipeline.genesetStatisticIntegral <- function()
 
   util.progress(98, 100)
 
-  for (i in 1:length(GS.infos.kmeans$spots))
+  for (i in 1:length(spot.list.kmeans$spots))
   {
-    geneset.ids <- unique(na.omit(gene.ids[GS.infos.kmeans$spots[[i]]$genes]))
+    geneset.ids <- unique(na.omit(gene.ids[spot.list.kmeans$spots[[i]]$genes]))
 
-    GS.infos.kmeans$spots[[i]]$Fisher.p <<-
+    spot.list.kmeans$spots[[i]]$Fisher.p <<-
       GeneSet.Fisher(geneset.ids, unique.protein.ids, gs.def.list, sort=T, cluster=cl)
   }
 

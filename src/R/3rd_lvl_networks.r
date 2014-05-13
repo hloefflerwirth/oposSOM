@@ -480,7 +480,7 @@ pipeline.3rdLvlNetworks <- function()
   dirname <- file.path(paste(files.name, "- Results"), "3rd lvl Spot Analysis")
 
   filename <-
-    if (GS.infos.overexpression$filtered)
+    if (spot.list.overexpression$filtered)
     {
       file.path(dirname, "Overexpression Networks filtered.pdf")
     } else
@@ -490,11 +490,11 @@ pipeline.3rdLvlNetworks <- function()
 
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list.networks(set.list=GS.infos.overexpression, main="Sample-Overexpression")
+  plot.set.list.networks(set.list=spot.list.overexpression, main="Sample-Overexpression")
   dev.off()
 
   filename <-
-    if (GS.infos.underexpression$filtered)
+    if (spot.list.underexpression$filtered)
     {
       file.path(dirname, "Underexpression Networks filtered.pdf")
     } else
@@ -504,13 +504,13 @@ pipeline.3rdLvlNetworks <- function()
 
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list.networks(set.list=GS.infos.underexpression, main="Sample-Underexpression")
+  plot.set.list.networks(set.list=spot.list.underexpression, main="Sample-Underexpression")
   dev.off()
 
   filename <- file.path(dirname, "K-Means Cluster Networks.pdf")
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list.networks(set.list=GS.infos.kmeans, main="K-Means Cluster")
+  plot.set.list.networks(set.list=spot.list.kmeans, main="K-Means Cluster")
   dev.off()
 
   filename <- file.path(dirname, "Group Overexpression Networks.pdf")

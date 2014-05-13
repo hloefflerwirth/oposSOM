@@ -29,7 +29,7 @@ pipeline.2ndLvlSimilarityAnalysis <- function()
   metagene.filter.list[[1]] <<- list(s=c(1:preferences$dim.1stLvlSom^2),
                                      n=paste("all", preferences$dim.1stLvlSom^2, "Metagenes"))
 
-  spot.metagenes <- unique(unlist(sapply(GS.infos.overexpression$spots, function(x) { x$metagenes })))
+  spot.metagenes <- unique(unlist(sapply(spot.list.overexpression$spots, function(x) { x$metagenes })))
 
   metagene.filter.list[[2]] <<- list(s=spot.metagenes,
                                      n=paste(length(spot.metagenes), "Spot-Metagenes"))

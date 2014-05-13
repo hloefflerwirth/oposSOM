@@ -5,14 +5,14 @@ pipeline.genesetOverviews <- function()
   pdf(filename, 21/2.54, 21/2.54)
 
   ### GSZ heatmaps
-  spots.GSZ.scores <- do.call(cbind, lapply(GS.infos.samples, function(x)
+  spots.GSZ.scores <- do.call(cbind, lapply(spot.list.samples, function(x)
   {
     apply(do.call(cbind,  lapply(x$spots, function(y) { y$GSZ.score[names(gs.def.list)] })),
           1, function(z) { if (max(z) > -min(z)) { max(z) } else { min(z) } })
   }))
 
   summary.spots.fisher.p <-
-    sapply(GS.infos.overexpression$spots, function(x) { x$Fisher.p[names(gs.def.list)] })
+    sapply(spot.list.overexpression$spots, function(x) { x$Fisher.p[names(gs.def.list)] })
 
 
   for (i in names(table(gs.def.list.categories)))
@@ -81,7 +81,7 @@ pipeline.genesetOverviews <- function()
   }
 
   ### Overrepresentation heatmaps
-  spots.fisher.p <- do.call(cbind, lapply(GS.infos.samples, function(x)
+  spots.fisher.p <- do.call(cbind, lapply(spot.list.samples, function(x)
   {
     apply(do.call(cbind, lapply(x$spots, function(y)
     {
@@ -166,12 +166,12 @@ pipeline.genesetOverviews <- function()
   ### p Histogram + FDR
   if (preferences$geneset.analysis.exact)
   {
-    all.sets.GSZ.p <- unlist(sapply(GS.infos.samples, function(x)
+    all.sets.GSZ.p <- unlist(sapply(spot.list.samples, function(x)
     {
       sapply(x$spots, function(x) { x$GSZ.p.value })
     }))
 
-    all.samples.GSZ.p <- unlist(sapply(GS.infos.samples, function(x)
+    all.samples.GSZ.p <- unlist(sapply(spot.list.samples, function(x)
     {
       x$GSZ.p.value
     }))
@@ -179,10 +179,10 @@ pipeline.genesetOverviews <- function()
     p <- c(all.sets.GSZ.p, all.samples.GSZ.p)
 
     suppressWarnings({ fdrtool.result <- fdrtool(p, statistic="pvalue", verbose=F, plot=F) })
-    fdr.GS.infos.samples <- fdrtool.result$lfdr
-    Fdr.GS.infos.samples <- fdrtool.result$qval
-    n.0.GS.infos.samples <- fdrtool.result$param[1,"eta0"]
-    perc.DE.GS.infos.samples <- 1 - n.0.GS.infos.samples
+    fdr.spot.list.samples <- fdrtool.result$lfdr
+    Fdr.spot.list.samples <- fdrtool.result$qval
+    n.0.spot.list.samples <- fdrtool.result$param[1,"eta0"]
+    perc.DE.spot.list.samples <- 1 - n.0.spot.list.samples
 
     par(mar=c(5,6,4,5))
 
@@ -192,23 +192,23 @@ pipeline.genesetOverviews <- function()
     box()
     mtext("Density", side=2, line=4, cex=2)
     mtext("FDR", side=4, line=4, cex=2)
-    mtext(paste("%DE =", round(perc.DE.GS.infos.samples, 2)), line=-1.3, cex=1.6)
+    mtext(paste("%DE =", round(perc.DE.spot.list.samples, 2)), line=-1.3, cex=1.6)
 
-    abline(h = n.0.GS.infos.samples, col="gray", lwd=2)
+    abline(h = n.0.spot.list.samples, col="gray", lwd=2)
 
     par(new=T)
     plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=F)
     axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=2)
     o <- order(p)
     o <- o[round(seq(1, length(o), length.out=1000))]
-    lines(p[o], Fdr.GS.infos.samples[o], lty=2, lwd=2)
-    lines(p[o], fdr.GS.infos.samples[o], lty=3, lwd=3)
+    lines(p[o], Fdr.spot.list.samples[o], lty=2, lwd=2)
+    lines(p[o], fdr.spot.list.samples[o], lty=3, lwd=3)
 
     legend("topright", c("p", expression(eta[0]), "Fdr", "fdr"),
            col=c("black","gray","black","black"), lty=c(1,1,2,3), lwd=c(2,2,2,3))
   }
 
-  all.sets.fisher.p <- unlist(sapply(GS.infos.samples, function(x)
+  all.sets.fisher.p <- unlist(sapply(spot.list.samples, function(x)
   {
     sapply(x$spots, function(x) { x$Fisher.p })
   }))
@@ -219,10 +219,10 @@ pipeline.genesetOverviews <- function()
   p <- c(p, seq(0,1, length.out=length.out))
 
   suppressWarnings({ fdrtool.result <- fdrtool(p, statistic="pvalue", verbose=F, plot=F) })
-  fdr.GS.infos.samples <- fdrtool.result$lfdr
-  Fdr.GS.infos.samples <- fdrtool.result$qval
-  n.0.GS.infos.samples <- fdrtool.result$param[1,"eta0"]
-  perc.DE.GS.infos.samples <- 1 - n.0.GS.infos.samples
+  fdr.spot.list.samples <- fdrtool.result$lfdr
+  Fdr.spot.list.samples <- fdrtool.result$qval
+  n.0.spot.list.samples <- fdrtool.result$param[1,"eta0"]
+  perc.DE.spot.list.samples <- 1 - n.0.spot.list.samples
 
   par(mar=c(5,6,4,5))
 
@@ -232,16 +232,16 @@ pipeline.genesetOverviews <- function()
   box()
   mtext("Density", side=2, line=4, cex=2)
   mtext("FDR", side=4, line=4, cex=2)
-  mtext(paste("%DE =", round(perc.DE.GS.infos.samples ,2)), line=-1.3, cex=1.6)
+  mtext(paste("%DE =", round(perc.DE.spot.list.samples ,2)), line=-1.3, cex=1.6)
 
-  abline(h=n.0.GS.infos.samples, col="gray", lwd=2)
+  abline(h=n.0.spot.list.samples, col="gray", lwd=2)
 
   par(new=T)
   plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=F)
   axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=2)
   o <- order(p)
-  lines(p[o], Fdr.GS.infos.samples[o], lty=2, lwd=2)
-  lines(p[o], fdr.GS.infos.samples[o], lty=3, lwd=3)
+  lines(p[o], Fdr.spot.list.samples[o], lty=2, lwd=2)
+  lines(p[o], fdr.spot.list.samples[o], lty=3, lwd=3)
 
   legend("topright", c("p", expression(eta[0]), "Fdr", "fdr"),
          col=c("black","gray","black","black"), lty=c(1,1,2,3), lwd=c(2,2,2,3))

@@ -2,17 +2,17 @@ pipeline.signatureSets <- function()
 {
   spotdefined.genesets <- list()
 
-  for (i in 1:length(GS.infos.overexpression$spots))
+  for (i in 1:length(spot.list.overexpression$spots))
   {
-    r <- sapply(GS.infos.overexpression$spots[[i]]$genes, function(x)
+    r <- sapply(spot.list.overexpression$spots[[i]]$genes, function(x)
     {
       gene <- indata[x,]
       metagene <- metadata[som.nodes[x],]
       cor(gene, metagene)
     })
 
-    spotdefined.genesets[[names(GS.infos.overexpression$spots)[i]]] <-
-      unique(na.omit(gene.ids[GS.infos.overexpression$spots[[i]]$genes[which(r > 0.8)]]))
+    spotdefined.genesets[[names(spot.list.overexpression$spots)[i]]] <-
+      unique(na.omit(gene.ids[spot.list.overexpression$spots[[i]]$genes[which(r > 0.8)]]))
   }
 
   out <- cbind(Name=names(spotdefined.genesets),

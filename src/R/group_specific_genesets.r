@@ -5,7 +5,7 @@ pipeline.groupSpecificGenesets <- function()
   for (gr in 1:length(unique(group.labels)))
   {
 
-    samples.GSZ.scores <- do.call(cbind, lapply(GS.infos.samples, function(x)
+    samples.GSZ.scores <- do.call(cbind, lapply(spot.list.samples, function(x)
     {
       x$GSZ.score[names(gs.def.list)]
     }))

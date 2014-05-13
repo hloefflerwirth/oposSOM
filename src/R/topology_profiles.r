@@ -17,7 +17,7 @@ pipeline.topologyProfiles <- function()
   }
 
   ### Number of red spots ###
-  n.spots <- sapply(GS.infos.samples, function(x)
+  n.spots <- sapply(spot.list.samples, function(x)
   {
     sum(sapply(x$spots, function(x){ if (x$type=="overexpressed") 1 else 0 }))
   })

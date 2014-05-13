@@ -74,7 +74,7 @@ pipeline.cancerHallmarks <- function()
     return(GeneSet.GSZ(unique.protein.ids, batch.t.g.m[, m], hallmark.sets.list, sort=F, cluster=cl))
   })
 
-  hallmark.spot.enrichment <- sapply(GS.infos.overexpression$spots, function(x)
+  hallmark.spot.enrichment <- sapply(spot.list.overexpression$spots, function(x)
   {
     spot.ens.ids <- unique(na.omit(gene.ids[x$genes]))
     return(GeneSet.Fisher(spot.ens.ids, unique.protein.ids, hallmark.sets.list, sort=F, cluster=cl))

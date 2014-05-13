@@ -192,7 +192,7 @@ pipeline.summarySheetsIntegral <- function()
     # Spot - SampleGSZ - Heatmap
     if (preferences$geneset.analysis)
     {
-      sample.spot.GSZ <- sapply(GS.infos.samples, function(x)
+      sample.spot.GSZ <- sapply(spot.list.samples, function(x)
       {
         apply(sapply(x$spots, function(xs){ xs$GSZ.score[unlist(top.GS)] }), 1, max)
       })
@@ -466,11 +466,11 @@ pipeline.summarySheetsIntegral <- function()
 
         if (class(try.res) != "try-error")
         {
-          fdr.GS.infos.samples <- fdrtool.result$lfdr
-          Fdr.GS.infos.samples <- fdrtool.result$qval
+          fdr.spot.list.samples <- fdrtool.result$lfdr
+          Fdr.spot.list.samples <- fdrtool.result$qval
 
-          n.0.GS.infos.samples <- fdrtool.result$param[1,"eta0"]
-          perc.DE.GS.infos.samples <-1 - n.0.GS.infos.samples
+          n.0.spot.list.samples <- fdrtool.result$param[1,"eta0"]
+          perc.DE.spot.list.samples <-1 - n.0.spot.list.samples
 
           par(mar=c(3,6,2,6))
 
@@ -480,16 +480,16 @@ pipeline.summarySheetsIntegral <- function()
           box()
           mtext("Density", side=2, line=3, cex=1)
           mtext("FDR", side=4, line=3, cex=1)
-          mtext(paste("%DE =", round(perc.DE.GS.infos.samples ,2)), line=-1.2, cex=0.5)
+          mtext(paste("%DE =", round(perc.DE.spot.list.samples ,2)), line=-1.2, cex=0.5)
 
-          abline(h = n.0.GS.infos.samples , col="gray", lwd=2)
+          abline(h = n.0.spot.list.samples , col="gray", lwd=2)
 
           par(new=T)
           plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=F)
           axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=1)
           o = order(set.list$spots[[m]]$Fisher.p)
-          lines(set.list$spots[[m]]$Fisher.p[o], Fdr.GS.infos.samples[o], lty=2, lwd=2)
-          lines(set.list$spots[[m]]$Fisher.p[o], fdr.GS.infos.samples[o], lty=3, lwd=3)
+          lines(set.list$spots[[m]]$Fisher.p[o], Fdr.spot.list.samples[o], lty=2, lwd=2)
+          lines(set.list$spots[[m]]$Fisher.p[o], fdr.spot.list.samples[o], lty=3, lwd=3)
 
           legend("topright", c("p", expression(eta[0]), "Fdr", "fdr"),
                  col=c("black","gray","black","black"), lty=c(1,1,2,3), lwd=c(1,1,1,2), cex=0.7)
@@ -619,14 +619,14 @@ pipeline.summarySheetsIntegral <- function()
   util.info("Writing:", filename)
 
   pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list(set.list=GS.infos.overexpression, main="Sample-Overexpression")
+  plot.set.list(set.list=spot.list.overexpression, main="Sample-Overexpression")
   dev.off()
 
   filename <- file.path(dirnames["ssi"], "Underexpression.pdf")
   util.info("Writing:", filename)
 
   pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list(set.list=GS.infos.underexpression, main="Sample-Underexpression")
+  plot.set.list(set.list=spot.list.underexpression, main="Sample-Underexpression")
   dev.off()
 
   filename <- file.path(dirnames["ssi"], "Correlation Cluster.pdf")
@@ -640,21 +640,24 @@ pipeline.summarySheetsIntegral <- function()
   util.info("Writing:", filename)
 
   pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list(set.list=GS.infos.kmeans, main="K-Means Cluster")
+  plot.set.list(set.list=spot.list.kmeans, main="K-Means Cluster")
   dev.off()
 
   filename <- file.path(dirnames["ssi"], "Group Overexpression.pdf")
   util.info("Writing:", filename)
 
-  pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list(set.list=spot.list.group.overexpression, main="Group Overexpression")
-  dev.off()
+  if (length(unique(group.labels)) > 1)
+  {
+    pdf(filename, 29.7/2.54, 21/2.54)
+    plot.set.list(set.list=spot.list.group.overexpression, main="Group Overexpression")
+    dev.off()
+  }
 
   util.info("Writing:", file.path(dirnames["spots"], "*.csv"))
-  csv.set.list(set.list=GS.infos.overexpression, main="Sample-Overexpression")
-  csv.set.list(set.list=GS.infos.underexpression, main="Sample-Underexpression")
+  csv.set.list(set.list=spot.list.overexpression, main="Sample-Overexpression")
+  csv.set.list(set.list=spot.list.underexpression, main="Sample-Underexpression")
   csv.set.list(set.list=spot.list.correlation, main="Correlation Cluster")
-  csv.set.list(set.list=GS.infos.kmeans, main="K-Means Cluster")
+  csv.set.list(set.list=spot.list.kmeans, main="K-Means Cluster")
 
   if (length(unique(group.labels)) > 1)
   {

@@ -42,10 +42,10 @@ opossom.new <- function(preferences)
   opossom$gs.def.list.categories <- NULL
   opossom$spot.list.correlation <- NULL
   opossom$spot.list.group.overexpression <- NULL
-  opossom$GS.infos.kmeans <- NULL
-  opossom$GS.infos.overexpression <- NULL
-  opossom$GS.infos.samples <- NULL
-  opossom$GS.infos.underexpression <- NULL
+  opossom$spot.list.kmeans <- NULL
+  opossom$spot.list.overexpression <- NULL
+  opossom$spot.list.samples <- NULL
+  opossom$spot.list.underexpression <- NULL
   opossom$indata <- NULL
   opossom$indata.mean.level <- NULL
   opossom$indata.original <- NULL

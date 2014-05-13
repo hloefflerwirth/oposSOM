@@ -65,20 +65,20 @@ pipeline.geneLists <- function()
 
   for (m in 1:ncol(indata))
   {
-    if (length(GS.infos.samples[[m]]$spots) <= 0)
+    if (length(spot.list.samples[[m]]$spots) <= 0)
     {
       next
     }
 
-    for (spot.i in 1:length(GS.infos.samples[[m]]$spots))
+    for (spot.i in 1:length(spot.list.samples[[m]]$spots))
     {
-      if (length(GS.infos.samples[[m]]$spots[[spot.i]]$genes) <= 1)
+      if (length(spot.list.samples[[m]]$spots[[spot.i]]$genes) <= 1)
       {
         next
       }
 
-      spot.genes <- GS.infos.samples[[m]]$spots[[spot.i]]$genes
-      spot.metagenes <- GS.infos.samples[[m]]$spots[[spot.i]]$metagenes
+      spot.genes <- spot.list.samples[[m]]$spots[[spot.i]]$genes
+      spot.metagenes <- spot.list.samples[[m]]$spots[[spot.i]]$metagenes
 
       p <- p.g.m[spot.genes, m]
       fdrtool.result <- suppressWarnings(fdrtool(p, statistic="pvalue", verbose=F, plot=F))
@@ -155,7 +155,7 @@ pipeline.geneLists <- function()
 
     for (m in 1:ncol(indata))
     {
-      gs.info <- GS.infos.samples[[m]]$GSZ.score
+      gs.info <- spot.list.samples[[m]]$GSZ.score
 
       pos.gs.info <- round(sort(gs.info[which(gs.info>0)],decreasing=T), 8)
       neg.gs.info <- round(sort(gs.info[which(gs.info<0)],decreasing=F), 8)

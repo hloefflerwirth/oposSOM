@@ -1,6 +1,6 @@
 pipeline.genesetProfilesAndMaps <- function()
 {
-  samples.GSZ.scores <- do.call(cbind, lapply(GS.infos.samples, function(x)
+  samples.GSZ.scores <- do.call(cbind, lapply(spot.list.samples, function(x)
   {
     x$GSZ.score[names(gs.def.list)]
   }))
@@ -20,14 +20,14 @@ pipeline.genesetProfilesAndMaps <- function()
     fdr.threshold <- 0.1
 
     GSZs <-
-      cbind(as.vector(unlist(sapply(GS.infos.samples, function(x) { x$GSZ.score[names(gs.def.list)] }))),
-            as.vector(unlist(sapply(GS.infos.samples, function(x) { x$GSZ.p.value[names(gs.def.list)] }))))
+      cbind(as.vector(unlist(sapply(spot.list.samples, function(x) { x$GSZ.score[names(gs.def.list)] }))),
+            as.vector(unlist(sapply(spot.list.samples, function(x) { x$GSZ.p.value[names(gs.def.list)] }))))
 
     GSZs <- GSZs[which(!is.na(GSZs[,2])),]
 
     fdrtool.result <- fdrtool(GSZs[,2], statistic="pvalue", verbose=F, plot=F)
-    fdr.significant.GS.infos.samples <- length(which(fdrtool.result$lfdr < fdr.threshold))
-    fdr.gsz.threshold <- sort(GSZs[,1], decreasing=T)[fdr.significant.GS.infos.samples]
+    fdr.significant.spot.list.samples <- length(which(fdrtool.result$lfdr < fdr.threshold))
+    fdr.gsz.threshold <- sort(GSZs[,1], decreasing=T)[fdr.significant.spot.list.samples]
   } else
   {
     fdr.gsz.threshold <- 0
@@ -77,7 +77,7 @@ pipeline.genesetProfilesAndMaps <- function()
 
     #################################################
 
-    spot.fisher.p <- -log10(sapply(GS.infos.overexpression$spots, function(x)
+    spot.fisher.p <- -log10(sapply(spot.list.overexpression$spots, function(x)
     {
       x$Fisher.p[names(gs.def.list)[i]]
     }))
@@ -91,7 +91,7 @@ pipeline.genesetProfilesAndMaps <- function()
 
     #################################################
 
-    spot.expression <- t(sapply(GS.infos.overexpression$spots, function(x)
+    spot.expression <- t(sapply(spot.list.overexpression$spots, function(x)
     {
       g <- intersect(gene.ids[x$genes], gs.def.list[[i]]$Genes)
       g <- names(gene.ids)[which(gene.ids %in% g)]

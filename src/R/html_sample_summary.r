@@ -148,7 +148,7 @@ pipeline.htmlSampleSummary <- function()
             </td>
             <td>", sep="", file=outfile)
 
-    for (spot.i in 1:length(GS.infos.samples[[m]]$spots))
+    for (spot.i in 1:length(spot.list.samples[[m]]$spots))
     {
       cat("
               <a href=\"../CSV Sheets/Gene Lists - Local/", fname, ".", spot.i, ".csv\">

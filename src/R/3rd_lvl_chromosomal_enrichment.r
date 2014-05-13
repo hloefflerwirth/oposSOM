@@ -130,7 +130,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
 
   if (length(gene.positions.list) > 0)
   {
-    plot.set.list.chromosomes(set.list=GS.infos.overexpression,
+    plot.set.list.chromosomes(set.list=spot.list.overexpression,
                               main="Overexpression Spot Chromosome Map")
   }
 
@@ -142,7 +142,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
 
   if (length(gene.positions.list) > 0)
   {
-    plot.set.list.chromosomes(GS.infos.underexpression,
+    plot.set.list.chromosomes(spot.list.underexpression,
                               main="Underexpression Spot Chromosome Map")
   }
 
@@ -154,7 +154,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
 
   if (length(gene.positions.list) > 0)
   {
-    plot.set.list.chromosomes(GS.infos.kmeans, main="K-Means Cluster Chromosome Map")
+    plot.set.list.chromosomes(spot.list.kmeans, main="K-Means Cluster Chromosome Map")
   }
 
   dev.off()
