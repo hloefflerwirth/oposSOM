@@ -16,7 +16,7 @@ pipeline.detectSpotsIntegral <- function()
   {
     # define bigger core regions
     core <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
-    core[which(metadata.scaled[,m] > preferences$summary.spot.threshold)] <- -1
+    core[which(metadata.scaled[,m] > preferences$spot.threshold.modules)] <- -1
 
     spot.i = 0
 
@@ -60,7 +60,7 @@ pipeline.detectSpotsIntegral <- function()
         metadata[which(core == s.i),m]
 
       spot <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
-      spot[which(metadata.scaled[,m] > preferences$summary.spot.threshold)] <- -1
+      spot[which(metadata.scaled[,m] > preferences$spot.threshold.modules)] <- -1
 
       start.pix <- which(!is.na(sample.spot.core.list[[n.sample.modules]]), arr.ind=T)
       start.pix <- start.pix[which.max(sample.spot.core.list[[n.sample.modules]][start.pix]),]
@@ -256,7 +256,7 @@ pipeline.detectSpotsIntegral <- function()
   {
     # define bigger core regions
     core <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
-    core[which(metadata.scaled[,m] < 1 - preferences$summary.spot.threshold)] <- -1
+    core[which(metadata.scaled[,m] < 1 - preferences$spot.threshold.modules)] <- -1
 
     spot.i <- 0
 
@@ -296,7 +296,7 @@ pipeline.detectSpotsIntegral <- function()
       sample.spot.core.list[[n.sample.modules]][which(core == s.i)] <- metadata[which(core == s.i),m]
 
       spot <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
-      spot[which(metadata.scaled[,m] < 1 - preferences$summary.spot.threshold)] <- -1
+      spot[which(metadata.scaled[,m] < 1 - preferences$spot.threshold.modules)] <- -1
 
       start.pix <- which(!is.na(sample.spot.core.list[[n.sample.modules]]), arr.ind=T)
       start.pix <- start.pix[which.max(sample.spot.core.list[[n.sample.modules]][start.pix]),]

@@ -94,12 +94,12 @@ pipeline.prepare <- function()
     preferences$spot.coresize.modules <<- 3
   }
 
-  if (!is.numeric(preferences$summary.spot.threshold) ||
-      preferences$summary.spot.threshold <= 0 ||
-      preferences$summary.spot.threshold >= 1)
+  if (!is.numeric(preferences$spot.threshold.modules) ||
+      preferences$spot.threshold.modules <= 0 ||
+      preferences$spot.threshold.modules >= 1)
   {
-    util.warn("Invalid value of \"summary.spot.threshold\". Using 0.95")
-    preferences$summary.spot.threshold <<- 0.95
+    util.warn("Invalid value of \"spot.threshold.modules\". Using 0.95")
+    preferences$spot.threshold.modules <<- 0.95
   }
 
   if (!is.numeric(preferences$spot.coresize.groupmap) ||

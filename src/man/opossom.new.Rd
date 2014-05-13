@@ -28,7 +28,7 @@
       \item{max.parallel.cores}: number of CPU cores used by parallelization (numerical)
       \item{spot.threshold.samples}: spot detection threshold in single sample portraits (numerical)
       \item{spot.coresize.modules}: spot detection in summary maps , minimum size (numerical)
-      \item{summary.spot.threshold}: spot detection in summary maps, expression threshold (numerical)
+      \item{spot.threshold.modules}: spot detection in summary maps, expression threshold (numerical)
       \item{spot.coresize.groupmap}: spot detection in group-specific summary maps , minimum size (numerical)
       \item{spot.threshold.groupmap}: spot detection in group-specific summary maps, expression threshold (numerical)
       \item{feature.centralization}: enables centralization of the features (boolean)
