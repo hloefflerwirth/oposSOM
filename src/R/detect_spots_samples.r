@@ -112,8 +112,8 @@ pipeline.detectSpotsSamples <- function()
 
     if (diff(sign(range(metadata[,j]))) != 0) # values lie in + and - regions
     {
-      mask[which(blob > max(blob) * preferences$sample.spot.cutoff)] <- -1
-      mask[which(blob < min(blob) * preferences$sample.spot.cutoff)] <- -2
+      mask[which(blob > max(blob) * preferences$spot.threshold.samples)] <- -1
+      mask[which(blob < min(blob) * preferences$spot.threshold.samples)] <- -2
     } else
     {
       mask[which(blob > quantile(blob,0.9))] <- -1

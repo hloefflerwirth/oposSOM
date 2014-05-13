@@ -26,7 +26,7 @@
       \item{geneset.analysis}: enables geneset analysis (boolean)
       \item{geneset.analysis.exact}: enables p-value and fdr calculation in geneset analysis (boolean)
       \item{max.parallel.cores}: number of CPU cores used by parallelization (numerical)
-      \item{sample.spot.cutoff}: spot detection threshold in single sample portraits (numerical)
+      \item{spot.threshold.samples}: spot detection threshold in single sample portraits (numerical)
       \item{summary.spot.core}: spot detection in summary maps , minimum size (numerical)
       \item{summary.spot.threshold}: spot detection in summary maps, expression threshold (numerical)
       \item{spot.coresize.groupmap}: spot detection in group-specific summary maps , minimum size (numerical)

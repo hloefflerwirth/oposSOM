@@ -78,12 +78,12 @@ pipeline.prepare <- function()
               preferences$max.parallel.cores)
   }
 
-  if (!is.numeric(preferences$sample.spot.cutoff) ||
-      preferences$sample.spot.cutoff <= 0 ||
-      preferences$sample.spot.cutoff >= 1)
+  if (!is.numeric(preferences$spot.threshold.samples) ||
+      preferences$spot.threshold.samples <= 0 ||
+      preferences$spot.threshold.samples >= 1)
   {
-    util.warn("Invalid value of \"sample.spot.cutoff\". Using 0.65")
-    preferences$sample.spot.cutoff <<- 0.65
+    util.warn("Invalid value of \"spot.threshold.samples\". Using 0.65")
+    preferences$spot.threshold.samples <<- 0.65
   }
 
   if (!is.numeric(preferences$summary.spot.core) ||
