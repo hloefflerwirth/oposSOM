@@ -76,46 +76,12 @@ pipeline.htmlSampleSummary <- function()
   </head>
   <body>
     <div id=\"wrapper\">
-      <h1>Error Model</h1>
-
-      <dl>
-        <dt>Error Estimation Model</dt>", sep="", file=outfile)
-
-  if (preferences$error.model == "replicates")
-  {
-    cat("
-        <dd>Shrinkage: SD(replicates) vs. LPE</dd>",
-        sep="", file = outfile)
-  } else if (preferences$error.model == "all.samples")
-  {
-    cat("
-        <dd>LPE: SD(all genes) vs. &lt;e&gt;(all genes)</dd>",
-        sep="", file = outfile)
-  } else if (preferences$error.model == "groups")
-  {
-    cat("
-        <dd>Shrinkage: SD(categories) vs. LPE</dd>",
-        sep="", file = outfile)
-  }
-
-
-  cat("
-      </dl>
-
-      <ul>
-        <li>
-          <a href=\"../LPE/Sigma_LPE.pdf\" target=\"_blank\">
-              LPE Error Plot For All Samples
-          </a>
-        </li>
-      </ul>
-
-      <h1>Categories</h1>
+      <h1>Group Overview</h1>
 
       <table>
         <thead>
           <tr>
-            <th>Category</th>
+            <th>Groups</th>
             <th>Number of Samples</th>
           </tr>
         </head>
@@ -140,23 +106,20 @@ pipeline.htmlSampleSummary <- function()
         For each sample a report sheet is created which summarizes the most
         relevant information using the global and local perspective.
         The global summary shows the ranked list of differentially expressed
-        genes together with the associated significance characteristics for
-        the whole sample, the ranked list of over- and underexpressed gene
-        sets after GSZ-overexpression analysis and the respective p-value
+        genes for the whole sample, the ranked list of over- and underexpressed
+        gene sets after GSZ-overexpression analysis and the respective p-value
         distributions.
         The local summary sheets present the analogous information for each
-        single spot which is selected using the 98%-quantile criterion. The
-        two maps in the left part of the sheet show the respective first
-        level SOM and the selected spot, respectively.
-        The full global and local lists can be downloaded in excel format.
+        single spot detected.
+        The gene and gene set list are provided as tables.
       </p>
 
       <table>
         <thead>
           <tr>
             <th>Sample Name</th>
-            <th>Category</th>
-            <th>Summary Sheets</th>
+            <th>Group</th>
+            <th>Summary Sheet</th>
             <th>Global Gene List</th>
             <th>Local Gene List</th>
             <th>Gene Set List</th>

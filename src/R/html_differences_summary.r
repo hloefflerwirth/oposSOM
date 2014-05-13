@@ -76,23 +76,20 @@ pipeline.htmlDifferencesSummary <- function()
   </head>
   <body>
     <div id=\"wrapper\">
-      <h1>Differences Maps Summary Sheets</h1>
+      <h1>Differences Analyses</h1>
+
+      <h2>Pairwise Difference Summary Sheets</h2>
 
       <p>
-        Some fancy text here...
-      </p>
-
-      <h2>Something</h2>
-
-      <p>
-        Another fancy text here...
+        For each pairwise comparison a report sheet, gene lists and gene set
+        lists are created analogous to the Sample Summary Sheets.
       </p>
 
       <table>
         <thead>
           <tr>
-            <th>Categories</th>
-            <th>Summary Sheets</th>
+            <th>Comparison</th>
+            <th>Summary Sheet</th>
             <th>Global Gene List</th>
             <th>Local Gene Lists</th>
             <th>Gene Set List</th>

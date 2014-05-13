@@ -30,6 +30,7 @@ pipeline.htmlGenesetAnalysis <- function()
       }
 
       h1, h2 {
+        clear: both;
         margin: 30px 0 0 0;
         line-height: 210%;
         border-bottom: 1px solid #eee;
@@ -78,6 +79,16 @@ pipeline.htmlGenesetAnalysis <- function()
       table td a {
         display: block;
       }
+
+      #toc {
+        float: left;
+        width: 100%;
+      }
+
+      #toc li {
+        float: left;
+        width: 33%;
+      }
     </style>
   </head>
   <body>
@@ -85,40 +96,39 @@ pipeline.htmlGenesetAnalysis <- function()
       <h1>General Information</h1>
 
       <dl>
-        <dt>Number of Genesets</dt>
+        <dt>Number of Gene Sets</dt>
         <dd>", length(gs.def.list), "</dd>
         <dt>Categories</dt>
         <dd>", paste(paste(names(table(gs.def.list.categories)),
                table(gs.def.list.categories), sep=" ("), collapse=") , ") , ")</dd>
-        <dt>Table of all GSZ scores</dt>
-        <dd>
-          <a href=\"../CSV Sheets/Sample GSZ scores.csv\" target=\"_blank\">
-            Sample GSZ Scores.csv
-          </a>
-        </dd>
-        <dt>GSZ/Fisher analysis</dt>
-        <dd>
-          <a href=\"0verview Heatmaps.pdf\" target=\"_blank\">
-            Overview Heatmaps.pdf
-          </a>
-        </dd>
-        <dt>Cancer Hallmarks</dt>
-        <dd>
-          <a href=\"0verview Cancer Hallmarks.pdf\" target=\"_blank\">
-            Overview Cancer Hallmarks.pdf
-          </a>
-        </dd>
-        <dt>Chromosome Expression</dt>
-        <dd>
-          <a href=\"0verview Chromosome Expression.pdf\" target=\"_blank\">
-            Overview Chromosome Expression.pdf
-          </a>
-        </dd>
       </dl>
 
-      <h2>Quick Links</h2>
+      <ul>
+        <li>
+          <a href=\"../CSV Sheets/Sample GSZ scores.csv\" target=\"_blank\">
+            Table of sample GSZ scores (CSV)
+          </a>
+        </li>
+        <li>
+          <a href=\"0verview Heatmaps.pdf\" target=\"_blank\">
+            Enrichment Score Heatmaps (PDF)
+          </a>
+        </li>
+        <li>
+          <a href=\"0verview Cancer Hallmarks.pdf\" target=\"_blank\">
+            Hallmarks of Cancer (PDF)
+          </a>
+        </li>
+        <li>
+          <a href=\"0verview Chromosome Expression.pdf\" target=\"_blank\">
+            Heatmaps of Chromosomewise Expression (PDF)
+          </a>
+        </li>
+      </ul>
 
-      <ul>", sep="", file=outfile)
+      <h2>Category Links</h2>
+
+      <ul id=\"toc\">", sep="", file=outfile)
 
     for (i in names(table(gs.def.list.categories)))
     {
@@ -135,8 +145,8 @@ pipeline.htmlGenesetAnalysis <- function()
         Enrichment profiles of individual predefined gene sets are shown as
         bar plots across all samples. Additionally the log FC-expression
         profiles of the leading metagenes are shown.
-        Further, members of each gene set are shown as population maps and
-        listed in Excel-files.
+        Further, members of each gene set are given as population maps and
+        tables.
       </p>", sep="", file=outfile)
 
   for (i in names(table(gs.def.list.categories)))

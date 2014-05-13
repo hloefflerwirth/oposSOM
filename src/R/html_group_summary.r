@@ -76,41 +76,47 @@ pipeline.htmlGroupSummary <- function()
   </head>
   <body>
     <div id=\"wrapper\">
-      <h1>Group Maps Summary Sheets</h1>
+      <h1>Group Centered Analyses</h1>
 
       <p>
-        Some fancy text here...
+        The SOM portraits are aggregated in groupwise fashions. Further,
+        group stability scores are calculated using bootstrapped clustering.
+        Finally, samples within each group are clustered and visualized as
+        hierarchical dendrograms.
       </p>
 
       <ul>
         <li>
           <a href=\"Expression Portraits Groups.pdf\" target=\"_blank\">
-            Expression Portraits Groups.pdf
+            Expression Portraits (PDF)
           </a>
         </li>
         <li>
           <a href=\"Group Assignment.pdf\" target=\"_blank\">
-            Group Assignment.pdf
+            Assignment Stability  Scores (PDF)
           </a>
         </li>
         <li>
           <a href=\"Group Clustering.pdf\" target=\"_blank\">
-            Group Clustering.pdf
+            Groupwise Clustering Dendrograms (PDF)
           </a>
         </li>
       </ul>
 
-      <h2>Something</h2>
+      <h2>Group Summary Sheets</h2>
 
       <p>
-        Another fancy text here...
+        For each group a report sheet, gene lists and gene set lists are
+        created analogous to the sample summary sheets. Additionally, specific
+        gene sets are given which show highest significance in statistical
+        testing of the group compared to all other groups.
       </p>
 
       <table>
         <thead>
           <tr>
-            <th>Category</th>
-            <th>Summary Sheets</th>
+            <th>Group</th>
+            <th>Summary Sheet</th>
             <th>Global Gene List</th>
             <th>Local Gene Lists</th>
             <th>Gene Set List</th>", sep="", file=f)
@@ -118,7 +124,7 @@ pipeline.htmlGroupSummary <- function()
   if (preferences$geneset.analysis)
   {
     cat("
-            <th colspan=\"2\">Specific Geneset</th>", sep="", file=f)
+            <th colspan=\"2\">Specific Gene Set</th>", sep="", file=f)
   }
 
   cat("
