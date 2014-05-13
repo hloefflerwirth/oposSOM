@@ -21,7 +21,7 @@ opossom.new <- function(preferences)
 
   # Init the environment
   opossom <- new.env()
-  opossom$batch.t.g.m <- NULL
+  opossom$t.ensID.m <- NULL
   opossom$colramp <- NULL
   opossom$Fdr.g.m <- NULL
   opossom$fdr.g.m <- NULL

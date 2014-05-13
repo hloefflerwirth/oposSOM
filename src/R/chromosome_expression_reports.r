@@ -86,10 +86,10 @@ pipeline.chromosomeExpressionReports <- function()
 
   for (m in 1:ncol(indata))
   {
-    sample.chr.GSZ[,m] <- GeneSet.GSZ(unique.protein.ids, batch.t.g.m[, m],
+    sample.chr.GSZ[,m] <- GeneSet.GSZ(unique.protein.ids, t.ensID.m[, m],
                                       chr.gs.list, sort=F, cluster=cl)
 
-    sample.chr.pq.GSZ[,m] <- GeneSet.GSZ(unique.protein.ids, batch.t.g.m[, m],
+    sample.chr.pq.GSZ[,m] <- GeneSet.GSZ(unique.protein.ids, t.ensID.m[, m],
                                          chr.pq.gs.list, sort=F, cluster=cl)
 
     progress.current <- progress.current + 1

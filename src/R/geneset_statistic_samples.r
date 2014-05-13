@@ -8,8 +8,8 @@ pipeline.genesetStatisticSamples <- function()
   cl <- parallel::makeCluster(preferences$max.parallel.cores)
 
   ### perform GS analysis ###
-  batch.t.g.m <<- t.g.m[which(rownames(indata) %in% names(gene.ids)),]
-  batch.t.g.m <<- do.call(rbind, by(batch.t.g.m, gene.ids, colMeans))
+  t.ensID.m <<- t.g.m[which(rownames(indata) %in% names(gene.ids)),]
+  t.ensID.m <<- do.call(rbind, by(t.ensID.m, gene.ids, colMeans))
 
   if (preferences$geneset.analysis.exact)
   {
@@ -25,7 +25,7 @@ pipeline.genesetStatisticSamples <- function()
 
     for (m in 1:ncol(indata))
     {
-      all.gene.statistic <- batch.t.g.m[, m]
+      all.gene.statistic <- t.ensID.m[, m]
       spot.gene.ids <- unique.protein.ids
 
       null.scores <- c(null.scores, GeneSet.GSZ(spot.gene.ids, all.gene.statistic,
@@ -35,7 +35,7 @@ pipeline.genesetStatisticSamples <- function()
       {
         spot.genes <- spot.list.samples[[m]]$spots[[spot.i]]$genes
         spot.gene.ids <- unique(na.omit(gene.ids[spot.genes]))
-        all.gene.statistic <- batch.t.g.m[, m]
+        all.gene.statistic <- t.ensID.m[, m]
 
         null.scores <- c(null.scores,  GeneSet.GSZ(spot.gene.ids, all.gene.statistic,
                                                    gs.null.list, cluster=cl))
@@ -50,7 +50,7 @@ pipeline.genesetStatisticSamples <- function()
 
   for (m in 1:ncol(indata))
   {
-    all.gene.statistic <- batch.t.g.m[, m]
+    all.gene.statistic <- t.ensID.m[, m]
     spot.gene.ids <- unique.protein.ids
 
     spot.list.samples[[m]]$GSZ.score <<-
