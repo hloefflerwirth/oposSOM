@@ -87,7 +87,7 @@ opossom.new <- function(preferences)
                               dim.1stLvlSom = 20,
                               dim.2ndLvlSom = 20,
                               training.extension = 1,
-                              rotate.som1 = 0,
+                              rotate.SOM.portraits = 0,
                               flip.SOM.portraits = F,
                               database.dataset = "",
                               database.id.type = "",

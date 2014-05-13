@@ -32,12 +32,12 @@ pipeline.prepare <- function()
     preferences$training.extension <<- 1
   }
 
-  if (!is.numeric(preferences$rotate.som1) ||
-      preferences$rotate.som1 < 0 ||
-      preferences$rotate.som1 > 4)
+  if (!is.numeric(preferences$rotate.SOM.portraits) ||
+      preferences$rotate.SOM.portraits < 0 ||
+      preferences$rotate.SOM.portraits > 4)
   {
-    util.warn("Invalid value of \"rotate.som1\". Using 0")
-    preferences$rotate.som1 <<- 0
+    util.warn("Invalid value of \"rotate.SOM.portraits\". Using 0")
+    preferences$rotate.SOM.portraits <<- 0
   }
 
   if (!is.logical(preferences$flip.SOM.portraits))
@@ -314,9 +314,9 @@ pipeline.prepare <- function()
 
   # Rotate/Flip First lvl SOMs
 
-  if (preferences$rotate.som1 > 0)
+  if (preferences$rotate.SOM.portraits > 0)
   {
-    for (i in 1:preferences$rotate.som1)
+    for (i in 1:preferences$rotate.SOM.portraits)
     {
       o <- matrix(c(1:(preferences$dim.1stLvlSom^2)), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom, byrow=T)
       o <- o[rev(1:preferences$dim.1stLvlSom),]

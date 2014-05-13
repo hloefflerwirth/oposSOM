@@ -242,9 +242,9 @@ pipeline.supportingMaps <- function()
     co.so <- som.init(indata, xdim=10, ydim=10)
 
     # Rotate First lvl SOMs
-    if (preferences$rotate.som1 > 0)
+    if (preferences$rotate.SOM.portraits > 0)
     {
-      for (i in 1:preferences$rotate.som1)
+      for (i in 1:preferences$rotate.SOM.portraits)
       {
         o <- matrix(c(1:(100)), 10, 10, byrow=T)
         o <- o[rev(1:10) ,]

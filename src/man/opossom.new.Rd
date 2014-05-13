@@ -19,7 +19,7 @@
       \item{dim.1stLvlSom}: dimensions of primary SOM in x and y range (numerical)
       \item{dim.2ndLvlSom}: dimensions of second level SOM in x and y range (numerical)
       \item{training.extension}: factor to extend the number of iterations in SOM trainin (numerical)
-      \item{rotate.som1}: number of roations of the primary SOM in counter-clockwise fashion (numerical \{0,1,2,3\})
+      \item{rotate.SOM.portraits}: number of roations of the primary SOM in counter-clockwise fashion (numerical \{0,1,2,3\})
       \item{flip.SOM.portraits}: mirroring the primary SOM along the bottom-left to top-right diagonal (boolean)
       \item{database.dataset}: type of ensemble dataset addressed with biomaRt interface (character)
       \item{database.id.type}: type of rowname identifier in biomaRt database (character)
