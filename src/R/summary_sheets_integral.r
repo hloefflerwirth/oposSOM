@@ -538,70 +538,80 @@ pipeline.summarySheetsIntegral <- function()
   {
     for (m in 1:length(set.list$spots))
     {
-      ## CSV Table
-      if (length(set.list$spots[[m]]$genes) > 0 && length(set.list$spots[[m]]$genes) < 5000)
+      basename <- paste(main, " ", names(set.list$spots)[m], ".csv", sep="")
+
+      if (length(set.list$spots[[m]]$genes) <= 0)
       {
-        r.genes <- sapply(set.list$spots[[m]]$genes, function(x)
-        {
-          gene <- indata[x,]
-          metagene <- metadata[som.nodes[x],]
-          return(suppressWarnings(cor(gene, metagene)))
-        })
-
-        r.t <- r.genes / sqrt((1-r.genes^2) / (ncol(indata)-2))
-        r.p <- 1 - pt(r.t, ncol(indata)-2)
-
-        chi.genes <- sapply(set.list$spots[[m]]$genes, function(x)
-        {
-          gene <- indata[x,]
-          metagene <- metadata[som.nodes[x],]
-
-          z <- ((gene-metagene)^2) / sd.g.m[x,]
-          mean(z)
-        })
-
-        chi.p <- 1 - pt(chi.genes, ncol(indata)-1)
-
-        e.max <- apply(indata[set.list$spots[[m]]$genes, ,drop=F], 1, max)
-        e.min <- apply(indata[set.list$spots[[m]]$genes, ,drop=F], 1, min)
-
-        if (main %in% c("Sample-Underexpression","Metagene Minima"))
-        {
-          o <- names(sort(e.min, decreasing=F))
-        }  else
-        {
-          o <- names(sort(e.max, decreasing=T))
-        }
-
-        out <- data.frame(Rank=c(1:length(set.list$spots[[m]]$genes)),
-                          ID=o,
-                          Symbol=gene.names[o])
-
-        if (any(grep("GenesetSOM",files.name)))
-        {
-          out <-cbind(out, Type = gs.def.list.categories[o])
-        }
-
-        high.low.threshold <- mean(indata.mean.level)
-
-        out <- cbind(out,
-                     "mean expression"=indata.mean.level[o],
-                     "max delta e"=apply(indata[o, ,drop=F], 1, max),
-                     "min delta e"=apply(indata[o, ,drop=F], 1, min),
-                     "% high expressed"=round(apply(indata[o, ,drop=F] + indata.mean.level[o], 1, function(x)  sum(x > high.low.threshold) / length(x) * 100)),
-                     "correlation"=r.genes[o],
-                     "->t.score"=r.t[o],
-                     "->p.value"=r.p[o],
-                     "chi2"=chi.genes[o],
-                     "->p.value."=chi.p[o],
-                     "SD"=apply(indata[o, ,drop=F], 1, sd),
-                     "Metagene"=genes.coordinates[o],
-                     "Chromosome"=gene.positions[rownames(indata)[o]],
-                     "Description"=gene.descriptions[o])
-
-        basename <- paste(main, " ", names(set.list$spots)[m], ".csv", sep="")
-        write.csv2(out, file.path(dirnames["spots"], basename))
+        util.warn("Skip generating table (not enough genes):", basename)
+        next
       }
+
+      if (length(set.list$spots[[m]]$genes) > 5000)
+      {
+        util.warn("Skip generating table (too many genes):", basename)
+        next
+      }
+
+      ## CSV Table
+      r.genes <- sapply(set.list$spots[[m]]$genes, function(x)
+      {
+        gene <- indata[x,]
+        metagene <- metadata[som.nodes[x],]
+        return(suppressWarnings(cor(gene, metagene)))
+      })
+
+      r.t <- r.genes / sqrt((1-r.genes^2) / (ncol(indata)-2))
+      r.p <- 1 - pt(r.t, ncol(indata)-2)
+
+      chi.genes <- sapply(set.list$spots[[m]]$genes, function(x)
+      {
+        gene <- indata[x,]
+        metagene <- metadata[som.nodes[x],]
+
+        z <- ((gene-metagene)^2) / sd.g.m[x,]
+        mean(z)
+      })
+
+      chi.p <- 1 - pt(chi.genes, ncol(indata)-1)
+
+      e.max <- apply(indata[set.list$spots[[m]]$genes, ,drop=F], 1, max)
+      e.min <- apply(indata[set.list$spots[[m]]$genes, ,drop=F], 1, min)
+
+      if (main %in% c("Sample-Underexpression","Metagene Minima"))
+      {
+        o <- names(sort(e.min, decreasing=F))
+      }  else
+      {
+        o <- names(sort(e.max, decreasing=T))
+      }
+
+      out <- data.frame(Rank=c(1:length(set.list$spots[[m]]$genes)),
+                        ID=o,
+                        Symbol=gene.names[o])
+
+      if (any(grep("GenesetSOM",files.name)))
+      {
+        out <-cbind(out, Type = gs.def.list.categories[o])
+      }
+
+      high.low.threshold <- mean(indata.mean.level)
+
+      out <- cbind(out,
+                   "mean expression"=indata.mean.level[o],
+                   "max delta e"=apply(indata[o, ,drop=F], 1, max),
+                   "min delta e"=apply(indata[o, ,drop=F], 1, min),
+                   "% high expressed"=round(apply(indata[o, ,drop=F] + indata.mean.level[o], 1, function(x)  sum(x > high.low.threshold) / length(x) * 100)),
+                   "correlation"=r.genes[o],
+                   "->t.score"=r.t[o],
+                   "->p.value"=r.p[o],
+                   "chi2"=chi.genes[o],
+                   "->p.value."=chi.p[o],
+                   "SD"=apply(indata[o, ,drop=F], 1, sd),
+                   "Metagene"=genes.coordinates[o],
+                   "Chromosome"=gene.positions[rownames(indata)[o]],
+                   "Description"=gene.descriptions[o])
+
+      write.csv2(out, file.path(dirnames["spots"], basename))
     }
   }
 
