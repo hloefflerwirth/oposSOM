@@ -104,7 +104,7 @@ pipeline.cancerHallmarks <- function()
 
     par(mar=c(5,3,4,2))
 
-    boxplot(hallmark.sets.group.profiles, col=unique.group.colors, las=2,
+    boxplot(hallmark.sets.group.profiles, col=groupwise.group.colors, las=2,
             main=names(hallmark.sets.names)[i], ylim=range(hallmark.GSZ.matrix))
 
     abline(h=0, lty=2)

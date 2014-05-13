@@ -36,7 +36,7 @@ pipeline.2ndLvlComponentAnalysis <- function()
       plot(0,type="n", axes=F, xlab="", ylab="")
 
       legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-             text.col=unique.group.colors, bg="white")
+             text.col=groupwise.group.colors, bg="white")
 
       layout(matrix(c(1,2)))
       par(mar=c(0.1,3,1,3))
@@ -69,7 +69,7 @@ pipeline.2ndLvlComponentAnalysis <- function()
       if (length(unique(group.labels)) > 1)
       {
         legend("topright", as.character(unique(group.labels)), cex=0.4,
-               text.col=unique.group.colors, bg="white")
+               text.col=groupwise.group.colors, bg="white")
       }
 
       points(ICA.metagenes[,1], ICA.metagenes[,2], pch=16, col=group.colors, cex=3)

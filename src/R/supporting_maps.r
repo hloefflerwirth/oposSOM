@@ -328,7 +328,7 @@ pipeline.supportingMaps <- function()
         for (i in 1:length(unique(group.labels)))
         {
           lines(co.so.code[ij, which(group.labels==unique(group.labels)[i])],
-                col=unique(group.colors)[i], lwd=2)
+                col=groupwise.group.colors)[i], lwd=2)
         }
 
         abline(h=0, col="darkgray", lty=2, lwd=1)

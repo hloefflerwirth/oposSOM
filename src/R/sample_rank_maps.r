@@ -21,7 +21,7 @@ pipeline.sampleRankMaps <- function()
     if (length(unique(group.labels)) > 1)
     {
       mtext(unique(group.labels)[gl], side=3, line=2, cex=1.5, at=0, font=3,
-            adj=0, col=unique.group.colors[gl])
+            adj=0, col=groupwise.group.colors[gl])
     }
 
     par(new=T)
@@ -68,7 +68,7 @@ pipeline.sampleRankMaps <- function()
     if (length(unique(group.labels)) > 1)
     {
       mtext(unique(group.labels)[gl], side=3, line=2, cex=1.5, at=0, font=3,
-            adj=0, col=unique.group.colors[gl])
+            adj=0, col=groupwise.group.colors[gl])
     }
 
     par(new=T)
@@ -116,7 +116,7 @@ pipeline.sampleRankMaps <- function()
       if (length(unique(group.labels)) > 1)
       {
         mtext(unique(group.labels)[gl], side=3, line=2, cex=1.5, at=0, font=3,
-              adj=0, col=unique.group.colors[gl])
+              adj=0, col=groupwise.group.colors[gl])
       }
 
       par(new=T)
