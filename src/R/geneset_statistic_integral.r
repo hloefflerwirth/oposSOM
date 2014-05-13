@@ -49,11 +49,11 @@ pipeline.genesetStatisticIntegral <- function()
 
   if (length(unique(group.labels)) > 1)
   {
-    for (i in 1:length(GS.infos.group.overexpression$spots))
+    for (i in 1:length(spot.list.group.overexpression$spots))
     {
-      geneset.ids <- unique(na.omit(gene.ids[GS.infos.group.overexpression$spots[[i]]$genes]))
+      geneset.ids <- unique(na.omit(gene.ids[spot.list.group.overexpression$spots[[i]]$genes]))
 
-      GS.infos.group.overexpression$spots[[i]]$Fisher.p <<-
+      spot.list.group.overexpression$spots[[i]]$Fisher.p <<-
         GeneSet.Fisher(geneset.ids, unique.protein.ids, gs.def.list, sort=T, cluster=cl)
     }
   }

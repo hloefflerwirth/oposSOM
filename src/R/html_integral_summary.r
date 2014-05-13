@@ -136,11 +136,11 @@ pipeline.htmlIntegralSummary <- function()
             </td>
             <td>", sep="", file=outfile)
 
-  for (m in 1:length(GS.infos.group.overexpression$spots))
+  for (m in 1:length(spot.list.group.overexpression$spots))
   {
     cat("<a href=\"../CSV Sheets/Spot Lists/Group Overexpression ",
-        names(GS.infos.group.overexpression$spots)[m],".csv\" target=\"_blank\">",
-        names(GS.infos.group.overexpression$spots)[m],"</a>", sep="", file=outfile)
+        names(spot.list.group.overexpression$spots)[m],".csv\" target=\"_blank\">",
+        names(spot.list.group.overexpression$spots)[m],"</a>", sep="", file=outfile)
   }
 
   cat("</td>

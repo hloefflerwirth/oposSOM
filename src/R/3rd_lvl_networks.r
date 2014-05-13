@@ -516,6 +516,6 @@ pipeline.3rdLvlNetworks <- function()
   filename <- file.path(dirname, "Group Overexpression Networks.pdf")
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list.networks(set.list=GS.infos.group.overexpression, main="Group Overexpression")
+  plot.set.list.networks(set.list=spot.list.group.overexpression, main="Group Overexpression")
   dev.off()
 }

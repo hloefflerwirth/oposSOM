@@ -456,6 +456,6 @@ pipeline.3rdLvlSummarySheets <- function()
   filename <- file.path(dirname, "Group Overexpression Report.pdf")
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list.reports(set.list=GS.infos.group.overexpression, main="Group Overexpression")
+  plot.set.list.reports(set.list=spot.list.group.overexpression, main="Group Overexpression")
   dev.off()
 }

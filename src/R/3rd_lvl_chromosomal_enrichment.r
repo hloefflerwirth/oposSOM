@@ -165,7 +165,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
 
   if (length(gene.positions.list) > 0)
   {
-    plot.set.list.chromosomes(set.list=GS.infos.group.overexpression,
+    plot.set.list.chromosomes(set.list=spot.list.group.overexpression,
                               main="Group Overexpression Chromosome Map")
   }
 

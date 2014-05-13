@@ -647,7 +647,7 @@ pipeline.summarySheetsIntegral <- function()
   util.info("Writing:", filename)
 
   pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list(set.list=GS.infos.group.overexpression, main="Group Overexpression")
+  plot.set.list(set.list=spot.list.group.overexpression, main="Group Overexpression")
   dev.off()
 
   util.info("Writing:", file.path(dirnames["spots"], "*.csv"))
@@ -658,6 +658,6 @@ pipeline.summarySheetsIntegral <- function()
 
   if (length(unique(group.labels)) > 1)
   {
-    csv.set.list(set.list=GS.infos.group.overexpression, main="Group Overexpression")
+    csv.set.list(set.list=spot.list.group.overexpression, main="Group Overexpression")
   }
 }
