@@ -85,7 +85,7 @@ opossom.new <- function(preferences)
   opossom$preferences <- list(dataset.name = "Unnamed",
                               error.model = "all.samples",
                               dim.1stLvlSom = 20,
-                              dim.som2 = 20,
+                              dim.2ndLvlSom = 20,
                               training.extension = 1,
                               rotate.som1 = 0,
                               flip.som1 = F,
@@ -121,7 +121,7 @@ opossom.run <- function(opossom)
   util.info("Started:", opossom$preferences$started)
   util.info("Setting:", opossom$preferences$dataset.name)
   util.info("1SOM Dim:", opossom$preferences$dim.1stLvlSom)
-  util.info("2SOM Dim:", opossom$preferences$dim.som2)
+  util.info("2SOM Dim:", opossom$preferences$dim.2ndLvlSom)
 
   # Prepare the environment
   environment(pipeline.prepare) <- opossom

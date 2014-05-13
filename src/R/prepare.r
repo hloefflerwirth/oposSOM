@@ -18,10 +18,10 @@ pipeline.prepare <- function()
     preferences$dim.1stLvlSom <<- 20
   }
 
-  if (!is.numeric(preferences$dim.som2) || preferences$dim.som2 < 1)
+  if (!is.numeric(preferences$dim.2ndLvlSom) || preferences$dim.2ndLvlSom < 1)
   {
-    util.warn("Invalid value of \"dim.som2\". Using 20")
-    preferences$dim.som2 <<- 20
+    util.warn("Invalid value of \"dim.2ndLvlSom\". Using 20")
+    preferences$dim.2ndLvlSom <<- 20
   }
 
   if (!is.numeric(preferences$training.extension) ||

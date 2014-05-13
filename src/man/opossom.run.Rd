@@ -28,7 +28,7 @@ Maintainer: Martin Kalcher <mkalcher@porkbox.net>
 pipeline <- opossom.new(list(dataset.name="Example",
                              error.model="all.samples",
                              dim.1stLvlSom=20,
-                             dim.som2=20,
+                             dim.2ndLvlSom=20,
                              geneset.analysis=TRUE))
 
 pipeline$indata <- matrix(runif(10000), 1000, 10)
