@@ -65,7 +65,7 @@ pipeline.summarySheetsGroups <- function()
     plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1))
 
     mtext(unique(group.labels)[i], side=3, line = 2, cex=1.5, at=-0.04, font=3,
-          adj=0, col=unique.group.colors[i])
+          adj=0, col=groupwise.group.colors[i])
 
     par(new=T)
 
@@ -149,7 +149,7 @@ pipeline.summarySheetsGroups <- function()
 
         if (g2 == 1)
         {
-          col <- unique.group.colors[g1]
+          col <- groupwise.group.colors[g1]
           attributes(col) <- NULL
           par("col.lab"=col, "mgp"=c(1,0,0))
 
@@ -171,7 +171,7 @@ pipeline.summarySheetsGroups <- function()
 
         if (g1 == 1)
         {
-          title(unique(group.labels)[g2], col.main=unique.group.colors[g2])
+          title(unique(group.labels)[g2], col.main=groupwise.group.colors[g2])
         }
 
         if (min(diff.metadata) < zlim[1])
@@ -201,7 +201,7 @@ pipeline.summarySheetsGroups <- function()
 
         if (g2 == 1)
         {
-          col <- unique.group.colors[g1]
+          col <- groupwise.group.colors[g1]
           attributes(col) <- NULL
           par("col.lab"=col, "mgp"=c(1,0,0))
 
@@ -223,7 +223,7 @@ pipeline.summarySheetsGroups <- function()
 
         if (g1 == 1)
         {
-          title(unique(group.labels)[g2], col.main=unique.group.colors[g2])
+          title(unique(group.labels)[g2], col.main=groupwise.group.colors[g2])
         }
       }
     }
@@ -258,7 +258,7 @@ pipeline.summarySheetsGroups <- function()
 
         if (g2 == 1)
         {
-          col <- unique.group.colors[g1]
+          col <- groupwise.group.colors[g1]
           attributes(col) <- NULL
           par("col.lab"=col, "mgp"=c(1,0,0))
 
@@ -278,7 +278,7 @@ pipeline.summarySheetsGroups <- function()
 
         if (g1 == 1)
         {
-          title(unique(group.labels)[g2], col.main=unique.group.colors[g2])
+          title(unique(group.labels)[g2], col.main=groupwise.group.colors[g2])
         }
       }
     }
@@ -313,7 +313,7 @@ pipeline.summarySheetsGroups <- function()
 
         if (g2 == 1)
         {
-          col <- unique.group.colors[g1]
+          col <- groupwise.group.colors[g1]
           attributes(col) <- NULL
           par("col.lab"=col, "mgp"=c(1,0,0))
 
@@ -333,7 +333,7 @@ pipeline.summarySheetsGroups <- function()
 
         if (g1==1)
         {
-          title(unique(group.labels)[g2], col.main=unique.group.colors[g2])
+          title(unique(group.labels)[g2], col.main=groupwise.group.colors[g2])
         }
       }
     }
@@ -359,10 +359,10 @@ pipeline.summarySheetsGroups <- function()
 
   mean.bs.boxes <- by(group.bootstrap.score, group.labels, c)[unique(group.labels)]
 
-  boxplot(mean.bs.boxes, col=unique.group.colors, las=2, main="Group Bootstrapping",
+  boxplot(mean.bs.boxes, col=groupwise.group.colors, las=2, main="Group Bootstrapping",
           cex.main=2.5, cex.axis=2, xaxt="n")
 
-  axis(1, 1:length(unique.group.colors), unique(group.labels), las=2)
+  axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
 
   dev.off()
 

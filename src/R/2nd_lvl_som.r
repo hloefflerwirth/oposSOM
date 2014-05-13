@@ -31,7 +31,7 @@ pipeline.2ndLvlSom <- function()
   if (length(unique(group.labels)) > 1)
   {
     legend("topright", as.character(unique(group.labels)), cex=0.5,
-           text.col=unique.group.colors, bg="white")
+           text.col=groupwise.group.colors, bg="white")
   }
 
   for (j in 1:nrow(secLvlSom.custom$code.sum))
@@ -71,7 +71,7 @@ pipeline.2ndLvlSom <- function()
   if (length(unique(group.labels)) > 1)
   {
     legend("topright", as.character(unique(group.labels)), cex=0.5,
-           text.col=unique.group.colors, bg="white")
+           text.col=groupwise.group.colors, bg="white")
   }
 
   for (j in 1:nrow(secLvlSom.custom$code.sum))
@@ -108,7 +108,7 @@ pipeline.2ndLvlSom <- function()
   ##### Polygone-2ndSOM #####
   if (length(unique(group.labels)) > 1)
   {
-    transparent.group.colors <- sapply(unique.group.colors, function(x)
+    transparent.group.colors <- sapply(groupwise.group.colors, function(x)
     {
       paste(substr(x, 1, 7) , "50", sep="")
     })
@@ -130,11 +130,11 @@ pipeline.2ndLvlSom <- function()
       polygon(secLvlSom.custom$visual[group.member[hull], 1],
               -secLvlSom.custom$visual[group.member[hull], 2],
               col=transparent.group.colors[i], lty=1,
-              border=unique.group.colors[i])
+              border=groupwise.group.colors[i])
     }
 
     legend("topright", as.character(unique(group.labels)), cex=0.5,
-           text.col=unique.group.colors, bg="white")
+           text.col=groupwise.group.colors, bg="white")
 
     box()
   }
@@ -142,7 +142,7 @@ pipeline.2ndLvlSom <- function()
   ##### Plot SmoothSupersom ######
   for (i in 1:length(unique(group.labels)))
   {
-    col <- colorRampPalette(c("white", unique.group.colors[i]))
+    col <- colorRampPalette(c("white", groupwise.group.colors[i]))
     coords <- cbind(secLvlSom.custom$visual[,"x"], -secLvlSom.custom$visual[,"y"])
     coords <- coords[which(group.labels==unique(group.labels)[i]) , ,drop=F]
 
@@ -170,7 +170,7 @@ pipeline.2ndLvlSom <- function()
   if (length(unique(group.labels)) > 1)
   {
     legend("topright", as.character(unique(group.labels)), cex=0.5,
-           text.col=unique.group.colors, bg="white")
+           text.col=groupwise.group.colors, bg="white")
   }
 
   ##### Plot Supersom with real expression profiles ######
@@ -191,7 +191,7 @@ pipeline.2ndLvlSom <- function()
   if (length(unique(group.labels)) > 1)
   {
     legend("topright", as.character(unique(group.labels)), cex=0.5,
-           text.col=unique.group.colors, bg="white")
+           text.col=groupwise.group.colors, bg="white")
   }
 
   for (j in 1:nrow(secLvlSom.20.20$code.sum))

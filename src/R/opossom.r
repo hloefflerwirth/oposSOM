@@ -66,7 +66,7 @@ opossom.new <- function(preferences)
   opossom$secLvlSom.custom <- NULL
   opossom$t.g.m <- NULL
   opossom$t.m <- NULL
-  opossom$unique.group.colors <- NULL
+  opossom$groupwise.group.colors <- NULL
   opossom$unique.protein.ids <- NULL
   opossom$WAD.g.m <- NULL
   opossom$WAD.group.metadata <- NULL
