@@ -33,7 +33,7 @@ pipeline.geneLists <- function()
                  p.value=p.g.m[o, m],
                  fdr=fdr.g.m[o, m],
                  Fdr=Fdr.g.m[o, m],
-                 Metagene=genes.coordinates[o],
+                 Metagene=gene.coordinates[o],
                  Chromosome=gene.positions[rownames(indata)[o]],
                  Description=gene.descriptions[o])
 
@@ -109,7 +109,7 @@ pipeline.geneLists <- function()
                    p.value=p.g.m[o, m],
                    fdr=fdr.spot[o],
                    Fdr=Fdr.spot[o],
-                   Metagene=genes.coordinates[o],
+                   Metagene=gene.coordinates[o],
                    Chromosome=gene.positions[o],
                    Description=gene.descriptions[o])
 

@@ -383,8 +383,8 @@ pipeline.prepare <- function()
 
 
   ## set up SOM dependent variables
-  genes.coordinates <<- apply(som.result$visual[,c(1,2)]+1, 1, paste, collapse=" x ")
-  names(genes.coordinates) <<- rownames(indata)
+  gene.coordinates <<- apply(som.result$visual[,c(1,2)]+1, 1, paste, collapse=" x ")
+  names(gene.coordinates) <<- rownames(indata)
 
   som.nodes <<- (som.result$visual[,"x"] + 1) + som.result$visual[,"y"] * preferences$dim.1stLvlSom
   names(som.nodes) <<- rownames(indata)

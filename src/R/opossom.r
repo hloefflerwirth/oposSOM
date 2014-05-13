@@ -33,7 +33,7 @@ opossom.new <- function(preferences)
   opossom$gene.positions <- NULL
   opossom$gene.positions.list <- NULL
   opossom$gene.positions.table <- NULL
-  opossom$genes.coordinates <- NULL
+  opossom$gene.coordinates <- NULL
   opossom$group.bootstrap.score <- NULL
   opossom$group.colors <- NULL
   opossom$group.labels <- NULL

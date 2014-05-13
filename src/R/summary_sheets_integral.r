@@ -607,7 +607,7 @@ pipeline.summarySheetsIntegral <- function()
                    "chi2"=chi.genes[o],
                    "->p.value."=chi.p[o],
                    "SD"=apply(indata[o, ,drop=F], 1, sd),
-                   "Metagene"=genes.coordinates[o],
+                   "Metagene"=gene.coordinates[o],
                    "Chromosome"=gene.positions[rownames(indata)[o]],
                    "Description"=gene.descriptions[o])
 

@@ -125,7 +125,7 @@ pipeline.genesetProfilesAndMaps <- function()
 
     out <- data.frame(AffyID=names(gene.ids[genes]),
                       EnsemblID=gene.ids[genes],
-                      Metagene=genes.coordinates[genes],
+                      Metagene=gene.coordinates[genes],
                       Max.expression.sample=colnames(indata)[apply(indata[genes, ,drop=F], 1, which.max)],
                       GeneSymbol=gene.names[genes],
                       Description=gene.descriptions[genes])
