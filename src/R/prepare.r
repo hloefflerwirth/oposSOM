@@ -118,10 +118,10 @@ pipeline.prepare <- function()
     preferences$group.spot.threshold <<- 0.75
   }
 
-  if (!is.logical(preferences$feature.mean.normalization))
+  if (!is.logical(preferences$feature.centralization))
   {
-    util.warn("Invalid value of \"feature.mean.normalization\". Using TRUE")
-    preferences$feature.mean.normalization <<- T
+    util.warn("Invalid value of \"feature.centralization\". Using TRUE")
+    preferences$feature.centralization <<- T
   }
 
   if (!is.logical(preferences$sample.quantile.normalization))
@@ -297,7 +297,7 @@ pipeline.prepare <- function()
 
   indata.mean.level <<- rowMeans(indata)
 
-  if (preferences$feature.mean.normalization)
+  if (preferences$feature.centralization)
   {
     indata <<- indata - indata.mean.level
   }

@@ -99,7 +99,7 @@ opossom.new <- function(preferences)
                               summary.spot.threshold = 0.95,
                               group.spot.core = 5,
                               group.spot.threshold = 0.75,
-                              feature.mean.normalization = T,
+                              feature.centralization = T,
                               sample.quantile.normalization = T,
                               pairwise.comparison.list = list())
 

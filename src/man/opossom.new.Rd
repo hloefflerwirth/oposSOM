@@ -31,7 +31,7 @@
       \item{summary.spot.threshold}: spot detection in summary maps, expression threshold (numerical)
       \item{group.spot.core}: spot detection in group-specific summary maps , minimum size (numerical)
       \item{group.spot.threshold}: spot detection in group-specific summary maps, expression threshold (numerical)
-      \item{feature.mean.normalization}: enables centralization of the features (boolean)
+      \item{feature.centralization}: enables centralization of the features (boolean)
       \item{sample.quantile.normalization}: enables quantile normalization to the samples (boolean)
       \item{pairwise.comparison.list}: group list for pairwise analyses (list, see below)
     }

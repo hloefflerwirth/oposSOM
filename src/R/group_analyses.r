@@ -30,7 +30,7 @@ pipeline.groupAnalysis <- function()
 
   indata.mean.level <<- rowMeans(indata)
 
-  if (preferences$feature.mean.normalization)
+  if (preferences$feature.centralization)
   {
     indata <<- indata - indata.mean.level
   }
