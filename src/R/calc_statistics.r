@@ -458,8 +458,8 @@ pipeline.calcStatistics <- function()
   util.progress(progress.current, progress.max)
 
   t.m <<- p.m <<- fdr.m <<-
-    matrix(NA, preferences$dim.som1 ^ 2, ncol(indata),
-           dimnames=list(1:(preferences$dim.som1 ^ 2), colnames(indata)))
+    matrix(NA, preferences$dim.1stLvlSom ^ 2, ncol(indata),
+           dimnames=list(1:(preferences$dim.1stLvlSom ^ 2), colnames(indata)))
 
   t.m.help <- do.call(rbind, by(t.g.m, som.nodes, colMeans))
   t.m[rownames(t.m.help),] <<- t.m.help

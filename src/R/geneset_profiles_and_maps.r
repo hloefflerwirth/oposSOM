@@ -143,28 +143,28 @@ pipeline.genesetProfilesAndMaps <- function()
     pdf(file.path(dirname, filename), 21/2.54, 21/2.54)
 
     ### Population Map ###
-    n.map <- matrix(0,preferences$dim.som1,preferences$dim.som1)
+    n.map <- matrix(0,preferences$dim.1stLvlSom,preferences$dim.1stLvlSom)
     gs.nodes <- som.nodes[names(gene.ids)[which(gene.ids %in% gs.def.list[[i]]$Genes)]]
     n.map[as.numeric(names(table(gs.nodes)))] <- table(gs.nodes)
     n.map[which(n.map==0)] <- NA
-    n.map <- matrix(n.map, preferences$dim.som1)
+    n.map <- matrix(n.map, preferences$dim.1stLvlSom)
 
     x.test <-
-      sum((apply(n.map, 1, sum, na.rm=T) - sum(n.map, na.rm=T)*(1/preferences$dim.som1))^2 /
+      sum((apply(n.map, 1, sum, na.rm=T) - sum(n.map, na.rm=T)*(1/preferences$dim.1stLvlSom))^2 /
           sum(n.map, na.rm=T) *
-          (1/preferences$dim.som1))
+          (1/preferences$dim.1stLvlSom))
 
     y.test <-
-      sum((apply(n.map, 2, sum, na.rm=T) - sum(n.map, na.rm=T)*(1/preferences$dim.som1))^2 /
+      sum((apply(n.map, 2, sum, na.rm=T) - sum(n.map, na.rm=T)*(1/preferences$dim.1stLvlSom))^2 /
           sum(n.map, na.rm=T) *
-          (1/preferences$dim.som1))
+          (1/preferences$dim.1stLvlSom))
 
     chi.sq.p.value <- 1-pchisq(x.test+y.test, 1)
 
     par(mfrow=c(1, 1))
     par(mar=c(5, 6, 4, 5))
 
-    lim <- c(1,preferences$dim.som1) + preferences$dim.som1 * 0.01 * c(-1, 1)
+    lim <- c(1,preferences$dim.1stLvlSom) + preferences$dim.1stLvlSom * 0.01 * c(-1, 1)
 
     colr <- colramp(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=T)) /
                           max(1, (max(n.map,na.rm=T) - min(n.map,na.rm=T))) *
@@ -200,7 +200,7 @@ pipeline.genesetProfilesAndMaps <- function()
       }
 
       smoothScatter(coords+1 ,main=names(gs.def.list)[i], cex.main=2,
-                    xlim=c(1,preferences$dim.som1), ylim=c(1,preferences$dim.som1),
+                    xlim=c(1,preferences$dim.1stLvlSom), ylim=c(1,preferences$dim.1stLvlSom),
                     xaxs="i", yaxs="i", axes=F, xlab="", ylab="", nrpoints=0)
 
       title(sub=paste("# features =", sum(gene.ids %in% gs.def.list[[i]]$Genes),

@@ -107,8 +107,8 @@ pipeline.detectSpotsSamples <- function()
   {
     GS.infos.samples[[j]] <<- list()
 
-    mask <- matrix(NA, preferences$dim.som1, preferences$dim.som1)
-    blob <- matrix(metadata[,j], preferences$dim.som1, preferences$dim.som1)
+    mask <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
+    blob <- matrix(metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
 
     if (diff(sign(range(metadata[,j]))) != 0) # values lie in + and - regions
     {
@@ -129,7 +129,7 @@ pipeline.detectSpotsSamples <- function()
     {
       start.pix <- which(mask == -1, arr.ind=T)[1,]
       spot.i <- spot.i + 1
-      mask <- col.pix(mask, start.pix[1], start.pix[2], spot.i, preferences$dim.som1)
+      mask <- col.pix(mask, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
       spot.updown  <- c(spot.updown, "overexpressed")
     }
 
@@ -137,7 +137,7 @@ pipeline.detectSpotsSamples <- function()
     {
       start.pix <- which(mask == -2, arr.ind=T)[1,]
       spot.i <- spot.i + 1
-      mask <- col.pix(mask, start.pix[1], start.pix[2], spot.i, preferences$dim.som1)
+      mask <- col.pix(mask, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
       spot.updown <- c(spot.updown, "underexpressed")
     }
 
@@ -155,7 +155,7 @@ pipeline.detectSpotsSamples <- function()
           names(som.nodes)[which(som.nodes %in% which(mask == spot.ii))]
 
         GS.infos.samples[[j]]$spots[[spot.ii]]$mask <<-
-          matrix(NA, preferences$dim.som1, preferences$dim.som1)
+          matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
 
         GS.infos.samples[[j]]$spots[[spot.ii]]$mask[which(mask == spot.ii)] <<- 1
       }

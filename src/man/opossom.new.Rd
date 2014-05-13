@@ -16,7 +16,7 @@
     \itemize{
       \item{dataset.name}: name of the dataset
       \item{error.model}: error model to use (character \{\code{"all.samples"},\code{"replicates"},\code{"groups"}\})
-      \item{dim.som1}: dimensions of primary SOM in x and y range (numerical)
+      \item{dim.1stLvlSom}: dimensions of primary SOM in x and y range (numerical)
       \item{dim.som2}: dimensions of second level SOM in x and y range (numerical)
       \item{training.extension}: factor to extend the number of iterations in SOM trainin (numerical)
       \item{rotate.som1}: number of roations of the primary SOM in counter-clockwise fashion (numerical \{0,1,2,3\})
@@ -48,7 +48,7 @@ Maintainer: Martin Kalcher <mkalcher@porkbox.net>
 \examples{
 opossom <- opossom.new(list(dataset.name="Example",
                             error.model="all.samples",
-                            dim.som1=10,
+                            dim.1stLvlSom=10,
                             dim.som2=10,
                             pairwise.comparison.list=list(
                               list("groupA"=c("sample1", "sample2"),

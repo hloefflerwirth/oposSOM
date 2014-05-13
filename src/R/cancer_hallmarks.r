@@ -109,15 +109,15 @@ pipeline.cancerHallmarks <- function()
 
     abline(h=0, lty=2)
 
-    n.map <- matrix(0,preferences$dim.som1,preferences$dim.som1)
+    n.map <- matrix(0,preferences$dim.1stLvlSom,preferences$dim.1stLvlSom)
     gs.nodes <- som.nodes[hallmark.sets.ids[[i]]]
     n.map[as.numeric(names(table(gs.nodes)))] <- table(gs.nodes)
     n.map[which(n.map==0)] <- NA
-    n.map <- matrix(n.map, preferences$dim.som1)
+    n.map <- matrix(n.map, preferences$dim.1stLvlSom)
 
     par(mar=c(5,1,4,1))
 
-    lim <- c(1,preferences$dim.som1) + preferences$dim.som1*0.01*c(-1,1)
+    lim <- c(1,preferences$dim.1stLvlSom) + preferences$dim.1stLvlSom*0.01*c(-1,1)
     colr <- colramp(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=T)) /
                           max(1, (max(n.map,na.rm=T) - min(n.map,na.rm=T))) *
                           999 + 1]

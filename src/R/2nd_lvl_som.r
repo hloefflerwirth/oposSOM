@@ -202,7 +202,7 @@ pipeline.2ndLvlSom <- function()
 
     if (!is.na(which.samples[1]))
     {
-      m <- matrix(metadata[, which.samples[1]], preferences$dim.som1, preferences$dim.som1)
+      m <- matrix(metadata[, which.samples[1]], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
 
       if (max(m) - min(m) != 0)
       {

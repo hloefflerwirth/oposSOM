@@ -36,7 +36,7 @@ library("oposSOM")
 # Fun Example
 pipeline <- opossom.new(list(dataset.name="Example",
                              error.model="all.samples",
-                             dim.som1=20,
+                             dim.1stLvlSom=20,
                              dim.som2=20,
                              geneset.analysis=TRUE))
 
@@ -49,7 +49,7 @@ opossom.run(pipeline)
 # Real Example - This will take some time
 #pipeline <- opossom.new(list(dataset.name="Tissues",
 #                             error.model="all.samples",
-#                             dim.som1=30,
+#                             dim.1stLvlSom=30,
 #                             dim.som2=30,
 #                             geneset.analysis=TRUE,
 #                             group.spot.core=5,

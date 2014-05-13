@@ -46,7 +46,7 @@ pipeline.entropyProfiles <- function()
 
   p.metadata <- apply(metadata, 2, function(x)
   {
-    hist(x, breaks=c(min(x), q25, q75, max(x)), plot=F)$counts / preferences$dim.som1^2
+    hist(x, breaks=c(min(x), q25, q75, max(x)), plot=F)$counts / preferences$dim.1stLvlSom^2
   })
 
   q25 <- quantile(metadata * som.result$code.sum[,"nobs"],0.25)
@@ -54,7 +54,7 @@ pipeline.entropyProfiles <- function()
 
   p.metadata.weighted <- apply(metadata * som.result$code.sum[,"nobs"], 2, function(x)
   {
-    hist(x, breaks=c(min(x), q25, q75, max(x)), plot=F)$counts / preferences$dim.som1^2
+    hist(x, breaks=c(min(x), q25, q75, max(x)), plot=F)$counts / preferences$dim.1stLvlSom^2
   })
 
   ### Standard sample-related metagene entropy

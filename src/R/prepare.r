@@ -12,10 +12,10 @@ pipeline.prepare <- function()
     preferences$error.model <<- "all.samples"
   }
 
-  if (!is.numeric(preferences$dim.som1) || preferences$dim.som1 < 1)
+  if (!is.numeric(preferences$dim.1stLvlSom) || preferences$dim.1stLvlSom < 1)
   {
-    util.warn("Invalid value of \"dim.som1\". Using 20")
-    preferences$dim.som1 <<- 20
+    util.warn("Invalid value of \"dim.1stLvlSom\". Using 20")
+    preferences$dim.1stLvlSom <<- 20
   }
 
   if (!is.numeric(preferences$dim.som2) || preferences$dim.som2 < 1)
@@ -310,7 +310,7 @@ pipeline.prepare <- function()
   ## SOM
   util.info("Processing SOM")
 
-  som.result <<- som.init(indata, xdim=preferences$dim.som1, ydim=preferences$dim.som1, init="linear")
+  som.result <<- som.init(indata, xdim=preferences$dim.1stLvlSom, ydim=preferences$dim.1stLvlSom, init="linear")
 
   # Rotate/Flip First lvl SOMs
 
@@ -318,15 +318,15 @@ pipeline.prepare <- function()
   {
     for (i in 1:preferences$rotate.som1)
     {
-      o <- matrix(c(1:(preferences$dim.som1^2)), preferences$dim.som1, preferences$dim.som1, byrow=T)
-      o <- o[rev(1:preferences$dim.som1),]
+      o <- matrix(c(1:(preferences$dim.1stLvlSom^2)), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom, byrow=T)
+      o <- o[rev(1:preferences$dim.1stLvlSom),]
       som.result <<- som.result[as.vector(o),]
     }
   }
 
   if (preferences$flip.som1)
   {
-    o <- matrix(c(1:(preferences$dim.som1^2)), preferences$dim.som1, preferences$dim.som1, byrow=T)
+    o <- matrix(c(1:(preferences$dim.1stLvlSom^2)), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom, byrow=T)
     som.result <<- som.result[as.vector(o),]
   }
 
@@ -334,22 +334,22 @@ pipeline.prepare <- function()
   # Train SOM
 
   t1 <- system.time({
-    som.result <<- som.train(indata, som.result, xdim=preferences$dim.som1,
-                             ydim=preferences$dim.som1, alpha=0.05,
-                             radius=preferences$dim.som1,
+    som.result <<- som.train(indata, som.result, xdim=preferences$dim.1stLvlSom,
+                             ydim=preferences$dim.1stLvlSom, alpha=0.05,
+                             radius=preferences$dim.1stLvlSom,
                              rlen=nrow(indata)*2*preferences$training.extension,
                              inv.alp.c=nrow(indata)*2*preferences$training.extension/100)
   })
   util.info("Remaining ~", ceiling(5*t1[3]/60), "min ~", round(5*t1[3]/3600,1),"h")
 
-  som.result <<- som.train(indata, som.result$code, xdim=preferences$dim.som1,
-                           ydim=preferences$dim.som1, alpha=0.02,
-                           radius=min(3, preferences$dim.som1),
+  som.result <<- som.train(indata, som.result$code, xdim=preferences$dim.1stLvlSom,
+                           ydim=preferences$dim.1stLvlSom, alpha=0.02,
+                           radius=min(3, preferences$dim.1stLvlSom),
                            rlen=nrow(indata)*10*preferences$training.extension,
                            inv.alp.c=nrow(indata)*10*preferences$training.extension/100)
 
   # TODO Can we throw this in the bin?
-  #som.result <<- som(indata, xdim=preferences$dim.som1, ydim=preferences$dim.som1)
+  #som.result <<- som(indata, xdim=preferences$dim.1stLvlSom, ydim=preferences$dim.1stLvlSom)
 
   metadata <<- som.result$code
   colnames(metadata) <<- colnames(indata)
@@ -386,7 +386,7 @@ pipeline.prepare <- function()
   genes.coordinates <<- apply(som.result$visual[,c(1,2)]+1, 1, paste, collapse=" x ")
   names(genes.coordinates) <<- rownames(indata)
 
-  som.nodes <<- (som.result$visual[,"x"] + 1) + som.result$visual[,"y"] * preferences$dim.som1
+  som.nodes <<- (som.result$visual[,"x"] + 1) + som.result$visual[,"y"] * preferences$dim.1stLvlSom
   names(som.nodes) <<- rownames(indata)
 
   return(T)

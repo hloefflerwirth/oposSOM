@@ -67,7 +67,7 @@ pipeline.topologyProfiles <- function()
   par(mfrow=c(1, 2))
 
   ### Fraction of red metagenes ###
-  K.red <- apply(metadata.scaled, 2, function(x) { length(which(x > 0.9)) }) / preferences$dim.som1^2
+  K.red <- apply(metadata.scaled, 2, function(x) { length(which(x > 0.9)) }) / preferences$dim.1stLvlSom^2
 
   barplot(K.red, col=group.colors, main="Fraction of red metagenes (logFC)",
           names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2,
@@ -85,7 +85,7 @@ pipeline.topologyProfiles <- function()
     axis(1, 1:length(unique.group.colors), unique(group.labels), las=2)
   }
 
-  K.red.loglog <- apply(metadata.scaled.loglog, 2, function(x) { length(which(x > 0.5)) }) / preferences$dim.som1^2
+  K.red.loglog <- apply(metadata.scaled.loglog, 2, function(x) { length(which(x > 0.5)) }) / preferences$dim.1stLvlSom^2
 
   barplot(K.red.loglog, col=group.colors, main="Fraction of red metagenes (loglogFC)",
           names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2,
@@ -146,23 +146,23 @@ pipeline.topologyProfiles <- function()
   ### Length of borderline ###
   K.border <- apply(metadata.scaled, 2, function(x)
   {
-    m <- matrix(x, preferences$dim.som1, preferences$dim.som1)
+    m <- matrix(x, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
     m[which(m < 0.9)] <- NA
     count.border.metagenes <- 0
 
-    for (i in 1:preferences$dim.som1)
+    for (i in 1:preferences$dim.1stLvlSom)
     {
-      for (j in 1:preferences$dim.som1)
+      for (j in 1:preferences$dim.1stLvlSom)
       {
         if (!is.na(m[i,j]))
         {
-          neighbours <- sapply(get.neighbors(i, j, preferences$dim.som1),
+          neighbours <- sapply(get.neighbors(i, j, preferences$dim.1stLvlSom),
                                function(x) { m[x[1],x[2]] })
 
           if (length(which(is.na(neighbours))))
           {
             count.border.metagenes <- count.border.metagenes + 1
-          } else if (i %in% c(1, preferences$dim.som1) || j %in% c(1, preferences$dim.som1))
+          } else if (i %in% c(1, preferences$dim.1stLvlSom) || j %in% c(1, preferences$dim.1stLvlSom))
           {
             count.border.metagenes <- count.border.metagenes + 1
           }
@@ -191,23 +191,23 @@ pipeline.topologyProfiles <- function()
 
   K.border.loglog <- apply(metadata.scaled.loglog, 2, function(x)
   {
-    m <- matrix(x, preferences$dim.som1, preferences$dim.som1)
+    m <- matrix(x, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
     m[which(m < 0.9)] <- NA
     count.border.metagenes <- 0
 
-    for (i in 1:preferences$dim.som1)
+    for (i in 1:preferences$dim.1stLvlSom)
     {
-      for (j in 1:preferences$dim.som1)
+      for (j in 1:preferences$dim.1stLvlSom)
       {
         if (!is.na(m[i,j]))
         {
-          neighbours <- sapply(get.neighbors(i, j, preferences$dim.som1),
+          neighbours <- sapply(get.neighbors(i, j, preferences$dim.1stLvlSom),
                                function(x){ m[x[1],x[2]] })
 
           if (length(which(is.na(neighbours))))
           {
             count.border.metagenes <- count.border.metagenes + 1
-          } else if (i %in% c(1, preferences$dim.som1) || j %in% c(1, preferences$dim.som1))
+          } else if (i %in% c(1, preferences$dim.1stLvlSom) || j %in% c(1, preferences$dim.1stLvlSom))
           {
             count.border.metagenes <- count.border.metagenes + 1
           }
@@ -273,7 +273,7 @@ pipeline.topologyProfiles <- function()
   }
 
   ### Shape of spots ###
-  C <- (K.red * preferences$dim.som1^2) / K.border^2
+  C <- (K.red * preferences$dim.1stLvlSom^2) / K.border^2
 
   barplot(C, col=group.colors, main="Shape of spots (logFC)",
           names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2,
@@ -291,7 +291,7 @@ pipeline.topologyProfiles <- function()
     axis(1, 1:length(unique.group.colors), unique(group.labels), las=2)
   }
 
-  C <- (K.red.loglog * preferences$dim.som1^2) / K.border.loglog^2
+  C <- (K.red.loglog * preferences$dim.1stLvlSom^2) / K.border.loglog^2
 
   barplot(C, col=group.colors, main="Shape of spots (loglogFC)",
           names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2,

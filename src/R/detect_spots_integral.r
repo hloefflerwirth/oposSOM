@@ -15,7 +15,7 @@ pipeline.detectSpotsIntegral <- function()
   for (m in 1:ncol(indata))
   {
     # define bigger core regions
-    core <- matrix(NA, preferences$dim.som1, preferences$dim.som1)
+    core <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
     core[which(metadata.scaled[,m] > preferences$summary.spot.threshold)] <- -1
 
     spot.i = 0
@@ -24,7 +24,7 @@ pipeline.detectSpotsIntegral <- function()
     {
       start.pix <- which(core == -1, arr.ind=T)[1,]
       spot.i <- spot.i + 1
-      core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.som1)
+      core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
     }
 
     # shrink each separate region to core size
@@ -45,7 +45,7 @@ pipeline.detectSpotsIntegral <- function()
     {
       start.pix <- which(core == -1, arr.ind=T)[1,]
       spot.i <- spot.i + 1
-      core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.som1)
+      core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
     }
 
     # define spot area around cores
@@ -54,20 +54,20 @@ pipeline.detectSpotsIntegral <- function()
       n.sample.modules <- n.sample.modules + 1
 
       sample.spot.core.list[[n.sample.modules]] <-
-        matrix(NA, preferences$dim.som1, preferences$dim.som1)
+        matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
 
       sample.spot.core.list[[n.sample.modules]][which(core == s.i)] <-
         metadata[which(core == s.i),m]
 
-      spot <- matrix(NA, preferences$dim.som1, preferences$dim.som1)
+      spot <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
       spot[which(metadata.scaled[,m] > preferences$summary.spot.threshold)] <- -1
 
       start.pix <- which(!is.na(sample.spot.core.list[[n.sample.modules]]), arr.ind=T)
       start.pix <- start.pix[which.max(sample.spot.core.list[[n.sample.modules]][start.pix]),]
 
-      spot <- col.pix(spot, start.pix[1], start.pix[2], 1, preferences$dim.som1)
+      spot <- col.pix(spot, start.pix[1], start.pix[2], 1, preferences$dim.1stLvlSom)
 
-      sample.spot.list[[n.sample.modules]] <- matrix(NA, preferences$dim.som1, preferences$dim.som1)
+      sample.spot.list[[n.sample.modules]] <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
       sample.spot.list[[n.sample.modules]][which(spot == 1)] <- metadata.scaled[which(spot == 1),m]
     }
   }
@@ -194,7 +194,7 @@ pipeline.detectSpotsIntegral <- function()
   GS.infos.overexpression$overview.map <<-
     apply(apply(metadata, 2, function(x) { (x - min(x)) / (max(x) - min(x)) }), 1, max)
 
-  GS.infos.overexpression$overview.mask <<- rep(NA, preferences$dim.som1 ^ 2)
+  GS.infos.overexpression$overview.mask <<- rep(NA, preferences$dim.1stLvlSom ^ 2)
   GS.infos.overexpression$filtered <<- F
   GS.infos.overexpression$spots <<- list()
 
@@ -208,7 +208,7 @@ pipeline.detectSpotsIntegral <- function()
     GS.infos.overexpression$spots[[LETTERS[i]]] <<- list()
     GS.infos.overexpression$spots[[LETTERS[i]]]$metagenes <<- spot.metagenes
     GS.infos.overexpression$spots[[LETTERS[i]]]$genes <<- spot.genes
-    GS.infos.overexpression$spots[[LETTERS[i]]]$mask <<- rep(NA, preferences$dim.som1 * preferences$dim.som1)
+    GS.infos.overexpression$spots[[LETTERS[i]]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
     GS.infos.overexpression$spots[[LETTERS[i]]]$mask[spot.metagenes] <<- 1
 
     GS.infos.overexpression$spots[[LETTERS[i]]]$position <<-
@@ -255,7 +255,7 @@ pipeline.detectSpotsIntegral <- function()
   for (m in 1:ncol(indata))
   {
     # define bigger core regions
-    core <- matrix(NA, preferences$dim.som1, preferences$dim.som1)
+    core <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
     core[which(metadata.scaled[,m] < 1 - preferences$summary.spot.threshold)] <- -1
 
     spot.i <- 0
@@ -264,7 +264,7 @@ pipeline.detectSpotsIntegral <- function()
     {
       start.pix <- which(core == -1, arr.ind=T)[1,]
       spot.i <- spot.i + 1
-      core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.som1)
+      core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
     }
 
     # shrink each separate region to core size
@@ -285,26 +285,26 @@ pipeline.detectSpotsIntegral <- function()
     {
       start.pix <- which(core == -1, arr.ind=T)[1,]
       spot.i <- spot.i + 1
-      core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.som1)
+      core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
     }
 
     # define spot area around cores
     for (s.i in 1:max(core,na.rm=T))
     {
       n.sample.modules <- n.sample.modules + 1
-      sample.spot.core.list[[n.sample.modules]] <- matrix(NA, preferences$dim.som1, preferences$dim.som1)
+      sample.spot.core.list[[n.sample.modules]] <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
       sample.spot.core.list[[n.sample.modules]][which(core == s.i)] <- metadata[which(core == s.i),m]
 
-      spot <- matrix(NA, preferences$dim.som1, preferences$dim.som1)
+      spot <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
       spot[which(metadata.scaled[,m] < 1 - preferences$summary.spot.threshold)] <- -1
 
       start.pix <- which(!is.na(sample.spot.core.list[[n.sample.modules]]), arr.ind=T)
       start.pix <- start.pix[which.max(sample.spot.core.list[[n.sample.modules]][start.pix]),]
 
-      spot <- col.pix(spot, start.pix[1], start.pix[2], 1, preferences$dim.som1)
+      spot <- col.pix(spot, start.pix[1], start.pix[2], 1, preferences$dim.1stLvlSom)
 
 
-      sample.spot.list[[n.sample.modules]] <- matrix(NA, preferences$dim.som1, preferences$dim.som1)
+      sample.spot.list[[n.sample.modules]] <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
       sample.spot.list[[n.sample.modules]][which(spot == 1)] <- metadata.scaled[which(spot == 1),m]
     }
   }
@@ -433,7 +433,7 @@ pipeline.detectSpotsIntegral <- function()
   GS.infos.underexpression$overview.map <<-
     apply(apply(metadata, 2, function(x) { (x - min(x)) / (max(x) - min(x)) }), 1, min)
 
-  GS.infos.underexpression$overview.mask <<- rep(NA, preferences$dim.som1 ^ 2)
+  GS.infos.underexpression$overview.mask <<- rep(NA, preferences$dim.1stLvlSom ^ 2)
   GS.infos.underexpression$filtered <<- F
   GS.infos.underexpression$spots <<- list()
 
@@ -447,7 +447,7 @@ pipeline.detectSpotsIntegral <- function()
     GS.infos.underexpression$spots[[letters[i]]] <<- list()
     GS.infos.underexpression$spots[[letters[i]]]$metagenes <<- spot.metagenes
     GS.infos.underexpression$spots[[letters[i]]]$genes <<- spot.genes
-    GS.infos.underexpression$spots[[letters[i]]]$mask <<- rep(NA, preferences$dim.som1 * preferences$dim.som1)
+    GS.infos.underexpression$spots[[letters[i]]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
     GS.infos.underexpression$spots[[letters[i]]]$mask[spot.metagenes] <<- 1
 
     GS.infos.underexpression$spots[[letters[i]]]$position <<-
@@ -488,17 +488,17 @@ pipeline.detectSpotsIntegral <- function()
   ##### Correlation Cluster ######
   GS.infos.correlation <<- list()
   GS.infos.correlation$overview.map <<- NA
-  GS.infos.correlation$overview.mask <<- rep(NA, preferences$dim.som1 ^ 2)
+  GS.infos.correlation$overview.mask <<- rep(NA, preferences$dim.1stLvlSom ^ 2)
   GS.infos.correlation$filtered <<- F
   GS.infos.correlation$spots <<- list()
 
   c.map <- cor(t(metadata))
   diag(c.map) <- NA
-  rownames(c.map) <- c(1:(preferences$dim.som1 * preferences$dim.som1))
-  colnames(c.map) <- c(1:(preferences$dim.som1 * preferences$dim.som1))
+  rownames(c.map) <- c(1:(preferences$dim.1stLvlSom * preferences$dim.1stLvlSom))
+  colnames(c.map) <- c(1:(preferences$dim.1stLvlSom * preferences$dim.1stLvlSom))
 
-  c.cluster <- rep(NA, preferences$dim.som1 * preferences$dim.som1)
-  names(c.cluster) <- c(1:(preferences$dim.som1 * preferences$dim.som1))
+  c.cluster <- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
+  names(c.cluster) <- c(1:(preferences$dim.1stLvlSom * preferences$dim.1stLvlSom))
 
   count.cluster <- 1
 
@@ -509,7 +509,7 @@ pipeline.detectSpotsIntegral <- function()
     cluster <- names(which(c.map[start.node,] > 0.90))
     cluster <- c(start.node, cluster)
 
-    if (length(cluster) >= preferences$dim.som1 / 2)
+    if (length(cluster) >= preferences$dim.1stLvlSom / 2)
     {
       c.cluster[cluster] <- count.cluster
       geneset.genes <- rownames(indata)[which(som.nodes %in% as.numeric(cluster))]
@@ -518,7 +518,7 @@ pipeline.detectSpotsIntegral <- function()
       GS.infos.correlation$spots[[count.cluster]] <<- list()
       GS.infos.correlation$spots[[count.cluster]]$metagenes <<- as.numeric(cluster)
       GS.infos.correlation$spots[[count.cluster]]$genes <<- geneset.genes
-      GS.infos.correlation$spots[[count.cluster]]$mask <<- rep(NA, preferences$dim.som1 * preferences$dim.som1)
+      GS.infos.correlation$spots[[count.cluster]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
       GS.infos.correlation$spots[[count.cluster]]$mask[as.numeric(cluster)] <<- 1
 
       GS.infos.correlation$spots[[count.cluster]]$position <<-
@@ -563,13 +563,13 @@ pipeline.detectSpotsIntegral <- function()
 
 
   ##### K-Means Clustering #####
-  n.cluster <- preferences$dim.som1 / 2
-  prototypes <- metadata[round(seq(1, preferences$dim.som1^2, length.out=n.cluster)),]
+  n.cluster <- preferences$dim.1stLvlSom / 2
+  prototypes <- metadata[round(seq(1, preferences$dim.1stLvlSom^2, length.out=n.cluster)),]
   res <- kmeans(metadata, prototypes)
 
   GS.infos.kmeans <<- list()
-  GS.infos.kmeans$overview.map <<- matrix(res$cluster, preferences$dim.som1, preferences$dim.som1)
-  GS.infos.kmeans$overview.mask <<- rep(NA, preferences$dim.som1 ^ 2)
+  GS.infos.kmeans$overview.map <<- matrix(res$cluster, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
+  GS.infos.kmeans$overview.mask <<- rep(NA, preferences$dim.1stLvlSom ^ 2)
   GS.infos.kmeans$filtered <<- F
   GS.infos.kmeans$spots <<- list()
 
@@ -582,7 +582,7 @@ pipeline.detectSpotsIntegral <- function()
     GS.infos.kmeans$spots[[LETTERS[i]]] <<- list()
     GS.infos.kmeans$spots[[LETTERS[i]]]$metagenes <<- as.numeric(nodes)
     GS.infos.kmeans$spots[[LETTERS[i]]]$genes <<- geneset.genes
-    GS.infos.kmeans$spots[[LETTERS[i]]]$mask <<- rep(NA, preferences$dim.som1 * preferences$dim.som1)
+    GS.infos.kmeans$spots[[LETTERS[i]]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
     GS.infos.kmeans$spots[[LETTERS[i]]]$mask[as.numeric(nodes)] <<- 1
 
     GS.infos.kmeans$spots[[LETTERS[i]]]$position <<-
@@ -635,7 +635,7 @@ pipeline.detectSpotsIntegral <- function()
     for (m in 1:ncol(group.metadata))
     {
       # define bigger core regions
-      core <- matrix(NA, preferences$dim.som1, preferences$dim.som1)
+      core <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
       core[which(group.metadata.scaled[,m] > preferences$group.spot.threshold)] <- -1
 
       spot.i <- 0
@@ -645,7 +645,7 @@ pipeline.detectSpotsIntegral <- function()
         start.pix <- which(core == -1, arr.ind=T)[1,]
 
         spot.i <- spot.i + 1
-        core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.som1)
+        core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
       }
 
       # shrink each separate region to core size
@@ -666,7 +666,7 @@ pipeline.detectSpotsIntegral <- function()
       {
         start.pix <- which(core == -1, arr.ind=T)[1,]
         spot.i <- spot.i + 1
-        core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.som1)
+        core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
       }
 
       # define spot area around cores
@@ -674,18 +674,18 @@ pipeline.detectSpotsIntegral <- function()
       {
         n.sample.modules <- n.sample.modules + 1
 
-        sample.spot.core.list[[n.sample.modules]] <- matrix(NA, preferences$dim.som1, preferences$dim.som1)
+        sample.spot.core.list[[n.sample.modules]] <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
         sample.spot.core.list[[n.sample.modules]][which(core == s.i)] <- metadata[which(core == s.i),m]
 
-        spot <- matrix(NA, preferences$dim.som1, preferences$dim.som1)
+        spot <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
         spot[which(group.metadata.scaled[,m] > preferences$group.spot.threshold)] <- -1
 
         start.pix <- which(!is.na(sample.spot.core.list[[n.sample.modules]]), arr.ind=T)
         start.pix <- start.pix[which.max(sample.spot.core.list[[n.sample.modules]][start.pix]),]
 
-        spot <- col.pix(spot, start.pix[1], start.pix[2], 1, preferences$dim.som1)
+        spot <- col.pix(spot, start.pix[1], start.pix[2], 1, preferences$dim.1stLvlSom)
 
-        sample.spot.list[[n.sample.modules]] <- matrix(NA, preferences$dim.som1, preferences$dim.som1)
+        sample.spot.list[[n.sample.modules]] <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
         sample.spot.list[[n.sample.modules]][which(spot == 1)] <- group.metadata.scaled[which(spot == 1),m]
       }
     }
@@ -812,7 +812,7 @@ pipeline.detectSpotsIntegral <- function()
     GS.infos.group.overexpression$overview.map <<-
       apply(apply(group.metadata, 2, function(x){ (x - min(x)) / (max(x) - min(x)) }), 1, max)
 
-    GS.infos.group.overexpression$overview.mask <<- rep(NA, preferences$dim.som1 ^ 2)
+    GS.infos.group.overexpression$overview.mask <<- rep(NA, preferences$dim.1stLvlSom ^ 2)
     GS.infos.group.overexpression$filtered <<- F
     GS.infos.group.overexpression$spots <<- list()
 
@@ -826,7 +826,7 @@ pipeline.detectSpotsIntegral <- function()
       GS.infos.group.overexpression$spots[[LETTERS[i]]] <<- list()
       GS.infos.group.overexpression$spots[[LETTERS[i]]]$metagenes <<- spot.metagenes
       GS.infos.group.overexpression$spots[[LETTERS[i]]]$genes <<- spot.genes
-      GS.infos.group.overexpression$spots[[LETTERS[i]]]$mask <<- rep(NA, preferences$dim.som1 * preferences$dim.som1)
+      GS.infos.group.overexpression$spots[[LETTERS[i]]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
       GS.infos.group.overexpression$spots[[LETTERS[i]]]$mask[spot.metagenes] <<- 1
 
       GS.infos.group.overexpression$spots[[LETTERS[i]]]$position <<-
@@ -844,7 +844,7 @@ pipeline.detectSpotsIntegral <- function()
 
     spot.arcs <- sapply(GS.infos.group.overexpression$spots, function(x)
     {
-      -atan2(x$position['y'] - preferences$dim.som1 / 2, x$position['x'] - preferences$dim.som1 / 2)
+      -atan2(x$position['y'] - preferences$dim.1stLvlSom / 2, x$position['x'] - preferences$dim.1stLvlSom / 2)
     })
 
     spot.arcs <- spot.arcs - spot.arcs[start.spot]

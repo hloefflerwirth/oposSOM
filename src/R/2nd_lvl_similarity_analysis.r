@@ -26,36 +26,36 @@ pipeline.2ndLvlSimilarityAnalysis <- function()
   # Filter Metagenes
   metagene.filter.list <<- list()
 
-  metagene.filter.list[[1]] <<- list(s=c(1:preferences$dim.som1^2),
-                                     n=paste("all", preferences$dim.som1^2, "Metagenes"))
+  metagene.filter.list[[1]] <<- list(s=c(1:preferences$dim.1stLvlSom^2),
+                                     n=paste("all", preferences$dim.1stLvlSom^2, "Metagenes"))
 
   spot.metagenes <- unique(unlist(sapply(GS.infos.overexpression$spots, function(x) { x$metagenes })))
 
   metagene.filter.list[[2]] <<- list(s=spot.metagenes,
                                      n=paste(length(spot.metagenes), "Spot-Metagenes"))
 
-  if (preferences$dim.som1^2 > 1000)
+  if (preferences$dim.1stLvlSom^2 > 1000)
   {
     metagene.filter.list[[length(metagene.filter.list)+1]] <<-
       list(s=order(apply(abs(metadata), 1, max), decreasing=T)[1:1000],
            n="High Expression: 1000 Metagenes")
   }
 
-  if (preferences$dim.som1^2 > 100)
+  if (preferences$dim.1stLvlSom^2 > 100)
   {
     metagene.filter.list[[length(metagene.filter.list)+1]] <<-
       list(s=order(apply(abs(metadata), 1, max), decreasing=T)[1:100],
            n="High Expression: 100 Metagenes")
   }
 
-  if (preferences$dim.som1^2 > 1000)
+  if (preferences$dim.1stLvlSom^2 > 1000)
   {
     metagene.filter.list[[length(metagene.filter.list)+1]] <<-
       list(s=order(apply(abs(metadata), 1, var), decreasing=T)[1:1000],
            n="Variance: 1000 Metagenes")
   }
 
-  if (preferences$dim.som1^2 > 100)
+  if (preferences$dim.1stLvlSom^2 > 100)
   {
     metagene.filter.list[[length(metagene.filter.list)+1]] <<-
       list(s=order(apply(abs(metadata), 1, var), decreasing=T)[1:100],

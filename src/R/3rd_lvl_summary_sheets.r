@@ -79,20 +79,20 @@ pipeline.3rdLvlSummarySheets <- function()
     par(mfrow=c(1,2))
     par(mar=c(8, 3, 6, 3))
 
-    image(matrix(set.list$overview.map, preferences$dim.som1, preferences$dim.som1),
+    image(matrix(set.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
           axes=F, col = colramp(1000), main=main, cex.main=1.5)
 
     box()
 
-    image(matrix(set.list$overview.mask, preferences$dim.som1, preferences$dim.som1),
+    image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
           axes=F, col = "darkgreen", main="Spots", cex.main=1.5)
 
     box()
 
     par(new=T)
 
-    plot(0, type="n", axes=T, xlab="", ylab="", xlim=c(0,preferences$dim.som1),
-         ylim=c(0,preferences$dim.som1), xaxs="i", yaxs="i", las=1)
+    plot(0, type="n", axes=T, xlab="", ylab="", xlim=c(0,preferences$dim.1stLvlSom),
+         ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i", las=1)
 
     points(do.call(rbind, lapply(set.list$spots, function(x) x$position)), pch=16, cex=3, col="black")
     points(do.call(rbind, lapply(set.list$spots, function(x) x$position)), pch=1, cex=3, col="white")
@@ -108,7 +108,7 @@ pipeline.3rdLvlSummarySheets <- function()
 
       par(mar=c(0.5,3,0.5,1))
 
-      image(matrix(mask, preferences$dim.som1, preferences$dim.som1),
+      image(matrix(mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=F, col ="darkgreen")
 
       axis(2, 0.95, names(set.list$spots[i]), las=2, tick=F, cex.axis=1.6)
@@ -187,11 +187,11 @@ pipeline.3rdLvlSummarySheets <- function()
     layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
     par(mar=c(5, 4, 4, 2))
 
-    image(matrix(set.list$overview.mask, preferences$dim.som1), col="mistyrose", axes=F)
+    image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="mistyrose", axes=F)
     par(new=T)
 
-    plot(0, type="n", xlab="", ylab="", axes=F, xlim=c(0,preferences$dim.som1),
-         ylim=c(0,preferences$dim.som1), xaxs="i", yaxs="i") #, main="Group Association", cex.main=2.5
+    plot(0, type="n", xlab="", ylab="", axes=F, xlim=c(0,preferences$dim.1stLvlSom),
+         ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i") #, main="Group Association", cex.main=2.5
 
     box()
 
@@ -199,7 +199,7 @@ pipeline.3rdLvlSummarySheets <- function()
           draw.segments=T,  scale=F, add=T, col.segments=unique.group.colors, labels=NULL)
 
     text(sapply(set.list$spots, function(x) x$position)[1,],
-         sapply(set.list$spots, function(x) x$position)[2,]+preferences$dim.som1*0.05,
+         sapply(set.list$spots, function(x) x$position)[2,]+preferences$dim.1stLvlSom*0.05,
          names(set.list$spots), col="gray50")
 
     par(mar=c(0,0,4,0))
@@ -214,11 +214,11 @@ pipeline.3rdLvlSummarySheets <- function()
     layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
     par(mar=c(5, 4, 4, 2))
 
-    image(matrix(set.list$overview.mask, preferences$dim.som1), col="lightsteelblue1", axes=F)
+    image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="lightsteelblue1", axes=F)
     par(new=T)
 
-    plot(0, type="n", xlab="", ylab="", axes=F, xlim=c(0,preferences$dim.som1),
-         ylim=c(0,preferences$dim.som1), xaxs="i", yaxs="i") #, main="Group Association", cex.main=2.5
+    plot(0, type="n", xlab="", ylab="", axes=F, xlim=c(0,preferences$dim.1stLvlSom),
+         ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i") #, main="Group Association", cex.main=2.5
 
     box()
 
@@ -227,7 +227,7 @@ pipeline.3rdLvlSummarySheets <- function()
           labels=NULL)
 
     text(sapply(set.list$spots, function(x) x$position)[1,],
-         sapply(set.list$spots, function(x) x$position)[2,]+preferences$dim.som1*0.05,
+         sapply(set.list$spots, function(x) x$position)[2,]+preferences$dim.1stLvlSom*0.05,
          names(set.list$spots), col="gray50")
 
     par(mar=c(0,0,4,0))
@@ -282,10 +282,10 @@ pipeline.3rdLvlSummarySheets <- function()
       layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
       par(mar=c(5, 4, 4, 2))
 
-      image(matrix(set.list$overview.mask, preferences$dim.som1), col="gray90", axes=F)
+      image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=F)
       par(new=T)
-      plot(0, type="n", xlab="", ylab="", axes=F, xlim=c(0,preferences$dim.som1),
-           ylim=c(0,preferences$dim.som1), xaxs="i", yaxs="i") #, main="Group Association", cex.main=2.5
+      plot(0, type="n", xlab="", ylab="", axes=F, xlim=c(0,preferences$dim.1stLvlSom),
+           ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i") #, main="Group Association", cex.main=2.5
 
       box()
 
@@ -301,7 +301,7 @@ pipeline.3rdLvlSummarySheets <- function()
 
         par(fg="black", lty="solid")
 
-        text(set.list$spots[[i]]$position[1], set.list$spots[[i]]$position[2]+preferences$dim.som1*0.05,
+        text(set.list$spots[[i]]$position[1], set.list$spots[[i]]$position[2]+preferences$dim.1stLvlSom*0.05,
              names(set.list$spots)[i], col="gray50")
       }
 
@@ -378,11 +378,11 @@ pipeline.3rdLvlSummarySheets <- function()
       layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
       par(mar=c(5, 4, 4, 2))
 
-      image(matrix(set.list$overview.mask, preferences$dim.som1), col="gray90", axes=F)
+      image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=F)
       par(new=T)
 
-      plot(0, type="n", xlab="", ylab="", axes=F, xlim=c(0,preferences$dim.som1),
-           ylim=c(0,preferences$dim.som1), xaxs="i", yaxs="i") #, main="Group Association", cex.main=2.5
+      plot(0, type="n", xlab="", ylab="", axes=F, xlim=c(0,preferences$dim.1stLvlSom),
+           ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i") #, main="Group Association", cex.main=2.5
 
       box()
 
@@ -400,7 +400,7 @@ pipeline.3rdLvlSummarySheets <- function()
         par(fg="black", lty="solid")
 
         text(set.list$spots[[i]]$position[1],
-             set.list$spots[[i]]$position[2]+preferences$dim.som1*0.05,
+             set.list$spots[[i]]$position[2]+preferences$dim.1stLvlSom*0.05,
              names(set.list$spots)[i], col="gray50")
       }
 

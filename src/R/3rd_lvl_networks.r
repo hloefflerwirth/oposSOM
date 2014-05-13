@@ -146,7 +146,7 @@ pipeline.3rdLvlNetworks <- function()
           tbl <- round(100 * tbl)
           t2 <- table(as.vector(group.labels[samples]))
 
-          mask <- matrix(set.list$spots[[i]]$mask, preferences$dim.som1, preferences$dim.som1)
+          mask <- matrix(set.list$spots[[i]]$mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
           mask <- cbind(apply(mask, 1, function(x){x}))[nrow(mask):1,]
           mask[is.na(mask)] <- 0
 
@@ -204,7 +204,7 @@ pipeline.3rdLvlNetworks <- function()
         tbl <- round(100 * tbl)
         t2 <- table(as.vector(group.labels[samples]))
 
-        mask <- matrix(set.list$spots[[i]]$mask, preferences$dim.som1, preferences$dim.som1)
+        mask <- matrix(set.list$spots[[i]]$mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
         mask <- cbind(apply(mask, 1, function(x){x}))[nrow(mask):1,]
         mask[is.na(mask)] <- 0
 
@@ -314,7 +314,7 @@ pipeline.3rdLvlNetworks <- function()
           {
             samples <- pattern.sample.order[[j]]
             spots <- which(pattern.spot.matrix[,j] == 1)
-            mask <- matrix(0, preferences$dim.som1, preferences$dim.som1)
+            mask <- matrix(0, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
 
             for (s in spots)
             {
@@ -378,7 +378,7 @@ pipeline.3rdLvlNetworks <- function()
           {
             samples <- pattern.sample.order[[j]]
             spots <- which(pattern.spot.matrix[,j] == 1)
-            mask <- matrix(0, preferences$dim.som1, preferences$dim.som1)
+            mask <- matrix(0, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
 
             for (s in spots)
             {

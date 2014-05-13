@@ -23,7 +23,7 @@ pipeline.sampleExpressionPortraits <- function()
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
-      image(matrix(metadata[,j], preferences$dim.som1, preferences$dim.som1),
+      image(matrix(metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=F, col=colramp(1000))
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
@@ -66,7 +66,7 @@ pipeline.sampleExpressionPortraits <- function()
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
-      md <- matrix(metadata[,j], preferences$dim.som1, preferences$dim.som1)
+      md <- matrix(metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
       nrz <- nrow(md)
       zfacet <- md[-1, -1] + md[-1, -nrz] + md[-nrz, -1] + md[-nrz, -nrz]
       facetcol <- cut(zfacet, 1000)
@@ -138,7 +138,7 @@ pipeline.sampleExpressionPortraits <- function()
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
-      image(matrix(bleached.metadata[,j], preferences$dim.som1, preferences$dim.som1),
+      image(matrix(bleached.metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=F, col=colramp(1000), zlim=range(bleached.metadata))
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
@@ -178,7 +178,7 @@ pipeline.sampleExpressionPortraits <- function()
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
-      image(matrix(metadata[,j], preferences$dim.som1, preferences$dim.som1),
+      image(matrix(metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=F, col = colramp(1000), zlim=c(min(metadata),max(metadata)))
 
       title(paste(j,":", colnames(indata)[j]), line=1, cex.main=0.8)
@@ -219,7 +219,7 @@ pipeline.sampleExpressionPortraits <- function()
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
-      image(matrix(-p.m[,j], preferences$dim.som1, preferences$dim.som1),
+      image(matrix(-p.m[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=F,
             zlim=c(-1, 0),
             col=colorRampPalette(c("blue4", "blue4", "blue3", "blue3", "blue2",
@@ -266,7 +266,7 @@ pipeline.sampleExpressionPortraits <- function()
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
-      image(matrix(WAD.metadata[,j], preferences$dim.som1, preferences$dim.som1),
+      image(matrix(WAD.metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=F, col=colramp(1000), cex.main=0.6)
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
@@ -307,7 +307,7 @@ pipeline.sampleExpressionPortraits <- function()
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
-      image(matrix(loglog.metadata[,j], preferences$dim.som1, preferences$dim.som1),
+      image(matrix(loglog.metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=F, col = colramp(1000))
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
@@ -348,9 +348,9 @@ pipeline.sampleExpressionPortraits <- function()
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
-      md <- matrix(metadata[,j], preferences$dim.som1, preferences$dim.som1)
+      md <- matrix(metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
 
-      image(matrix(1:(preferences$dim.som1)^2, preferences$dim.som1, preferences$dim.som1),
+      image(matrix(1:(preferences$dim.1stLvlSom)^2, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             col=colramp(1000)[cut(md, quantile(md, seq(0,1, len=1001)), include.lowest=TRUE)],
             axes=F)
 
@@ -397,7 +397,7 @@ pipeline.sampleExpressionPortraits <- function()
         t <- t - min(t, na.rm=T)
         t <- t * sign(t.m[,j])
 
-        image(matrix(t, preferences$dim.som1, preferences$dim.som1), axes=F,
+        image(matrix(t, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom), axes=F,
               col=colramp(1000))
 
         title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)

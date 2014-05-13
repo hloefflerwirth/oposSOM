@@ -27,7 +27,7 @@ Maintainer: Martin Kalcher <mkalcher@porkbox.net>
 \examples{
 pipeline <- opossom.new(list(dataset.name="Example",
                              error.model="all.samples",
-                             dim.som1=20,
+                             dim.1stLvlSom=20,
                              dim.som2=20,
                              geneset.analysis=TRUE))
 

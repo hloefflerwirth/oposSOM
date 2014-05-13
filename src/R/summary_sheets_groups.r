@@ -69,54 +69,54 @@ pipeline.summarySheetsGroups <- function()
 
     par(new=T)
 
-    image(matrix(group.metadata[,i], preferences$dim.som1, preferences$dim.som1),
+    image(matrix(group.metadata[,i], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
           axes=F, col = colramp(1000))
 
     title(main="logFC", cex.main=1.5, line=0.5)
     box()
 
     image(matrix(group.metadata[,i] * (1-group.metadata.sd[,i]/max(group.metadata.sd)),
-                 preferences$dim.som1,
-                 preferences$dim.som1),
+                 preferences$dim.1stLvlSom,
+                 preferences$dim.1stLvlSom),
           axes=F, col = colramp(1000), zlim=range(group.metadata[,i]))
 
     title(main="robustness", cex.main=1.3, line=0.5)
     box()
 
     image(matrix(bleached.group.metadata[,i],
-                 preferences$dim.som1,
-                 preferences$dim.som1),
+                 preferences$dim.1stLvlSom,
+                 preferences$dim.1stLvlSom),
           axes=F, col = colramp(1000), zlim=range(bleached.group.metadata))
 
     title(main="group specific logFC", cex.main=1.3, line=0.5)
     box()
 
     image(matrix(WAD.group.metadata[,i],
-                 preferences$dim.som1,
-                 preferences$dim.som1),
+                 preferences$dim.1stLvlSom,
+                 preferences$dim.1stLvlSom),
           axes=F, col = colramp(1000))
 
     title(main="WAD", cex.main=1.5, line=0.5)
     box()
 
     image(matrix(bleached.WAD.group.metadata[,i],
-                 preferences$dim.som1,
-                 preferences$dim.som1),
+                 preferences$dim.1stLvlSom,
+                 preferences$dim.1stLvlSom),
           axes=F, col = colramp(1000), zlim=range(bleached.WAD.group.metadata))
 
     title(main="group specific WAD", cex.main=1.3, line=0.5)
     box()
 
     image(matrix(loglog.group.metadata[,i],
-                 preferences$dim.som1,
-                 preferences$dim.som1),
+                 preferences$dim.1stLvlSom,
+                 preferences$dim.1stLvlSom),
           axes=F, col = colramp(1000))
     title(main="loglogFC", cex.main=1.5, line=0.5)
     box()
 
     image(matrix(bleached.loglog.group.metadata[,i],
-                 preferences$dim.som1,
-                 preferences$dim.som1),
+                 preferences$dim.1stLvlSom,
+                 preferences$dim.1stLvlSom),
           axes=F, col = colramp(1000), zlim=range(bleached.loglog.group.metadata))
 
     title(main="group specific loglogFC", cex.main=1.3, line=0.5)
@@ -154,16 +154,16 @@ pipeline.summarySheetsGroups <- function()
           par("col.lab"=col, "mgp"=c(1,0,0))
 
           image(matrix(diff.metadata,
-                       preferences$dim.som1,
-                       preferences$dim.som1),
+                       preferences$dim.1stLvlSom,
+                       preferences$dim.1stLvlSom),
                 axes=F, col = colramp(1000), ylab=unique(group.labels)[g1])
 
           par("col.lab"="black", "mgp"=c(3,1,0))
         } else
         {
           image(matrix(diff.metadata,
-                       preferences$dim.som1,
-                       preferences$dim.som1),
+                       preferences$dim.1stLvlSom,
+                       preferences$dim.1stLvlSom),
                 axes=F, col = colramp(1000))
         }
 
@@ -206,16 +206,16 @@ pipeline.summarySheetsGroups <- function()
           par("col.lab"=col, "mgp"=c(1,0,0))
 
           image(matrix(diff.metadata,
-                       preferences$dim.som1,
-                       preferences$dim.som1),
+                       preferences$dim.1stLvlSom,
+                       preferences$dim.1stLvlSom),
                 axes=F, col=colramp(1000), zlim=zlim, ylab=unique(group.labels)[g1])
 
           par("col.lab"="black", "mgp"=c(3,1,0))
         } else
         {
           image(matrix(diff.metadata,
-                       preferences$dim.som1,
-                       preferences$dim.som1),
+                       preferences$dim.1stLvlSom,
+                       preferences$dim.1stLvlSom),
                 axes=F, col = colramp(1000), zlim=zlim)
         }
 
@@ -262,14 +262,14 @@ pipeline.summarySheetsGroups <- function()
           attributes(col) <- NULL
           par("col.lab"=col, "mgp"=c(1,0,0))
 
-          image(matrix(log10(diff.pvalues), preferences$dim.som1), axes=F,
+          image(matrix(log10(diff.pvalues), preferences$dim.1stLvlSom), axes=F,
                 col=rev(colorRampPalette(rep(c("blue3","green","yellow","orange","red","darkred"), each=1))(1000)),
                 zlim=c(-6,0), ylab=unique(group.labels)[g1])
 
           par("col.lab"="black", "mgp"=c(3,1,0))
         } else
         {
-          image(matrix(log10(diff.pvalues), preferences$dim.som1), axes=F,
+          image(matrix(log10(diff.pvalues), preferences$dim.1stLvlSom), axes=F,
                 col=rev(colorRampPalette(rep(c("blue3","green","yellow","orange","red","darkred"), each=1))(1000)),
                 zlim=c(-6,0))
         }
@@ -317,14 +317,14 @@ pipeline.summarySheetsGroups <- function()
           attributes(col) <- NULL
           par("col.lab"=col, "mgp"=c(1,0,0))
 
-          image(matrix(diff.fdr, preferences$dim.som1), axes=F,
+          image(matrix(diff.fdr, preferences$dim.1stLvlSom), axes=F,
                 col=rev(colorRampPalette(rep(c("blue3","green","yellow","orange","red","darkred"), each=1))(1000)),
                 zlim=c(0,0.6), ylab=unique(group.labels)[g1])
 
           par("col.lab"="black", "mgp"=c(3,1,0))
         } else
         {
-          image(matrix(diff.fdr, preferences$dim.som1), axes=F,
+          image(matrix(diff.fdr, preferences$dim.1stLvlSom), axes=F,
                 col=rev(colorRampPalette(rep(c("blue3","green","yellow","orange","red","darkred"), each=1))(1000)),
                 zlim=c(0,0.6))
         }
@@ -489,7 +489,7 @@ pipeline.summarySheetsGroups <- function()
 
       for (ii in (if (length(group.member)<80) 1 else ceiling(length(merges)/3)):length(merges))
       {
-        m <- matrix(rowMeans(metadata[, group.member[merges[[ii]]]]), preferences$dim.som1, preferences$dim.som1)
+        m <- matrix(rowMeans(metadata[, group.member[merges[[ii]]]]), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
 
         if (max(m) - min(m) != 0)
         {
@@ -514,7 +514,7 @@ pipeline.summarySheetsGroups <- function()
         for (ii in 1:length(group.member))
         {
           m <- matrix(metadata[, group.member[hc$order[ii]]],
-                      preferences$dim.som1, preferences$dim.som1)
+                      preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
 
           if (max(m) - min(m) != 0)
           {
@@ -536,7 +536,7 @@ pipeline.summarySheetsGroups <- function()
       for (ii in (if (length(group.member)<80) 1 else ceiling(length(merges)/3)):length(merges))
       {
         m <- matrix(rowMeans(metadata[, group.member[merges[[ii]]]]) - rowMeans(metadata[, group.member]),
-                    preferences$dim.som1, preferences$dim.som1)
+                    preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
 
         if (max(m,na.rm=T) - min(m,na.rm=T) != 0)
         {
@@ -562,7 +562,7 @@ pipeline.summarySheetsGroups <- function()
         for (ii in 1:length(group.member))
         {
           m <- matrix(metadata[, group.member[hc$order[ii]]],
-                      preferences$dim.som1, preferences$dim.som1)
+                      preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
 
           if (max(m) - min(m) != 0)
           {
@@ -583,7 +583,7 @@ pipeline.summarySheetsGroups <- function()
 
       for (ii in (if (length(group.member)<80) 1 else ceiling(length(merges)/3)):length(merges))
       {
-        m <- matrix(diff.metadata[[ii]], preferences$dim.som1, preferences$dim.som1)
+        m <- matrix(diff.metadata[[ii]], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
 
         if (max(m,na.rm=T) - min(m,na.rm=T) != 0)
         {
@@ -610,7 +610,7 @@ pipeline.summarySheetsGroups <- function()
         for (ii in 1:length(group.member))
         {
           m <- matrix(metadata[, group.member[hc$order[ii]]],
-                      preferences$dim.som1, preferences$dim.som1)
+                      preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
 
           if (max(m) - min(m) != 0)
           {

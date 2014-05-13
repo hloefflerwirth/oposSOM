@@ -83,22 +83,22 @@ pipeline.summarySheetsSamples <- function()
 
     par(mar=c(2,3,3,1))
 
-    image(matrix(metadata[,m], preferences$dim.som1, preferences$dim.som1),
+    image(matrix(metadata[,m], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
           axes=F, col = colramp(1000), main="Profile", cex.main=1.5)
 
     axis(1,
-         seq(0, 1, length.out=preferences$dim.som1/10+1),
-         c(1, seq(10, preferences$dim.som1, length.out=preferences$dim.som1/10)),
+         seq(0, 1, length.out=preferences$dim.1stLvlSom/10+1),
+         c(1, seq(10, preferences$dim.1stLvlSom, length.out=preferences$dim.1stLvlSom/10)),
          cex.axis=1.0)
 
     axis(2,
-         seq(0, 1, length.out=preferences$dim.som1/10+1),
-         c(1, seq(10, preferences$dim.som1, length.out=preferences$dim.som1/10)),
+         seq(0, 1, length.out=preferences$dim.1stLvlSom/10+1),
+         c(1, seq(10, preferences$dim.1stLvlSom, length.out=preferences$dim.1stLvlSom/10)),
          cex.axis=1.0, las=1)
 
     box()
 
-    image(matrix(metadata[,m], preferences$dim.som1, preferences$dim.som1),
+    image(matrix(metadata[,m], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
           axes=F, col=colramp(1000), main="Regulated Spots", cex.main=1.5)
 
     par(new=T)
@@ -107,17 +107,17 @@ pipeline.summarySheetsSamples <- function()
     mask[which(is.na(GS.infos.samples[[m]]$regulated))] <- 1
     mask[which(!is.na(GS.infos.samples[[m]]$regulated))] <- NA
 
-    image(matrix(mask, preferences$dim.som1, preferences$dim.som1),
+    image(matrix(mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
           axes=F, col = "white")
 
     axis(1,
-         seq(0, 1, length.out=preferences$dim.som1/10+1),
-         c(1, seq(10, preferences$dim.som1, length.out=preferences$dim.som1/10)),
+         seq(0, 1, length.out=preferences$dim.1stLvlSom/10+1),
+         c(1, seq(10, preferences$dim.1stLvlSom, length.out=preferences$dim.1stLvlSom/10)),
          cex.axis=1.0)
 
     axis(2,
-         seq(0, 1, length.out=preferences$dim.som1/10+1),
-         c(1, seq(10, preferences$dim.som1, length.out=preferences$dim.som1/10)),
+         seq(0, 1, length.out=preferences$dim.1stLvlSom/10+1),
+         c(1, seq(10, preferences$dim.1stLvlSom, length.out=preferences$dim.1stLvlSom/10)),
          cex.axis=1.0, las=1)
 
     box()
@@ -345,34 +345,34 @@ pipeline.summarySheetsSamples <- function()
 
       par(mar=c(2,3,3,1))
 
-      image(matrix(metadata[,m], preferences$dim.som1, preferences$dim.som1),
+      image(matrix(metadata[,m], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=F, col = colramp(1000), main="Profile", cex.main=1.5)
 
-      axis(1, seq(0, 1, length.out = preferences$dim.som1/10+1),
-           c(1, seq(10, preferences$dim.som1, length.out=preferences$dim.som1/10)),
+      axis(1, seq(0, 1, length.out = preferences$dim.1stLvlSom/10+1),
+           c(1, seq(10, preferences$dim.1stLvlSom, length.out=preferences$dim.1stLvlSom/10)),
            cex.axis=1.0)
 
-      axis(2, seq(0, 1, length.out = preferences$dim.som1/10+1),
-           c(1, seq(10, preferences$dim.som1, length.out=preferences$dim.som1/10)),
+      axis(2, seq(0, 1, length.out = preferences$dim.1stLvlSom/10+1),
+           c(1, seq(10, preferences$dim.1stLvlSom, length.out=preferences$dim.1stLvlSom/10)),
            cex.axis=1.0, las=1)
 
       box()
 
-      image(matrix(metadata[,m], preferences$dim.som1, preferences$dim.som1),
+      image(matrix(metadata[,m], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=F, col = colramp(1000), main="Spot", cex.main=1.5)
 
       par(new=T)
       mask <- GS.infos.samples[[m]]$spots[[spot.i]]$mask
       mask[which(is.na(GS.infos.samples[[m]]$spots[[spot.i]]$mask))] <- 1
       mask[which(!is.na(GS.infos.samples[[m]]$spots[[spot.i]]$mask))] <- NA
-      image(matrix(mask, preferences$dim.som1, preferences$dim.som1), axes=F, col="white")
+      image(matrix(mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom), axes=F, col="white")
 
-      axis(1, seq(0, 1, length.out=preferences$dim.som1/10+1),
-           c(1, seq(10, preferences$dim.som1, length.out=preferences$dim.som1/10)),
+      axis(1, seq(0, 1, length.out=preferences$dim.1stLvlSom/10+1),
+           c(1, seq(10, preferences$dim.1stLvlSom, length.out=preferences$dim.1stLvlSom/10)),
            cex.axis=1.0)
 
-      axis(2, seq(0, 1, length.out=preferences$dim.som1/10+1),
-           c(1, seq(10, preferences$dim.som1, length.out=preferences$dim.som1/10)),
+      axis(2, seq(0, 1, length.out=preferences$dim.1stLvlSom/10+1),
+           c(1, seq(10, preferences$dim.1stLvlSom, length.out=preferences$dim.1stLvlSom/10)),
            cex.axis=1.0, las=1)
 
       box()

@@ -62,7 +62,7 @@ pipeline.htmlSummary <- function()
         <dt>Number of genes</dt>
         <dd>", nrow(indata), "</dd>
         <dt>Dimension 1st level SOM</dt>
-        <dd>", preferences$dim.som1, " x ", preferences$dim.som1, "</dd>
+        <dd>", preferences$dim.1stLvlSom, " x ", preferences$dim.1stLvlSom, "</dd>
         <dt>Analysis finished</dt>
         <dd>", format(Sys.time(), "%a %b %d %X %Y %Z"), "</dd>
       </dl>

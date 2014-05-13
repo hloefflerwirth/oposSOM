@@ -29,11 +29,11 @@ pipeline.sampleRankMaps <- function()
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
       mean.rank <- tapply(indata[,j], som.nodes, mean)
-      mean.rank.full <- rep(NA, preferences$dim.som1^2)
-      names(mean.rank.full) <- as.character(1:preferences$dim.som1^2)
+      mean.rank.full <- rep(NA, preferences$dim.1stLvlSom^2)
+      names(mean.rank.full) <- as.character(1:preferences$dim.1stLvlSom^2)
       mean.rank.full[names(mean.rank)] <- mean.rank
 
-      image(matrix(mean.rank.full, preferences$dim.som1, preferences$dim.som1),
+      image(matrix(mean.rank.full, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=F, col = colramp(1000))
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
@@ -76,11 +76,11 @@ pipeline.sampleRankMaps <- function()
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
       mean.rank <- tapply(WAD.g.m[,j], som.nodes, mean)
-      mean.rank.full <- rep(NA, preferences$dim.som1^2)
-      names(mean.rank.full) <- as.character(1:preferences$dim.som1^2)
+      mean.rank.full <- rep(NA, preferences$dim.1stLvlSom^2)
+      names(mean.rank.full) <- as.character(1:preferences$dim.1stLvlSom^2)
       mean.rank.full[names(mean.rank)] <- mean.rank
 
-      image(matrix(mean.rank.full, preferences$dim.som1, preferences$dim.som1),
+      image(matrix(mean.rank.full, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=F, col = colramp(1000))
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
@@ -124,11 +124,11 @@ pipeline.sampleRankMaps <- function()
       for (j in which(group.labels == unique(group.labels)[gl]))
       {
         mean.rank <- tapply(t.g.m[,j], som.nodes, mean)
-        mean.rank.full <- rep(NA, preferences$dim.som1^2)
-        names(mean.rank.full) <- as.character(1:preferences$dim.som1^2)
+        mean.rank.full <- rep(NA, preferences$dim.1stLvlSom^2)
+        names(mean.rank.full) <- as.character(1:preferences$dim.1stLvlSom^2)
         mean.rank.full[names(mean.rank)] <- mean.rank
 
-        image(matrix(mean.rank.full, preferences$dim.som1, preferences$dim.som1),
+        image(matrix(mean.rank.full, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
               axes=F, col = colramp(1000))
 
         title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)

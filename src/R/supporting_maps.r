@@ -14,7 +14,7 @@ pipeline.supportingMaps <- function()
   m <- log10(som.result$code.sum[,"nobs"])
   m[which(is.infinite(m))] <- NA
 
-  image(matrix(m, preferences$dim.som1, preferences$dim.som1),
+  image(matrix(m, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
         axes=F, col=colramp(1000), main="Population Map", cex.main=2.5)
 
   mtext("log ( # genes in metagene )", side=1, line=1, cex=1.4)
@@ -33,7 +33,7 @@ pipeline.supportingMaps <- function()
   par(mfrow = c(1, 1))
   par(mar=c(5, 6, 4, 5))
 
-  image(matrix(log10(apply(metadata, 1, var)), preferences$dim.som1, preferences$dim.som1),
+  image(matrix(log10(apply(metadata, 1, var)), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
         axes=F, col=colramp(1000), main="Metagene Variance Map", cex.main=2.5)
 
   mtext("log ( metagene variance )", side=1, line=1, cex=1.4)
@@ -54,7 +54,7 @@ pipeline.supportingMaps <- function()
   par(mar=c(5, 6, 4, 5))
   suppressWarnings({ p <- -apply(p.m, 1, mean) })
 
-  image(matrix(p, preferences$dim.som1, preferences$dim.som1),
+  image(matrix(p, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
         axes=F, main="Metagene Significance Map", cex.main=2.5, zlim=c(-1,0),
         col=colorRampPalette(c("blue4", "blue4", "blue3", "blue3", "blue2",
                                "blue2", "blue1", "lightblue", "darkgreen",
@@ -80,7 +80,7 @@ pipeline.supportingMaps <- function()
   par(mar=c(5, 6, 4, 5))
   suppressWarnings({ p <- apply(p.m, 1, min) })
 
-  image(matrix(-log(p), preferences$dim.som1, preferences$dim.som1),
+  image(matrix(-log(p), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
         axes=F, main="Metagene Significance Map", cex.main=2.5,
         col=colorRampPalette(c("blue4", "blue4", "blue3", "blue3", "blue2",
                                "blue2", "blue1", "lightblue", "darkgreen",
@@ -115,7 +115,7 @@ pipeline.supportingMaps <- function()
   par(mfrow = c(1, 1))
   par(mar=c(5, 6, 4, 5))
 
-  image(matrix(H, preferences$dim.som1, preferences$dim.som1),
+  image(matrix(H, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
         axes=F, col=colramp(1000), main="Standard Metagene Entropy Map", cex.main=2.5)
 
   mtext(expression(h[k]), side=1, line=1, cex=1.4)
@@ -133,7 +133,7 @@ pipeline.supportingMaps <- function()
   ### Covariance Map ###
   errors <- c()
 
-  for (i in 1:preferences$dim.som1^2)
+  for (i in 1:preferences$dim.1stLvlSom^2)
   {
     genes <- names(which(som.nodes == i))
     mean.cor <- 0
@@ -151,7 +151,7 @@ pipeline.supportingMaps <- function()
   par(mfrow = c(1, 1))
   par(mar=c(5, 6, 4, 5))
 
-  image(matrix(errors, preferences$dim.som1, preferences$dim.som1), axes=F,
+  image(matrix(errors, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom), axes=F,
         col=colramp(1000), main="Gene-Metagene Covariance Map", cex.main=2.5)
 
   mtext("correlation genes - metagene", side=1, line=1, cex=1.4)
@@ -167,9 +167,9 @@ pipeline.supportingMaps <- function()
   box()
 
   ### Deviation Map ###
-  errors <- rep(NA, preferences$dim.som1^2)
+  errors <- rep(NA, preferences$dim.1stLvlSom^2)
 
-  for (i in 1:preferences$dim.som1^2)
+  for (i in 1:preferences$dim.1stLvlSom^2)
   {
     genes <- names(which(som.nodes == i))
 
@@ -184,7 +184,7 @@ pipeline.supportingMaps <- function()
   par(mfrow = c(1, 1))
   par(mar=c(5, 6, 4, 5))
 
-  image(matrix(errors, preferences$dim.som1, preferences$dim.som1),
+  image(matrix(errors, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
         axes=F, col=colramp(1000), main="Deviation Map", cex.main=2.5)
 
   mtext("deviation genes - metagene", side=1, line=1, cex=1.4)
@@ -200,17 +200,17 @@ pipeline.supportingMaps <- function()
   box()
 
   ### Distance Map ###
-  uh <- rep(NA, preferences$dim.som1^2)
+  uh <- rep(NA, preferences$dim.1stLvlSom^2)
 
-  for (i in 1:preferences$dim.som1^2)
+  for (i in 1:preferences$dim.1stLvlSom^2)
   {
     pos.x <- som.result$code.sum[i,1] + 1
     pos.y <- som.result$code.sum[i,2] + 1
 
-    uh[i] <- mean(sapply(get.neighbors(pos.x, pos.y, preferences$dim.som1), function(x)
+    uh[i] <- mean(sapply(get.neighbors(pos.x, pos.y, preferences$dim.1stLvlSom), function(x)
     {
       x <- x - 1
-      ij <- (x[1] + 1) + x[2] * preferences$dim.som1
+      ij <- (x[1] + 1) + x[2] * preferences$dim.1stLvlSom
       sqrt(sum((metadata[ij,] - metadata[i,])^2))
     }))
   }
@@ -218,7 +218,7 @@ pipeline.supportingMaps <- function()
   par(mfrow = c(1, 1))
   par(mar=c(5, 6, 4, 5))
 
-  image(matrix(-log10((uh)), preferences$dim.som1, preferences$dim.som1),
+  image(matrix(-log10((uh)), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
         axes=F, col=colorRampPalette(c("white","black"))(1000),
         main="Distance Map", cex.main=2.5)
 
@@ -237,7 +237,7 @@ pipeline.supportingMaps <- function()
   ### Plot SOM 10x10 grid ###
   co.dim <- 10
 
-  if (preferences$dim.som1 != co.dim)
+  if (preferences$dim.1stLvlSom != co.dim)
   {
     co.so <- som.init(indata, xdim=10, ydim=10)
 

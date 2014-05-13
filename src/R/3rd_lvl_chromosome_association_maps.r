@@ -95,7 +95,7 @@ pipeline.3rdLvlChromosomeAssociationMaps <- function(gene.positions.list)
     {
       par(mar=c(2,4,2,18))
 
-      image(matrix(set.list$spots[[spot.i]]$mask, preferences$dim.som1, preferences$dim.som1),
+      image(matrix(set.list$spots[[spot.i]]$mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=F, col ="darkgreen")
 
       box()

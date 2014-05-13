@@ -72,7 +72,7 @@ pipeline.3rdLvlNetworksWto <- function(set.list, sample.spot.matrix)
   text(-1.65, 1.1, "WTO network", adj=0, cex=2)
 
   par(mar=c(4.9,13.5,4.9,13.5))
-  image(matrix(set.list$overview.mask, preferences$dim.som1), col="gray90", axes=F)
+  image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=F)
   par(new=T, mar=c(1,1,1,1))
 
   plot(g, layout=t(sapply(set.list$spots, function(x) { x$position })),
@@ -92,7 +92,7 @@ pipeline.3rdLvlNetworksWto <- function(set.list, sample.spot.matrix)
   g2 <- g - E(g)[weight < 0]
 
   par(mar=c(4.9,13.5,4.9,13.5))
-  image(matrix(set.list$overview.mask, preferences$dim.som1), col="gray90", axes=F)
+  image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=F)
   par(new=T, mar=c(1,1,1,1))
 
   plot(g2, layout=t(sapply(set.list$spots, function(x) x$position)),
@@ -105,7 +105,7 @@ pipeline.3rdLvlNetworksWto <- function(set.list, sample.spot.matrix)
   g2 <- g - E(g)[weight > 0]
 
   par(mar=c(4.9,13.5,4.9,13.5))
-  image(matrix(set.list$overview.mask, preferences$dim.som1), col="gray90", axes=F)
+  image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=F)
   par(new=T, mar=c(1,1,1,1))
 
   plot(g2, layout=t(sapply(set.list$spots, function(x) x$position)),

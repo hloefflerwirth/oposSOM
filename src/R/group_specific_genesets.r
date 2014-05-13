@@ -42,15 +42,15 @@ pipeline.groupSpecificGenesets <- function()
       mtext("GSZ", side=2, cex=1.2, line=3)
 
 
-      n.map <- matrix(0,preferences$dim.som1,preferences$dim.som1)
+      n.map <- matrix(0,preferences$dim.1stLvlSom,preferences$dim.1stLvlSom)
       gs.nodes <- som.nodes[names(gene.ids)[which(gene.ids %in% gs.def.list[[names(top.gs)[i]]]$Genes)]]
       n.map[as.numeric(names(table(gs.nodes)))] <- table(gs.nodes)
       n.map[which(n.map==0)] <- NA
-      n.map <- matrix(n.map, preferences$dim.som1)
+      n.map <- matrix(n.map, preferences$dim.1stLvlSom)
 
       par(mar=c(5,1,3,1))
 
-      lim <- c(1,preferences$dim.som1) + preferences$dim.som1*0.01*c(-1,1)
+      lim <- c(1,preferences$dim.1stLvlSom) + preferences$dim.1stLvlSom*0.01*c(-1,1)
 
       plot(which(!is.na(n.map), arr.ind=T), xlim=lim, ylim=lim, pch=16,
             axes=F, xlab="",ylab="", xaxs="i", yaxs="i",

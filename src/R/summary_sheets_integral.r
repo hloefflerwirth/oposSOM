@@ -16,7 +16,7 @@ pipeline.summarySheetsIntegral <- function()
       layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
       par(mar=c(5, 4, 4, 1))
 
-      image(matrix(set.list$overview.map, preferences$dim.som1, preferences$dim.som1),
+      image(matrix(set.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=F, col = colramp(1000), main=main, cex.main=1.5)
 
       mtext("landscape", 3)
@@ -35,7 +35,7 @@ pipeline.summarySheetsIntegral <- function()
 
     beta.scores = sapply(set.list$spots, function(x) { x$beta.statistic$beta.score })
 
-    image(matrix(set.list$overview.mask, preferences$dim.som1), axes=F,
+    image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), axes=F,
           col=colramp(1000)[1 + 999 * beta.scores / max(beta.scores)],
           main=main, cex.main=1.5)
 
@@ -57,9 +57,9 @@ pipeline.summarySheetsIntegral <- function()
     layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
     par(mar=c(5, 4, 4, 1))
 
-    image(x=c(1:preferences$dim.som1),
-          y=c(1:preferences$dim.som1),
-          z=matrix(set.list$overview.mask, preferences$dim.som1, preferences$dim.som1),
+    image(x=c(1:preferences$dim.1stLvlSom),
+          y=c(1:preferences$dim.1stLvlSom),
+          z=matrix(set.list$overview.mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
           col=colramp(max(set.list$overview.mask, na.rm=T)),
           axes=T, main=main, cex.main=1.5, xlab="", ylab="", las=1)
 
@@ -67,8 +67,8 @@ pipeline.summarySheetsIntegral <- function()
     box()
     par(new=T)
 
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,preferences$dim.som1),
-         ylim=c(0,preferences$dim.som1), xaxs="i", yaxs="i")
+    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,preferences$dim.1stLvlSom),
+         ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i")
 
     points(do.call(rbind, lapply(set.list$spots, function(x) { x$position })),
            pch=16, cex=3, col="black")
@@ -330,20 +330,20 @@ pipeline.summarySheetsIntegral <- function()
 
       par(mar=c(2,3,3,1))
 
-      image(matrix(set.list$overview.map, preferences$dim.som1, preferences$dim.som1),
+      image(matrix(set.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=F, col = colramp(1000), main="Overview Map", cex.main=1.5)
 
-      axis(1, seq(0, 1, length.out = preferences$dim.som1/10+1),
-           c(1, seq(10, preferences$dim.som1, length.out = preferences$dim.som1/10)),
+      axis(1, seq(0, 1, length.out = preferences$dim.1stLvlSom/10+1),
+           c(1, seq(10, preferences$dim.1stLvlSom, length.out = preferences$dim.1stLvlSom/10)),
            cex.axis=1.0)
 
-      axis(2, seq(0, 1, length.out = preferences$dim.som1/10+1),
-           c(1, seq(10, preferences$dim.som1, length.out = preferences$dim.som1/10)),
+      axis(2, seq(0, 1, length.out = preferences$dim.1stLvlSom/10+1),
+           c(1, seq(10, preferences$dim.1stLvlSom, length.out = preferences$dim.1stLvlSom/10)),
            cex.axis=1.0, las=1)
 
       box()
 
-      image(matrix(set.list$overview.map, preferences$dim.som1, preferences$dim.som1),
+      image(matrix(set.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=F, col = colramp(1000), main="Spot", cex.main=1.5)
 
       par(new=T)
@@ -352,15 +352,15 @@ pipeline.summarySheetsIntegral <- function()
       mask[which(is.na(set.list$spots[[m]]$mask))] <- 1
       mask[which(!is.na(set.list$spots[[m]]$mask))] <- NA
 
-      image(matrix(mask, preferences$dim.som1, preferences$dim.som1),
+      image(matrix(mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=F, col = "white")
 
-      axis(1, seq(0, 1, length.out = preferences$dim.som1/10+1),
-           c(1, seq(10, preferences$dim.som1, length.out = preferences$dim.som1/10)),
+      axis(1, seq(0, 1, length.out = preferences$dim.1stLvlSom/10+1),
+           c(1, seq(10, preferences$dim.1stLvlSom, length.out = preferences$dim.1stLvlSom/10)),
            cex.axis=1.0)
 
-      axis(2, seq(0, 1, length.out = preferences$dim.som1/10+1),
-           c(1, seq(10, preferences$dim.som1, length.out = preferences$dim.som1/10)),
+      axis(2, seq(0, 1, length.out = preferences$dim.1stLvlSom/10+1),
+           c(1, seq(10, preferences$dim.1stLvlSom, length.out = preferences$dim.1stLvlSom/10)),
            cex.axis=1.0, las=1)
 
       box()
