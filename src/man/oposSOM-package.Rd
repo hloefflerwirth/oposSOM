@@ -53,7 +53,7 @@ opossom.run(pipeline)
 #                             dim.2ndLvlSom=30,
 #                             geneset.analysis=TRUE,
 #                             spot.coresize.groupmap=5,
-#                             group.spot.threshold=0.75,
+#                             spot.threshold.groupmap=0.75,
 #                             pairwise.comparison.list=list(
 #                               list("Homeostasis"=c(1, 2), "Imune System"=c(9, 10)),
 #                               list("Homeostasis"=c(1, 2), "Muscle"=c(8))

@@ -110,12 +110,12 @@ pipeline.prepare <- function()
     preferences$spot.coresize.groupmap <<- 5
   }
 
-  if (!is.numeric(preferences$group.spot.threshold) ||
-      preferences$group.spot.threshold <= 0 ||
-      preferences$group.spot.threshold >= 1)
+  if (!is.numeric(preferences$spot.threshold.groupmap) ||
+      preferences$spot.threshold.groupmap <= 0 ||
+      preferences$spot.threshold.groupmap >= 1)
   {
-    util.warn("Invalid value of \"group.spot.threshold\". Using 0.75")
-    preferences$group.spot.threshold <<- 0.75
+    util.warn("Invalid value of \"spot.threshold.groupmap\". Using 0.75")
+    preferences$spot.threshold.groupmap <<- 0.75
   }
 
   if (!is.logical(preferences$feature.centralization))

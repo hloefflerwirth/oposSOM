@@ -98,7 +98,7 @@ opossom.new <- function(preferences)
                               summary.spot.core = 3,
                               summary.spot.threshold = 0.95,
                               spot.coresize.groupmap = 5,
-                              group.spot.threshold = 0.75,
+                              spot.threshold.groupmap = 0.75,
                               feature.centralization = T,
                               sample.quantile.normalization = T,
                               pairwise.comparison.list = list())
