@@ -31,11 +31,11 @@ pipeline.topologyProfiles <- function()
   {
     mean.boxes <- by(n.spots, group.labels, c)[unique(group.labels)]
 
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
+    boxplot(mean.boxes, col=unique.group.colors, las=2,
             main="Number of overexpressed spots (logFC)",
             cex.main=2.5, cex.axis=2, xaxt="n")
 
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
+    axis(1, 1:length(unique.group.colors), unique(group.labels), las=2)
   }
 
   ### Spot number distribution ###
@@ -58,7 +58,7 @@ pipeline.topologyProfiles <- function()
 
   par(mfrow=c(1, 1))
 
-  barplot(as.vector(n.spots.groups), col=rep(groupwise.group.colors,each=max(n.spots)),
+  barplot(as.vector(n.spots.groups), col=rep(unique.group.colors,each=max(n.spots)),
           names.arg=rep(c(1:max(n.spots)), length(unique(group.labels))), las=1,
           main="Relative numbers of overexpressed spots (logFC)",
           cex.main=2.5, cex.lab=2, cex.axis=2, cex.names=0.9,
@@ -79,10 +79,10 @@ pipeline.topologyProfiles <- function()
   {
     mean.boxes <- by(K.red, group.labels, c)[unique(group.labels)]
 
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
+    boxplot(mean.boxes, col=unique.group.colors, las=2,
             main="Fraction of red metagenes (logFC)", cex.main=2.5, cex.axis=2, xaxt="n")
 
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
+    axis(1, 1:length(unique.group.colors), unique(group.labels), las=2)
   }
 
   K.red.loglog <- apply(metadata.scaled.loglog, 2, function(x) { length(which(x > 0.5)) }) / preferences$dim.1stLvlSom^2
@@ -97,10 +97,10 @@ pipeline.topologyProfiles <- function()
   {
     mean.boxes <- by(K.red.loglog, group.labels, c)[unique(group.labels)]
 
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
+    boxplot(mean.boxes, col=unique.group.colors, las=2,
             main="Fraction of red metagenes (loglogFC)", cex.main=2.5, cex.axis=2, xaxt="n")
 
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
+    axis(1, 1:length(unique.group.colors), unique(group.labels), las=2)
   }
 
   ### Fraction of genes in red metagenes ###
@@ -116,10 +116,10 @@ pipeline.topologyProfiles <- function()
   {
     mean.boxes <- by(f, group.labels, c)[unique(group.labels)]
 
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
+    boxplot(mean.boxes, col=unique.group.colors, las=2,
             main="Fraction of red genes (logFC)", cex.main=2.5, cex.axis=2, xaxt="n")
 
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
+    axis(1, 1:length(unique.group.colors), unique(group.labels), las=2)
   }
 
   f <- apply(metadata.scaled.loglog, 2, function(x)
@@ -137,10 +137,10 @@ pipeline.topologyProfiles <- function()
   {
     mean.boxes <- by(f, group.labels, c)[unique(group.labels)]
 
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
+    boxplot(mean.boxes, col=unique.group.colors, las=2,
             main="Fraction of red genes (loglogFC)", cex.main=2.5, cex.axis=2, xaxt="n")
 
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
+    axis(1, 1:length(unique.group.colors), unique(group.labels), las=2)
   }
 
   ### Length of borderline ###
@@ -183,10 +183,10 @@ pipeline.topologyProfiles <- function()
   {
     mean.boxes = by(K.border, group.labels, c)[unique(group.labels)]
 
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
+    boxplot(mean.boxes, col=unique.group.colors, las=2,
             main="Length of borderline (logFC)", cex.main=2.5, cex.axis=2, xaxt="n")
 
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
+    axis(1, 1:length(unique.group.colors), unique(group.labels), las=2)
   }
 
   K.border.loglog <- apply(metadata.scaled.loglog, 2, function(x)
@@ -229,10 +229,10 @@ pipeline.topologyProfiles <- function()
   {
     mean.boxes <- by(K.border.loglog, group.labels, c)[unique(group.labels)]
 
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
+    boxplot(mean.boxes, col=unique.group.colors, las=2,
             main="Length of borderline (loglogFC)", cex.main=2.5, cex.axis=2, xaxt="n")
 
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
+    axis(1, 1:length(unique.group.colors), unique(group.labels), las=2)
   }
 
   ### Compactness of spots ###
@@ -248,10 +248,10 @@ pipeline.topologyProfiles <- function()
   {
     mean.boxes <- by(C, group.labels, c)[unique(group.labels)]
 
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
+    boxplot(mean.boxes, col=unique.group.colors, las=2,
             main="Compactness of spots (logFC)", cex.main=2.5, cex.axis=2, xaxt="n")
 
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
+    axis(1, 1:length(unique.group.colors), unique(group.labels), las=2)
   }
 
   C <- K.red.loglog / K.border.loglog
@@ -266,10 +266,10 @@ pipeline.topologyProfiles <- function()
   {
     mean.boxes <- by(C, group.labels, c)[unique(group.labels)]
 
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
+    boxplot(mean.boxes, col=unique.group.colors, las=2,
             main="Compactness of spots (loglogFC)", cex.main=2.5, cex.axis=2, xaxt="n")
 
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
+    axis(1, 1:length(unique.group.colors), unique(group.labels), las=2)
   }
 
   ### Shape of spots ###
@@ -285,10 +285,10 @@ pipeline.topologyProfiles <- function()
   {
     mean.boxes <- by(C, group.labels, c)[unique(group.labels)]
 
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
+    boxplot(mean.boxes, col=unique.group.colors, las=2,
             main="Shape of spots (logFC)", cex.main=2.5, cex.axis=2, xaxt="n")
 
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
+    axis(1, 1:length(unique.group.colors), unique(group.labels), las=2)
   }
 
   C <- (K.red.loglog * preferences$dim.1stLvlSom^2) / K.border.loglog^2
@@ -303,10 +303,10 @@ pipeline.topologyProfiles <- function()
   {
     mean.boxes <- by(C, group.labels, c)[unique(group.labels)]
 
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2, main="Shape of spots (loglogFC)",
+    boxplot(mean.boxes, col=unique.group.colors, las=2, main="Shape of spots (loglogFC)",
             cex.main=2.5, cex.axis=2, xaxt="n")
 
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
+    axis(1, 1:length(unique.group.colors), unique(group.labels), las=2)
   }
 
   dev.off()

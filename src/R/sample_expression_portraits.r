@@ -16,7 +16,7 @@ pipeline.sampleExpressionPortraits <- function()
     if (length(unique(group.labels)) > 1)
     {
       mtext(unique(group.labels)[gl], side=3, line=2, cex=1.5, at=0, font=3,
-            adj=0, col=groupwise.group.colors[gl])
+            adj=0, col=unique.group.colors[gl])
     }
 
     par(new=T)
@@ -31,7 +31,7 @@ pipeline.sampleExpressionPortraits <- function()
       if (length(unique(group.labels)) > 1)
       {
         title(paste(group.bootstrap.score[j],"%",sep=""), line=0.2,
-              cex.main=0.6, col.main=groupwise.group.colors[gl])
+              cex.main=0.6, col.main=unique.group.colors[gl])
       }
 
       box()
@@ -59,7 +59,7 @@ pipeline.sampleExpressionPortraits <- function()
     if (length(unique(group.labels)) > 1)
     {
       mtext(unique(group.labels)[gl], side=3, line=2, cex=1.5, at=0, font=3,
-            adj=0, col=groupwise.group.colors[gl])
+            adj=0, col=unique.group.colors[gl])
     }
 
     par(new=T)
@@ -131,7 +131,7 @@ pipeline.sampleExpressionPortraits <- function()
     if (length(unique(group.labels)) > 1)
     {
       mtext(unique(group.labels)[gl], side=3, line=2, cex=1.5, at=0, font=3,
-            adj=0, col=groupwise.group.colors[gl])
+            adj=0, col=unique.group.colors[gl])
     }
 
     par(new=T)
@@ -171,7 +171,7 @@ pipeline.sampleExpressionPortraits <- function()
     if (length(unique(group.labels)) > 1)
     {
       mtext(unique(group.labels)[gl], side=3, line=2, cex=1.5, at=0, font=3,
-            adj=0, col=groupwise.group.colors[gl])
+            adj=0, col=unique.group.colors[gl])
     }
 
     par(new=T)
@@ -212,7 +212,7 @@ pipeline.sampleExpressionPortraits <- function()
     if (length(unique(group.labels)) > 1)
     {
       mtext(unique(group.labels)[gl], side=3, line=2, cex=1.5, at=0, font=3,
-            adj=0, col=groupwise.group.colors[gl])
+            adj=0, col=unique.group.colors[gl])
     }
 
     par(new=T)
@@ -259,7 +259,7 @@ pipeline.sampleExpressionPortraits <- function()
     if (length(unique(group.labels)) > 1)
     {
       mtext(unique(group.labels)[gl], side=3, line=2, cex=1.5, at=0, font=3,
-            adj=0, col=groupwise.group.colors[gl])
+            adj=0, col=unique.group.colors[gl])
     }
 
     par(new=T)
@@ -300,7 +300,7 @@ pipeline.sampleExpressionPortraits <- function()
     if (length(unique(group.labels)) > 1)
     {
       mtext(unique(group.labels)[gl], side=3, line=2, cex=1.5, at=0, font=3,
-            adj=0, col=groupwise.group.colors[gl])
+            adj=0, col=unique.group.colors[gl])
     }
 
     par(new=T)
@@ -341,7 +341,7 @@ pipeline.sampleExpressionPortraits <- function()
     if (length(unique(group.labels)) > 1)
     {
       mtext(unique(group.labels)[gl], side=3, line = 2, cex=1.5, at=0, font=3,
-            adj=0, col=groupwise.group.colors[gl])
+            adj=0, col=unique.group.colors[gl])
     }
 
     par(new=T)
@@ -386,7 +386,7 @@ pipeline.sampleExpressionPortraits <- function()
       if (length(unique(group.labels)) > 1)
       {
         mtext(unique(group.labels)[gl], side=3, line=2, cex=1.5, at=0, font=3,
-              adj=0, col=groupwise.group.colors[gl])
+              adj=0, col=unique.group.colors[gl])
       }
 
       par(new=T)

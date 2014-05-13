@@ -129,7 +129,7 @@ pipeline.3rdLvlSummarySheets <- function()
       label.string = sub("1", "+", label.string)
       label.string = sub("0", ".", label.string)
       label.x = tapply(barplot.x, group.labels, mean)[unique(group.labels)]
-      text(label.x, max(set.list$spotdata)*1.2, label.string, col=groupwise.group.colors,cex=2.5)
+      text(label.x, max(set.list$spotdata)*1.2, label.string, col=unique.group.colors,cex=2.5)
 
       par(mar=c(0.5,0,0.5,0))
       plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1), xaxs="i", yaxs="i")
@@ -196,7 +196,7 @@ pipeline.3rdLvlSummarySheets <- function()
     box()
 
     stars(map, locations=t(sapply(set.list$spots, function(x) x$position)), len=2,
-          draw.segments=T,  scale=F, add=T, col.segments=groupwise.group.colors, labels=NULL)
+          draw.segments=T,  scale=F, add=T, col.segments=unique.group.colors, labels=NULL)
 
     text(sapply(set.list$spots, function(x) x$position)[1,],
          sapply(set.list$spots, function(x) x$position)[2,]+preferences$dim.1stLvlSom*0.05,
@@ -205,7 +205,7 @@ pipeline.3rdLvlSummarySheets <- function()
     par(mar=c(0,0,4,0))
     plot(0,type="n",axes=F,xlab="",ylab="")
 
-    legend("topleft", legend=unique(group.labels), cex=1.3, col=groupwise.group.colors,
+    legend("topleft", legend=unique(group.labels), cex=1.3, col=unique.group.colors,
            pch=15, pt.cex=2, bty="n")
 
     map = 1-H.spot.group.map
@@ -223,7 +223,7 @@ pipeline.3rdLvlSummarySheets <- function()
     box()
 
     stars(map, locations=t(sapply(set.list$spots, function(x) x$position)),
-          len=2, draw.segments=T,  scale=F, add=T, col.segments=groupwise.group.colors,
+          len=2, draw.segments=T,  scale=F, add=T, col.segments=unique.group.colors,
           labels=NULL)
 
     text(sapply(set.list$spots, function(x) x$position)[1,],
@@ -233,7 +233,7 @@ pipeline.3rdLvlSummarySheets <- function()
     par(mar=c(0,0,4,0))
     plot(0,type="n",axes=F,xlab="",ylab="")
 
-    legend("topleft", legend=unique(group.labels), cex=1.3, col=groupwise.group.colors,
+    legend("topleft", legend=unique(group.labels), cex=1.3, col=unique.group.colors,
            pch=15, pt.cex=2, bty="n")
 
     ### Group association barplots
@@ -268,7 +268,7 @@ pipeline.3rdLvlSummarySheets <- function()
 
       barplot(spot.group.assoc[,ncol(spot.group.assoc):1],
               main="Group Association", cex.main=2.5, cex.axis=2, cex.names=1,
-              col=groupwise.group.colors, horiz=T, las=1)
+              col=unique.group.colors, horiz=T, las=1)
 
       par(mar=c(5, 1, 4, 2))
 
@@ -277,7 +277,7 @@ pipeline.3rdLvlSummarySheets <- function()
 
       legend("topleft",
              legend=paste(unique(group.labels), "(", round(spot.goup.mean.number,1), ")"),
-             cex=1.3, col=groupwise.group.colors, pch=15, pt.cex=2, bty="n")
+             cex=1.3, col=unique.group.colors, pch=15, pt.cex=2, bty="n")
 
       layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
       par(mar=c(5, 4, 4, 2))
@@ -292,7 +292,7 @@ pipeline.3rdLvlSummarySheets <- function()
       for (i in 1:length(set.list$spots))
       {
         stars(t(spot.group.assoc[,i]), locations=set.list$spots[[i]]$position,
-              len=2, draw.segments=T,  scale=F, add=T, col.segments=groupwise.group.colors)
+              len=2, draw.segments=T,  scale=F, add=T, col.segments=unique.group.colors)
 
         par(fg="gray", lty=2)
 
@@ -310,7 +310,7 @@ pipeline.3rdLvlSummarySheets <- function()
       plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1),
            xaxs="i", yaxs="i")
 
-      legend("topleft", legend=unique(group.labels), cex=1.3, col=groupwise.group.colors,
+      legend("topleft", legend=unique(group.labels), cex=1.3, col=unique.group.colors,
              pch=15, pt.cex=2, bty="n")
 
       group.spot.mean.number <- apply(ceiling(spot.group.assoc), 2, sum)

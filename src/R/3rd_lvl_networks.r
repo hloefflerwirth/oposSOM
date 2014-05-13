@@ -257,7 +257,7 @@ pipeline.3rdLvlNetworks <- function()
         tbl <- tbl / max(tbl)
 
         stars(tbl, locations=layout, xlim=c(-1.1,1.1), ylim=c(-1.1,1.1),
-              len=0.1, draw.segments=T, col.segments=groupwise.group.colors,
+              len=0.1, draw.segments=T, col.segments=unique.group.colors,
               key.loc=c(1.3,-1.1), scale=F)
 
         plot(stg, layout=layout, vertex.size=0, vertex.label="",
@@ -285,7 +285,7 @@ pipeline.3rdLvlNetworks <- function()
         }
 
         stars(tbl, locations=layout, xlim=c(-1.1,1.1), ylim=c(-1.1,1.1),
-              len=0.1, draw.segments=T, col.segments=groupwise.group.colors,
+              len=0.1, draw.segments=T, col.segments=unique.group.colors,
               key.loc=c(1.3,-1.1), scale=F)
       }
 
@@ -441,7 +441,7 @@ pipeline.3rdLvlNetworks <- function()
             tbl <- tbl / max(tbl)
 
             stars(tbl, locations=layout, xlim=c(-1.1,1.1), ylim=c(-1.1,1.1),
-                  len=0.1, draw.segments=T, col.segments=groupwise.group.colors,
+                  len=0.1, draw.segments=T, col.segments=unique.group.colors,
                   key.loc=c(1.3,-1.1), scale=F)
 
             plot(stg, layout=layout, vertex.size=0, vertex.label="",
@@ -469,7 +469,7 @@ pipeline.3rdLvlNetworks <- function()
             }
 
             stars(tbl, locations=layout, xlim=c(-1.1,1.1), ylim=c(-1.1,1.1),
-                  len=0.1, draw.segments=T, col.segments=groupwise.group.colors,
+                  len=0.1, draw.segments=T, col.segments=unique.group.colors,
                   key.loc=c(1.3,-1.1), scale=F)
           }
         }

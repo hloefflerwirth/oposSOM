@@ -251,8 +251,8 @@ pipeline.prepare <- function()
     names(group.colors) <<- colnames(indata)
   }
 
-  groupwise.group.colors <<- group.colors[match(unique(group.labels), group.labels)]
-  names(groupwise.group.colors) <<- unique(group.labels)
+  unique.group.colors <<- group.colors[match(unique(group.labels), group.labels)]
+  names(unique.group.colors) <<- unique(group.labels)
 
   # prepare data
 

@@ -32,11 +32,11 @@ pipeline.qualityCheck <- function()
     dummy=sapply(densities, lines)
 
   for (i in 1:length(unique(group.labels)))
-    plot.poly.density(subset=which(group.labels==unique(group.labels)[i]), col=groupwise.group.colors[i], main="", add=ifelse(i==1,F,T))
+    plot.poly.density(subset=which(group.labels==unique(group.labels)[i]), col=unique.group.colors[i], main="", add=ifelse(i==1,F,T))
 
   par(mfrow=c(2,3))
   for (i in 1:length(unique(group.labels)))
-    plot.poly.density(subset=which(group.labels==unique(group.labels)[i]), col=groupwise.group.colors[i], main=unique(group.labels)[i])
+    plot.poly.density(subset=which(group.labels==unique(group.labels)[i]), col=unique.group.colors[i], main=unique(group.labels)[i])
 
   par(mfrow=c(2,1))
   par(mar=c(5,3,3,2))
@@ -49,8 +49,8 @@ pipeline.qualityCheck <- function()
   {
     mean.boxes = by(indata.sample.mean, group.labels, c)[unique(group.labels)]
     par(mar=c(5,3,0,2))
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2, main="", cex.main=1, cex.axis=0.8, xaxt="n")
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2, cex.axis=0.8)
+    boxplot(mean.boxes, col=unique.group.colors, las=2, main="", cex.main=1, cex.axis=0.8, xaxt="n")
+    axis(1, 1:length(unique.group.colors), unique(group.labels), las=2, cex.axis=0.8)
   }
 
 
@@ -67,8 +67,8 @@ pipeline.qualityCheck <- function()
   {
     mean.boxes = by(indata.sample.var, group.labels, c)[unique(group.labels)]
     par(mar=c(5,3,0,2))
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2, main="", cex.main=1, cex.axis=0.8, xaxt="n")
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2, cex.axis=0.8)
+    boxplot(mean.boxes, col=unique.group.colors, las=2, main="", cex.main=1, cex.axis=0.8, xaxt="n")
+    axis(1, 1:length(unique.group.colors), unique(group.labels), las=2, cex.axis=0.8)
   }
 
 

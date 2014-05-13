@@ -63,7 +63,7 @@ pipeline.genesetProfilesAndMaps <- function()
 
     mean.boxes <- by(samples.GSZ.scores[i,], group.labels, c)[unique(group.labels)]
 
-    boxplot(mean.boxes, col=groupwise.group.colors, main=rownames(samples.GSZ.scores)[i],
+    boxplot(mean.boxes, col=unique.group.colors, main=rownames(samples.GSZ.scores)[i],
             cex.main=1, ylim=ylim, axes=F, yaxs="i")
 
     axis(1, 1:length(unique(group.labels)), unique(group.labels), las=2, tick=F)

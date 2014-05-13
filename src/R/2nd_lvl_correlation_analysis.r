@@ -32,7 +32,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
          vertex.color=group.colors, main=metagene.filter.list[[i]]$n)
 
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-           text.col=groupwise.group.colors, bg="white")
+           text.col=unique.group.colors, bg="white")
 
     box()
 
@@ -41,7 +41,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
          vertex.color=group.colors, main=metagene.filter.list[[i]]$n)
 
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-           text.col=groupwise.group.colors, bg="white")
+           text.col=unique.group.colors, bg="white")
 
     box()
 
@@ -50,7 +50,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
          vertex.color=bootstrap.col, main=metagene.filter.list[[i]]$n)
 
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-           text.col=groupwise.group.colors, bg="white")
+           text.col=unique.group.colors, bg="white")
 
     box()
 
@@ -74,7 +74,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
          vertex.color=group.colors, main=metagene.filter.list[[i]]$n)
 
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-           text.col=groupwise.group.colors, bg="white")
+           text.col=unique.group.colors, bg="white")
 
     box()
 
@@ -83,7 +83,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
          vertex.color=group.colors, main=metagene.filter.list[[i]]$n)
 
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-           text.col=groupwise.group.colors, bg="white")
+           text.col=unique.group.colors, bg="white")
 
     box()
 
@@ -92,7 +92,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
          vertex.color=bootstrap.col, main=metagene.filter.list[[i]]$n)
 
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-           text.col=groupwise.group.colors, bg="white")
+           text.col=unique.group.colors, bg="white")
 
     box()
 
@@ -112,7 +112,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
            vertex.color=group.colors, main=metagene.filter.list[[i]]$n)
 
       legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-             text.col=groupwise.group.colors, bg="white")
+             text.col=unique.group.colors, bg="white")
 
       box()
 
@@ -122,7 +122,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
            vertex.color=group.colors, main=metagene.filter.list[[i]]$n)
 
       legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-             text.col=groupwise.group.colors, bg="white")
+             text.col=unique.group.colors, bg="white")
 
       box()
 
@@ -132,7 +132,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
            vertex.color=bootstrap.col, main=metagene.filter.list[[i]]$n)
 
       legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-             text.col=groupwise.group.colors, bg="white")
+             text.col=unique.group.colors, bg="white")
 
       box()
     }
@@ -148,7 +148,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
     plot(0,type="n", axes=F, xlab="", ylab="")
 
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-           text.col=groupwise.group.colors, bg="white")
+           text.col=unique.group.colors, bg="white")
 
     if (i <= 2)
     {
@@ -168,7 +168,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
     plot(0,type="n", axes=F, xlab="", ylab="")
 
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-           text.col=groupwise.group.colors, bg="white")
+           text.col=unique.group.colors, bg="white")
   }
 
   dev.off()

@@ -516,7 +516,7 @@ pipeline.calcStatistics <- function()
       mean.LPE2.boxes <- by(mean.LPE2, group.labels[names(mean.LPE2)], c)[unique(group.labels)]
 
       boxplot(mean.LPE2.boxes,
-              col=groupwise.group.colors),
+              col=unique(group.colors),
               main=mean.LPE.string,
               las=2,
               cex.main=2.5,

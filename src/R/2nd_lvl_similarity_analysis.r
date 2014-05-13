@@ -87,7 +87,7 @@ pipeline.2ndLvlSimilarityAnalysis <- function()
     plot(0,type="n", axes=F, xlab="", ylab="")
 
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-           text.col=groupwise.group.colors, bg="white")
+           text.col=unique.group.colors, bg="white")
 
     heatmap.wrap(x=s, col=colramp(1000), main=metagene.filter.list[[i]]$n,
                  margins=c(10, 5), scale="n", labRow=NA, ColSideColors=group.colors, Colv=NA)
@@ -96,7 +96,7 @@ pipeline.2ndLvlSimilarityAnalysis <- function()
     plot(0,type="n", axes=F, xlab="", ylab="")
 
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-           text.col=groupwise.group.colors, bg="white")
+           text.col=unique.group.colors, bg="white")
   }
 
   dev.off()
