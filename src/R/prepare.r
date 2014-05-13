@@ -40,10 +40,10 @@ pipeline.prepare <- function()
     preferences$rotate.som1 <<- 0
   }
 
-  if (!is.logical(preferences$flip.som1))
+  if (!is.logical(preferences$flip.SOM.portraits))
   {
-    util.warn("Invalid value of \"flip.som1\". Using FALSE")
-    preferences$flip.som1 <<- F
+    util.warn("Invalid value of \"flip.SOM.portraits\". Using FALSE")
+    preferences$flip.SOM.portraits <<- F
   }
 
   if (!is.character(preferences$database.dataset))
@@ -324,7 +324,7 @@ pipeline.prepare <- function()
     }
   }
 
-  if (preferences$flip.som1)
+  if (preferences$flip.SOM.portraits)
   {
     o <- matrix(c(1:(preferences$dim.1stLvlSom^2)), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom, byrow=T)
     som.result <<- som.result[as.vector(o),]

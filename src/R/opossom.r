@@ -88,7 +88,7 @@ opossom.new <- function(preferences)
                               dim.2ndLvlSom = 20,
                               training.extension = 1,
                               rotate.som1 = 0,
-                              flip.som1 = F,
+                              flip.SOM.portraits = F,
                               database.dataset = "",
                               database.id.type = "",
                               geneset.analysis = F,
