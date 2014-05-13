@@ -4,10 +4,10 @@ pipeline.2ndLvlSom <- function()
 
   if (preferences$dim.2ndLvlSom == 20)
   {
-    supersom.20 <<- supersom.custom
+    2ndLvlSom.20.20 <<- supersom.custom
   } else
   {
-    supersom.20 <<- som(t(metadata), xdim=20, ydim=20)
+    2ndLvlSom.20.20 <<- som(t(metadata), xdim=20, ydim=20)
   }
 
   filename <- file.path(paste(files.name, "- Results"), "2nd lvl Metagene Analysis", "2nd lvl SOM.pdf")
@@ -175,10 +175,10 @@ pipeline.2ndLvlSom <- function()
 
   ##### Plot Supersom with real expression profiles ######
   par(mar=c(1,1,1,1))
-  xl <- c(min(supersom.20$visual[,"x"])-1, max(supersom.20$visual[,"x"])+1)
-  yl <- c(min(-supersom.20$visual[,"y"])-1, max(-supersom.20$visual[,"y"])+1)
+  xl <- c(min(2ndLvlSom.20.20$visual[,"x"])-1, max(2ndLvlSom.20.20$visual[,"x"])+1)
+  yl <- c(min(-2ndLvlSom.20.20$visual[,"y"])-1, max(-2ndLvlSom.20.20$visual[,"y"])+1)
 
-  plot(supersom.20$visual[,"x"], -supersom.20$visual[,"y"], type="p", axes=F,
+  plot(2ndLvlSom.20.20$visual[,"x"], -2ndLvlSom.20.20$visual[,"y"], type="p", axes=F,
        xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i")
 
   if (ncol(indata) < 100)
@@ -194,11 +194,11 @@ pipeline.2ndLvlSom <- function()
            text.col=unique.group.colors, bg="white")
   }
 
-  for (j in 1:nrow(supersom.20$code.sum))
+  for (j in 1:nrow(2ndLvlSom.20.20$code.sum))
   {
     which.samples <-
-      intersect(which(supersom.20$visual[,"x"] == supersom.20$code.sum[j,"x"]),
-                which(supersom.20$visual[,"y"] == supersom.20$code.sum[j,"y"]))
+      intersect(which(2ndLvlSom.20.20$visual[,"x"] == 2ndLvlSom.20.20$code.sum[j,"x"]),
+                which(2ndLvlSom.20.20$visual[,"y"] == 2ndLvlSom.20.20$code.sum[j,"y"]))
 
     if (!is.na(which.samples[1]))
     {
@@ -213,24 +213,24 @@ pipeline.2ndLvlSom <- function()
       x <- pixmapIndexed(m , col = colramp(1000))
 
       addlogo(x,
-              supersom.20$visual[which.samples[1], "x"]+c(-0.45,0.455),
-              -supersom.20$visual[which.samples[1], "y"]+c(-0.45,0.45))
+              2ndLvlSom.20.20$visual[which.samples[1], "x"]+c(-0.45,0.455),
+              -2ndLvlSom.20.20$visual[which.samples[1], "y"]+c(-0.45,0.45))
 
       which.samples <- which.samples[1:min(4, length(which.samples))]
 
       x.seq <- rep(c(-0.2, 0.2), 2) [1:length(which.samples)]
       y.seq <- c(rep(0.2, 2), rep(-0.2, 2)) [1:length(which.samples)]
 
-      points(supersom.20$visual[which.samples[1], "x"]+x.seq,
-             -supersom.20$visual[which.samples[1], "y"]+y.seq,
+      points(2ndLvlSom.20.20$visual[which.samples[1], "x"]+x.seq,
+             -2ndLvlSom.20.20$visual[which.samples[1], "y"]+y.seq,
              pch=16, col=group.colors[which.samples], cex=2.5)
 
-      points(supersom.20$visual[which.samples[1], "x"]+x.seq,
-             -supersom.20$visual[which.samples[1], "y"]+y.seq,
+      points(2ndLvlSom.20.20$visual[which.samples[1], "x"]+x.seq,
+             -2ndLvlSom.20.20$visual[which.samples[1], "y"]+y.seq,
              pch=1, col="gray20", cex=2.5, lwd=1)
 
-      text(supersom.20$visual[which.samples[1], "x"]+x.seq,
-           -supersom.20$visual[which.samples[1], "y"]+y.seq,
+      text(2ndLvlSom.20.20$visual[which.samples[1], "x"]+x.seq,
+           -2ndLvlSom.20.20$visual[which.samples[1], "y"]+y.seq,
            which.samples, col="gray20", cex=0.8)
     }
   }
