@@ -453,9 +453,12 @@ pipeline.3rdLvlSummarySheets <- function()
   plot.set.list.reports(set.list=spot.list.kmeans, main="K-Means Cluster")
   dev.off()
 
-  filename <- file.path(dirname, "Group Overexpression Report.pdf")
-  util.info("Writing:", filename)
-  pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list.reports(set.list=spot.list.group.overexpression, main="Group Overexpression")
-  dev.off()
+  if (length(unique(group.labels)) > 1)
+  {
+    filename <- file.path(dirname, "Group Overexpression Report.pdf")
+    util.info("Writing:", filename)
+    pdf(filename, 29.7/2.54, 21/2.54)
+    plot.set.list.reports(set.list=spot.list.group.overexpression, main="Group Overexpression")
+    dev.off()
+  }
 }
