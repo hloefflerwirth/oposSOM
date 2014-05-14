@@ -46,8 +46,7 @@ pipeline.prepareAnnotation <- function()
 
   if (preferences$database.dataset == "auto")
   {
-    environment(pipeline.detectEnsemblDataset) <- environment()
-    pipeline.detectEnsemblDataset()
+    pipeline.call(pipeline.detectEnsemblDataset, environment())
   }
 
   if (preferences$database.dataset == "" || preferences$database.id.type == "")
