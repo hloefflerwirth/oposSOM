@@ -19,7 +19,6 @@ pipeline.detectEnsemblDataset <- function()
 
   auto.rowname.ids <- c("ensembl_gene_id", "entrezgene", "hgnc_symbol")
 
-  require.bioconductor("biomaRt")
   mart <- useMart('ensembl')
 
   for (ds in names(auto.datasets))

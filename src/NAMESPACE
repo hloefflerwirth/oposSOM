@@ -1,1 +1,13 @@
 exportPattern("^opossom.[[:alpha:]]+")
+
+import("som")
+import("fastICA")
+import("scatterplot3d")
+import("pixmap")
+import("fdrtool")
+import("igraph")
+import("ape")
+import("KernSmooth")
+import("parallel")
+import("foreach")
+import("biomaRt")

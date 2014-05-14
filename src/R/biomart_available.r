@@ -13,8 +13,6 @@ biomart.available <- function()
                      "ENSG00000123136",
                      "ENSG00000162511")
 
-  require.bioconductor("biomaRt")
-
   try({
     mart <- useMart('ensembl')
     mart <- useDataset("hsapiens_gene_ensembl", mart=mart)

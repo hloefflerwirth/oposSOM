@@ -25,7 +25,6 @@ pipeline.prepareAnnotation <- function()
   if (!preferences$database.dataset %in% c("auto", ""))
   {
     biomart.table <- NULL
-    require.bioconductor("biomaRt")
 
     try({
       mart <- useMart('ensembl')

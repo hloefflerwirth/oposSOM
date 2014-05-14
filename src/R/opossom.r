@@ -1,24 +1,6 @@
 # Creates a new opossom environment
 opossom.new <- function(preferences)
 {
-  # Load external packages
-  require.cran("som")
-  require.cran("fastICA")
-  require.cran("scatterplot3d")
-  require.cran("pixmap")
-  require.cran("fdrtool")
-  require.cran("igraph")
-  require.cran("ape")
-  require.cran("KernSmooth")
-  require.cran("parallel")
-  require.cran("foreach")
-
-  if (Sys.info()["sysname"] == "Windows") {
-    require.cran("doSNOW")
-  } else {
-    require.cran("doMC")
-  }
-
   # Init the environment
   opossom <- new.env()
   opossom$t.ensID.m <- NULL
