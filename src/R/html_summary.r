@@ -223,8 +223,8 @@ pipeline.htmlSummary <- function()
       </ul>", sep="", file=outfile)
   }
 
-  if (file.exists(file.path(paste(files.name, "- Results"),
-                            "Summary Sheets - Differences")))
+  if (length(unique(group.labels)) > 1 &&
+      length(unique(group.labels)) < 8)
   {
     cat("
       <h2>Pairwise Differences Analyses</h2>

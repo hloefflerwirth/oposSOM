@@ -69,13 +69,24 @@ pipeline.differenceAnalyses = function()
   dir.create(paste(files.name, "- Results/Summary Sheets - Differences"), showWarnings=F)
   dir.create(paste(files.name, "- Results/Summary Sheets - Differences/CSV Sheets"), showWarnings=F)
 
-  WAD.g.m <<- matrix(NA, nrow(indata), length(differences.list), dimnames=list(rownames(indata), names(differences.list)))
-  t.g.m <<- matrix(NA, nrow(indata), length(differences.list), dimnames=list(rownames(indata), names(differences.list)))
-  p.g.m <<- matrix(NA, nrow(indata), length(differences.list), dimnames=list(rownames(indata), names(differences.list)))
-  fdr.g.m <<- matrix(NA, nrow(indata), length(differences.list), dimnames=list(rownames(indata), names(differences.list)))
-  Fdr.g.m <<- matrix(NA, nrow(indata), length(differences.list), dimnames=list(rownames(indata), names(differences.list)))
+  WAD.g.m <<- matrix(NA, nrow(indata), length(differences.list),
+                     dimnames=list(rownames(indata), names(differences.list)))
+
+  t.g.m <<- matrix(NA, nrow(indata), length(differences.list),
+                   dimnames=list(rownames(indata), names(differences.list)))
+
+  p.g.m <<- matrix(NA, nrow(indata), length(differences.list),
+                   dimnames=list(rownames(indata), names(differences.list)))
+
+  fdr.g.m <<- matrix(NA, nrow(indata), length(differences.list),
+                     dimnames=list(rownames(indata), names(differences.list)))
+
+  Fdr.g.m <<- matrix(NA, nrow(indata), length(differences.list),
+                     dimnames=list(rownames(indata), names(differences.list)))
+
   n.0.m <<- rep(NA, length(differences.list))
   names(n.0.m) <<- names(differences.list)
+
   perc.DE.m <<- rep(NA, length(differences.list))
   names(perc.DE.m) <<- names(differences.list)
 
