@@ -361,7 +361,7 @@ pipeline.calcStatistics <- function()
     util.progress(progress.current, progress.max)
   }
 
-  cat("\n") # terminate progress bar
+  util.progress.terminate()
 
 
   ### LPE plots ###
@@ -489,7 +489,7 @@ pipeline.calcStatistics <- function()
     util.progress(progress.current, progress.max)
   }
 
-  cat("\n") # terminate progress bar
+  util.progress.terminate()
 
 
   if (verbose)

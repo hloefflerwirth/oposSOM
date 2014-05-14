@@ -1,13 +1,12 @@
 # outputs a message
 util.cat <- function(..., suffix="\n") {
-  cat(c(...), suffix)
+  message(paste(..., collapse=" "), suffix, appendLF=F)
   flush.console()
 }
 
 # logs a message
 util.log <- function(..., prefix, suffix="\n") {
-  util.cat(paste("[", format(Sys.time()), "][", prefix, "]", sep=""),
-           c(...),
+  util.cat(c(paste("[", format(Sys.time()), "][", prefix, "]", sep=""), ...),
            suffix=suffix)
 }
 
@@ -44,4 +43,9 @@ util.progress <- function(cur, max, len=48) {
                   paste(rep("#", x), collapse=""),
                   paste(rep(" ", len - x), collapse=""),
                   "]", sep=""), suffix="\r")
+}
+
+# terminate progress bar
+util.progress.terminate <- function(len=48) {
+  util.info(paste("[", paste(rep("#", len), collapse=""), "]", sep=""))
 }
