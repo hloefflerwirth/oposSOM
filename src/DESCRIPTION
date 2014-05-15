@@ -4,8 +4,8 @@ Version: 0.3.0
 Description: This package translates microarray expression data into metagenes
   and provides various visualizations and second level analyses..
 Depends: R (>= 2.10.0)
-Imports: som, fastICA, scatterplot3d, pixmap, fdrtool, igraph, ape, KernSmooth,
-  parallel, foreach, biomaRt
+Imports: som, fastICA, scatterplot3d, pixmap, fdrtool, ape, igraph, KernSmooth,
+  parallel, biomaRt
 Suggests: doMC, doSNOW
 License: GPL (>=2)
 Author: Henry Wirth <wirth@izbi.uni-leipzig.de>

@@ -46,10 +46,6 @@ sort.label <- function(x)
 
 pipeline.chromosomeExpressionReports <- function()
 {
-  progress.current <- 0
-  progress.max <- ncol(indata)
-  util.progress(progress.current, progress.max)
-
   # prepare chromosome geneset lists
   chr.gs.list <- lapply(gene.positions.list, function(x)
   {
@@ -76,25 +72,25 @@ pipeline.chromosomeExpressionReports <- function()
   })
 
   # Calculate GSZ
-  sample.chr.GSZ <- matrix(NA, length(chr.gs.list), ncol(indata),
-                           dimnames=list(names(chr.gs.list),colnames(indata)))
-
-  sample.chr.pq.GSZ <- matrix(NA, length(chr.pq.gs.list), ncol(indata),
-                              dimnames=list(names(chr.pq.gs.list),colnames(indata)))
-
   cl <- parallel::makeCluster(preferences$max.parallel.cores)
 
-  for (m in 1:ncol(indata))
+  util.progress(0, 10)
+
+  sample.chr.GSZ <- do.call(cbind, parLapply(cl, 1:ncol(indata), function(m)
   {
-    sample.chr.GSZ[,m] <- GeneSet.GSZ(unique.protein.ids, t.ensID.m[, m],
-                                      chr.gs.list, sort=F, cluster=cl)
+    return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[,m], chr.gs.list, sort=F))
+  }))
 
-    sample.chr.pq.GSZ[,m] <- GeneSet.GSZ(unique.protein.ids, t.ensID.m[, m],
-                                         chr.pq.gs.list, sort=F, cluster=cl)
+  dimnames(sample.chr.GSZ) <- list(names(chr.gs.list), colnames(indata))
 
-    progress.current <- progress.current + 1
-    util.progress(progress.current, progress.max)
-  }
+  util.progress(5, 10)
+
+  sample.chr.pq.GSZ <- do.call(cbind, parLapply(cl, 1:ncol(indata), function(m)
+  {
+    return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[,m], chr.pq.gs.list, sort=F))
+  }))
+
+  dimnames(sample.chr.pq.GSZ) <- list(names(chr.pq.gs.list), colnames(indata))
 
   util.progress.terminate()
 

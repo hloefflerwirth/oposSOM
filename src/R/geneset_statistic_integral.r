@@ -57,6 +57,7 @@ pipeline.genesetStatisticIntegral <- function()
         GeneSet.Fisher(geneset.ids, unique.protein.ids, gs.def.list, sort=T, cluster=cl)
     }
   }
+
   util.progress.terminate()
 
   ### stop parallel computing ###

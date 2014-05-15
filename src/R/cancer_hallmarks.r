@@ -69,16 +69,16 @@ pipeline.cancerHallmarks <- function()
 
   cl <- makeCluster(preferences$max.parallel.cores)
 
-  hallmark.GSZ.matrix <- sapply(1:ncol(indata), function(m)
+  hallmark.GSZ.matrix <- unlist(parSapply(cl, 1:ncol(indata), function(m)
   {
-    return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[, m], hallmark.sets.list, sort=F, cluster=cl))
-  })
+    return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[, m], hallmark.sets.list, sort=F))
+  }))
 
-  hallmark.spot.enrichment <- sapply(spot.list.overexpression$spots, function(x)
+  hallmark.spot.enrichment <- unlist(parSapply(cl, spot.list.overexpression$spots, function(x)
   {
     spot.ens.ids <- unique(na.omit(gene.ids[x$genes]))
-    return(GeneSet.Fisher(spot.ens.ids, unique.protein.ids, hallmark.sets.list, sort=F, cluster=cl))
-  })
+    return(GeneSet.Fisher(spot.ens.ids, unique.protein.ids, hallmark.sets.list, sort=F))
+  }))
 
   try({ stopCluster(cl) }, silent=T)
 

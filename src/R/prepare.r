@@ -257,7 +257,7 @@ pipeline.prepare <- function()
   # prepare data
 
   indata.sample.mean <<- colMeans(indata)
-  pipeline.call(pipeline.qualityCheck, environment())
+  util.call(pipeline.qualityCheck, environment())
 
   if (preferences$sample.quantile.normalization)
   {
@@ -302,7 +302,7 @@ pipeline.prepare <- function()
   }
 
   util.info("Load Annotation Data")
-  pipeline.call(pipeline.prepareAnnotation, environment())
+  util.call(pipeline.prepareAnnotation, environment())
 
 
   ## SOM

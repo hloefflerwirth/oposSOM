@@ -106,7 +106,7 @@ opossom.run <- function(opossom)
   util.info("2SOM Dim:", opossom$preferences$dim.2ndLvlSom)
 
   # Prepare the environment
-  if (!pipeline.call(pipeline.prepare, opossom)) {
+  if (!util.call(pipeline.prepare, opossom)) {
     return()
   }
 
@@ -116,30 +116,30 @@ opossom.run <- function(opossom)
 
   # Execute the pipeline
   util.info("Processing Differential Expression")
-  pipeline.call(pipeline.calcStatistics, opossom)
+  util.call(pipeline.calcStatistics, opossom)
 
   util.info("Detecting Spots")
-  pipeline.call(pipeline.detectSpotsSamples, opossom)
-  pipeline.call(pipeline.detectSpotsIntegral, opossom)
-  pipeline.call(pipeline.groupAssignment, opossom)
+  util.call(pipeline.detectSpotsSamples, opossom)
+  util.call(pipeline.detectSpotsIntegral, opossom)
+  util.call(pipeline.groupAssignment, opossom)
 
   util.info("Plotting Sample Portraits")
-  pipeline.call(pipeline.sampleExpressionPortraits, opossom)
-  pipeline.call(pipeline.sampleRankMaps, opossom)
+  util.call(pipeline.sampleExpressionPortraits, opossom)
+  util.call(pipeline.sampleRankMaps, opossom)
 
   util.info("Processing Supporting Information")
-  pipeline.call(pipeline.supportingMaps, opossom)
-  pipeline.call(pipeline.entropyProfiles, opossom)
-  pipeline.call(pipeline.topologyProfiles, opossom)
+  util.call(pipeline.supportingMaps, opossom)
+  util.call(pipeline.entropyProfiles, opossom)
+  util.call(pipeline.topologyProfiles, opossom)
 
   util.info("Processing 2nd level Metagene Analysis")
   dir.create(file.path(paste(opossom$files.name, "- Results"),
                        "2nd lvl Metagene Analysis"), showWarnings=F)
 
-  pipeline.call(pipeline.2ndLvlSimilarityAnalysis, opossom)
-  pipeline.call(pipeline.2ndLvlCorrelationAnalysis, opossom)
-  pipeline.call(pipeline.2ndLvlComponentAnalysis, opossom)
-  pipeline.call(pipeline.2ndLvlSom, opossom)
+  util.call(pipeline.2ndLvlSimilarityAnalysis, opossom)
+  util.call(pipeline.2ndLvlCorrelationAnalysis, opossom)
+  util.call(pipeline.2ndLvlComponentAnalysis, opossom)
+  util.call(pipeline.2ndLvlSom, opossom)
 
 
   if (opossom$preferences$geneset.analysis)
@@ -148,42 +148,42 @@ opossom.run <- function(opossom)
     dir.create(paste(opossom$files.name, "- Results/Geneset Analysis"),
                showWarnings=F)
 
-    pipeline.call(pipeline.genesetStatisticSamples, opossom)
-    pipeline.call(pipeline.genesetStatisticIntegral, opossom)
-    pipeline.call(pipeline.genesetOverviews, opossom)
+    util.call(pipeline.genesetStatisticSamples, opossom)
+    util.call(pipeline.genesetStatisticIntegral, opossom)
+    util.call(pipeline.genesetOverviews, opossom)
 
     util.info("Processing Geneset Profiles and Maps")
-    pipeline.call(pipeline.genesetProfilesAndMaps, opossom)
+    util.call(pipeline.genesetProfilesAndMaps, opossom)
 
     util.info("Processing Cancer Hallmarks")
-    pipeline.call(pipeline.cancerHallmarks, opossom)
+    util.call(pipeline.cancerHallmarks, opossom)
 
     util.info("Processing Chromosome Expression Reports")
-    pipeline.call(pipeline.chromosomeExpressionReports, opossom)
+    util.call(pipeline.chromosomeExpressionReports, opossom)
   }
 
   util.info("Processing Gene Lists")
-  pipeline.call(pipeline.geneLists, opossom)
+  util.call(pipeline.geneLists, opossom)
 
   util.info("Processing Summary Sheets (Samples)")
-  pipeline.call(pipeline.summarySheetsSamples, opossom)
+  util.call(pipeline.summarySheetsSamples, opossom)
 
   util.info("Processing Summary Sheets (Spots)")
-  pipeline.call(pipeline.summarySheetsIntegral, opossom)
+  util.call(pipeline.summarySheetsIntegral, opossom)
 
   util.info("Processing 3rd level Spot Analysis")
   dir.create(paste(opossom$files.name, "- Results/3rd lvl Spot Analysis"),
              showWarnings=F)
 
-  pipeline.call(pipeline.3rdLvlChromosomalEnrichment, opossom)
-  pipeline.call(pipeline.3rdLvlSummarySheets, opossom)
-  pipeline.call(pipeline.3rdLvlNetworks, opossom)
+  util.call(pipeline.3rdLvlChromosomalEnrichment, opossom)
+  util.call(pipeline.3rdLvlSummarySheets, opossom)
+  util.call(pipeline.3rdLvlNetworks, opossom)
 
   util.info("Generating HTML Report")
-  pipeline.call(pipeline.htmlSummary, opossom)
-  pipeline.call(pipeline.htmlSampleSummary, opossom)
-  pipeline.call(pipeline.htmlIntegralSummary, opossom)
-  pipeline.call(pipeline.htmlGenesetAnalysis, opossom)
+  util.call(pipeline.htmlSummary, opossom)
+  util.call(pipeline.htmlSampleSummary, opossom)
+  util.call(pipeline.htmlIntegralSummary, opossom)
+  util.call(pipeline.htmlGenesetAnalysis, opossom)
 
   # Save the opossom environment
   filename <- paste(opossom$files.name, ".RData", sep="")
@@ -196,15 +196,15 @@ opossom.run <- function(opossom)
   }
 
   # Run additional functions. (NOTE: They alter the environment)
-  pipeline.call(pipeline.groupAnalysis, opossom)
-  pipeline.call(pipeline.htmlGroupSummary, opossom)
+  util.call(pipeline.groupAnalysis, opossom)
+  util.call(pipeline.htmlGroupSummary, opossom)
 
   load(filename) # Reload opossom
-  pipeline.call(pipeline.differenceAnalyses, opossom)
-  pipeline.call(pipeline.htmlDifferencesSummary, opossom)
+  util.call(pipeline.differenceAnalyses, opossom)
+  util.call(pipeline.htmlDifferencesSummary, opossom)
 
   load(filename) # Reload opossom
-  pipeline.call(pipeline.signatureSets, opossom)
+  util.call(pipeline.signatureSets, opossom)
 
   util.info("Finished:", format(Sys.time(), "%a %b %d %X"))
 }

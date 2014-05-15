@@ -12,10 +12,10 @@ pipeline.groupAnalysis <- function()
   if (preferences$geneset.analysis)
   {
     dir.create(paste(files.name, "- Results/Summary Sheets - Groups/Geneset Analysis"), showWarnings=F)
-    pipeline.call(pipeline.groupSpecificGenesets, environment())
+    util.call(pipeline.groupSpecificGenesets, environment())
   }
 
-  pipeline.call(pipeline.summarySheetsGroups, environment())
+  util.call(pipeline.summarySheetsGroups, environment())
 
   metadata <<- do.call(cbind, by(t(metadata), group.labels, colMeans)[unique(group.labels)])
 
@@ -43,14 +43,14 @@ pipeline.groupAnalysis <- function()
 
   preferences$error.model <<- "replicates"
 
-  pipeline.call(pipeline.calcStatistics, environment())
-  pipeline.call(pipeline.detectSpotsSamples, environment())
+  util.call(pipeline.calcStatistics, environment())
+  util.call(pipeline.detectSpotsSamples, environment())
 
   if (preferences$geneset.analysis)
   {
-    pipeline.call(pipeline.genesetStatisticSamples, environment())
+    util.call(pipeline.genesetStatisticSamples, environment())
   }
 
-  pipeline.call(pipeline.geneLists, environment())
-  pipeline.call(pipeline.summarySheetsSamples, environment())
+  util.call(pipeline.geneLists, environment())
+  util.call(pipeline.summarySheetsSamples, environment())
 }

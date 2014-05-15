@@ -5,7 +5,7 @@ pipeline.genesetStatisticSamples <- function()
   util.progress(progress.current, progress.max)
 
   ### init parallel computing ###
-  cl <- parallel::makeCluster(preferences$max.parallel.cores)
+  cl <- makeCluster(preferences$max.parallel.cores)
 
   ### perform GS analysis ###
   t.ensID.m <<- t.g.m[which(rownames(indata) %in% names(gene.ids)),]
@@ -21,15 +21,12 @@ pipeline.genesetStatisticSamples <- function()
         list(Genes=sample(unique.protein.ids, length(gs.def.list[[i]]$Genes)))
     }
 
-    null.scores <- c()
-
-    for (m in 1:ncol(indata))
+    null.scores <- parSapply(cl, 1:ncol(indata), function(m)
     {
-      all.gene.statistic <- t.ensID.m[, m]
+      all.gene.statistic <- t.ensID.m[,m]
       spot.gene.ids <- unique.protein.ids
 
-      null.scores <- c(null.scores, GeneSet.GSZ(spot.gene.ids, all.gene.statistic,
-                                                gs.null.list, cluster=cl))
+      scores <- GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.null.list)
 
       for (spot.i in 1:length(spot.list.samples[[m]]$spots))
       {
@@ -37,73 +34,68 @@ pipeline.genesetStatisticSamples <- function()
         spot.gene.ids <- unique(na.omit(gene.ids[spot.genes]))
         all.gene.statistic <- t.ensID.m[, m]
 
-        null.scores <- c(null.scores,  GeneSet.GSZ(spot.gene.ids, all.gene.statistic,
-                                                   gs.null.list, cluster=cl))
+        scores <-
+          c(scores, GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.null.list))
       }
 
-      progress.current <- progress.current + 0.5
-      util.progress(progress.current, progress.max)
-    }
+      return(scores)
+    })
 
-    null.culdensity <- ecdf(abs(null.scores))
+    null.culdensity <- ecdf(abs(unlist(null.scores)))
   }
 
-  for (m in 1:ncol(indata))
+  progress.current <- progress.max / 2
+  util.progress(progress.current, progress.max)
+
+  spot.list.samples <<- parLapply(cl, 1:length(spot.list.samples) , function(m)
   {
-    all.gene.statistic <- t.ensID.m[, m]
+    x <- spot.list.samples[[m]]
+    all.gene.statistic <- t.ensID.m[,m]
     spot.gene.ids <- unique.protein.ids
 
-    spot.list.samples[[m]]$GSZ.score <<-
-      GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.def.list, sort=F, cluster=cl)
+    x$GSZ.score <-
+      GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.def.list, sort=F)
 
     if (preferences$geneset.analysis.exact)
     {
-      spot.list.samples[[m]]$GSZ.p.value <<-
-        1 - null.culdensity(abs(spot.list.samples[[m]]$GSZ.score))
-
-      names(spot.list.samples[[m]]$GSZ.p.value) <<- names(spot.list.samples[[m]]$GSZ.score)
+      x$GSZ.p.value <- 1 - null.culdensity(abs(x$GSZ.score))
+      names(x$GSZ.p.value) <- names(x$GSZ.score)
     }
 
-    for (spot.i in 1:length(spot.list.samples[[m]]$spots))
+    for (spot.i in 1:length(x$spots))
     {
-      spot.genes <- spot.list.samples[[m]]$spots[[spot.i]]$genes
+      spot.genes <- x$spots[[spot.i]]$genes
       spot.gene.ids <- unique(na.omit(gene.ids[spot.genes]))
 
       if (length(spot.gene.ids) > 0)
       {
-        spot.list.samples[[m]]$spots[[spot.i]]$GSZ.score <<-
-          GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.def.list, sort=F, cluster=cl)
+        x$spots[[spot.i]]$GSZ.score <-
+          GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.def.list, sort=F)
 
-        spot.list.samples[[m]]$spots[[spot.i]]$Fisher.p <<-
-          GeneSet.Fisher(spot.gene.ids, unique.protein.ids, gs.def.list, sort=T, cluster=cl)
+        x$spots[[spot.i]]$Fisher.p <-
+          GeneSet.Fisher(spot.gene.ids, unique.protein.ids, gs.def.list, sort=T)
       } else
       {
-        spot.list.samples[[m]]$spots[[spot.i]]$GSZ.score <<- rep(0, length(gs.def.list))
-        names(spot.list.samples[[m]]$spots[[spot.i]]$GSZ.score) <<- names(gs.def.list)
-        spot.list.samples[[m]]$spots[[spot.i]]$Fisher.p <<- rep(1, length(gs.def.list))
-        names(spot.list.samples[[m]]$spots[[spot.i]]$Fisher.p) <<- names(gs.def.list)
+        x$spots[[spot.i]]$GSZ.score <- rep(0, length(gs.def.list))
+        names(x$spots[[spot.i]]$GSZ.score) <- names(gs.def.list)
+        x$spots[[spot.i]]$Fisher.p <- rep(1, length(gs.def.list))
+        names(x$spots[[spot.i]]$Fisher.p) <- names(gs.def.list)
       }
 
       if (preferences$geneset.analysis.exact)
       {
-        spot.list.samples[[m]]$spots[[spot.i]]$GSZ.p.value <<-
-          1 - null.culdensity(abs(spot.list.samples[[m]]$spots[[spot.i]]$GSZ.score))
+        x$spots[[spot.i]]$GSZ.p.value <-
+          1 - null.culdensity(abs(x$spots[[spot.i]]$GSZ.score))
 
-        names(spot.list.samples[[m]]$spots[[spot.i]]$GSZ.p.value) <<-
-          names(spot.list.samples[[m]]$spots[[spot.i]]$GSZ.score)
+        names(x$spots[[spot.i]]$GSZ.p.value) <- names(x$spots[[spot.i]]$GSZ.score)
       }
     }
 
-    if (preferences$geneset.analysis.exact)
-    {
-      progress.current <- progress.current + 0.4
-    } else
-    {
-      progress.current <- progress.current + 0.9
-    }
+    return(x)
+  })
 
-    util.progress(progress.current, progress.max)
-  }
+  progress.current <- progress.max * 0.9
+  util.progress(progress.current, progress.max)
 
   ### stop parallel computing ###
   try({ stopCluster(cl) }, silent=T)

@@ -165,7 +165,7 @@ pipeline.differenceAnalyses = function()
   output.paths <<- c("CSV" = paste(files.name, "- Results/Summary Sheets - Differences/CSV Sheets"),
                      "Summary Sheets Samples"= paste(files.name, "- Results/Summary Sheets - Differences/Reports"))
 
-  pipeline.call(pipeline.detectSpotsSamples, environment())
+  util.call(pipeline.detectSpotsSamples, environment())
 
   if (preferences$geneset.analysis)
   {
@@ -175,9 +175,9 @@ pipeline.differenceAnalyses = function()
       t.g.m <<- cbind(t.g.m, t.g.m)
     }
 
-    pipeline.call(pipeline.genesetStatisticSamples, environment())
+    util.call(pipeline.genesetStatisticSamples, environment())
   }
 
-  pipeline.call(pipeline.geneLists, environment())
-  pipeline.call(pipeline.summarySheetsSamples, environment())
+  util.call(pipeline.geneLists, environment())
+  util.call(pipeline.summarySheetsSamples, environment())
 }
