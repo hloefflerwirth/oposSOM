@@ -1,5 +1,9 @@
 #!/usr/bin/env Rscript
 
+args <- commandArgs(T)
+fast <- "-f" %in% args
+install <- "-i" %in% args
+
 # Package directories
 dirname <- "oposSOM"
 datadir <- file.path(dirname, "data")
@@ -57,8 +61,12 @@ save(opossom.genesets, file=filename, compress="xz")
 cat("\n>> R CMD build", dirname, "\n")
 system(paste("R CMD build", dirname))
 
-cat(">> R CMD check", dirname, "\n")
-system(paste("R CMD check", dirname))
+if (!fast) {
+  cat(">> R CMD check", dirname, "\n")
+  system(paste("R CMD check", dirname))
+}
 
 # Install
-install.packages("oposSOM_0.3.0.tar.gz")
+if (install) {
+  install.packages("oposSOM_0.3.0.tar.gz")
+}
