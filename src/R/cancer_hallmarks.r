@@ -63,6 +63,10 @@ pipeline.cancerHallmarks <- function()
     unique(names(gene.ids)[which(gene.ids %in% x)])
   })
 
+  hallmark.sets.names <- hallmark.sets.names[which(sapply(hallmark.sets.ids, length) > 0)]
+  hallmark.sets.genes <- hallmark.sets.genes[which(sapply(hallmark.sets.ids, length) > 0)]
+  hallmark.sets.ids <- hallmark.sets.ids[which(sapply(hallmark.sets.ids, length) > 0)]
+
   ### GSZ profiles
 
   hallmark.sets.list <- lapply(hallmark.sets.genes, function(x) list(Genes=x,Type=""))

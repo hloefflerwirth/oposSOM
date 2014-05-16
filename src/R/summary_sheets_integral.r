@@ -1,16 +1,10 @@
 pipeline.summarySheetsIntegral <- function()
 {
-  dirnames <- c("ssi"=as.character(output.paths["Summary Sheets Integral"]),
-                "spots"=file.path(output.paths["CSV"], "Spot Lists"))
-
-  for (dirname in dirnames)
-  {
-    dir.create(dirname, showWarnings=F)
-  }
-
   #### Summary Sheets ####
-  plot.set.list <- function(set.list, main)
+  plot.set.list <- function(set.list, main, path)
   {
+    pdf(path, 29.7/2.54, 21/2.54)
+
     if (main != "Correlation Cluster" && main != "K-Means Cluster")
     {
       layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
@@ -532,9 +526,11 @@ pipeline.summarySheetsIntegral <- function()
         }
       }
     }
+
+    dev.off()
   }
 
-  csv.set.list <- function(set.list, main)
+  csv.set.list <- function(set.list, main, path)
   {
     for (m in 1:length(set.list$spots))
     {
@@ -611,56 +607,65 @@ pipeline.summarySheetsIntegral <- function()
                    "Chromosome"=gene.positions[rownames(indata)[o]],
                    "Description"=gene.descriptions[o])
 
-      write.csv2(out, file.path(dirnames["spots"], basename))
+      write.csv2(out, file.path(path, basename))
     }
   }
 
-  filename <- file.path(dirnames["ssi"], "Overexpression.pdf")
-  util.info("Writing:", filename)
+  # directories to store the results
+  dirnames <- c("pdf"=as.character(output.paths["Summary Sheets Integral"]),
+                "csv"=file.path(output.paths["CSV"], "Spot Lists"))
 
-  pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list(set.list=spot.list.overexpression, main="Sample-Overexpression")
-  dev.off()
+  # pdf sheets to generate
+  pdf.sheets <- list(
+    list("Overexpression.pdf", "Sample-Overexpression", spot.list.overexpression),
+    list("Underexpression.pdf", "Sample-Underexpression", spot.list.underexpression),
+    list("Correlation Cluster.pdf", "Correlation Cluster", spot.list.correlation),
+    list("K-Means Cluster.pdf", "K-Means Cluster", spot.list.kmeans))
 
-  filename <- file.path(dirnames["ssi"], "Underexpression.pdf")
-  util.info("Writing:", filename)
+  # csv sheets to generate
+  csv.sheets <- list(
+    list("Sample-Overexpression", spot.list.overexpression),
+    list("Sample-Underexpression", spot.list.underexpression),
+    list("Correlation Cluster", spot.list.correlation),
+    list("K-Means Cluster", spot.list.kmeans))
 
-  pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list(set.list=spot.list.underexpression, main="Sample-Underexpression")
-  dev.off()
-
-  filename <- file.path(dirnames["ssi"], "Correlation Cluster.pdf")
-  util.info("Writing:", filename)
-
-  pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list(set.list=spot.list.correlation, main="Correlation Cluster")
-  dev.off()
-
-  filename <- file.path(dirnames["ssi"], "K-Means Cluster.pdf")
-  util.info("Writing:", filename)
-
-  pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list(set.list=spot.list.kmeans, main="K-Means Cluster")
-  dev.off()
-
+  # generate group expression sheets?
   if (length(unique(group.labels)) > 1)
   {
-    filename <- file.path(dirnames["ssi"], "Group Overexpression.pdf")
-    util.info("Writing:", filename)
+    pdf.sheets[[length(pdf.sheets)+1]] <-
+      list("Group Overexpression.pdf", "Group Overexpression", spot.list.group.overexpression)
 
-    pdf(filename, 29.7/2.54, 21/2.54)
-    plot.set.list(set.list=spot.list.group.overexpression, main="Group Overexpression")
-    dev.off()
+    csv.sheets[[length(csv.sheets)+1]] <-
+      list("Group Overexpression", spot.list.group.overexpression)
   }
 
-  util.info("Writing:", file.path(dirnames["spots"], "*.csv"))
-  csv.set.list(set.list=spot.list.overexpression, main="Sample-Overexpression")
-  csv.set.list(set.list=spot.list.underexpression, main="Sample-Underexpression")
-  csv.set.list(set.list=spot.list.correlation, main="Correlation Cluster")
-  csv.set.list(set.list=spot.list.kmeans, main="K-Means Cluster")
-
-  if (length(unique(group.labels)) > 1)
+  pdf.sheets <- lapply(pdf.sheets, function(x)
   {
-    csv.set.list(set.list=spot.list.group.overexpression, main="Group Overexpression")
+    list(fn=plot.set.list,
+         args=list(path=file.path(dirnames[["pdf"]], x[[1]]), main=x[[2]], set.list=x[[3]]))
+  })
+
+  csv.sheets <- lapply(csv.sheets, function(x)
+  {
+    list(fn=csv.set.list,
+         args=list(path=dirnames[["csv"]], main=x[[1]], set.list=x[[2]]))
+  })
+
+  sheets <- c(pdf.sheets, csv.sheets)
+
+  # prepare directories
+  for (dirname in dirnames)
+  {
+    dir.create(dirname, showWarnings=F, recursive=T)
   }
+
+  # do the math
+  cl <- makeCluster(preferences$max.parallel.cores)
+
+  clusterApplyLB(cl, 1:length(sheets), function(i, sheets)
+  {
+    do.call(sheets[[i]]$fn, sheets[[i]]$args)
+  }, sheets)
+
+  stopCluster(cl)
 }
