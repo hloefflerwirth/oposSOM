@@ -659,8 +659,13 @@ pipeline.summarySheetsIntegral <- function()
     dir.create(dirname, showWarnings=F, recursive=T)
   }
 
+  util.info("Writing:", file.path(dirnames[["pdf"]], "*.pdf"))
+  util.info("Writing:", file.path(dirnames[["csv"]], "*.csv"))
+
   # do the math
-  cl <- makeCluster(preferences$max.parallel.cores)
+  #
+  # use max 4 cores to avoid preformance issues due disk io
+  cl <- makeCluster(min(4, preferences$max.parallel.cores))
 
   clusterApplyLB(cl, 1:length(sheets), function(i, sheets)
   {
