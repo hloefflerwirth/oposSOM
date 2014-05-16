@@ -56,11 +56,11 @@ opossom.new <- function(preferences)
 
   # Generate some additional letters
   opossom$LETTERS <- c(LETTERS, as.vector(sapply(1:10, function(x) {
-    paste(LETTERS, x, sep="")
+    return(paste(LETTERS, x, sep=""))
   })))
 
   opossom$letters <- c(letters, as.vector(sapply(1:10, function(x) {
-    paste(letters, x, sep="")
+    return(paste(letters, x, sep=""))
   })))
 
   # Set default preferences
@@ -86,9 +86,8 @@ opossom.new <- function(preferences)
                               pairwise.comparison.list = list())
 
   # Merge user supplied preferences
-  for (key in intersect(names(opossom$preferences), names(preferences))) {
-    opossom$preferences[key] <- preferences[key]
-  }
+  opossom$preferences <-
+    modifyList(opossom$preferences, preferences[names(opossom$preferences)])
 
   return(opossom)
 }
