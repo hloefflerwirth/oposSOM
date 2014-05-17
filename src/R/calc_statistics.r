@@ -133,7 +133,7 @@ pipeline.calcStatistics <- function()
           window <- position + c(-2, -1, 1, 2)
           window[which(window < 1)] <- NA
           window[which(window > length(gene.expression.order.help))] <- NA
-          window = na.omit(window)
+          window <- na.omit(window)
 
           sd.g.m[i, m] <<- mean(sd.g.m[i, gene.expression.order.help[window]])
         }
@@ -240,7 +240,7 @@ pipeline.calcStatistics <- function()
 
         o <- order(e.g.m[,m])
 
-        sd.g.m[, m] = sapply(c(1:nrow(indata)), function(x)
+        sd.g.m[, m] <<- sapply(c(1:nrow(indata)), function(x)
         {
           sqrt(sum((e.r.g.m[x,] - e.g.m[x,m]) ^ 2) / R.m[m])
         })
