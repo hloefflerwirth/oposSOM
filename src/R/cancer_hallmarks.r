@@ -53,6 +53,7 @@ pipeline.cancerHallmarks <- function()
     )
   )
 
+
   hallmark.sets.genes <- lapply(hallmark.sets.names, function(x)
   {
     unique(unlist(sapply(gs.def.list[x], function(y) { y$Genes })))
@@ -75,7 +76,7 @@ pipeline.cancerHallmarks <- function()
 
   hallmark.GSZ.matrix <- unlist(parSapply(cl, 1:ncol(indata), function(m)
   {
-    return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[, m], hallmark.sets.list, sort=F))
+    return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[,m], hallmark.sets.list, sort=F))
   }))
 
   hallmark.spot.enrichment <- unlist(parSapply(cl, spot.list.overexpression$spots, function(x)
@@ -86,14 +87,6 @@ pipeline.cancerHallmarks <- function()
 
   try({ stopCluster(cl) }, silent=T)
 
-  hallmark.sets.profiles <- list()
-
-  for (i in 1:nrow(hallmark.GSZ.matrix))
-  {
-    hallmark.sets.profiles[[rownames(hallmark.GSZ.matrix)[i]]] <- hallmark.GSZ.matrix[i,]
-    names(hallmark.sets.profiles[[rownames(hallmark.GSZ.matrix)[i]]]) <- colnames(indata)
-  }
-
   ### Output
   filename <- file.path(paste(files.name, "- Results"), "Geneset Analysis", "0verview Cancer Hallmarks.pdf")
   util.info("Writing:", filename)
@@ -101,10 +94,10 @@ pipeline.cancerHallmarks <- function()
 
   layout(matrix(c(1:8), 4, byrow=T), widths=c(3, 1))
 
-  for (i in 1:length(hallmark.sets.profiles))
+  for (i in 1:nrow(hallmark.GSZ.matrix))
   {
     hallmark.sets.group.profiles <-
-      tapply(hallmark.sets.profiles[[i]], group.labels, c)[unique(group.labels)]
+      tapply(hallmark.GSZ.matrix[i,], group.labels, c)[unique(group.labels)]
 
     par(mar=c(5,3,4,2))
 
