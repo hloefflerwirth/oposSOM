@@ -179,44 +179,28 @@ pipeline.calcStatistics <- function()
     }
   } # END error.model "replicates"
 
-
   if (preferences$error.model == "all.samples")      ##################################
   {
-    for (m in 1:ncol(indata))
+    o <- order(apply(indata.original, 1, mean))
+    sdo <- apply(indata.original, 1, sd)[o]
+    col <- Get.Running.Average(sdo, min(200, round(nrow(indata) * 0.02)))
+    col[which(is.nan(col) || col == 0)] <- 0.0000000001
+
+    for (i in (length(col)-1):1)
     {
-      o <- order(apply(indata.original, 1, mean))
-      sd <- apply(indata.original, 1, sd)
-
-      LPE.g.m[o, m] <- Get.Running.Average(sd[o], min(200, round(nrow(indata) * 0.02)))
-      LPE.g.m[which(is.nan(LPE.g.m[,m])),m] <- 0.0000000001
-      LPE.g.m[which(LPE.g.m[,m] == 0),m] <- 0.0000000001
-
-      SD2 <- LPE.g.m[o,m]
-
-      for (j in (length(SD2)-1):1)
-      {
-        if (SD2[j] < SD2[j+1])
-        {
-          SD2[j] <- SD2[j+1]
-        }
-      }
-
-      LPE.g.m[o,m] <- SD2
-      rm(SD2)
-
-      progress.current <- progress.current + 0.5
-      util.progress(progress.current, progress.max)
+      col[i] <- max(col[i], col[i+1])
     }
 
-    sd.g.m <<- LPE.g.m
+    sd.g.m[o,] <<- col
+    LPE.g.m <- sd.g.m
 
-    for (m in 1:ncol(indata))
+    t.g.m <<- apply(e.g.m, 2, function(e.g.m.col, root)
     {
-      t.g.m[,m] <<- sqrt(ncol(indata)) * (e.g.m[,m] - mean.e.g) / sd.g.m[,m]
+      return(root * (e.g.m.col - mean.e.g) / sd.g.m[,1])
+    }, sqrt(ncol(indata)))
 
-      progress.current <- progress.current + 0.1
-      util.progress(progress.current, progress.max)
-    }
+    progress.current <- progress.current + (0.6 * ncol(indata))
+    util.progress(progress.current, progress.max)
   } # END error.model "all.samples"
 
 
