@@ -21,7 +21,7 @@ pipeline.groupAssignment <- function()
   # gives great advantages for big datasets.
   cl <- makeCluster(preferences$max.parallel.cores)
 
-  bootstrap.error <- parSapply(cl, 1:n.bootstrap, function(i)
+  bootstrap.res <- parSapply(cl, 1:n.bootstrap, function(i)
   {
     resample <- sample(colnames(indata), ncol(indata), replace=T)
 
@@ -34,15 +34,20 @@ pipeline.groupAssignment <- function()
 
     if (length(km) > 0)
     {
-      return(unique(names(which(km$cluster[resample] != group.assignment[resample]))))
+      return(list(resamples=unique(resample),
+                  errors=unique(names(which(km$cluster[resample] != group.assignment[resample])))))
     }
   })
 
   stopCluster(cl)
 
-  bootstrap.error <- table(unlist(bootstrap.error))[colnames(indata)]
+  bootstrap.resampling <- table(unlist(sapply(bootstrap.res, head, 1)))[colnames(indata)]
+  names(bootstrap.resampling) <- colnames(indata)
+  bootstrap.resampling[which(is.na(bootstrap.resampling))] <- 0
+
+  bootstrap.error <- table(unlist(sapply(bootstrap.res,tail,1)))[colnames(indata)]
   names(bootstrap.error) <- colnames(indata)
   bootstrap.error[which(is.na(bootstrap.error))] <- 0
 
-  group.bootstrap.score <<- round(100*(1 - bootstrap.error / n.bootstrap), 1)
+  group.bootstrap.score <<- round(100*(1 - bootstrap.error / bootstrap.resampling), 1)
 }
