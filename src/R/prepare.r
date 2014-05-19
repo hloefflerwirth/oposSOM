@@ -331,6 +331,10 @@ pipeline.prepare <- function()
 
   # Train SOM
 
+  # The following would train the SOM in one step...
+  #som.result <<- som(indata, xdim=preferences$dim.1stLvlSom, ydim=preferences$dim.1stLvlSom)
+
+  # We split training in two steps to estimate the time we need.
   t1 <- system.time({
     som.result <<- som.train(indata, som.result, xdim=preferences$dim.1stLvlSom,
                              ydim=preferences$dim.1stLvlSom, alpha=0.05,
@@ -338,6 +342,7 @@ pipeline.prepare <- function()
                              rlen=nrow(indata)*2*preferences$training.extension,
                              inv.alp.c=nrow(indata)*2*preferences$training.extension/100)
   })
+
   util.info("Remaining ~", ceiling(5*t1[3]/60), "min ~", round(5*t1[3]/3600,1),"h")
 
   som.result <<- som.train(indata, som.result$code, xdim=preferences$dim.1stLvlSom,
@@ -345,9 +350,6 @@ pipeline.prepare <- function()
                            radius=min(3, preferences$dim.1stLvlSom),
                            rlen=nrow(indata)*10*preferences$training.extension,
                            inv.alp.c=nrow(indata)*10*preferences$training.extension/100)
-
-  # TODO Can we throw this in the bin?
-  #som.result <<- som(indata, xdim=preferences$dim.1stLvlSom, ydim=preferences$dim.1stLvlSom)
 
   metadata <<- som.result$code
   colnames(metadata) <<- colnames(indata)
