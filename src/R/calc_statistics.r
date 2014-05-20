@@ -1,15 +1,13 @@
 pipeline.calcStatistics <- function()
 {
-  verbose = T
-
-  if (output.paths["LPE"] == "")
-  {
-    verbose = F
-  }
+  verbose = (output.paths["LPE"] != "")
 
   if (verbose)
   {
-    write.table(preferences$error.model, file.path(output.paths["LPE"], "1_error_model.txt"), row.names=F, col.names=F)
+    write.table(preferences$error.model,
+                file.path(output.paths["LPE"], "1_error_model.txt"),
+                row.names=F,
+                col.names=F)
   }
 
   util.info("Processing Single Genes")
@@ -150,6 +148,8 @@ pipeline.calcStatistics <- function()
         sd.shrink.g.m[, m] <- sqrt(lambda * sd.g.m[, m] ^ 2 + (1 - lambda) * LPE.g.m[, m] ^ 2)
       }
     } # END no.sd.samples
+
+    sd.shrink.g.m[which(is.na(sd.shrink.g.m))] <- 0
 
     if (any(sd.shrink.g.m == 0))
     {
