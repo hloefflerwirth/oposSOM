@@ -195,15 +195,14 @@ pipeline.calcStatistics <- function()
 
   if (preferences$error.model == "groups")      ##################################
   {
-    R.m <- c()
-
-    for (m in 1:ncol(indata))
+    R.m <- sapply(group.labels, function(label)
     {
-      R.m[m] <- length(which(group.labels == group.labels[m]))
-    }
+      length(which(group.labels == label))
+    })
     names(R.m) <- colnames(indata)
 
-    sd.shrink.g.m <- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
+    sd.shrink.g.m <- matrix(NA, nrow(indata), ncol(indata),
+                            dimnames=list(rownames(indata), colnames(indata)))
 
     for (m in 1:ncol(indata))
     {
@@ -224,10 +223,7 @@ pipeline.calcStatistics <- function()
 
         for (j in (length(SD2)-1):1)
         {
-          if (SD2[j] < SD2[j+1])
-          {
-            SD2[j] <- SD2[j+1]
-          }
+          SD2[j] <- max(SD2[j], SD2[j+1])
         }
         LPE.g.m[o, m] <- SD2
 
@@ -278,10 +274,7 @@ pipeline.calcStatistics <- function()
 
         for (j in (length(SD2)-1):1)
         {
-          if (SD2[j] < SD2[j+1])
-          {
-            SD2[j] <- SD2[j+1]
-          }
+          SD2[j] <- max(SD2[j], SD2[j+1])
         }
         LPE.g.m[o,m] <- SD2
 
@@ -290,13 +283,10 @@ pipeline.calcStatistics <- function()
       }
     } # END no.sd.samples
 
-    for (m in 1:ncol(indata))
+    t.g.m <<- matrix(sapply(1:ncol(indata), function(i)
     {
-      t.g.m[,m] <<- sqrt(R.m[m]) * (e.g.m[,m] - mean.e.g) / sd.shrink.g.m[,m]
-
-      progress.current <- progress.current + 0.1
-      util.progress(progress.current, progress.max)
-    }
+      return(sqrt(R.m[i]) * (e.g.m[,i] - mean.e.g) / sd.shrink.g.m[,i])
+    }), ncol=ncol(indata))
   } # END error.model "groups"
 
 
