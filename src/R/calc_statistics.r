@@ -33,13 +33,11 @@ pipeline.calcStatistics <- function()
   perc.DE.m <<- rep(NA, ncol(indata))
   names(perc.DE.m) <<- colnames(indata)
 
-
   fdr.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
   Fdr.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
 
   mean.LPE2 <- rep(NA, ncol(indata))
   names(mean.LPE2) <- colnames(indata)
-
 
   for (m in 1:ncol(indata))
   {
@@ -66,16 +64,14 @@ pipeline.calcStatistics <- function()
 
   if (preferences$error.model == "replicates")      ##################################
   {
-    R.m <- c()
-
-    for (m in 1:ncol(indata))
+    R.m <- sapply(1:ncol(indata), function(i)
     {
-      R.m[m] <- length(which(colnames(indata.original) == colnames(indata)[m]))
-    }
+      return(length(which(colnames(indata.original) == colnames(indata)[i])))
+    })
+
     names(R.m) <- colnames(indata)
 
     sd.shrink.g.m <- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
-
 
     for (m in 1:ncol(indata))
     {
@@ -96,10 +92,7 @@ pipeline.calcStatistics <- function()
 
         for (j in (length(SD2)-1):1)
         {
-          if (SD2[j] < SD2[j+1])
-          {
-            SD2[j] <- SD2[j+1]
-          }
+          SD2[j] <- max(SD2[j], SD2[j+1])
         }
         LPE.g.m[o, m] <- SD2
 
@@ -149,10 +142,7 @@ pipeline.calcStatistics <- function()
 
         for (j in (length(SD2)-1):1)
         {
-          if (SD2[j] < SD2[j+1])
-          {
-            SD2[j] <- SD2[j+1]
-          }
+          SD2[j] <- max(SD2[j], SD2[j+1])
         }
         LPE.g.m[o, m] <- SD2
 
@@ -160,7 +150,6 @@ pipeline.calcStatistics <- function()
         sd.shrink.g.m[, m] <- sqrt(lambda * sd.g.m[, m] ^ 2 + (1 - lambda) * LPE.g.m[, m] ^ 2)
       }
     } # END no.sd.samples
-
 
     if (any(sd.shrink.g.m == 0))
     {
