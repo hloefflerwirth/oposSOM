@@ -281,6 +281,12 @@ pipeline.prepare <- function()
     indata.original <<- indata
   }
 
+  if (preferences$error.model == "replicates" && max(table(colnames(indata))) == 1)
+  {
+    util.warn("No replicates found in column names. Using \"all.samples\"")
+    preferences$error.model <<- "all.samples"
+  }
+
   if (preferences$error.model == "replicates")
   {
     indata <<- do.call(cbind, by(t(indata), colnames(indata), mean))[,unique(colnames(indata))]

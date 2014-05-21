@@ -62,9 +62,9 @@ pipeline.calcStatistics <- function()
 
   if (preferences$error.model == "replicates")      ##################################
   {
-    R.m <- sapply(1:ncol(indata), function(i)
+    R.m <- sapply(colnames(indata), function(colname)
     {
-      return(length(which(colnames(indata.original) == colnames(indata)[i])))
+      return(length(which(colnames(indata.original) == colname)))
     })
 
     names(R.m) <- colnames(indata)
@@ -148,8 +148,6 @@ pipeline.calcStatistics <- function()
         sd.shrink.g.m[, m] <- sqrt(lambda * sd.g.m[, m] ^ 2 + (1 - lambda) * LPE.g.m[, m] ^ 2)
       }
     } # END no.sd.samples
-
-    sd.shrink.g.m[which(is.na(sd.shrink.g.m))] <- 0
 
     if (any(sd.shrink.g.m == 0))
     {
