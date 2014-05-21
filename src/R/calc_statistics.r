@@ -173,7 +173,8 @@ pipeline.calcStatistics <- function()
     o <- order(apply(indata.original, 1, mean))
     sdo <- apply(indata.original, 1, sd)[o]
     col <- Get.Running.Average(sdo, min(200, round(nrow(indata) * 0.02)))
-    col[which(is.nan(col) || col == 0)] <- 0.0000000001
+    col[which(is.nan(col))] <- 0.0000000001
+    col[which(col == 0)] <- 0.0000000001
 
     for (i in (length(col)-1):1)
     {
@@ -234,7 +235,6 @@ pipeline.calcStatistics <- function()
       progress.current <- progress.current + 0.5
       util.progress(progress.current, progress.max)
     }
-
 
     no.sd.samples <- colnames(indata)[which(is.na(apply(sd.shrink.g.m, 2, mean)))]
 
