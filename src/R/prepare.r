@@ -222,6 +222,20 @@ pipeline.prepare <- function()
 
   if (!is.null(group.labels))
   {
+    for (sample in unique(colnames(indata)))
+    {
+      if (length(unique(group.labels[which(colnames(indata) == sample)])) > 1)
+      {
+        util.warn("Sample is in multiple groups:", sample)
+        group.labels <<- NULL
+        group.colors <<- NULL
+        break
+      }
+    }
+  }
+
+  if (!is.null(group.labels))
+  {
     group.labels <<- as.character(group.labels)
     names(group.labels) <<- colnames(indata)
 
