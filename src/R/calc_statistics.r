@@ -333,7 +333,7 @@ pipeline.calcStatistics <- function()
     {
       for (m in 1:ncol(indata))
       {
-        filename <- file.path(output.paths["LPE"], paste(colnames(indata[m]), ".bmp", sep=""))
+        filename <- file.path(output.paths["LPE"], paste(colnames(indata)[m], ".bmp", sep=""))
         util.info("Writing:", filename)
 
         bmp(filename, 600, 600)

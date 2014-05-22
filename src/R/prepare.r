@@ -289,7 +289,7 @@ pipeline.prepare <- function()
 
   if (preferences$error.model == "replicates")
   {
-    indata <<- do.call(cbind, by(t(indata), colnames(indata), mean))[,unique(colnames(indata))]
+    indata <<- do.call(cbind, by(t(indata), colnames(indata), colMeans))[,unique(colnames(indata))]
     group.labels <<- group.labels[colnames(indata)]
     group.colors <<- group.colors[colnames(indata)]
     indata.sample.mean <<- tapply(indata.sample.mean, colnames(indata.original), mean)[colnames(indata)]
