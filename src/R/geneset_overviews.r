@@ -49,6 +49,8 @@ pipeline.genesetOverviews <- function()
       paste(LETTERS[apply(summary.spots.fisher.p[rownames(top.scores), ,drop=F], 1, which.min)],
             rownames(top.scores), sep="  ")
 
+    colnames(top.scores) <- colnames(indata)
+
     heatmap.wrap(x=top.scores, cex.main=2,
                  col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
                  mar=c(10,20), scale="n", zlim=max(max(top.scores),-min(top.scores))*c(-1,1),
@@ -78,6 +80,34 @@ pipeline.genesetOverviews <- function()
     axis(1, c(0,0.5,1), round(max(max(top.scores),-min(top.scores))*c(-1,0,1)), cex.axis=1.4)
     mtext("GSZ score", cex=2, line=33.5)
     mtext(i, cex=1.2, line=32)
+
+    o <- unlist(sapply(unique(group.labels), function(gr)
+    {
+      idx <- names(group.labels)[which(group.labels == gr)]
+
+      if (length(idx) > 1)
+      {
+        hc <- hclust(dist(t(top.scores[,idx])))
+        return(hc$labels[hc$order])
+      }
+      return(idx)
+    }))
+
+    heatmap.wrap(x=top.scores[,o], cex.main=2,
+                 col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
+                 mar=c(10,20), scale="n",
+                 zlim=max(max(top.scores),-min(top.scores))*c(-1,1),
+                 ColSideColors=group.colors[o], cexDend=0.6, Colv=NA)
+
+    par(new=T, mar=c(3.5,29,35.5,2) )
+
+    image(matrix(c(1:1000), 1000, 1), axes=F,
+          col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000))
+
+    box()
+    axis( 1, c(0,0.5,1), round(max(max(top.scores),-min(top.scores))*c(-1,0,1)), cex.axis=1.4 )
+    mtext( "GSZ score", cex=2, line=33.5 )
+    mtext( i, cex=1.2, line=32 )
   }
 
   ### Overrepresentation heatmaps

@@ -169,6 +169,28 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
 
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
            text.col=groupwise.group.colors, bg="white")
+
+    o <- unlist(sapply(unique(group.labels), function(gr)
+    {
+      idx <- names(group.labels)[which(group.labels == gr)]
+
+      if (length(idx) > 1)
+      {
+        hc <- hclust(dist(t(s[,idx])))
+        return(hc$labels[hc$order])
+      }
+      return(idx)
+    }))
+
+    heatmap.wrap(x=cor(s)[o,o], Rowv=NA, Colv=NA, col=colramp(1000),
+                 scale="n", main=metagene.filter.list[[i]]$n, mar=c(8,8),
+                 ColSideColors=group.colors[o], RowSideColors=group.colors[o])
+
+    par(new=T)
+    plot(0,type="n", axes=F, xlab="", ylab="")
+
+    legend("bottomright", as.character(unique(group.labels)), cex=0.5,
+           text.col=groupwise.group.colors, bg="white")
   }
 
   dev.off()
