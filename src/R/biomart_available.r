@@ -23,5 +23,5 @@ biomart.available <- function()
                         mart=mart)
   }, silent=T)
 
-  return(!is.null(test.table) && nrow(test.table) > 0)
+  return(is.matrix(test.table) && nrow(test.table) > 0)
 }
