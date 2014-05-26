@@ -27,7 +27,7 @@ pipeline.summarySheetsIntegral <- function()
     layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
     par(mar=c(5, 4, 4, 1))
 
-    beta.scores = sapply(set.list$spots, function(x) { x$beta.statistic$beta.score })
+    beta.scores <- sapply(set.list$spots, function(x) { x$beta.statistic$beta.score })
 
     image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), axes=F,
           col=colramp(1000)[1 + 999 * beta.scores / max(beta.scores)],
@@ -492,7 +492,7 @@ pipeline.summarySheetsIntegral <- function()
         ## Splitted Genesets Sheet
         n.sets <- 20
         n.cat <- length(table(gs.def.list.categories))
-        par(mfrow <- c(ceiling(n.cat/3), min(n.cat, 3)))
+        par(mfrow=c(ceiling(n.cat/3), min(n.cat, 3)))
 
         for (i in names(table(gs.def.list.categories)))
         {
