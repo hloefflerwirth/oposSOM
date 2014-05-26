@@ -5,8 +5,8 @@ pipeline.detectEnsemblDataset <- function()
   util.info("Autodetecting annotation parameters")
 
   auto.datasets <-
-    list("hsapiens_gene_ensembl"=c("affy_hg_u133a",
-                                   "affy_hg_u133_plus_2",
+    list("hsapiens_gene_ensembl"=c("affy_hg_u133_plus_2",
+                                   "affy_hg_u133a",
                                    "affy_hugene_1_0_st_v1",
                                    "ipi",
                                    "refseq_mrna"),
