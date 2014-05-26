@@ -441,8 +441,8 @@ pipeline.detectSpotsIntegral <- function()
   {
     spot.list.underexpression$overview.mask[which(!is.na(sample.spot.list[[i]]))] <<- i
 
-    spot.metagenes <<- which(!is.na(sample.spot.list[[i]]))
-    spot.genes <<- rownames(indata)[which(som.nodes %in% spot.metagenes)]
+    spot.metagenes <- which(!is.na(sample.spot.list[[i]]))
+    spot.genes <- rownames(indata)[which(som.nodes %in% spot.metagenes)]
 
     spot.list.underexpression$spots[[letters[i]]] <<- list()
     spot.list.underexpression$spots[[letters[i]]]$metagenes <<- spot.metagenes
