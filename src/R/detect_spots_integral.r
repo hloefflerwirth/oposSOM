@@ -200,23 +200,25 @@ pipeline.detectSpotsIntegral <- function()
 
   for (i in 1:length(sample.spot.list))
   {
-    spot.list.overexpression$overview.mask[which(!is.na(sample.spot.list[[i]]))] <<- i
-
     spot.metagenes <- which(!is.na(sample.spot.list[[i]]))
     spot.genes <- rownames(indata)[which(som.nodes %in% spot.metagenes)]
 
-    spot.list.overexpression$spots[[LETTERS[i]]] <<- list()
-    spot.list.overexpression$spots[[LETTERS[i]]]$metagenes <<- spot.metagenes
-    spot.list.overexpression$spots[[LETTERS[i]]]$genes <<- spot.genes
-    spot.list.overexpression$spots[[LETTERS[i]]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
-    spot.list.overexpression$spots[[LETTERS[i]]]$mask[spot.metagenes] <<- 1
+    if (length(spot.genes) > 0)
+    {
+      spot.list.overexpression$overview.mask[which(!is.na(sample.spot.list[[i]]))] <<- i
+      spot.list.overexpression$spots[[LETTERS[i]]] <<- list()
+      spot.list.overexpression$spots[[LETTERS[i]]]$metagenes <<- spot.metagenes
+      spot.list.overexpression$spots[[LETTERS[i]]]$genes <<- spot.genes
+      spot.list.overexpression$spots[[LETTERS[i]]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
+      spot.list.overexpression$spots[[LETTERS[i]]]$mask[spot.metagenes] <<- 1
 
-    spot.list.overexpression$spots[[LETTERS[i]]]$position <<-
-      colMeans(apply(som.result$code.sum[spot.metagenes, 1:2] + 1, 2, range))
+      spot.list.overexpression$spots[[LETTERS[i]]]$position <<-
+        colMeans(apply(som.result$code.sum[spot.metagenes, 1:2] + 1, 2, range))
 
-    spot.list.overexpression$spots[[LETTERS[i]]]$beta.statistic <<-
-      get.beta.statistic(set.data=metadata[spot.list.overexpression$spots[[LETTERS[i]]]$metagenes,,drop=F],
-                         weights=som.result$code.sum[spot.list.overexpression$spots[[LETTERS[i]]]$metagenes,]$nobs)
+      spot.list.overexpression$spots[[LETTERS[i]]]$beta.statistic <<-
+        get.beta.statistic(set.data=metadata[spot.list.overexpression$spots[[LETTERS[i]]]$metagenes,,drop=F],
+                           weights=som.result$code.sum[spot.list.overexpression$spots[[LETTERS[i]]]$metagenes,]$nobs)
+    }
   }
 
   o <- order(sapply(spot.list.overexpression$spots, function(x)
@@ -439,24 +441,25 @@ pipeline.detectSpotsIntegral <- function()
 
   for (i in 1:length(sample.spot.list))
   {
-    spot.list.underexpression$overview.mask[which(!is.na(sample.spot.list[[i]]))] <<- i
-
     spot.metagenes <- which(!is.na(sample.spot.list[[i]]))
     spot.genes <- rownames(indata)[which(som.nodes %in% spot.metagenes)]
 
-    spot.list.underexpression$spots[[letters[i]]] <<- list()
-    spot.list.underexpression$spots[[letters[i]]]$metagenes <<- spot.metagenes
-    spot.list.underexpression$spots[[letters[i]]]$genes <<- spot.genes
-    spot.list.underexpression$spots[[letters[i]]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
-    spot.list.underexpression$spots[[letters[i]]]$mask[spot.metagenes] <<- 1
+    if (length(spot.genes) > 0)
+    {
+      spot.list.underexpression$overview.mask[which(!is.na(sample.spot.list[[i]]))] <<- i
+      spot.list.underexpression$spots[[letters[i]]] <<- list()
+      spot.list.underexpression$spots[[letters[i]]]$metagenes <<- spot.metagenes
+      spot.list.underexpression$spots[[letters[i]]]$genes <<- spot.genes
+      spot.list.underexpression$spots[[letters[i]]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
+      spot.list.underexpression$spots[[letters[i]]]$mask[spot.metagenes] <<- 1
 
-    spot.list.underexpression$spots[[letters[i]]]$position <<-
-      colMeans(apply(som.result$code.sum[spot.metagenes, 1:2]+1, 2, range))
+      spot.list.underexpression$spots[[letters[i]]]$position <<-
+        colMeans(apply(som.result$code.sum[spot.metagenes, 1:2]+1, 2, range))
 
-    spot.list.underexpression$spots[[letters[i]]]$beta.statistic <<-
-      get.beta.statistic(set.data=metadata[spot.list.underexpression$spots[[letters[i]]]$metagenes,,drop=F],
-                         weights=som.result$code.sum[spot.list.underexpression$spots[[letters[i]]]$metagenes,]$nobs)
-
+      spot.list.underexpression$spots[[letters[i]]]$beta.statistic <<-
+        get.beta.statistic(set.data=metadata[spot.list.underexpression$spots[[letters[i]]]$metagenes,,drop=F],
+                           weights=som.result$code.sum[spot.list.underexpression$spots[[letters[i]]]$metagenes,]$nobs)
+    }
   }
 
   o <- order(sapply(spot.list.underexpression$spots, function(x)
@@ -514,21 +517,24 @@ pipeline.detectSpotsIntegral <- function()
       c.cluster[cluster] <- count.cluster
       geneset.genes <- rownames(indata)[which(som.nodes %in% as.numeric(cluster))]
 
-      spot.list.correlation$overview.mask[as.numeric(cluster)] <<- count.cluster
-      spot.list.correlation$spots[[count.cluster]] <<- list()
-      spot.list.correlation$spots[[count.cluster]]$metagenes <<- as.numeric(cluster)
-      spot.list.correlation$spots[[count.cluster]]$genes <<- geneset.genes
-      spot.list.correlation$spots[[count.cluster]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
-      spot.list.correlation$spots[[count.cluster]]$mask[as.numeric(cluster)] <<- 1
+      if (length(geneset.genes) > 0)
+      {
+        spot.list.correlation$overview.mask[as.numeric(cluster)] <<- count.cluster
+        spot.list.correlation$spots[[count.cluster]] <<- list()
+        spot.list.correlation$spots[[count.cluster]]$metagenes <<- as.numeric(cluster)
+        spot.list.correlation$spots[[count.cluster]]$genes <<- geneset.genes
+        spot.list.correlation$spots[[count.cluster]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
+        spot.list.correlation$spots[[count.cluster]]$mask[as.numeric(cluster)] <<- 1
 
-      spot.list.correlation$spots[[count.cluster]]$position <<-
-        apply(apply(som.result$code.sum[cluster, 1:2], 2, range), 2, mean) + 0.5
+        spot.list.correlation$spots[[count.cluster]]$position <<-
+          apply(apply(som.result$code.sum[cluster, 1:2], 2, range), 2, mean) + 0.5
 
-      spot.list.correlation$spots[[count.cluster]]$beta.statistic <<-
-        get.beta.statistic(set.data=metadata[spot.list.correlation$spots[[count.cluster]]$metagenes,,drop=F],
-                           weights=som.result$code.sum[spot.list.correlation$spots[[count.cluster]]$metagenes,]$nobs)
+        spot.list.correlation$spots[[count.cluster]]$beta.statistic <<-
+          get.beta.statistic(set.data=metadata[spot.list.correlation$spots[[count.cluster]]$metagenes,,drop=F],
+                             weights=som.result$code.sum[spot.list.correlation$spots[[count.cluster]]$metagenes,]$nobs)
 
-      count.cluster <- count.cluster + 1
+        count.cluster <- count.cluster + 1
+      }
     }
 
     c.map <- c.map[-which(rownames(c.map) %in% cluster), -which(colnames(c.map) %in% cluster)]
@@ -578,19 +584,22 @@ pipeline.detectSpotsIntegral <- function()
     nodes <- which(res$cluster == i)
     geneset.genes <- rownames(indata)[which(som.nodes %in% nodes)]
 
-    spot.list.kmeans$overview.mask[as.numeric(nodes)] <<- i
-    spot.list.kmeans$spots[[LETTERS[i]]] <<- list()
-    spot.list.kmeans$spots[[LETTERS[i]]]$metagenes <<- as.numeric(nodes)
-    spot.list.kmeans$spots[[LETTERS[i]]]$genes <<- geneset.genes
-    spot.list.kmeans$spots[[LETTERS[i]]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
-    spot.list.kmeans$spots[[LETTERS[i]]]$mask[as.numeric(nodes)] <<- 1
+    if (length(geneset.genes) > 0)
+    {
+      spot.list.kmeans$overview.mask[as.numeric(nodes)] <<- i
+      spot.list.kmeans$spots[[LETTERS[i]]] <<- list()
+      spot.list.kmeans$spots[[LETTERS[i]]]$metagenes <<- as.numeric(nodes)
+      spot.list.kmeans$spots[[LETTERS[i]]]$genes <<- geneset.genes
+      spot.list.kmeans$spots[[LETTERS[i]]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
+      spot.list.kmeans$spots[[LETTERS[i]]]$mask[as.numeric(nodes)] <<- 1
 
-    spot.list.kmeans$spots[[LETTERS[i]]]$position <<-
-      apply(apply(som.result$code.sum[nodes, 1:2], 2, range), 2, mean) + 0.5
+      spot.list.kmeans$spots[[LETTERS[i]]]$position <<-
+        apply(apply(som.result$code.sum[nodes, 1:2], 2, range), 2, mean) + 0.5
 
-    spot.list.kmeans$spots[[LETTERS[i]]]$beta.statistic <<-
-      get.beta.statistic(set.data=metadata[spot.list.kmeans$spots[[LETTERS[i]]]$metagenes,,drop=F],
-                         weights=som.result$code.sum[spot.list.kmeans$spots[[LETTERS[i]]]$metagenes,]$nobs)
+      spot.list.kmeans$spots[[LETTERS[i]]]$beta.statistic <<-
+        get.beta.statistic(set.data=metadata[spot.list.kmeans$spots[[LETTERS[i]]]$metagenes,,drop=F],
+                           weights=som.result$code.sum[spot.list.kmeans$spots[[LETTERS[i]]]$metagenes,]$nobs)
+    }
   }
 
   o <- order(sapply(spot.list.kmeans$spots, function(x)
@@ -818,23 +827,25 @@ pipeline.detectSpotsIntegral <- function()
 
     for (i in 1:length(sample.spot.list))
     {
-      spot.list.group.overexpression$overview.mask[which(!is.na(sample.spot.list[[i]]))] <<- i
-
       spot.metagenes <- which(!is.na(sample.spot.list[[i]]))
       spot.genes <- rownames(indata)[which(som.nodes %in% spot.metagenes)]
 
-      spot.list.group.overexpression$spots[[LETTERS[i]]] <<- list()
-      spot.list.group.overexpression$spots[[LETTERS[i]]]$metagenes <<- spot.metagenes
-      spot.list.group.overexpression$spots[[LETTERS[i]]]$genes <<- spot.genes
-      spot.list.group.overexpression$spots[[LETTERS[i]]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
-      spot.list.group.overexpression$spots[[LETTERS[i]]]$mask[spot.metagenes] <<- 1
+      if (length(spot.genes) > 0)
+      {
+        spot.list.group.overexpression$overview.mask[which(!is.na(sample.spot.list[[i]]))] <<- i
+        spot.list.group.overexpression$spots[[LETTERS[i]]] <<- list()
+        spot.list.group.overexpression$spots[[LETTERS[i]]]$metagenes <<- spot.metagenes
+        spot.list.group.overexpression$spots[[LETTERS[i]]]$genes <<- spot.genes
+        spot.list.group.overexpression$spots[[LETTERS[i]]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
+        spot.list.group.overexpression$spots[[LETTERS[i]]]$mask[spot.metagenes] <<- 1
 
-      spot.list.group.overexpression$spots[[LETTERS[i]]]$position <<-
-        colMeans(apply(som.result$code.sum[spot.metagenes, 1:2]+1, 2, range))
+        spot.list.group.overexpression$spots[[LETTERS[i]]]$position <<-
+          colMeans(apply(som.result$code.sum[spot.metagenes, 1:2]+1, 2, range))
 
-      spot.list.group.overexpression$spots[[LETTERS[i]]]$beta.statistic <<-
-        get.beta.statistic(set.data=metadata[spot.list.group.overexpression$spots[[LETTERS[i]]]$metagenes,,drop=F],
-                           weights=som.result$code.sum[spot.list.group.overexpression$spots[[LETTERS[i]]]$metagenes,]$nobs)
+        spot.list.group.overexpression$spots[[LETTERS[i]]]$beta.statistic <<-
+          get.beta.statistic(set.data=metadata[spot.list.group.overexpression$spots[[LETTERS[i]]]$metagenes,,drop=F],
+                             weights=som.result$code.sum[spot.list.group.overexpression$spots[[LETTERS[i]]]$metagenes,]$nobs)
+      }
     }
 
     start.spot <- which.min(sapply(spot.list.group.overexpression$spots, function(x)
