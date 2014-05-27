@@ -68,5 +68,5 @@ if (!fast) {
 
 # Install
 if (install) {
-  install.packages("oposSOM_0.3.0.tar.gz")
+  install.packages("oposSOM_1.0.0.tar.gz")
 }
