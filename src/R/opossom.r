@@ -71,7 +71,7 @@ opossom.new <- function(preferences)
                               training.extension = 1,
                               rotate.SOM.portraits = 0,
                               flip.SOM.portraits = F,
-                              database.dataset = "",
+                              database.dataset = "auto",
                               database.id.type = "",
                               geneset.analysis = F,
                               geneset.analysis.exact = F,
