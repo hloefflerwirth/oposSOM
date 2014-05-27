@@ -1,8 +1,13 @@
 Package: oposSOM
-Title: Package for analysis and visualization of metagenes
-Version: 0.3.0
-Description: This package translates microarray expression data into metagenes
-  and provides various visualizations and second level analyses..
+Title: Package for comprehensive analysis of transciptome data
+Version: 1.0.0
+Description: This package translates microarray expression data into metadata
+  of reduced dimension. It provides various sample-centered and group-centered
+  visualizations, sample similarity analyses and functional enrichment analyses.
+  The underlying SOM algorithm combines feature clustering, multidimensional
+  scaling and dimension reduction, along with strong visualization capabilities.
+  It enables extraction and description of functional expression modules inherent
+  in the data.
 Depends: R (>= 3.0)
 Imports: som, fastICA, scatterplot3d, pixmap, fdrtool, ape, igraph, KernSmooth,
   parallel, biomaRt

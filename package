@@ -58,7 +58,7 @@ cat("* save", filename, "\n")
 save(opossom.genesets, file=filename, compress="xz")
 
 # Build and Check
-cat("\n>> R CMD build", dirname, "\n")
+cat("\n>> R CMD build --resave-data", dirname, "\n")
 system(paste("R CMD build", dirname))
 
 if (!fast) {
