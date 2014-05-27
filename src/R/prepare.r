@@ -71,7 +71,8 @@ pipeline.prepare <- function()
   }
 
   if (!is.numeric(preferences$max.parallel.cores) ||
-      preferences$max.parallel.cores < 1)
+      preferences$max.parallel.cores < 1 ||
+      preferences$max.parallel.cores > detectCores())
   {
     preferences$max.parallel.cores <<- detectCores() / 2
     util.warn("Invalid value of \"max.parallel.cores\". Using",
