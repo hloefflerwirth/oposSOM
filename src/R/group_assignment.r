@@ -21,9 +21,9 @@ pipeline.groupAssignment <- function()
   # gives great advantages for big datasets.
   cl <- makeCluster(preferences$max.parallel.cores)
 
-  bootstrap.res <- parSapply(cl, 1:n.bootstrap, function(i)
+  bootstrap.res <- parLapply(cl, 1:n.bootstrap, function(i)
   {
-    resample <- sample(colnames(indata), ncol(indata), replace=T)
+    resample <- sample(colnames(metadata), ncol(metadata), replace=T)
 
     suppressWarnings({
       km <- kmeans(t(metadata[,resample]),
@@ -35,7 +35,7 @@ pipeline.groupAssignment <- function()
     if (length(km) > 0)
     {
       return(list(resamples=unique(resample),
-                  errors=unique(names(which(km$cluster[resample] != group.assignment[resample])))))
+                  errors=names(which(km$cluster[unique(resample)] != group.assignment[unique(resample)]))))
     }
   })
 
@@ -43,7 +43,8 @@ pipeline.groupAssignment <- function()
 
   bootstrap.resampling <- table(unlist(sapply(bootstrap.res, head, 1)))[colnames(indata)]
   names(bootstrap.resampling) <- colnames(indata)
-  bootstrap.resampling[which(is.na(bootstrap.resampling))] <- 0
+  bootstrap.resampling[which(is.na(bootstrap.resampling))] <- 1
+  bootstrap.resampling[which(bootstrap.resampling == 0)] <- 1
 
   bootstrap.error <- table(unlist(sapply(bootstrap.res,tail,1)))[colnames(indata)]
   names(bootstrap.error) <- colnames(indata)
