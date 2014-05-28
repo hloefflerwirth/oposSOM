@@ -84,7 +84,7 @@ pipeline.3rdLvlNetworks <- function()
                layout[i,2] + w,
                col="white")
 
-          x <- pixmapIndexed(mask , col = c("white", "green"))
+          x <- pixmapIndexed(mask , col = c("white", "green"), cellres=10)
           addlogo(x, layout[i,1] + c(-w,w), layout[i,2] + c(-w,w))
 
           rect(layout[i,1] - w,
@@ -142,7 +142,7 @@ pipeline.3rdLvlNetworks <- function()
              layout[i,2] + w,
              col="white")
 
-        x <- pixmapIndexed(mask , col = c("white", "green"))
+        x <- pixmapIndexed(mask , col = c("white", "green"), cellres=10)
         addlogo(x, layout[i,1] + c(-w,w), layout[i,2] + c(-w,w))
 
         rect(layout[i,1] - w,

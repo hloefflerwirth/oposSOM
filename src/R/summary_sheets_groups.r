@@ -497,7 +497,7 @@ pipeline.summarySheetsGroups <- function()
         }
 
         m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
-        x <- pixmapIndexed(m , col = colramp(1000))
+        x <- pixmapIndexed(m , col = colramp(1000), cellres=10)
 
         addlogo(x,
                 coords.x[ii]+cex.branch.portraits[1]*c(-1,1),
@@ -522,7 +522,7 @@ pipeline.summarySheetsGroups <- function()
           }
 
           m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
-          x <- pixmapIndexed(m , col = colramp(1000))
+          x <- pixmapIndexed(m , col = colramp(1000), cellres=10)
 
           addlogo(x,
                   ii+cex.sample.portraits[1]*c(-1,1),
@@ -545,7 +545,7 @@ pipeline.summarySheetsGroups <- function()
 
         m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
         m[which(is.na(m))] <- 0
-        x <- pixmapIndexed(m , col = c("gray90", colramp(1000)))
+        x <- pixmapIndexed(m , col = c("gray90", colramp(1000)), cellres=10)
 
         addlogo(x,
                 coords.x[ii]+cex.branch.portraits[1]*c(-1,1),
@@ -570,7 +570,7 @@ pipeline.summarySheetsGroups <- function()
           }
 
           m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
-          x <- pixmapIndexed(m , col = colramp(1000))
+          x <- pixmapIndexed(m , col = colramp(1000), cellres=10)
 
           addlogo(x,
                   ii+cex.sample.portraits[1]*c(-1,1),
@@ -593,7 +593,7 @@ pipeline.summarySheetsGroups <- function()
         m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
         m[which(is.na(m))] <- 0
 
-        x <- pixmapIndexed(m , col = c("gray90", colramp(1000)))
+        x <- pixmapIndexed(m , col = c("gray90", colramp(1000)), cellres=10)
 
         addlogo(x,
                 coords.x[ii]+cex.branch.portraits[1]*c(-1,1),
@@ -618,7 +618,7 @@ pipeline.summarySheetsGroups <- function()
           }
 
           m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
-          x <- pixmapIndexed(m , col = colramp(1000))
+          x <- pixmapIndexed(m , col = colramp(1000), cellres=10)
 
           addlogo(x,
                   ii+cex.sample.portraits[1]*c(-1,1),
