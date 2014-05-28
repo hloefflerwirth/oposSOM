@@ -199,9 +199,13 @@ pipeline.genesetProfilesAndMaps <- function()
         coords <- rbind(coords, coords)
       }
 
-      smoothScatter(coords+1 ,main=names(gs.def.list)[i], cex.main=2,
-                    xlim=c(1,preferences$dim.1stLvlSom), ylim=c(1,preferences$dim.1stLvlSom),
-                    xaxs="i", yaxs="i", axes=F, xlab="", ylab="", nrpoints=0)
+      suppressWarnings(smoothScatter(coords+1 ,
+                                     main=names(gs.def.list)[i],
+                                     cex.main=2,
+                                     xlim=c(1,preferences$dim.1stLvlSom),
+                                     ylim=c(1,preferences$dim.1stLvlSom),
+                                     xaxs="i", yaxs="i", axes=F, xlab="",
+                                     ylab="", nrpoints=0))
 
       title(sub=paste("# features =", sum(gene.ids %in% gs.def.list[[i]]$Genes),
                       ", max =", max(n.map,na.rm=T)),line=0)

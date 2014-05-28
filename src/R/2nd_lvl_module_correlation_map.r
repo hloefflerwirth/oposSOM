@@ -174,20 +174,20 @@ pipeline.2ndLvlModuleCorrelation <- function(s, hcl)
         samples.x <- colnames(pcm)[c(x['x']:(x['x']+x['dim.x']-1))]
         samples.y <- colnames(pcm)[c(x['y']:(x['y']+x['dim.y']-1))]
 
-        spots.x <- names(which(rowMeans(spot.list.overexpression$spotdata[,samples.x]) >
+        spots.x <- names(which(rowMeans(spot.list.overexpression$spotdata[,samples.x, drop=F]) >
                                sd(as.vector(spot.list.overexpression$spotdata)) * spotdata.sd.scale))
 
         if (length(spots.x)==0)
         {
-          spots.x <- names(which.max(rowMeans(spot.list.overexpression$spotdata[,samples.x])))
+          spots.x <- names(which.max(rowMeans(spot.list.overexpression$spotdata[,samples.x, drop=F])))
         }
 
-        spots.y <- names(which(rowMeans(spot.list.overexpression$spotdata[,samples.y]) >
+        spots.y <- names(which(rowMeans(spot.list.overexpression$spotdata[,samples.y, drop=F]) >
                                sd(as.vector(spot.list.overexpression$spotdata)) * spotdata.sd.scale))
 
         if (length(spots.y)==0)
         {
-          spots.y <- names(which.max(rowMeans(spot.list.overexpression$spotdata[,samples.y])))
+          spots.y <- names(which.max(rowMeans(spot.list.overexpression$spotdata[,samples.y, drop=F])))
         }
 
         text(mean(c(x['x']:(x['x']+x['dim.x'])))-1, mean(c(x['y']:(x['y']+x['dim.y'])))-1,
@@ -202,36 +202,36 @@ pipeline.2ndLvlModuleCorrelation <- function(s, hcl)
         samples.x <- colnames(pcm)[c(x['x']:(x['x']+x['dim.x']-1))]
         samples.y <- colnames(pcm)[c(x['y']:(x['y']+x['dim.y']-1))]
 
-        spots.x1 <- names(which(rowMeans(spot.list.overexpression$spotdata[,samples.x]) >
+        spots.x1 <- names(which(rowMeans(spot.list.overexpression$spotdata[,samples.x, drop=F]) >
                                 sd(as.vector(spot.list.overexpression$spotdata)) * spotdata.sd.scale))
 
         if (length(spots.x1) == 0)
         {
-          spots.x1 <- names(which.max(rowMeans(spot.list.overexpression$spotdata[,samples.x])))
+          spots.x1 <- names(which.max(rowMeans(spot.list.overexpression$spotdata[,samples.x, drop=F])))
         }
 
-        spots.y1 <- names(which(rowMeans(spot.list.overexpression$spotdata[,samples.y]) <
+        spots.y1 <- names(which(rowMeans(spot.list.overexpression$spotdata[,samples.y, drop=F]) <
                                 sd(as.vector(spot.list.overexpression$spotdata)) * spotdata.sd.scale))
 
         if (length(spots.y1) == 0)
         {
-          spots.y1 <- names(which.min(rowMeans(spot.list.overexpression$spotdata[,samples.y])))
+          spots.y1 <- names(which.min(rowMeans(spot.list.overexpression$spotdata[,samples.y, drop=F])))
         }
 
-        spots.x2 <- names(which(rowMeans(spot.list.overexpression$spotdata[,samples.x]) <
+        spots.x2 <- names(which(rowMeans(spot.list.overexpression$spotdata[,samples.x, drop=F]) <
                                 sd(as.vector(spot.list.overexpression$spotdata)) * spotdata.sd.scale))
 
         if (length(spots.x2) == 0)
         {
-          spots.x2 <- names(which.min(rowMeans(spot.list.overexpression$spotdata[,samples.x])))
+          spots.x2 <- names(which.min(rowMeans(spot.list.overexpression$spotdata[,samples.x, drop=F])))
         }
 
-        spots.y2 <- names(which(rowMeans(spot.list.overexpression$spotdata[,samples.y]) >
+        spots.y2 <- names(which(rowMeans(spot.list.overexpression$spotdata[,samples.y, drop=F]) >
                                 sd(as.vector(spot.list.overexpression$spotdata)) * spotdata.sd.scale))
 
         if (length(spots.y2) == 0)
         {
-          spots.y2 <- names(which.max(rowMeans(spot.list.overexpression$spotdata[,samples.y])))
+          spots.y2 <- names(which.max(rowMeans(spot.list.overexpression$spotdata[,samples.y, drop=F])))
         }
 
         text(mean(c(x['x']:(x['x']+x['dim.x'])))-1, mean(c(x['y']:(x['y']+x['dim.y'])))-1,

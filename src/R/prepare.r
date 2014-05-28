@@ -152,6 +152,24 @@ pipeline.prepare <- function()
     storage.mode(indata) <<- "numeric"
   }
 
+  const.cols <- which(apply(indata, 2, function(col) { diff(range(col)) == 0 }))
+
+  if (length(const.cols) > 0)
+  {
+    indata <<- indata[,-const.cols]
+    group.labels <<- group.labels[,-const.cols]
+    group.colors <<- group.colors[,-const.cols]
+    util.warn("Removed constant columns from data set.")
+  }
+
+  const.rows <- which(apply(indata, 1, function(col) { diff(range(col)) == 0 }))
+
+  if (length(const.rows) > 0)
+  {
+    indata <<- indata[-const.rows,]
+    util.warn("Removed constant rows from data set.")
+  }
+
   if (length(rownames(indata)) == 0)
   {
     rownames(indata) <<- as.character(1:nrow(indata))
