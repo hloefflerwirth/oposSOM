@@ -26,43 +26,44 @@ Author: Henry Wirth <wirth@izbi.uni-leipzig.de>
 Maintainer: Martin Kalcher <mkalcher@porkbox.net>
 }
 \examples{
-pipeline <- opossom.new(list(dataset.name="Example",
-                             error.model="all.samples",
-                             dim.1stLvlSom=20,
-                             dim.2ndLvlSom=20,
-                             geneset.analysis=TRUE))
+# Example with artificial data
+env <- opossom.new(list(dataset.name="Example",
+                        error.model="all.samples",
+                        dim.1stLvlSom=20,
+                        dim.2ndLvlSom=20,
+                        geneset.analysis=TRUE))
 
-pipeline$indata <- matrix(runif(10000), 1000, 10)
+env$indata <- matrix(runif(10000), 1000, 10)
 
-pipeline$group.labels <- c(rep(c("ABC", "DEF", "GHI"), each=3), "JKL")
+env$group.labels <- c(rep(c("ABC", "DEF", "GHI"), each=3), "JKL")
 
-opossom.run(pipeline)
+opossom.run(env)
 
 # Real Example - This will take several minutes
-#pipeline <- opossom.new(list(dataset.name="Tissues",
-#                             error.model="all.samples",
-#                             dim.1stLvlSom=30,
-#                             dim.2ndLvlSom=30,
-#                             geneset.analysis=TRUE,
-#                             spot.coresize.groupmap=5,
-#                             spot.threshold.groupmap=0.75,
-#                             pairwise.comparison.list=list(
-#                               list("Homeostasis"=c(1, 2), "Imune System"=c(9, 10)),
-#                               list("Homeostasis"=c(1, 2), "Muscle"=c(8))
-#                             )))
+#env <- opossom.new(list(dataset.name="Tissues",
+#                        error.model="all.samples",
+#                        dim.1stLvlSom=30,
+#                        dim.2ndLvlSom=30,
+#                        geneset.analysis=TRUE,
+#                        spot.coresize.groupmap=5,
+#                        spot.threshold.groupmap=0.75,
+#                        pairwise.comparison.list=list(
+#                          list("Homeostasis"=c(1, 2), "Imune System"=c(9, 10)),
+#                          list("Homeostasis"=c(1, 2), "Muscle"=c(8))
+#                        )))
 #
 #data(opossom.tissues)
-#pipeline$indata <- opossom.tissues
+#env$indata <- opossom.tissues
 #
-#pipeline$group.labels <- c(rep("Homeostasis", 2),
-#                           "Endocrine",
-#                           "Digestion",
-#                           "Exocrine",
-#                           "Epithelium",
-#                           "Reproduction",
-#                           "Muscle",
-#                           rep("Imune System", 2),
-#                           rep("Nervous System", 2))
+#env$group.labels <- c(rep("Homeostasis", 2),
+#                      "Endocrine",
+#                      "Digestion",
+#                      "Exocrine",
+#                      "Epithelium",
+#                      "Reproduction",
+#                      "Muscle",
+#                      rep("Imune System", 2),
+#                      rep("Nervous System", 2))
 #
-#opossom.run(pipeline)
+#opossom.run(env)
 }

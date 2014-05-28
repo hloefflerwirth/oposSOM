@@ -45,24 +45,24 @@ Author: Henry Wirth <wirth@izbi.uni-leipzig.de>
 Maintainer: Martin Kalcher <mkalcher@porkbox.net>
 }
 \examples{
-opossom <- opossom.new(list(dataset.name="Example",
-                            dim.1stLvlSom=10,
-                            dim.2ndLvlSom=10,
-                            training.extension=1,
-                            rotate.SOM.portraits=0,
-                            flip.SOM.portraits=FALSE,
-                            database.dataset="auto",
-                            geneset.analysis=TRUE,
-                            geneset.analysis.exact=TRUE,
-                            max.parallel.cores=2,
-                            spot.threshold.samples=0.9,
-                            spot.coresize.modules=4,
-                            spot.threshold.modules=0.9,
-                            spot.coresize.groupmap=4,
-                            spot.threshold.groupmap=0.7,
-                            feature.centralization=TRUE,
-                            sample.quantile.normalization=TRUE,
-                            pairwise.comparison.list=list(
-                              list("groupA"=c("sample1", "sample2"),
-                                   "groupB"=c("sample3", "sample4")))))
+env <- opossom.new(list(dataset.name="Example",
+                        dim.1stLvlSom=10,
+                        dim.2ndLvlSom=10,
+                        training.extension=1,
+                        rotate.SOM.portraits=0,
+                        flip.SOM.portraits=FALSE,
+                        database.dataset="auto",
+                        geneset.analysis=TRUE,
+                        geneset.analysis.exact=TRUE,
+                        max.parallel.cores=2,
+                        spot.threshold.samples=0.9,
+                        spot.coresize.modules=4,
+                        spot.threshold.modules=0.9,
+                        spot.coresize.groupmap=4,
+                        spot.threshold.groupmap=0.7,
+                        feature.centralization=TRUE,
+                        sample.quantile.normalization=TRUE,
+                        pairwise.comparison.list=list(
+                          list("groupA"=c("sample1", "sample2"),
+                               "groupB"=c("sample3", "sample4")))))
 }
