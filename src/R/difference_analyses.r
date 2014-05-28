@@ -45,13 +45,13 @@ pipeline.differenceAnalyses = function()
 {
   if (length(unique(group.labels)) < 2)
   {
-    util.warn("Skip differences analyses: not enough unique group labels")
+    util.warn("Skip differences analyses: not enough different groups")
     return()
   }
 
   if (length(unique(group.labels)) > 7)
   {
-    util.warn("Skip differences analyses: too many unique group labels")
+    util.warn("Skip differences analyses: too many different groups")
     return()
   }
 
