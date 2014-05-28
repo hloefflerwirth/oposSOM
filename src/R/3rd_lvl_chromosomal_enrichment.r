@@ -85,8 +85,11 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
 
     box()
 
-    environment(pipeline.3rdLvlChromosomeAssociationMaps) <- environment()
-    pipeline.3rdLvlChromosomeAssociationMaps(gene.positions.list)
+    if (length(set.list$spots) > 1)
+    {
+      environment(pipeline.3rdLvlChromosomeAssociationMaps) <- environment()
+      pipeline.3rdLvlChromosomeAssociationMaps(gene.positions.list)
+    }
 
     for (m in 1:length(set.list$spots))
     {

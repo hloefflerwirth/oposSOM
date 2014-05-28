@@ -25,7 +25,7 @@ pipeline.3rdLvlChromosomeAssociationMaps <- function(gene.positions.list)
   }))
 
   spot.gene.chromo.pq.matrix <-
-    spot.gene.chromo.pq.matrix[, which(colSums(spot.gene.chromo.pq.matrix) > 0)]
+    spot.gene.chromo.pq.matrix[,which(colSums(spot.gene.chromo.pq.matrix) > 0)]
 
   spot.gene.chromo.pq.matrix.scaled <-
     t(apply(spot.gene.chromo.pq.matrix, 1, function(x) x/all.chromos.pq.count[names(x)]))
