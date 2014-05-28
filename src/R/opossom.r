@@ -209,8 +209,8 @@ opossom.run <- function(env)
   load(filename) # Reload env
   util.call(pipeline.signatureSets, env)
 
-  util.info("Finished:", format(Sys.time(), "%a %b %d %X"))
-
   # Restore old error behaviour
   options(error=error.option)
+
+  util.info("Finished:", format(Sys.time(), "%a %b %d %X"))
 }
