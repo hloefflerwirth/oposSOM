@@ -13,10 +13,10 @@ The results are given within a separate folder and can be browsed using the
 summary HTML file.
 }
 \usage{
-opossom.run(opossom)
+opossom.run(env)
 }
 \arguments{
-  \item{opossom}{
+  \item{env}{
     the opossom environment created with \code{opossom.new} according to the users' preferences
   }
 }
