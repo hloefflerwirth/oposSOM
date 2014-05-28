@@ -129,25 +129,28 @@ pipeline.cancerHallmarks <- function()
     box()
   }
 
-  par(mfrow=c(1,1))
+  if (length(spot.list.overexpression$spots) > 1)
+  {
+    par(mfrow=c(1,1))
 
-  hallmark.spot.enrichment.bin <- hallmark.spot.enrichment
-  hallmark.spot.enrichment.bin[which(hallmark.spot.enrichment >= 0)] <- 1
-  hallmark.spot.enrichment.bin[which(hallmark.spot.enrichment < 0.1)] <- 0.75
-  hallmark.spot.enrichment.bin[which(hallmark.spot.enrichment < 0.01)] <- 0.5
-  hallmark.spot.enrichment.bin[which(hallmark.spot.enrichment < 0.001)] <- 0.25
-  hallmark.spot.enrichment.bin[which(hallmark.spot.enrichment < 0.00001)] <- 0.0
+    hallmark.spot.enrichment.bin <- hallmark.spot.enrichment
+    hallmark.spot.enrichment.bin[which(hallmark.spot.enrichment >= 0)] <- 1
+    hallmark.spot.enrichment.bin[which(hallmark.spot.enrichment < 0.1)] <- 0.75
+    hallmark.spot.enrichment.bin[which(hallmark.spot.enrichment < 0.01)] <- 0.5
+    hallmark.spot.enrichment.bin[which(hallmark.spot.enrichment < 0.001)] <- 0.25
+    hallmark.spot.enrichment.bin[which(hallmark.spot.enrichment < 0.00001)] <- 0.0
 
-  heatmap(hallmark.spot.enrichment.bin,
-          col=c("black","red3","orange","yellow","gray92"),
-          Colv=NA, Rowv=NA, scale="n", mar=c(10,10),
-          main="Hallmark spot enrichment", margins=c(5,13))
+    heatmap(hallmark.spot.enrichment.bin,
+            col=c("black","red3","orange","yellow","gray92"),
+            Colv=NA, Rowv=NA, scale="n", mar=c(10,10),
+            main="Hallmark spot enrichment", margins=c(5,13))
 
-  par(new=T, mar=c(5,0,0,3))
-  frame()
+    par(new=T, mar=c(5,0,0,3))
+    frame()
 
-  legend("bottomright", c("p < 0.1","p < 0.01","p < 0.001","p < 0.00001"),
-         pch=15, col=rev(c("black","red3","orange","yellow")))
+    legend("bottomright", c("p < 0.1","p < 0.01","p < 0.001","p < 0.00001"),
+           pch=15, col=rev(c("black","red3","orange","yellow")))
+  }
 
   dev.off()
 }

@@ -144,7 +144,9 @@ pipeline.prepare <- function()
     return(F)
   }
 
-  if (class(indata) != "matrix" || mode(indata) != "numeric" || storage.mode(indata) != "numeric")
+  if (class(indata) != "matrix" ||
+      mode(indata) != "numeric" ||
+      storage.mode(indata) != "numeric")
   {
     rn <- rownames(indata)
     indata <<- apply(indata, 2, function(x){ as.numeric(as.vector(x)) })
@@ -162,7 +164,7 @@ pipeline.prepare <- function()
     util.warn("Removed constant columns from data set.")
   }
 
-  const.rows <- which(apply(indata, 1, function(col) { diff(range(col)) == 0 }))
+  const.rows <- which(apply(indata, 1, function(row) { diff(range(row)) == 0 }))
 
   if (length(const.rows) > 0)
   {
