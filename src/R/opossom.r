@@ -73,7 +73,7 @@ opossom.new <- function(preferences)
                           flip.SOM.portraits = F,
                           database.dataset = "auto",
                           database.id.type = "",
-                          geneset.analysis = F,
+                          geneset.analysis = T,
                           geneset.analysis.exact = F,
                           max.parallel.cores = detectCores() / 2,
                           spot.threshold.samples = 0.65,
