@@ -16,7 +16,7 @@ if (file.exists(dirname)) {
 dir.create("oposSOM")
 
 # Copy everything we need
-for (f in c("R", "man", "inst", "DESCRIPTION", "NAMESPACE")) {
+for (f in c("R", "vignettes", "man", "inst", "DESCRIPTION", "NAMESPACE")) {
   cat("* copy", f, "\n")
   file.copy(file.path("src", f), file.path(dirname), recursive=T)
 }
