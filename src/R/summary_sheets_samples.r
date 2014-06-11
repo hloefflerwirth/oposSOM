@@ -1,6 +1,6 @@
 pipeline.summarySheetsSamples <- function()
 {
-  dir.create(output.paths["Summary Sheets Samples"], showWarnings=F)
+  dir.create(output.paths["Summary Sheets Samples"], showWarnings=FALSE)
 
   #### Summary Sheets ####
   n.genes.in.genesets <- 0
@@ -14,7 +14,7 @@ pipeline.summarySheetsSamples <- function()
 
   for (m in 1:ncol(indata))
   {
-    h <- hist(p.g.m[,m], bre=20, plot=F)
+    h <- hist(p.g.m[,m], bre=20, plot=FALSE)
     y.max <- max(h$density)
 
     if (y.max > ylim.max)
@@ -33,7 +33,7 @@ pipeline.summarySheetsSamples <- function()
     ## Global Sheet
     layout(matrix(c(1,2,4,1,3,0,5,5,6,7,7,8), 3, 4), widths=c(1,1,2,2), heights=c(2,1,1))
     par(mar=c(0,0,0,0))
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
     text(0.1, 0.94, colnames(indata)[m] , cex=3, adj=0)
     text(0.1, 0.8, "Global Summary" , cex=1.8, adj=0)
@@ -84,7 +84,7 @@ pipeline.summarySheetsSamples <- function()
     par(mar=c(2,3,3,1))
 
     image(matrix(metadata[,m], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-          axes=F, col = colramp(1000), main="Profile", cex.main=1.5)
+          axes=FALSE, col = colramp(1000), main="Profile", cex.main=1.5)
 
     axis(1,
          seq(0, 1, length.out=preferences$dim.1stLvlSom/10+1),
@@ -99,16 +99,16 @@ pipeline.summarySheetsSamples <- function()
     box()
 
     image(matrix(metadata[,m], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-          axes=F, col=colramp(1000), main="Regulated Spots", cex.main=1.5)
+          axes=FALSE, col=colramp(1000), main="Regulated Spots", cex.main=1.5)
 
-    par(new=T)
+    par(new=TRUE)
 
     mask <- spot.list.samples[[m]]$regulated
     mask[which(is.na(spot.list.samples[[m]]$regulated))] <- 1
     mask[which(!is.na(spot.list.samples[[m]]$regulated))] <- NA
 
     image(matrix(mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-          axes=F, col = "white")
+          axes=FALSE, col = "white")
 
     axis(1,
          seq(0, 1, length.out=preferences$dim.1stLvlSom/10+1),
@@ -122,7 +122,7 @@ pipeline.summarySheetsSamples <- function()
 
     box()
     par(mar=c(2,8,3,6))
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
     par(mar=c(0,0,0,0))
 
     n.genes <- 20
@@ -130,7 +130,7 @@ pipeline.summarySheetsSamples <- function()
     y.coords <- seq(0.75, 0.02, length.out=n.genes)
 
     o <- order(p.g.m[,m])[1:n.genes]
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
     text(0, 0.88, "Global Genelist", cex=1.8, adj=0)
 
@@ -149,7 +149,7 @@ pipeline.summarySheetsSamples <- function()
 
     par(mar=c(3,6,2,6))
 
-    hist(p.g.m[,m], bre=20, freq=F, xlab="p-value", ylab="", main="p-values",
+    hist(p.g.m[,m], bre=20, freq=FALSE, xlab="p-value", ylab="", main="p-values",
          ylim=c(0,ylim.max), las=1, cex.main=1.5, cex.lab=1, cex.axis=1)
 
     box()
@@ -159,8 +159,8 @@ pipeline.summarySheetsSamples <- function()
 
     abline(h=n.0.m[colnames(indata)[m]], col="gray", lwd=2)
 
-    par(new=T)
-    plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=F)
+    par(new=TRUE)
+    plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=FALSE)
     axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=1)
     o <- order(p.g.m[,m])
     lines(p.g.m[o,m], Fdr.g.m[o,m], lty=2, lwd=2)
@@ -174,7 +174,7 @@ pipeline.summarySheetsSamples <- function()
     {
       n.sets <- 20
 
-      top.gs.score <- sort(spot.list.samples[[m]]$GSZ.score, decreasing=T)[1:n.sets]
+      top.gs.score <- sort(spot.list.samples[[m]]$GSZ.score, decreasing=TRUE)[1:n.sets]
       top.gs.p <- spot.list.samples[[m]]$GSZ.p.value[names(top.gs.score)]
 
       par(mar=c(0,0,0,0))
@@ -182,7 +182,7 @@ pipeline.summarySheetsSamples <- function()
       x.coords <- c(0, 0.1, 0.18, 0.30, 0.39, 0.47)
       y.coords <- seq(0.75, 0.4, length.out=n.sets)
 
-      plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
+      plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
       text(0, 0.88, "Global Geneset Analysis", cex=1.8, adj=0)
       text(x.coords, 0.82, c("Rank", "GSZ", "p-value", "#all", "Geneset", ""), cex=1, adj=0)
@@ -198,7 +198,7 @@ pipeline.summarySheetsSamples <- function()
       text(x.coords[5], y.coords, gs.def.list.categories[names(top.gs.score)], cex=0.6, adj=0)
       text(x.coords[6], y.coords, names(top.gs.score), cex=0.6, adj=0)
 
-      top.gs.score <- sort(spot.list.samples[[m]]$GSZ.score, decreasing=F)[1:n.sets]
+      top.gs.score <- sort(spot.list.samples[[m]]$GSZ.score, decreasing=FALSE)[1:n.sets]
       top.gs.p <- spot.list.samples[[m]]$GSZ.p.value[names(top.gs.score)]
 
       y.coords <- seq(0.35, 0.02, length.out=n.sets)
@@ -218,7 +218,7 @@ pipeline.summarySheetsSamples <- function()
       {
         p <- spot.list.samples[[m]]$GSZ.p.value
 
-        fdrtool.result <- suppressWarnings(fdrtool(p, statistic="pvalue", verbose=F, plot=F))
+        fdrtool.result <- suppressWarnings(fdrtool(p, statistic="pvalue", verbose=FALSE, plot=FALSE))
         fdr.spot.list.samples <- fdrtool.result$lfdr
         Fdr.spot.list.samples <- fdrtool.result$qval
 
@@ -227,7 +227,7 @@ pipeline.summarySheetsSamples <- function()
 
         par(mar=c(3,6,2,6))
 
-        hist(p, bre=20, freq=F, xlab="p-value", ylab="", main="p-values",
+        hist(p, bre=20, freq=FALSE, xlab="p-value", ylab="", main="p-values",
              las=1, cex.main=1.5, cex.lab=1, cex.axis=1)
 
         box()
@@ -237,8 +237,8 @@ pipeline.summarySheetsSamples <- function()
 
         abline(h=n.0.spot.list.samples , col="gray", lwd=2)
 
-        par(new=T)
-        plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=F)
+        par(new=TRUE)
+        plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=FALSE)
         axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=1)
         o = order(p)
         lines(p[o], Fdr.spot.list.samples[o], lty=2, lwd=2)
@@ -270,7 +270,7 @@ pipeline.summarySheetsSamples <- function()
       n.genes <- min(20, length(spot.genes))
       local.p <- p.g.m[spot.genes, m]
 
-      fdrtool.result <- suppressWarnings(fdrtool(local.p, statistic="pvalue", verbose=F, plot=F))
+      fdrtool.result <- suppressWarnings(fdrtool(local.p, statistic="pvalue", verbose=FALSE, plot=FALSE))
 
       local.fdr <- fdrtool.result$lfdr
       local.Fdr <- fdrtool.result$qval
@@ -286,7 +286,7 @@ pipeline.summarySheetsSamples <- function()
       layout(matrix(c(1,2,0,1,3,0,4,4,5,6,6,7), 3, 4), widths=c(1,1,2,2), heights=c(2,1,1))
 
       par(mar=c(0,0,0,0))
-      plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
+      plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
       text(0.1, 0.94, colnames(indata)[m] , cex=3, adj=0)
       text(0.1, 0.8, "Local Summary" , cex=1.8, adj=0)
       text(0.1, 0.7,  paste("%DE =", round(local.perc.DE, 2)), adj=0)
@@ -346,7 +346,7 @@ pipeline.summarySheetsSamples <- function()
       par(mar=c(2,3,3,1))
 
       image(matrix(metadata[,m], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=F, col = colramp(1000), main="Profile", cex.main=1.5)
+            axes=FALSE, col = colramp(1000), main="Profile", cex.main=1.5)
 
       axis(1, seq(0, 1, length.out = preferences$dim.1stLvlSom/10+1),
            c(1, seq(10, preferences$dim.1stLvlSom, length.out=preferences$dim.1stLvlSom/10)),
@@ -359,13 +359,13 @@ pipeline.summarySheetsSamples <- function()
       box()
 
       image(matrix(metadata[,m], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=F, col = colramp(1000), main="Spot", cex.main=1.5)
+            axes=FALSE, col = colramp(1000), main="Spot", cex.main=1.5)
 
-      par(new=T)
+      par(new=TRUE)
       mask <- spot.list.samples[[m]]$spots[[spot.i]]$mask
       mask[which(is.na(spot.list.samples[[m]]$spots[[spot.i]]$mask))] <- 1
       mask[which(!is.na(spot.list.samples[[m]]$spots[[spot.i]]$mask))] <- NA
-      image(matrix(mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom), axes=F, col="white")
+      image(matrix(mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom), axes=FALSE, col="white")
 
       axis(1, seq(0, 1, length.out=preferences$dim.1stLvlSom/10+1),
            c(1, seq(10, preferences$dim.1stLvlSom, length.out=preferences$dim.1stLvlSom/10)),
@@ -382,7 +382,7 @@ pipeline.summarySheetsSamples <- function()
       n.genes <- min(20, length(spot.genes))
       x.coords <- c(0, 0.06, 0.2, 0.28, 0.36, 0.44, 0.52)
       y.coords <- seq(0.75, 0.02, length.out=n.genes)
-      plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
+      plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
       text(0, 0.88, "Local Genelist", cex=1.8, adj=0)
 
@@ -401,7 +401,7 @@ pipeline.summarySheetsSamples <- function()
 
       par(mar=c(3,6,2,6))
 
-      hist(local.p, bre=20, freq=F, xlab="p-value", ylab="", main="p-values",
+      hist(local.p, bre=20, freq=FALSE, xlab="p-value", ylab="", main="p-values",
            las=1, cex.main=1.5, cex.lab=1, cex.axis=1)
 
       box()
@@ -411,8 +411,8 @@ pipeline.summarySheetsSamples <- function()
 
       abline(h = local.n.0 , col="gray", lwd=2)
 
-      par(new=T)
-      plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=F)
+      par(new=TRUE)
+      plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=FALSE)
       axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=1)
 
       o <- order(local.p)
@@ -440,12 +440,12 @@ pipeline.summarySheetsSamples <- function()
         if (spot.list.samples[[m]]$spots[[spot.i]]$type == "overexpressed")
         {
           top.gs.score <-
-            sort(spot.list.samples[[m]]$spots[[spot.i]]$GSZ.score, decreasing=T)[1:n.sets]
+            sort(spot.list.samples[[m]]$spots[[spot.i]]$GSZ.score, decreasing=TRUE)[1:n.sets]
 
           top.gs.p <-
             spot.list.samples[[m]]$spots[[spot.i]]$GSZ.p.value[names(top.gs.score)]
 
-          plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
+          plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
           text(0, 0.88, "Local Geneset Analysis", cex=1.8, adj=0)
           text(x.coords[1], 0.84, "Overexpression", cex=0.9, adj=0, font=3)
@@ -468,13 +468,13 @@ pipeline.summarySheetsSamples <- function()
         } else
         {
           top.gs.score <-
-            sort(spot.list.samples[[m]]$spots[[spot.i]]$GSZ.score, decreasing=F)[1:n.sets]
+            sort(spot.list.samples[[m]]$spots[[spot.i]]$GSZ.score, decreasing=FALSE)[1:n.sets]
 
           top.gs.p <-
             spot.list.samples[[m]]$spots[[spot.i]]$GSZ.p.value[names(top.gs.score)]
 
 
-          plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
+          plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
           text(0, 0.88, "Local Geneset Analysis", cex=1.8, adj=0)
           text(x.coords[1], 0.84, "Underexpression", cex=0.9, adj=0, font=3)
@@ -500,7 +500,7 @@ pipeline.summarySheetsSamples <- function()
         {
           p <- spot.list.samples[[m]]$spots[[spot.i]]$GSZ.p.value
 
-          fdrtool.result <- suppressWarnings(fdrtool(p, statistic="pvalue", verbose=F, plot=F))
+          fdrtool.result <- suppressWarnings(fdrtool(p, statistic="pvalue", verbose=FALSE, plot=FALSE))
           fdr.spot.list.samples <- fdrtool.result$lfdr
           Fdr.spot.list.samples <- fdrtool.result$qval
 
@@ -509,7 +509,7 @@ pipeline.summarySheetsSamples <- function()
 
           par(mar=c(3,6,2,6))
 
-          hist(p, bre=20, freq=F, xlab="p-value", ylab="", main="p-values",
+          hist(p, bre=20, freq=FALSE, xlab="p-value", ylab="", main="p-values",
                las=1, cex.main=1.5, cex.lab=1, cex.axis=1)
 
           box()
@@ -519,8 +519,8 @@ pipeline.summarySheetsSamples <- function()
 
           abline(h = n.0.spot.list.samples , col="gray", lwd=2)
 
-          par(new=T)
-          plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=F)
+          par(new=TRUE)
+          plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=FALSE)
           axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=1)
           o = order(p)
           lines(p[o], Fdr.spot.list.samples[o], lty=2, lwd=2)

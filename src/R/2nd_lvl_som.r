@@ -20,7 +20,7 @@ pipeline.2ndLvlSom <- function()
   yl <- c(min(-secLvlSom.custom$visual[,"y"])-1.2, max(-secLvlSom.custom$visual[,"y"])+1.2)
 
   plot(secLvlSom.custom$visual[,"x"], -secLvlSom.custom$visual[,"y"], type="n",
-       axes=F, xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i")
+       axes=FALSE, xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i")
 
   if (ncol(indata) < 100)
   {
@@ -66,7 +66,7 @@ pipeline.2ndLvlSom <- function()
   box()
 
   plot(secLvlSom.custom$visual[,"x"], -secLvlSom.custom$visual[,"y"], type="n",
-       axes=F, xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i")
+       axes=FALSE, xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i")
 
   if (length(unique(group.labels)) > 1)
   {
@@ -116,7 +116,7 @@ pipeline.2ndLvlSom <- function()
     names(transparent.group.colors) <- unique(group.labels)
 
     plot(secLvlSom.custom$visual[,"x"], -secLvlSom.custom$visual[,"y"],
-         type="n", axes=F, xlab="", ylab="", cex=4, col=group.colors, pch=16,
+         type="n", axes=FALSE, xlab="", ylab="", cex=4, col=group.colors, pch=16,
          xaxs="i", yaxs="i", xlim=xl, ylim=yl)
 
     for (i in 1:length(unique(group.labels)))
@@ -151,20 +151,20 @@ pipeline.2ndLvlSom <- function()
       coords <- rbind(coords,coords)
     }
 
-    smoothScatter(coords, main="", xlim=xl, ylim=yl, axes=F, xlab="", ylab="",
+    smoothScatter(coords, main="", xlim=xl, ylim=yl, axes=FALSE, xlab="", ylab="",
                   nrpoints=0, colramp=col, bandwidth=2, nbin=128,
                   transformation=function(x) { x^0.25 }, xaxs="i", yaxs="i")
 
     if (i < length(unique(group.labels)))
     {
-      par(new=T)
+      par(new=TRUE)
     }
   }
 
-  par(new=T)
+  par(new=TRUE)
 
   plot(secLvlSom.custom$visual[,"x"], -secLvlSom.custom$visual[,"y"],
-       pch=16, col=group.colors, axes=F, xlab="",ylab="", xlim=xl,ylim=yl,
+       pch=16, col=group.colors, axes=FALSE, xlab="",ylab="", xlim=xl,ylim=yl,
        xaxs="i", yaxs="i")
 
   if (length(unique(group.labels)) > 1)
@@ -178,7 +178,7 @@ pipeline.2ndLvlSom <- function()
   xl <- c(min(secLvlSom.20.20$visual[,"x"])-1, max(secLvlSom.20.20$visual[,"x"])+1)
   yl <- c(min(-secLvlSom.20.20$visual[,"y"])-1, max(-secLvlSom.20.20$visual[,"y"])+1)
 
-  plot(secLvlSom.20.20$visual[,"x"], -secLvlSom.20.20$visual[,"y"], type="p", axes=F,
+  plot(secLvlSom.20.20$visual[,"x"], -secLvlSom.20.20$visual[,"y"], type="p", axes=FALSE,
        xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i")
 
   if (ncol(indata) < 100)

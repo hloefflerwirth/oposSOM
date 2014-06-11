@@ -93,17 +93,17 @@ pipeline.htmlGroupSummary <- function()
       <ul>
         <li>
           <a href=\"Expression Portraits Groups.pdf\" target=\"_blank\">
-            Expression Portraits (PDF)
+            Expression Portraits (PDFALSE)
           </a>
         </li>
         <li>
           <a href=\"Group Assignment.pdf\" target=\"_blank\">
-            Assignment Stability  Scores (PDF)
+            Assignment Stability  Scores (PDFALSE)
           </a>
         </li>
         <li>
           <a href=\"Group Clustering.pdf\" target=\"_blank\">
-            Groupwise Clustering Dendrograms (PDF)
+            Groupwise Clustering Dendrograms (PDFALSE)
           </a>
         </li>
       </ul>

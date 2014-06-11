@@ -54,7 +54,7 @@ pipeline.genesetStatisticSamples <- function()
     spot.gene.ids <- unique.protein.ids
 
     x$GSZ.score <-
-      GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.def.list, sort=F)
+      GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.def.list, sort=FALSE)
 
     if (preferences$geneset.analysis.exact)
     {
@@ -70,10 +70,10 @@ pipeline.genesetStatisticSamples <- function()
       if (length(spot.gene.ids) > 0)
       {
         x$spots[[spot.i]]$GSZ.score <-
-          GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.def.list, sort=F)
+          GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.def.list, sort=FALSE)
 
         x$spots[[spot.i]]$Fisher.p <-
-          GeneSet.Fisher(spot.gene.ids, unique.protein.ids, gs.def.list, sort=T)
+          GeneSet.Fisher(spot.gene.ids, unique.protein.ids, gs.def.list, sort=TRUE)
       } else
       {
         x$spots[[spot.i]]$GSZ.score <- rep(0, length(gs.def.list))
@@ -98,5 +98,5 @@ pipeline.genesetStatisticSamples <- function()
   util.progress(progress.current, progress.max)
 
   ### stop parallel computing ###
-  try({ stopCluster(cl) }, silent=T)
+  try({ stopCluster(cl) }, silent=TRUE)
 }

@@ -46,7 +46,7 @@ pipeline.entropyProfiles <- function()
 
   p.metadata <- apply(metadata, 2, function(x)
   {
-    hist(x, breaks=c(min(x), q25, q75, max(x)), plot=F)$counts / preferences$dim.1stLvlSom^2
+    hist(x, breaks=c(min(x), q25, q75, max(x)), plot=FALSE)$counts / preferences$dim.1stLvlSom^2
   })
 
   q25 <- quantile(metadata * som.result$code.sum[,"nobs"],0.25)
@@ -54,7 +54,7 @@ pipeline.entropyProfiles <- function()
 
   p.metadata.weighted <- apply(metadata * som.result$code.sum[,"nobs"], 2, function(x)
   {
-    hist(x, breaks=c(min(x), q25, q75, max(x)), plot=F)$counts / preferences$dim.1stLvlSom^2
+    hist(x, breaks=c(min(x), q25, q75, max(x)), plot=FALSE)$counts / preferences$dim.1stLvlSom^2
   })
 
   ### Standard sample-related metagene entropy
@@ -68,7 +68,7 @@ pipeline.entropyProfiles <- function()
 
   barplot(H, col=group.colors, main="Standard Metagene Entropy",
           names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2,
-          cex.axis=2, cex.names=1.2, ylim=ylim, xpd=F,
+          cex.axis=2, cex.names=1.2, ylim=ylim, xpd=FALSE,
           border=if (ncol(indata) < 80) "black" else NA)
 
   box()
@@ -94,7 +94,7 @@ pipeline.entropyProfiles <- function()
 
   barplot(H, col=group.colors, main="Weighted Metagene Entropy",
           names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2,
-          cex.axis=2, cex.names=1.2, ylim=ylim, xpd=F,
+          cex.axis=2, cex.names=1.2, ylim=ylim, xpd=FALSE,
           border=if (ncol(indata) < 80) "black" else NA)
 
   box()
@@ -121,7 +121,7 @@ pipeline.entropyProfiles <- function()
 
   barplot(H, col=group.colors, main="Tsallis Metagene Entropy",
           names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2,
-          cex.axis=2, cex.names=1.2, ylim=ylim, xpd=F,
+          cex.axis=2, cex.names=1.2, ylim=ylim, xpd=FALSE,
           border=if (ncol(indata) < 80) "black" else NA)
 
   box()

@@ -21,7 +21,7 @@ pipeline.genesetOverviews <- function()
 
     if (nrow(category.GST.scores) > 60)
     {
-      category.GST.order <- apply(category.GST.scores, 2, order, decreasing=T)
+      category.GST.order <- apply(category.GST.scores, 2, order, decreasing=TRUE)
       category.GST.order <- as.vector(t(category.GST.order))
 
       j <- 1
@@ -56,9 +56,9 @@ pipeline.genesetOverviews <- function()
                  mar=c(10,20), scale="n", zlim=max(max(top.scores),-min(top.scores))*c(-1,1),
                  ColSideColors=group.colors, cexDend=0.6)
 
-    par(new=T, mar=c(3.5,29,35.5,2))
+    par(new=TRUE, mar=c(3.5,29,35.5,2))
 
-    image(matrix(c(1:1000), 1000, 1), axes=F,
+    image(matrix(c(1:1000), 1000, 1), axes=FALSE,
           col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000))
 
     box()
@@ -71,9 +71,9 @@ pipeline.genesetOverviews <- function()
                  mar=c(10,20), scale="n",  zlim=max(max(top.scores),-min(top.scores))*c(-1,1),
                  ColSideColors=group.colors, cexDend=0.6, Colv=NA)
 
-    par(new=T, mar=c(3.5,29,35.5,2))
+    par(new=TRUE, mar=c(3.5,29,35.5,2))
 
-    image(matrix(c(1:1000), 1000, 1), axes=F,
+    image(matrix(c(1:1000), 1000, 1), axes=FALSE,
           col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000))
 
     box()
@@ -99,9 +99,9 @@ pipeline.genesetOverviews <- function()
                  zlim=max(max(top.scores),-min(top.scores))*c(-1,1),
                  ColSideColors=group.colors[o], cexDend=0.6, Colv=NA)
 
-    par(new=T, mar=c(3.5,29,35.5,2) )
+    par(new=TRUE, mar=c(3.5,29,35.5,2) )
 
-    image(matrix(c(1:1000), 1000, 1), axes=F,
+    image(matrix(c(1:1000), 1000, 1), axes=FALSE,
           col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000))
 
     box()
@@ -128,7 +128,7 @@ pipeline.genesetOverviews <- function()
 
     if (nrow(category.fisher.p) > 60)
     {
-      category.fisher.p.order <- apply(category.fisher.p, 2, order, decreasing=F)
+      category.fisher.p.order <- apply(category.fisher.p, 2, order, decreasing=FALSE)
       category.fisher.p.order <- as.vector(t(category.fisher.p.order))
       j <- 1
 
@@ -168,9 +168,9 @@ pipeline.genesetOverviews <- function()
                    col=colorRampPalette(c("gray90","orange","red4"))(1000),
                    mar=c(10,20), scale="n", ColSideColors=group.colors, cexDend=0.6)
 
-      par(new=T, mar=c(3.5,29,35.5,2))
+      par(new=TRUE, mar=c(3.5,29,35.5,2))
 
-      image(matrix(c(1000:1), 1000, 1), axes=F,
+      image(matrix(c(1000:1), 1000, 1), axes=FALSE,
             col=colorRampPalette(c("gray90","orange","red4"))(1000))
 
       box()
@@ -183,8 +183,8 @@ pipeline.genesetOverviews <- function()
                  col=colorRampPalette(c("gray90","orange","red4"))(1000),
                  mar=c(10,20), scale="n", ColSideColors=group.colors, cexDend=0.6, Colv=NA)
 
-    par(new=T, mar=c(3.5,29,35.5,2))
-    image(matrix(c(1000:1), 1000, 1), axes=F,
+    par(new=TRUE, mar=c(3.5,29,35.5,2))
+    image(matrix(c(1000:1), 1000, 1), axes=FALSE,
           col=colorRampPalette(c("gray90","orange","red4"))(1000))
 
     box();
@@ -208,7 +208,7 @@ pipeline.genesetOverviews <- function()
 
     p <- c(all.sets.GSZ.p, all.samples.GSZ.p)
 
-    suppressWarnings({ fdrtool.result <- fdrtool(p, statistic="pvalue", verbose=F, plot=F) })
+    suppressWarnings({ fdrtool.result <- fdrtool(p, statistic="pvalue", verbose=FALSE, plot=FALSE) })
     fdr.spot.list.samples <- fdrtool.result$lfdr
     Fdr.spot.list.samples <- fdrtool.result$qval
     n.0.spot.list.samples <- fdrtool.result$param[1,"eta0"]
@@ -216,7 +216,7 @@ pipeline.genesetOverviews <- function()
 
     par(mar=c(5,6,4,5))
 
-    hist(p, bre=20, freq=F, main="p-values (GSZ)", ylab="", xlab="", las=1,
+    hist(p, bre=20, freq=FALSE, main="p-values (GSZ)", ylab="", xlab="", las=1,
          cex.main=2.5, cex.lab=2, cex.axis=2)
 
     box()
@@ -226,8 +226,8 @@ pipeline.genesetOverviews <- function()
 
     abline(h = n.0.spot.list.samples, col="gray", lwd=2)
 
-    par(new=T)
-    plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=F)
+    par(new=TRUE)
+    plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=FALSE)
     axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=2)
     o <- order(p)
     o <- o[round(seq(1, length(o), length.out=1000))]
@@ -248,7 +248,7 @@ pipeline.genesetOverviews <- function()
   p <- p[p < 0.99]
   p <- c(p, seq(0,1, length.out=length.out))
 
-  suppressWarnings({ fdrtool.result <- fdrtool(p, statistic="pvalue", verbose=F, plot=F) })
+  suppressWarnings({ fdrtool.result <- fdrtool(p, statistic="pvalue", verbose=FALSE, plot=FALSE) })
   fdr.spot.list.samples <- fdrtool.result$lfdr
   Fdr.spot.list.samples <- fdrtool.result$qval
   n.0.spot.list.samples <- fdrtool.result$param[1,"eta0"]
@@ -256,7 +256,7 @@ pipeline.genesetOverviews <- function()
 
   par(mar=c(5,6,4,5))
 
-  hist(p, bre=20, freq=F, main="p-value (Fisher)", ylab="", xlab="", las=1,
+  hist(p, bre=20, freq=FALSE, main="p-value (Fisher)", ylab="", xlab="", las=1,
        cex.main=2.5, cex.lab=2, cex.axis=2)
 
   box()
@@ -266,8 +266,8 @@ pipeline.genesetOverviews <- function()
 
   abline(h=n.0.spot.list.samples, col="gray", lwd=2)
 
-  par(new=T)
-  plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=F)
+  par(new=TRUE)
+  plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=FALSE)
   axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=2)
   o <- order(p)
   lines(p[o], Fdr.spot.list.samples[o], lty=2, lwd=2)

@@ -25,5 +25,5 @@ pipeline.signatureSets <- function()
                         "Signature Sets.csv")
 
   util.info("Writing:", filename)
-  write.table(out, filename, sep=";", row.names=F, col.names=T)
+  write.table(out, filename, sep=";", row.names=FALSE, col.names=TRUE)
 }

@@ -66,8 +66,8 @@ pipeline.differenceAnalyses = function()
   differences.list <- c(preferences$pairwise.comparison.list, differences.list)
 
   util.info("Processing Differences Analyses")
-  dir.create(paste(files.name, "- Results/Summary Sheets - Differences"), showWarnings=F)
-  dir.create(paste(files.name, "- Results/Summary Sheets - Differences/CSV Sheets"), showWarnings=F)
+  dir.create(paste(files.name, "- Results/Summary Sheets - Differences"), showWarnings=FALSE)
+  dir.create(paste(files.name, "- Results/Summary Sheets - Differences/CSV Sheets"), showWarnings=FALSE)
 
   WAD.g.m <<- matrix(NA, nrow(indata), length(differences.list),
                      dimnames=list(rownames(indata), names(differences.list)))
@@ -122,8 +122,8 @@ pipeline.differenceAnalyses = function()
 
     suppressWarnings({
       try.res <- try({
-        fdrtool.result <- fdrtool(t.g.m[,d], verbose=F, plot=F)
-      }, silent=T)
+        fdrtool.result <- fdrtool(t.g.m[,d], verbose=FALSE, plot=FALSE)
+      }, silent=TRUE)
     })
 
     if (class(try.res) != "try-error")

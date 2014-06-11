@@ -70,19 +70,19 @@ opossom.new <- function(preferences)
                           dim.2ndLvlSom = 20,
                           training.extension = 1,
                           rotate.SOM.portraits = 0,
-                          flip.SOM.portraits = F,
+                          flip.SOM.portraits = FALSE,
                           database.dataset = "auto",
                           database.id.type = "",
-                          geneset.analysis = T,
-                          geneset.analysis.exact = F,
+                          geneset.analysis = TRUE,
+                          geneset.analysis.exact = FALSE,
                           max.parallel.cores = detectCores() / 2,
                           spot.threshold.samples = 0.65,
                           spot.coresize.modules = 3,
                           spot.threshold.modules = 0.95,
                           spot.coresize.groupmap = 5,
                           spot.threshold.groupmap = 0.75,
-                          feature.centralization = T,
-                          sample.quantile.normalization = T,
+                          feature.centralization = TRUE,
+                          sample.quantile.normalization = TRUE,
                           pairwise.comparison.list = list())
 
   # Merge user supplied preferences
@@ -137,7 +137,7 @@ opossom.run <- function(env)
 
   util.info("Processing 2nd level Metagene Analysis")
   dir.create(file.path(paste(env$files.name, "- Results"),
-                       "2nd lvl Metagene Analysis"), showWarnings=F)
+                       "2nd lvl Metagene Analysis"), showWarnings=FALSE)
 
   util.call(pipeline.2ndLvlSimilarityAnalysis, env)
   util.call(pipeline.2ndLvlCorrelationAnalysis, env)
@@ -149,7 +149,7 @@ opossom.run <- function(env)
   {
     util.info("Processing Geneset Analysis")
     dir.create(paste(env$files.name, "- Results/Geneset Analysis"),
-               showWarnings=F)
+               showWarnings=FALSE)
 
     util.call(pipeline.genesetStatisticSamples, env)
     util.call(pipeline.genesetStatisticIntegral, env)
@@ -176,7 +176,7 @@ opossom.run <- function(env)
 
   util.info("Processing 3rd level Spot Analysis")
   dir.create(paste(env$files.name, "- Results/3rd lvl Spot Analysis"),
-             showWarnings=F)
+             showWarnings=FALSE)
 
   util.call(pipeline.3rdLvlChromosomalEnrichment, env)
   util.call(pipeline.3rdLvlSummarySheets, env)

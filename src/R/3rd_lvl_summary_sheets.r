@@ -37,7 +37,7 @@ pipeline.3rdLvlSummarySheets <- function()
 
         p <- hist(set.list$spotdata[s,gr.mem],
                   breaks=c(min(set.list$spotdata), low.level, high.level,
-                           max(set.list$spotdata)), plot=F)$counts / length(gr.mem)
+                           max(set.list$spotdata)), plot=FALSE)$counts / length(gr.mem)
         p <- p[p != 0]
 
         H <- - sum(p * log2(p))
@@ -80,18 +80,18 @@ pipeline.3rdLvlSummarySheets <- function()
     par(mar=c(8, 3, 6, 3))
 
     image(matrix(set.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-          axes=F, col = colramp(1000), main=main, cex.main=1.5)
+          axes=FALSE, col = colramp(1000), main=main, cex.main=1.5)
 
     box()
 
     image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-          axes=F, col = "darkgreen", main="Spots", cex.main=1.5)
+          axes=FALSE, col = "darkgreen", main="Spots", cex.main=1.5)
 
     box()
 
-    par(new=T)
+    par(new=TRUE)
 
-    plot(0, type="n", axes=T, xlab="", ylab="", xlim=c(0,preferences$dim.1stLvlSom),
+    plot(0, type="n", axes=TRUE, xlab="", ylab="", xlim=c(0,preferences$dim.1stLvlSom),
          ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i", las=1)
 
     points(do.call(rbind, lapply(set.list$spots, function(x) x$position)), pch=16, cex=3, col="black")
@@ -99,7 +99,7 @@ pipeline.3rdLvlSummarySheets <- function()
     text(do.call(rbind, lapply(set.list$spots, function(x) x$position)), names(set.list$spots), col="white")
 
     ## plot single spot overview
-    layout(matrix(1:18, 6, 3, byrow=T), widths=c(1,4,1.5))
+    layout(matrix(1:18, 6, 3, byrow=TRUE), widths=c(1,4,1.5))
 
     for (i in 1:N.spots)
     {
@@ -109,9 +109,9 @@ pipeline.3rdLvlSummarySheets <- function()
       par(mar=c(0.5,3,0.5,1))
 
       image(matrix(mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=F, col ="darkgreen")
+            axes=FALSE, col ="darkgreen")
 
-      axis(2, 0.95, names(set.list$spots[i]), las=2, tick=F, cex.axis=1.6)
+      axis(2, 0.95, names(set.list$spots[i]), las=2, tick=FALSE, cex.axis=1.6)
       box()
 
       par(mar=c(0.5,3,0.5,1))
@@ -125,14 +125,14 @@ pipeline.3rdLvlSummarySheets <- function()
       abline(h=thresh.global, lty=2, col="gray")
       abline(h=-thresh.global, lty=2, col="gray")
       label.string = as.character(B.spot.group.map.global[i,])
-      label.string = sub("-1", "-", label.string, fixed=T)
+      label.string = sub("-1", "-", label.string, fixed=TRUE)
       label.string = sub("1", "+", label.string)
       label.string = sub("0", ".", label.string)
       label.x = tapply(barplot.x, group.labels, mean)[unique(group.labels)]
       text(label.x, max(set.list$spotdata)*1.2, label.string, col=groupwise.group.colors,cex=2.5)
 
       par(mar=c(0.5,0,0.5,0))
-      plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1), xaxs="i", yaxs="i")
+      plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1), xaxs="i", yaxs="i")
       text(0, 0.9, paste("# samples expressing :", length(samples)), adj=0)
 
       if (length(samples) > 0)
@@ -167,14 +167,14 @@ pipeline.3rdLvlSummarySheets <- function()
     par(mar=c(5,4,4,0))
 
     image(t(map), col=colorRampPalette(c("darkblue","white","darkred"))(1000),
-          main="Spot homogeneity map", zlim=c(-1,1), axes=F, cex.main=2.5)
+          main="Spot homogeneity map", zlim=c(-1,1), axes=FALSE, cex.main=2.5)
 
     box()
     axis(1, seq(0,1,length.out=ncol(map)), colnames(map), las=2, cex.axis=1.1)
     axis(2, seq(0,1,length.out=nrow(map)), rownames(map), las=2, cex.axis=1.1)
 
     par(mar=c(0,0,4,0))
-    plot(0,type="n",axes=F,xlab="",ylab="")
+    plot(0,type="n",axes=FALSE,xlab="",ylab="")
 
     legend("top", c("Overexpressed, homogenous","Overexpressed, heterogenous",
                     "Not differentially expressed","Underexpressed, heterogenous",
@@ -187,23 +187,23 @@ pipeline.3rdLvlSummarySheets <- function()
     layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
     par(mar=c(5, 4, 4, 2))
 
-    image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="mistyrose", axes=F)
-    par(new=T)
+    image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="mistyrose", axes=FALSE)
+    par(new=TRUE)
 
-    plot(0, type="n", xlab="", ylab="", axes=F, xlim=c(0,preferences$dim.1stLvlSom),
+    plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,preferences$dim.1stLvlSom),
          ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i") #, main="Group Association", cex.main=2.5
 
     box()
 
     stars(map, locations=t(sapply(set.list$spots, function(x) x$position)), len=2,
-          draw.segments=T,  scale=F, add=T, col.segments=groupwise.group.colors, labels=NULL)
+          draw.segments=TRUE,  scale=FALSE, add=TRUE, col.segments=groupwise.group.colors, labels=NULL)
 
     text(sapply(set.list$spots, function(x) x$position)[1,],
          sapply(set.list$spots, function(x) x$position)[2,]+preferences$dim.1stLvlSom*0.05,
          names(set.list$spots), col="gray50")
 
     par(mar=c(0,0,4,0))
-    plot(0,type="n",axes=F,xlab="",ylab="")
+    plot(0,type="n",axes=FALSE,xlab="",ylab="")
 
     legend("topleft", legend=unique(group.labels), cex=1.3, col=groupwise.group.colors,
            pch=15, pt.cex=2, bty="n")
@@ -214,16 +214,16 @@ pipeline.3rdLvlSummarySheets <- function()
     layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
     par(mar=c(5, 4, 4, 2))
 
-    image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="lightsteelblue1", axes=F)
-    par(new=T)
+    image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="lightsteelblue1", axes=FALSE)
+    par(new=TRUE)
 
-    plot(0, type="n", xlab="", ylab="", axes=F, xlim=c(0,preferences$dim.1stLvlSom),
+    plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,preferences$dim.1stLvlSom),
          ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i") #, main="Group Association", cex.main=2.5
 
     box()
 
     stars(map, locations=t(sapply(set.list$spots, function(x) x$position)),
-          len=2, draw.segments=T,  scale=F, add=T, col.segments=groupwise.group.colors,
+          len=2, draw.segments=TRUE,  scale=FALSE, add=TRUE, col.segments=groupwise.group.colors,
           labels=NULL)
 
     text(sapply(set.list$spots, function(x) x$position)[1,],
@@ -231,7 +231,7 @@ pipeline.3rdLvlSummarySheets <- function()
          names(set.list$spots), col="gray50")
 
     par(mar=c(0,0,4,0))
-    plot(0,type="n",axes=F,xlab="",ylab="")
+    plot(0,type="n",axes=FALSE,xlab="",ylab="")
 
     legend("topleft", legend=unique(group.labels), cex=1.3, col=groupwise.group.colors,
            pch=15, pt.cex=2, bty="n")
@@ -268,11 +268,11 @@ pipeline.3rdLvlSummarySheets <- function()
 
       barplot(spot.group.assoc[,ncol(spot.group.assoc):1],
               main="Group Association", cex.main=2.5, cex.axis=2, cex.names=1,
-              col=groupwise.group.colors, horiz=T, las=1)
+              col=groupwise.group.colors, horiz=TRUE, las=1)
 
       par(mar=c(5, 1, 4, 2))
 
-      plot(0, main="< #spots >", cex.main=2.5, type="n", axes=F, xlab="",
+      plot(0, main="< #spots >", cex.main=2.5, type="n", axes=FALSE, xlab="",
            ylab="", xlim=c(0,1), ylim=c(0,1), xaxs="i", yaxs="i")
 
       legend("topleft",
@@ -282,9 +282,9 @@ pipeline.3rdLvlSummarySheets <- function()
       layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
       par(mar=c(5, 4, 4, 2))
 
-      image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=F)
-      par(new=T)
-      plot(0, type="n", xlab="", ylab="", axes=F, xlim=c(0,preferences$dim.1stLvlSom),
+      image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=FALSE)
+      par(new=TRUE)
+      plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,preferences$dim.1stLvlSom),
            ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i") #, main="Group Association", cex.main=2.5
 
       box()
@@ -292,12 +292,12 @@ pipeline.3rdLvlSummarySheets <- function()
       for (i in 1:length(set.list$spots))
       {
         stars(t(spot.group.assoc[,i]), locations=set.list$spots[[i]]$position,
-              len=2, draw.segments=T,  scale=F, add=T, col.segments=groupwise.group.colors)
+              len=2, draw.segments=TRUE,  scale=FALSE, add=TRUE, col.segments=groupwise.group.colors)
 
         par(fg="gray", lty=2)
 
         stars(t(c(0.5)), locations=set.list$spots[[i]]$position, len=2,
-              draw.segments=T,  scale=F, add=T, col.segments=NA)
+              draw.segments=TRUE,  scale=FALSE, add=TRUE, col.segments=NA)
 
         par(fg="black", lty="solid")
 
@@ -307,7 +307,7 @@ pipeline.3rdLvlSummarySheets <- function()
 
       par(mar=c(5, 1, 4, 2))
 
-      plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1),
+      plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1),
            xaxs="i", yaxs="i")
 
       legend("topleft", legend=unique(group.labels), cex=1.3, col=groupwise.group.colors,
@@ -320,11 +320,11 @@ pipeline.3rdLvlSummarySheets <- function()
 
       barplot(t(spot.group.assoc)[,nrow(spot.group.assoc):1],
               main="Spot Association", cex.main=2.5, cex.axis=2, cex.names=0.8,
-              col=colramp(N.spots), horiz=T, las=1)
+              col=colramp(N.spots), horiz=TRUE, las=1)
 
       par(mar=c(5, 1, 4, 2))
 
-      plot(0, main="#groups", cex.main=2.5, type="n", axes=F, xlab="", ylab="",
+      plot(0, main="#groups", cex.main=2.5, type="n", axes=FALSE, xlab="", ylab="",
            xlim=c(0,1), ylim=c(0,1), xaxs="i", yaxs="i")
 
       legend("topleft",
@@ -362,11 +362,11 @@ pipeline.3rdLvlSummarySheets <- function()
       barplot(t(sig.gs.types)[,nrow(sig.gs.types):1], main="%Significant Genesets",
               cex.main=2.5, cex.axis=2, cex.names=1,
               col=colramp(length(unique(gs.def.list.categories))),
-              horiz=T, las=1)
+              horiz=TRUE, las=1)
 
       par(mar=c(5, 1, 4, 2))
 
-      plot(0, main="", cex.main=2.5, type="n", axes=F, xlab="", ylab="",
+      plot(0, main="", cex.main=2.5, type="n", axes=FALSE, xlab="", ylab="",
            xlim=c(0,1), ylim=c(0,1), xaxs="i", yaxs="i")
 
       legend("topleft", legend=unique(gs.def.list.categories), cex=1.3,
@@ -378,10 +378,10 @@ pipeline.3rdLvlSummarySheets <- function()
       layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
       par(mar=c(5, 4, 4, 2))
 
-      image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=F)
-      par(new=T)
+      image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=FALSE)
+      par(new=TRUE)
 
-      plot(0, type="n", xlab="", ylab="", axes=F, xlim=c(0,preferences$dim.1stLvlSom),
+      plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,preferences$dim.1stLvlSom),
            ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i") #, main="Group Association", cex.main=2.5
 
       box()
@@ -389,13 +389,13 @@ pipeline.3rdLvlSummarySheets <- function()
       for (i in 1:length(set.list$spots))
       {
         stars(t(sig.gs.types[i,]), locations=set.list$spots[[i]]$position, len=2,
-              draw.segments=T,  scale=F, add=T,
+              draw.segments=TRUE,  scale=FALSE, add=TRUE,
               col.segments=colramp(length(unique(gs.def.list.categories))))
 
         par(fg="gray", lty=2)
 
         stars(t(c(0.5)), locations=set.list$spots[[i]]$position, len=2,
-              draw.segments=T,  scale=F, add=T, col.segments=NA)
+              draw.segments=TRUE,  scale=FALSE, add=TRUE, col.segments=NA)
 
         par(fg="black", lty="solid")
 
@@ -406,7 +406,7 @@ pipeline.3rdLvlSummarySheets <- function()
 
       par(mar=c(5, 1, 4, 2))
 
-      plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1),
+      plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1),
            xaxs="i", yaxs="i")
 
       legend("topleft",

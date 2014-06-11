@@ -6,7 +6,7 @@ pipeline.geneLists <- function()
 
   for (dirname in dirnames)
   {
-    dir.create(dirname, showWarnings=F)
+    dir.create(dirname, showWarnings=FALSE)
   }
 
   #### Global Gene Lists ####
@@ -55,7 +55,7 @@ pipeline.geneLists <- function()
     writeLines("", f);  writeLines("", f);  writeLines("", f)
     writeLines("Gene Statistics", f)
     writeLines("", f)
-    write.csv2(out, file=f, row.names=F)
+    write.csv2(out, file=f, row.names=FALSE)
 
     close(f)
   }
@@ -81,7 +81,7 @@ pipeline.geneLists <- function()
       spot.metagenes <- spot.list.samples[[m]]$spots[[spot.i]]$metagenes
 
       p <- p.g.m[spot.genes, m]
-      fdrtool.result <- suppressWarnings(fdrtool(p, statistic="pvalue", verbose=F, plot=F))
+      fdrtool.result <- suppressWarnings(fdrtool(p, statistic="pvalue", verbose=FALSE, plot=FALSE))
       fdr.spot <- fdrtool.result$lfdr
       Fdr.spot <- fdrtool.result$qval
 
@@ -142,7 +142,7 @@ pipeline.geneLists <- function()
       writeLines("", f);  writeLines("", f);  writeLines("", f)
       writeLines("Gene Statistics", f)
       writeLines("", f)
-      write.csv2(out, file=f, row.names=F)
+      write.csv2(out, file=f, row.names=FALSE)
 
       close(f)
     }
@@ -157,8 +157,8 @@ pipeline.geneLists <- function()
     {
       gs.info <- spot.list.samples[[m]]$GSZ.score
 
-      pos.gs.info <- round(sort(gs.info[which(gs.info>0)],decreasing=T), 8)
-      neg.gs.info <- round(sort(gs.info[which(gs.info<0)],decreasing=F), 8)
+      pos.gs.info <- round(sort(gs.info[which(gs.info>0)],decreasing=TRUE), 8)
+      neg.gs.info <- round(sort(gs.info[which(gs.info<0)],decreasing=FALSE), 8)
 
       pos.gs.info <- c(pos.gs.info, rep(0, max(0, length(neg.gs.info) - length(pos.gs.info))))
       neg.gs.info <- c(neg.gs.info, rep(0, max(0, length(pos.gs.info) - length(neg.gs.info))))
@@ -171,7 +171,7 @@ pipeline.geneLists <- function()
                             "GSZ."=neg.gs.info)
 
       basename <- paste(make.names(colnames(indata)[m]), ".csv", sep="")
-      write.csv2(gs.info, file.path(dirnames["set"], basename), row.names=F)
+      write.csv2(gs.info, file.path(dirnames["set"], basename), row.names=FALSE)
     }
   }
 }

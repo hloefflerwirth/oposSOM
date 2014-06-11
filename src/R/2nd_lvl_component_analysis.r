@@ -17,23 +17,23 @@ pipeline.2ndLvlComponentAnalysis <- function()
       scatterplot3d(ICA.metagenes,
                     cex.symbols=4*(1-((z-min(z))/(max(z)-min(z))))+2,
                     color=group.colors,
-                    pch=16, tick.marks=F, xlab="", ylab="", zlab="",
+                    pch=16, tick.marks=FALSE, xlab="", ylab="", zlab="",
                     main=metagene.filter.list[[i]]$n, mar=c(1,1,1,1))
 
-      par(new=T)
-      plot(0,type="n",axes=F,xlab="",ylab="")
+      par(new=TRUE)
+      plot(0,type="n",axes=FALSE,xlab="",ylab="")
       text(0.75, 0.7485, "Component 2", cex=1, srt=38)
       mtext("component 1", 1, cex=0.8, line=-1, at=0.84)
       mtext("component 3", 2, cex=0.8, line=-1, at=-0.3)
-      par(new=T)
+      par(new=TRUE)
 
       scatterplot3d(ICA.metagenes,
                     cex.symbols=4*(1-((z-min(z))/(max(z)-min(z))))+2,
-                    color="black", pch=1, tick.marks=F, xlab="", ylab="",
-                    zlab="", axis=F, grid=F, mar=c(1,1,1,1))
+                    color="black", pch=1, tick.marks=FALSE, xlab="", ylab="",
+                    zlab="", axis=FALSE, grid=FALSE, mar=c(1,1,1,1))
 
-      par(new=T)
-      plot(0,type="n", axes=F, xlab="", ylab="")
+      par(new=TRUE)
+      plot(0,type="n", axes=FALSE, xlab="", ylab="")
 
       legend("bottomright", as.character(unique(group.labels)), cex=0.5,
              text.col=groupwise.group.colors, bg="white")
@@ -42,7 +42,7 @@ pipeline.2ndLvlComponentAnalysis <- function()
       par(mar=c(0.1,3,1,3))
 
       plot(ICA.metagenes[,1], ICA.metagenes[,3], type="p", pch=16,
-           col=group.colors, cex=3, axes=F, xlab="", ylab="",
+           col=group.colors, cex=3, axes=FALSE, xlab="", ylab="",
            main=metagene.filter.list[[i]]$n, cex.main=0.8)
 
       mtext("component 3",2,cex=0.8)
@@ -54,7 +54,7 @@ pipeline.2ndLvlComponentAnalysis <- function()
       par(mar=c(1,3,0.1,3))
 
       plot(ICA.metagenes[,1], ICA.metagenes[,2], type="p", pch=16,
-           col=group.colors, cex=3, axes=F, xlab="", ylab="", main="")
+           col=group.colors, cex=3, axes=FALSE, xlab="", ylab="", main="")
 
       mtext("component 1",1,cex=0.8)
       mtext("component 2",2,cex=0.8)
@@ -76,7 +76,7 @@ pipeline.2ndLvlComponentAnalysis <- function()
       points(ICA.metagenes[,1], ICA.metagenes[,2], pch=1, col="black", cex=3)
       text(ICA.metagenes[,1], ICA.metagenes[,2], 1:ncol(indata), col="gray20", cex=0.6)
       box()
-    }, silent=T)
+    }, silent=TRUE)
   }
 
   dev.off()

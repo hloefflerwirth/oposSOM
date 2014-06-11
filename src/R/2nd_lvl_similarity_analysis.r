@@ -37,28 +37,28 @@ pipeline.2ndLvlSimilarityAnalysis <- function()
   if (preferences$dim.1stLvlSom^2 > 1000)
   {
     metagene.filter.list[[length(metagene.filter.list)+1]] <<-
-      list(s=order(apply(abs(metadata), 1, max), decreasing=T)[1:1000],
+      list(s=order(apply(abs(metadata), 1, max), decreasing=TRUE)[1:1000],
            n="High Expression: 1000 Metagenes")
   }
 
   if (preferences$dim.1stLvlSom^2 > 100)
   {
     metagene.filter.list[[length(metagene.filter.list)+1]] <<-
-      list(s=order(apply(abs(metadata), 1, max), decreasing=T)[1:100],
+      list(s=order(apply(abs(metadata), 1, max), decreasing=TRUE)[1:100],
            n="High Expression: 100 Metagenes")
   }
 
   if (preferences$dim.1stLvlSom^2 > 1000)
   {
     metagene.filter.list[[length(metagene.filter.list)+1]] <<-
-      list(s=order(apply(abs(metadata), 1, var), decreasing=T)[1:1000],
+      list(s=order(apply(abs(metadata), 1, var), decreasing=TRUE)[1:1000],
            n="Variance: 1000 Metagenes")
   }
 
   if (preferences$dim.1stLvlSom^2 > 100)
   {
     metagene.filter.list[[length(metagene.filter.list)+1]] <<-
-      list(s=order(apply(abs(metadata), 1, var), decreasing=T)[1:100],
+      list(s=order(apply(abs(metadata), 1, var), decreasing=TRUE)[1:100],
            n="Variance: 100 Metagenes")
   }
 
@@ -83,8 +83,8 @@ pipeline.2ndLvlSimilarityAnalysis <- function()
     heatmap.wrap(x=s, col=colramp(1000), main=metagene.filter.list[[i]]$n,
                  margins=c(10, 5), scale="n", labRow=NA, ColSideColors=group.colors)
 
-    par(new=T)
-    plot(0,type="n", axes=F, xlab="", ylab="")
+    par(new=TRUE)
+    plot(0,type="n", axes=FALSE, xlab="", ylab="")
 
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
            text.col=groupwise.group.colors, bg="white")
@@ -92,8 +92,8 @@ pipeline.2ndLvlSimilarityAnalysis <- function()
     heatmap.wrap(x=s, col=colramp(1000), main=metagene.filter.list[[i]]$n,
                  margins=c(10, 5), scale="n", labRow=NA, ColSideColors=group.colors, Colv=NA)
 
-    par(new=T)
-    plot(0,type="n", axes=F, xlab="", ylab="")
+    par(new=TRUE)
+    plot(0,type="n", axes=FALSE, xlab="", ylab="")
 
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
            text.col=groupwise.group.colors, bg="white")

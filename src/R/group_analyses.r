@@ -6,12 +6,12 @@ pipeline.groupAnalysis <- function()
   }
 
   util.info("Processing Group-centered Analyses")
-  dir.create(paste(files.name, "- Results/Summary Sheets - Groups"), showWarnings=F)
-  dir.create(paste(files.name, "- Results/Summary Sheets - Groups/CSV Sheets"), showWarnings=F)
+  dir.create(paste(files.name, "- Results/Summary Sheets - Groups"), showWarnings=FALSE)
+  dir.create(paste(files.name, "- Results/Summary Sheets - Groups/CSV Sheets"), showWarnings=FALSE)
 
   if (preferences$geneset.analysis)
   {
-    dir.create(paste(files.name, "- Results/Summary Sheets - Groups/Geneset Analysis"), showWarnings=F)
+    dir.create(paste(files.name, "- Results/Summary Sheets - Groups/Geneset Analysis"), showWarnings=FALSE)
     util.call(pipeline.groupSpecificGenesets, environment())
   }
 

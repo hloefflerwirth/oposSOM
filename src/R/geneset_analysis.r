@@ -1,6 +1,6 @@
 
 
-# GeneSet.HG = function(list.symbols, all.gene.symbols, gs.def.list, sort=F)
+# GeneSet.HG = function(list.symbols, all.gene.symbols, gs.def.list, sort=FALSE)
 # {
 #
 #   list.symbols = list.symbols[!is.na(list.symbols)]
@@ -44,7 +44,7 @@
 #
 # }
 
-GeneSet.Fisher <- function(list.ids, all.ids, gs.def.list, sort=F, cluster=NULL)
+GeneSet.Fisher <- function(list.ids, all.ids, gs.def.list, sort=FALSE, cluster=NULL)
 {
   list.ids <- list.ids[!is.na(list.ids)]
 
@@ -82,7 +82,7 @@ GeneSet.Fisher <- function(list.ids, all.ids, gs.def.list, sort=F, cluster=NULL)
   return(p.values[o])
 }
 
-GeneSet.GSZ <- function(list.symbols, all.gene.statistic, gs.def.list, sort=F, N.min.list=10, N.min.set=10)
+GeneSet.GSZ <- function(list.symbols, all.gene.statistic, gs.def.list, sort=FALSE, N.min.list=10, N.min.set=10)
 {
   N <- length(all.gene.statistic)
   N.list <- length(list.symbols)
@@ -107,10 +107,10 @@ GeneSet.GSZ <- function(list.symbols, all.gene.statistic, gs.def.list, sort=F, N
     set.symbols <- x$Genes
 
     N.set <- length(set.symbols)
-    N.plus <- sum(all.list.symbol.dummy[set.symbols], na.rm=T)
+    N.plus <- sum(all.list.symbol.dummy[set.symbols], na.rm=TRUE)
     #exact: N.plus <- length(intersect(list.symbols, set.symbols))
 
-    T.plus <- sum(all.gene.statistic[set.symbols], na.rm=T)
+    T.plus <- sum(all.gene.statistic[set.symbols], na.rm=TRUE)
     #exact: T.plus <- sum(all.gene.statistic[intersect(list.symbols, set.symbols)])
 
     T.minus <- sum(all.gene.statistic) - T.plus
@@ -145,7 +145,7 @@ GeneSet.GSZ <- function(list.symbols, all.gene.statistic, gs.def.list, sort=F, N
 
   if (sort)
   {
-    o <- order(GSZ, decreasing=T)
+    o <- order(GSZ, decreasing=TRUE)
     GSZ <- GSZ[o]
   }
 

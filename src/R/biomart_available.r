@@ -21,7 +21,7 @@ biomart.available <- function()
                         "ensembl_gene_id",
                         test.rownames,
                         mart=mart)
-  }, silent=T)
+  }, silent=TRUE)
 
   return(is.data.frame(test.table) && nrow(test.table) > 0)
 }

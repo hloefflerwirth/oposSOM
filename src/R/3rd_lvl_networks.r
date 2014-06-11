@@ -27,7 +27,7 @@ pipeline.3rdLvlNetworks <- function()
       environment(pipeline.3rdLvlNetworksWto) <- environment()
       pipeline.3rdLvlNetworksWto(set.list, sample.spot.matrix)
 
-      # plot single spot MST
+      # plot single spot MSTRUE
       mean.spot.expression <- matrix(NA, ncol(indata), 0)
 
       for (i in 1:length(set.list$spots))
@@ -47,7 +47,7 @@ pipeline.3rdLvlNetworks <- function()
 
       if (max(adj.matrix) > 0)
       {
-        g <- graph.adjacency(adj.matrix, weighted=T,  mode="undirected")
+        g <- graph.adjacency(adj.matrix, weighted=TRUE,  mode="undirected")
 
         layout <- layout.fruchterman.reingold(g)
         layout <- layout.norm(layout, xmin=-1, xmax=1, ymin=-1, ymax=1)
@@ -106,7 +106,7 @@ pipeline.3rdLvlNetworks <- function()
 
       adj.matrix <- cor(mean.spot.expression) * -1
 
-      g <- graph.adjacency(adj.matrix, weighted=T, mode="undirected")
+      g <- graph.adjacency(adj.matrix, weighted=TRUE, mode="undirected")
       stg <- minimum.spanning.tree(g)
 
       layout <- layout.kamada.kawai(stg)
@@ -169,7 +169,7 @@ pipeline.3rdLvlNetworks <- function()
         text(-1.65, 1.1, "Correlation Spanning Tree", adj=0, cex=2)
         text(-1.65, 1, "absolute numbers", adj=0)
 
-        par(new=T)
+        par(new=TRUE)
 
         tbl <- matrix(0, N.spots, length(unique(group.labels)))
         colnames(tbl) <- unique(group.labels)
@@ -185,8 +185,8 @@ pipeline.3rdLvlNetworks <- function()
         tbl <- tbl / max(tbl)
 
         stars(tbl, locations=layout, xlim=c(-1.1,1.1), ylim=c(-1.1,1.1),
-              len=0.1, draw.segments=T, col.segments=groupwise.group.colors,
-              key.loc=c(1.3,-1.1), scale=F)
+              len=0.1, draw.segments=TRUE, col.segments=groupwise.group.colors,
+              key.loc=c(1.3,-1.1), scale=FALSE)
 
         plot(stg, layout=layout, vertex.size=0, vertex.label="",
              xlim=c(-1.1,1.1), ylim=c(-1.1,1.1))
@@ -194,7 +194,7 @@ pipeline.3rdLvlNetworks <- function()
         text(-1.65, 1.1, "Correlation Spanning Tree", adj=0, cex=2)
         text(-1.65, 1, "relative to category size", adj=0)
 
-        par(new=T)
+        par(new=TRUE)
 
         tbl <- matrix(0, N.spots, length(unique(group.labels)))
         colnames(tbl) <- unique(group.labels)
@@ -213,8 +213,8 @@ pipeline.3rdLvlNetworks <- function()
         }
 
         stars(tbl, locations=layout, xlim=c(-1.1,1.1), ylim=c(-1.1,1.1),
-              len=0.1, draw.segments=T, col.segments=groupwise.group.colors,
-              key.loc=c(1.3,-1.1), scale=F)
+              len=0.1, draw.segments=TRUE, col.segments=groupwise.group.colors,
+              key.loc=c(1.3,-1.1), scale=FALSE)
       }
     }
   }

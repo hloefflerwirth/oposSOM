@@ -23,7 +23,7 @@ pipeline.groupAssignment <- function()
 
   bootstrap.res <- parLapply(cl, 1:n.bootstrap, function(i)
   {
-    resample <- sample(colnames(metadata), ncol(metadata), replace=T)
+    resample <- sample(colnames(metadata), ncol(metadata), replace=TRUE)
 
     suppressWarnings({
       km <- kmeans(t(metadata[,resample]),

@@ -76,23 +76,23 @@ pipeline.cancerHallmarks <- function()
 
   hallmark.GSZ.matrix <- unlist(parSapply(cl, 1:ncol(indata), function(m)
   {
-    return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[,m], hallmark.sets.list, sort=F))
+    return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[,m], hallmark.sets.list, sort=FALSE))
   }))
 
   hallmark.spot.enrichment <- unlist(parSapply(cl, spot.list.overexpression$spots, function(x)
   {
     spot.ens.ids <- unique(na.omit(gene.ids[x$genes]))
-    return(GeneSet.Fisher(spot.ens.ids, unique.protein.ids, hallmark.sets.list, sort=F))
+    return(GeneSet.Fisher(spot.ens.ids, unique.protein.ids, hallmark.sets.list, sort=FALSE))
   }))
 
-  try({ stopCluster(cl) }, silent=T)
+  try({ stopCluster(cl) }, silent=TRUE)
 
   ### Output
   filename <- file.path(paste(files.name, "- Results"), "Geneset Analysis", "0verview Cancer Hallmarks.pdf")
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 29.7/2.54)
 
-  layout(matrix(c(1:8), 4, byrow=T), widths=c(3, 1))
+  layout(matrix(c(1:8), 4, byrow=TRUE), widths=c(3, 1))
 
   for (i in 1:nrow(hallmark.GSZ.matrix))
   {
@@ -115,16 +115,16 @@ pipeline.cancerHallmarks <- function()
     par(mar=c(5,1,4,1))
 
     lim <- c(1,preferences$dim.1stLvlSom) + preferences$dim.1stLvlSom*0.01*c(-1,1)
-    colr <- colramp(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=T)) /
-                          max(1, (max(n.map,na.rm=T) - min(n.map,na.rm=T))) *
+    colr <- colramp(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=TRUE)) /
+                          max(1, (max(n.map,na.rm=TRUE) - min(n.map,na.rm=TRUE))) *
                           999 + 1]
 
-    plot(which(!is.na(n.map), arr.ind=T), xlim=lim, ylim=lim, pch=16,
-         axes=F, xlab="",ylab="", xaxs="i", yaxs="i", col=colr,
-         cex=0.5 + na.omit(as.vector(n.map)) / max(n.map,na.rm=T) * 2.8)
+    plot(which(!is.na(n.map), arr.ind=TRUE), xlim=lim, ylim=lim, pch=16,
+         axes=FALSE, xlab="",ylab="", xaxs="i", yaxs="i", col=colr,
+         cex=0.5 + na.omit(as.vector(n.map)) / max(n.map,na.rm=TRUE) * 2.8)
 
     title(sub=paste("# features =", length(hallmark.sets.ids[[i]]), ", max =",
-                    max(n.map,na.rm=T)),line=0)
+                    max(n.map,na.rm=TRUE)),line=0)
 
     box()
   }
@@ -145,7 +145,7 @@ pipeline.cancerHallmarks <- function()
             Colv=NA, Rowv=NA, scale="n", mar=c(10,10),
             main="Hallmark spot enrichment", margins=c(5,13))
 
-    par(new=T, mar=c(5,0,0,3))
+    par(new=TRUE, mar=c(5,0,0,3))
     frame()
 
     legend("bottomright", c("p < 0.1","p < 0.01","p < 0.001","p < 0.00001"),

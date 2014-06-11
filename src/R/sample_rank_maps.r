@@ -7,7 +7,7 @@ pipeline.sampleRankMaps <- function()
 
   # FoldChange Rank
   par(mar=c(0, 0, 0, 0), mfrow=c(1, 1))
-  plot(0, type="n", xlab="", ylab="", axes=T)
+  plot(0, type="n", xlab="", ylab="", axes=TRUE)
   text(1, 0.3, "<FoldChange Rank> Maps", cex=2)
 
   par(mfrow=c(7, 12))
@@ -16,7 +16,7 @@ pipeline.sampleRankMaps <- function()
 
   for (gl in 1:length(unique(group.labels)))
   {
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1))
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1))
 
     if (length(unique(group.labels)) > 1)
     {
@@ -24,7 +24,7 @@ pipeline.sampleRankMaps <- function()
             adj=0, col=groupwise.group.colors[gl])
     }
 
-    par(new=T)
+    par(new=TRUE)
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
@@ -34,7 +34,7 @@ pipeline.sampleRankMaps <- function()
       mean.rank.full[names(mean.rank)] <- mean.rank
 
       image(matrix(mean.rank.full, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=F, col = colramp(1000))
+            axes=FALSE, col = colramp(1000))
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
       box()
@@ -45,7 +45,7 @@ pipeline.sampleRankMaps <- function()
     {
       for (j in 1:(12 - count.col %% 12))
       {
-        plot(0, type="n", axes=F, xlab="", ylab="")
+        plot(0, type="n", axes=FALSE, xlab="", ylab="")
         count.col <- count.col + 1
       }
     }
@@ -53,7 +53,7 @@ pipeline.sampleRankMaps <- function()
 
   # WAD Rank
   par(mar=c(0, 0, 0, 0), mfrow=c(1, 1))
-  plot(0, type="n", xlab="", ylab="", axes=T)
+  plot(0, type="n", xlab="", ylab="", axes=TRUE)
   text(1, 0.3, "<WAD Rank> Maps", cex=2)
 
   par(mfrow=c(7, 12))
@@ -63,7 +63,7 @@ pipeline.sampleRankMaps <- function()
 
   for (gl in 1:length(unique(group.labels)))
   {
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1))
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1))
 
     if (length(unique(group.labels)) > 1)
     {
@@ -71,7 +71,7 @@ pipeline.sampleRankMaps <- function()
             adj=0, col=groupwise.group.colors[gl])
     }
 
-    par(new=T)
+    par(new=TRUE)
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
@@ -81,7 +81,7 @@ pipeline.sampleRankMaps <- function()
       mean.rank.full[names(mean.rank)] <- mean.rank
 
       image(matrix(mean.rank.full, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=F, col = colramp(1000))
+            axes=FALSE, col = colramp(1000))
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
       box()
@@ -92,7 +92,7 @@ pipeline.sampleRankMaps <- function()
     {
       for (j in 1:(12 - count.col %% 12))
       {
-        plot(0, type="n", axes=F, xlab="", ylab="")
+        plot(0, type="n", axes=FALSE, xlab="", ylab="")
         count.col <- count.col + 1
       }
     }
@@ -101,7 +101,7 @@ pipeline.sampleRankMaps <- function()
   # Shrinkage-t Rank
   suppressWarnings({
     par(mar=c(0, 0, 0, 0), mfrow=c(1, 1))
-    plot(0, type="n", xlab="", ylab="", axes=T)
+    plot(0, type="n", xlab="", ylab="", axes=TRUE)
     text(1, 0.3, "<Shrinkage-t Rank> Maps", cex=2)
 
     par(mfrow=c(7, 12))
@@ -111,7 +111,7 @@ pipeline.sampleRankMaps <- function()
 
     for (gl in 1:length(unique(group.labels)))
     {
-      plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1))
+      plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1))
 
       if (length(unique(group.labels)) > 1)
       {
@@ -119,7 +119,7 @@ pipeline.sampleRankMaps <- function()
               adj=0, col=groupwise.group.colors[gl])
       }
 
-      par(new=T)
+      par(new=TRUE)
 
       for (j in which(group.labels == unique(group.labels)[gl]))
       {
@@ -129,7 +129,7 @@ pipeline.sampleRankMaps <- function()
         mean.rank.full[names(mean.rank)] <- mean.rank
 
         image(matrix(mean.rank.full, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-              axes=F, col = colramp(1000))
+              axes=FALSE, col = colramp(1000))
 
         title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
         box()
@@ -140,7 +140,7 @@ pipeline.sampleRankMaps <- function()
       {
         for (j in 1:(12 - count.col %% 12))
         {
-          plot(0, type="n", axes=F, xlab="", ylab="")
+          plot(0, type="n", axes=FALSE, xlab="", ylab="")
           count.col <- count.col + 1
         }
       }

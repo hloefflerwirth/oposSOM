@@ -41,7 +41,7 @@ pipeline.topologyProfiles <- function()
   ### Spot number distribution ###
   n.spots.groups <- sapply(tapply(n.spots, group.labels, c), function(x)
   {
-    hist(x, breaks=c(0:max(n.spots)), plot=F)$counts
+    hist(x, breaks=c(0:max(n.spots)), plot=FALSE)$counts
   })
 
   if (is.vector(n.spots.groups))

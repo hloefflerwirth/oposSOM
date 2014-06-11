@@ -125,17 +125,17 @@ pipeline.detectSpotsSamples <- function()
     spot.i <- 0
     spot.updown <- c()
 
-    while (nrow(which(mask == -1, arr.ind=T)) > 0)
+    while (nrow(which(mask == -1, arr.ind=TRUE)) > 0)
     {
-      start.pix <- which(mask == -1, arr.ind=T)[1,]
+      start.pix <- which(mask == -1, arr.ind=TRUE)[1,]
       spot.i <- spot.i + 1
       mask <- col.pix(mask, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
       spot.updown  <- c(spot.updown, "overexpressed")
     }
 
-    while (nrow(which(mask == -2, arr.ind=T)) > 0)
+    while (nrow(which(mask == -2, arr.ind=TRUE)) > 0)
     {
-      start.pix <- which(mask == -2, arr.ind=T)[1,]
+      start.pix <- which(mask == -2, arr.ind=TRUE)[1,]
       spot.i <- spot.i + 1
       mask <- col.pix(mask, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
       spot.updown <- c(spot.updown, "underexpressed")

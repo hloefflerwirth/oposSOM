@@ -31,7 +31,7 @@ pipeline.detectEnsemblDataset <- function()
         biomart.table <-
           getBM(c(id, "external_gene_id"), id,
                 rownames(indata)[seq(1,nrow(indata),length.out=100)],
-                mart, checkFilters=F)
+                mart, checkFilters=FALSE)
 
         if (nrow(biomart.table) > 0)
         {
@@ -41,7 +41,7 @@ pipeline.detectEnsemblDataset <- function()
           preferences$database.id.type <<- id
           return()
         }
-      }, silent=T)
+      }, silent=TRUE)
     }
   }
 }

@@ -78,7 +78,7 @@ pipeline.chromosomeExpressionReports <- function()
 
   sample.chr.GSZ <- do.call(cbind, parLapply(cl, 1:ncol(indata), function(m)
   {
-    return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[,m], chr.gs.list, sort=F))
+    return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[,m], chr.gs.list, sort=FALSE))
   }))
 
   dimnames(sample.chr.GSZ) <- list(names(chr.gs.list), colnames(indata))
@@ -87,14 +87,14 @@ pipeline.chromosomeExpressionReports <- function()
 
   sample.chr.pq.GSZ <- do.call(cbind, parLapply(cl, 1:ncol(indata), function(m)
   {
-    return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[,m], chr.pq.gs.list, sort=F))
+    return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[,m], chr.pq.gs.list, sort=FALSE))
   }))
 
   dimnames(sample.chr.pq.GSZ) <- list(names(chr.pq.gs.list), colnames(indata))
 
   util.progress.terminate()
 
-  try({ stopCluster(cl) }, silent=T)
+  try({ stopCluster(cl) }, silent=TRUE)
 
   # Heatmap Outputs
   filename <- file.path(paste(files.name, "- Results"),
@@ -110,9 +110,9 @@ pipeline.chromosomeExpressionReports <- function()
                zlim=max(max(sample.chr.GSZ),-min(sample.chr.GSZ))*c(-1,1),
                ColSideColors=group.colors, cexDend=0.6)
 
-  par(new=T, mar=c(3.5,29,35.5,2))
+  par(new=TRUE, mar=c(3.5,29,35.5,2))
 
-  image(matrix(c(1:1000), 1000, 1), axes=F,
+  image(matrix(c(1:1000), 1000, 1), axes=FALSE,
         col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000))
 
   box()
@@ -127,9 +127,9 @@ pipeline.chromosomeExpressionReports <- function()
                mar=c(10,20), scale="n", zlim=max(max(sample.chr.GSZ),-min(sample.chr.GSZ))*c(-1,1),
                ColSideColors=group.colors, cexDend=0.6, Colv=NA)
 
-  par(new=T, mar=c(3.5,29,35.5,2))
+  par(new=TRUE, mar=c(3.5,29,35.5,2))
 
-  image(matrix(c(1:1000), 1000, 1), axes=F,
+  image(matrix(c(1:1000), 1000, 1), axes=FALSE,
         col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000))
 
   box()
@@ -144,9 +144,9 @@ pipeline.chromosomeExpressionReports <- function()
                mar=c(10,20), scale="n", zlim=max(max(sample.chr.GSZ),-min(sample.chr.GSZ))*c(-1,1),
                ColSideColors=group.colors, cexDend=0.6, Colv=NA, Rowv=NA)
 
-  par(new=T, mar=c(3.5,29,35.5,2))
+  par(new=TRUE, mar=c(3.5,29,35.5,2))
 
-  image(matrix(c(1:1000), 1000, 1), axes=F,
+  image(matrix(c(1:1000), 1000, 1), axes=FALSE,
         col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000))
 
   box()
@@ -161,9 +161,9 @@ pipeline.chromosomeExpressionReports <- function()
                mar=c(10,20), scale="n", zlim=max(max(sample.chr.pq.GSZ),-min(sample.chr.pq.GSZ))*c(-1,1),
                ColSideColors=group.colors, cexDend=0.6)
 
-  par(new=T, mar=c(3.5,29,35.5,2))
+  par(new=TRUE, mar=c(3.5,29,35.5,2))
 
-  image(matrix(c(1:1000), 1000, 1), axes=F,
+  image(matrix(c(1:1000), 1000, 1), axes=FALSE,
         col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000))
 
   box()
@@ -178,9 +178,9 @@ pipeline.chromosomeExpressionReports <- function()
                mar=c(10,20), scale="n", zlim=max(max(sample.chr.pq.GSZ),-min(sample.chr.pq.GSZ))*c(-1,1),
                ColSideColors=group.colors, cexDend=0.6, Colv=NA)
 
-  par(new=T, mar=c(3.5,29,35.5,2))
+  par(new=TRUE, mar=c(3.5,29,35.5,2))
 
-  image(matrix(c(1:1000), 1000, 1), axes=F,
+  image(matrix(c(1:1000), 1000, 1), axes=FALSE,
         col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000))
 
   box()
@@ -196,9 +196,9 @@ pipeline.chromosomeExpressionReports <- function()
                mar=c(10,20), scale="n", zlim=max(max(sample.chr.pq.GSZ),-min(sample.chr.pq.GSZ))*c(-1,1),
                ColSideColors=group.colors, cexDend=0.6, Colv=NA, Rowv=NA)
 
-  par(new=T, mar=c(3.5,29,35.5,2))
+  par(new=TRUE, mar=c(3.5,29,35.5,2))
 
-  image(matrix(c(1:1000), 1000, 1), axes=F,
+  image(matrix(c(1:1000), 1000, 1), axes=FALSE,
         col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000))
 
   box()

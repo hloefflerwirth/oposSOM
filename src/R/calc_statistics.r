@@ -6,8 +6,8 @@ pipeline.calcStatistics <- function()
   {
     write.table(preferences$error.model,
                 file.path(output.paths["LPE"], "1_error_model.txt"),
-                row.names=F,
-                col.names=F)
+                row.names=FALSE,
+                col.names=FALSE)
   }
 
   util.info("Processing Single Genes")
@@ -294,8 +294,8 @@ pipeline.calcStatistics <- function()
   {
     suppressWarnings({
       try.res <- try({
-        fdrtool.result <- fdrtool(t.g.m[,m], verbose=F, plot=F)
-      }, silent=T)
+        fdrtool.result <- fdrtool(t.g.m[,m], verbose=FALSE, plot=FALSE)
+      }, silent=TRUE)
     })
 
     if (class(try.res) != "try-error")
@@ -343,8 +343,8 @@ pipeline.calcStatistics <- function()
              xlab="e",
              ylab="",
              main=colnames(indata)[m],
-             xlim=c(min(e.g.m,na.rm=T), max(e.g.m,na.rm=T)),
-             ylim=c(0,max(sd.g.m,na.rm=T)),
+             xlim=c(min(e.g.m,na.rm=TRUE), max(e.g.m,na.rm=TRUE)),
+             ylim=c(0,max(sd.g.m,na.rm=TRUE)),
              las=1,
              cex.main=2.5,
              cex.lab=2,
@@ -395,8 +395,8 @@ pipeline.calcStatistics <- function()
              xlab="e",
              ylab="",
              main=unique(group.labels)[m],
-             xlim=c(min(e.g.m,na.rm=T), max(e.g.m,na.rm=T)),
-             ylim=c(0,max(sd.g.m,na.rm=T)),
+             xlim=c(min(e.g.m,na.rm=TRUE), max(e.g.m,na.rm=TRUE)),
+             ylim=c(0,max(sd.g.m,na.rm=TRUE)),
              las=1,
              cex.main=2.5,
              cex.lab=2,
@@ -432,8 +432,8 @@ pipeline.calcStatistics <- function()
   {
     suppressWarnings({
       try.res <- try({
-        fdrtool.result <- fdrtool(as.vector(na.omit(t.m[,m])), verbose=F, plot=F)
-      }, silent=T)
+        fdrtool.result <- fdrtool(as.vector(na.omit(t.m[,m])), verbose=FALSE, plot=FALSE)
+      }, silent=TRUE)
     })
 
     if (class(try.res) != "try-error")
@@ -442,7 +442,7 @@ pipeline.calcStatistics <- function()
       fdr.m[which(!is.na(t.m[,m])),m] <<- fdrtool.result$lfdr
     } else # happens for eg phenotype data
     {
-      p.m[which(!is.na(t.m[,m])),m] <<- t.m[which(!is.na(t.m[,m])),m] / max(t.m[,m], na.rm=T)
+      p.m[which(!is.na(t.m[,m])),m] <<- t.m[which(!is.na(t.m[,m])),m] / max(t.m[,m], na.rm=TRUE)
       fdr.m[which(!is.na(t.m[,m])),m] <<- p.m[which(!is.na(t.m[,m])),m]
     }
 

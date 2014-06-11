@@ -29,7 +29,7 @@ pipeline.3rdLvlNetworksWto <- function(set.list, sample.spot.matrix)
   diag(omega) <- 0
   omega[which(abs(omega) < 0.5)] <- 0
 
-  g <- graph.adjacency(omega, weighted=T, mode="undirected")
+  g <- graph.adjacency(omega, weighted=TRUE, mode="undirected")
 
   layout <- layout.fruchterman.reingold(g)
   layout <- layout.norm(layout, xmin=-1, xmax=1, ymin=-1, ymax=1)
@@ -72,8 +72,8 @@ pipeline.3rdLvlNetworksWto <- function(set.list, sample.spot.matrix)
   text(-1.65, 1.1, "WTO network", adj=0, cex=2)
 
   par(mar=c(4.9,13.5,4.9,13.5))
-  image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=F)
-  par(new=T, mar=c(1,1,1,1))
+  image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=FALSE)
+  par(new=TRUE, mar=c(1,1,1,1))
 
   plot(g, layout=t(sapply(set.list$spots, function(x) { x$position })),
        vertex.label.color="black" ,vertex.label.cex=1, vertex.color="grey",
@@ -92,8 +92,8 @@ pipeline.3rdLvlNetworksWto <- function(set.list, sample.spot.matrix)
   g2 <- g - E(g)[weight < 0]
 
   par(mar=c(4.9,13.5,4.9,13.5))
-  image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=F)
-  par(new=T, mar=c(1,1,1,1))
+  image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=FALSE)
+  par(new=TRUE, mar=c(1,1,1,1))
 
   plot(g2, layout=t(sapply(set.list$spots, function(x) x$position)),
        vertex.label.color="black" ,vertex.label.cex=1, vertex.color="grey",
@@ -105,8 +105,8 @@ pipeline.3rdLvlNetworksWto <- function(set.list, sample.spot.matrix)
   g2 <- g - E(g)[weight > 0]
 
   par(mar=c(4.9,13.5,4.9,13.5))
-  image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=F)
-  par(new=T, mar=c(1,1,1,1))
+  image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=FALSE)
+  par(new=TRUE, mar=c(1,1,1,1))
 
   plot(g2, layout=t(sapply(set.list$spots, function(x) x$position)),
        vertex.label.color="black" ,vertex.label.cex=1, vertex.color="grey",

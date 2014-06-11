@@ -5,7 +5,7 @@ Quantile.Normalization = function(data)
 
   for (i in 1:ncol(data))
   {  
-    data.col = data [order(data [,i], decreasing=T) ,i]
+    data.col = data [order(data [,i], decreasing=TRUE) ,i]
     not.na = which(!is.na(data.col))
     
     quantiles[not.na] = quantiles[not.na] + data.col[not.na]
@@ -15,7 +15,7 @@ Quantile.Normalization = function(data)
   
   for (i in 1:ncol(data))
   {
-    data [order(data [,i], decreasing=T) ,i] = quantiles 
+    data [order(data [,i], decreasing=TRUE) ,i] = quantiles 
   }
 
   return(invisible (data))

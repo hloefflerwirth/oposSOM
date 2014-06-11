@@ -24,14 +24,14 @@ pipeline.groupSpecificGenesets <- function()
               " - Results/Summary Sheets - Groups/Geneset Analysis/Specific GS ",
               make.names(unique(group.labels)[gr]),".pdf", sep=""), 21/2.54, 29.7/2.54)
 
-    layout(matrix(c(1:8),4, byrow=T), widths=c(3,1))
+    layout(matrix(c(1:8),4, byrow=TRUE), widths=c(3,1))
 
     for (i in 1:20)
     {
       ylim <- c(-15, 20)
       par(mar=c(3,5,2,1))
 
-      barplot(samples.GSZ.scores[names(top.gs)[i],], beside=T, las=2,
+      barplot(samples.GSZ.scores[names(top.gs)[i],], beside=TRUE, las=2,
               cex.names=1.2, col=group.colors, cex.main=1, ylim=ylim,
               border=if (ncol(indata) < 80) "black" else NA,
               names.arg=if (ncol(indata)<100) colnames(indata) else rep("",ncol(indata)),
@@ -52,27 +52,27 @@ pipeline.groupSpecificGenesets <- function()
 
       lim <- c(1,preferences$dim.1stLvlSom) + preferences$dim.1stLvlSom*0.01*c(-1,1)
 
-      plot(which(!is.na(n.map), arr.ind=T), xlim=lim, ylim=lim, pch=16,
-            axes=F, xlab="",ylab="", xaxs="i", yaxs="i",
-            cex=0.5 + na.omit(as.vector(n.map)) / max(n.map,na.rm=T) * 2.8,
-            col=colramp(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=T)) /
-                              max(1, (max(n.map,na.rm=T) - min(n.map,na.rm=T))) *
+      plot(which(!is.na(n.map), arr.ind=TRUE), xlim=lim, ylim=lim, pch=16,
+            axes=FALSE, xlab="",ylab="", xaxs="i", yaxs="i",
+            cex=0.5 + na.omit(as.vector(n.map)) / max(n.map,na.rm=TRUE) * 2.8,
+            col=colramp(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=TRUE)) /
+                              max(1, (max(n.map,na.rm=TRUE) - min(n.map,na.rm=TRUE))) *
                               999 + 1])
 
       title(sub=paste("# features =", length(gs.def.list[[names(top.gs)[i]]]$Genes),
-                      ", max =", max(n.map,na.rm=T)),line=0.5, cex.sub=1.4)
+                      ", max =", max(n.map,na.rm=TRUE)),line=0.5, cex.sub=1.4)
 
       box()
     }
 
     dev.off()
 
-    fdr.res <- fdrtool(gs.p.values,statistic="pvalue",plot=F,verbose=F)
+    fdr.res <- fdrtool(gs.p.values,statistic="pvalue",plot=FALSE,verbose=FALSE)
     out <- cbind(names(gs.p.values), gs.p.values, fdr.res$lfdr)
     colnames(out) = c("gene set","p-value","fdr")
 
     write.csv2(out, paste(files.name,
                           " - Results/Summary Sheets - Groups/Geneset Analysis/Specific GS ",
-                          make.names(unique(group.labels)[gr]),".csv", sep=""), row.names=F)
+                          make.names(unique(group.labels)[gr]),".csv", sep=""), row.names=FALSE)
   }
 }

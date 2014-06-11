@@ -37,38 +37,38 @@ pipeline.2ndLvlModuleCorrelation <- function(s, hcl)
   {
     boxes.pos <- list()
 
-    while (nrow(which(pcm.mask==1,arr.ind=T)) > 0)
+    while (nrow(which(pcm.mask==1,arr.ind=TRUE)) > 0)
     {
-      x.i <- which(pcm.mask==1,arr.ind=T)[1,1]
-      y.i <- which(pcm.mask==1,arr.ind=T)[1,2]
+      x.i <- which(pcm.mask==1,arr.ind=TRUE)[1,1]
+      y.i <- which(pcm.mask==1,arr.ind=TRUE)[1,2]
 
       dim.x <- 1
       dim.y <- 1
 
       while ((x.i+dim.x) <= ncol(indata) &&
              (y.i+dim.y) <= ncol(indata) &&
-             all(pcm.mask[x.i:(x.i+dim.x), y.i:(y.i+dim.y)] == 1, na.rm=T))
+             all(pcm.mask[x.i:(x.i+dim.x), y.i:(y.i+dim.y)] == 1, na.rm=TRUE))
       {
         dim.x <- dim.x + 1
         dim.y <- dim.y + 1
       }
 
-      grown <- T
+      grown <- TRUE
 
       while (grown)
       {
-        grown <- F
+        grown <- FALSE
 
         if ((x.i+dim.x) <= ncol(indata) &&
-            all(pcm.mask[x.i:(x.i+dim.x), y.i:(y.i+dim.y-1)] == 1, na.rm=T))
+            all(pcm.mask[x.i:(x.i+dim.x), y.i:(y.i+dim.y-1)] == 1, na.rm=TRUE))
         {
           dim.x <- dim.x + 1
-          grown <- T
+          grown <- TRUE
         } else if ((y.i+dim.y) <= ncol(indata) &&
-                   all(pcm.mask[x.i:(x.i+dim.x-1), y.i:(y.i+dim.y)] == 1, na.rm=T))
+                   all(pcm.mask[x.i:(x.i+dim.x-1), y.i:(y.i+dim.y)] == 1, na.rm=TRUE))
         {
           dim.y <- dim.y + 1
-          grown <- T
+          grown <- TRUE
         }
       }
 
@@ -78,38 +78,38 @@ pipeline.2ndLvlModuleCorrelation <- function(s, hcl)
 
     boxes.neg <- list()
 
-    while (nrow(which(pcm.mask==-1,arr.ind=T)) > 0)
+    while (nrow(which(pcm.mask==-1,arr.ind=TRUE)) > 0)
     {
-      x.i <- which(pcm.mask==-1,arr.ind=T)[1,1]
-      y.i <- which(pcm.mask==-1,arr.ind=T)[1,2]
+      x.i <- which(pcm.mask==-1,arr.ind=TRUE)[1,1]
+      y.i <- which(pcm.mask==-1,arr.ind=TRUE)[1,2]
 
       dim.x <- 1
       dim.y <- 1
 
       while ((x.i+dim.x) <= ncol(indata) &&
              (y.i+dim.y) <= ncol(indata) &&
-             all(pcm.mask[x.i:(x.i+dim.x), y.i:(y.i+dim.y)] == -1, na.rm=T))
+             all(pcm.mask[x.i:(x.i+dim.x), y.i:(y.i+dim.y)] == -1, na.rm=TRUE))
       {
         dim.x <- dim.x + 1
         dim.y <- dim.y + 1
       }
 
-      grown <- T
+      grown <- TRUE
 
       while (grown)
       {
-        grown <- F
+        grown <- FALSE
 
         if ((x.i+dim.x) <= ncol(indata) &&
-            all(pcm.mask[x.i:(x.i+dim.x), y.i:(y.i+dim.y-1)] == -1, na.rm=T))
+            all(pcm.mask[x.i:(x.i+dim.x), y.i:(y.i+dim.y-1)] == -1, na.rm=TRUE))
         {
           dim.x <- dim.x + 1
-          grown <- T
+          grown <- TRUE
         } else if ((y.i+dim.y) <= ncol(indata) &&
-                   all(pcm.mask[x.i:(x.i+dim.x-1), y.i:(y.i+dim.y)] == -1, na.rm=T))
+                   all(pcm.mask[x.i:(x.i+dim.x-1), y.i:(y.i+dim.y)] == -1, na.rm=TRUE))
         {
           dim.y <- dim.y + 1
-          grown <- T
+          grown <- TRUE
         }
       }
 
@@ -145,7 +145,7 @@ pipeline.2ndLvlModuleCorrelation <- function(s, hcl)
     par(mar = c(8, 0, 0, 8))
 
     image(x=c(0:ncol(indata)), y=c(0:ncol(indata)), z=pcm,col=colramp(1000),
-          axes=F, xlab="", ylab="")
+          axes=FALSE, xlab="", ylab="")
 
     box()
 
@@ -243,9 +243,9 @@ pipeline.2ndLvlModuleCorrelation <- function(s, hcl)
     ddr <- as.dendrogram(hcl)
 
     par(mar=c(8, 0, 0, 0))
-    plot(ddr, horiz=T, axes=F, yaxs="i", leaflab="none")
+    plot(ddr, horiz=TRUE, axes=FALSE, yaxs="i", leaflab="none")
     par(mar=c(0, 0, 1, 8))
-    plot(ddr, axes=F, xaxs="i", leaflab="none")
+    plot(ddr, axes=FALSE, xaxs="i", leaflab="none")
     title("Module Correlation Map", cex.main = 1.5)
   }
 }

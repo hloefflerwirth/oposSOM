@@ -62,15 +62,15 @@ pipeline.summarySheetsGroups <- function()
 
   for (i in 1:length(unique(group.labels)))
   {
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1))
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1))
 
     mtext(unique(group.labels)[i], side=3, line = 2, cex=1.5, at=-0.04, font=3,
           adj=0, col=groupwise.group.colors[i])
 
-    par(new=T)
+    par(new=TRUE)
 
     image(matrix(group.metadata[,i], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-          axes=F, col = colramp(1000))
+          axes=FALSE, col = colramp(1000))
 
     title(main="logFC", cex.main=1.5, line=0.5)
     box()
@@ -78,7 +78,7 @@ pipeline.summarySheetsGroups <- function()
     image(matrix(group.metadata[,i] * (1-group.metadata.sd[,i]/max(group.metadata.sd)),
                  preferences$dim.1stLvlSom,
                  preferences$dim.1stLvlSom),
-          axes=F, col = colramp(1000), zlim=range(group.metadata[,i]))
+          axes=FALSE, col = colramp(1000), zlim=range(group.metadata[,i]))
 
     title(main="robustness", cex.main=1.3, line=0.5)
     box()
@@ -86,7 +86,7 @@ pipeline.summarySheetsGroups <- function()
     image(matrix(bleached.group.metadata[,i],
                  preferences$dim.1stLvlSom,
                  preferences$dim.1stLvlSom),
-          axes=F, col = colramp(1000), zlim=range(bleached.group.metadata))
+          axes=FALSE, col = colramp(1000), zlim=range(bleached.group.metadata))
 
     title(main="group specific logFC", cex.main=1.3, line=0.5)
     box()
@@ -94,7 +94,7 @@ pipeline.summarySheetsGroups <- function()
     image(matrix(WAD.group.metadata[,i],
                  preferences$dim.1stLvlSom,
                  preferences$dim.1stLvlSom),
-          axes=F, col = colramp(1000))
+          axes=FALSE, col = colramp(1000))
 
     title(main="WAD", cex.main=1.5, line=0.5)
     box()
@@ -102,7 +102,7 @@ pipeline.summarySheetsGroups <- function()
     image(matrix(bleached.WAD.group.metadata[,i],
                  preferences$dim.1stLvlSom,
                  preferences$dim.1stLvlSom),
-          axes=F, col = colramp(1000), zlim=range(bleached.WAD.group.metadata))
+          axes=FALSE, col = colramp(1000), zlim=range(bleached.WAD.group.metadata))
 
     title(main="group specific WAD", cex.main=1.3, line=0.5)
     box()
@@ -110,14 +110,14 @@ pipeline.summarySheetsGroups <- function()
     image(matrix(loglog.group.metadata[,i],
                  preferences$dim.1stLvlSom,
                  preferences$dim.1stLvlSom),
-          axes=F, col = colramp(1000))
+          axes=FALSE, col = colramp(1000))
     title(main="loglogFC", cex.main=1.5, line=0.5)
     box()
 
     image(matrix(bleached.loglog.group.metadata[,i],
                  preferences$dim.1stLvlSom,
                  preferences$dim.1stLvlSom),
-          axes=F, col = colramp(1000), zlim=range(bleached.loglog.group.metadata))
+          axes=FALSE, col = colramp(1000), zlim=range(bleached.loglog.group.metadata))
 
     title(main="group specific loglogFC", cex.main=1.3, line=0.5)
     box()
@@ -127,15 +127,15 @@ pipeline.summarySheetsGroups <- function()
   if (length(unique(group.labels)) <= 12)
   {
     # differential portraits
-    l.matrix <- matrix(1:length(unique(group.labels))^2, length(unique(group.labels)), byrow=T)
+    l.matrix <- matrix(1:length(unique(group.labels))^2, length(unique(group.labels)), byrow=TRUE)
     l.matrix <- cbind(rep(2, length(unique(group.labels))), l.matrix+2)
     l.matrix[1:(nrow(l.matrix)/2),1] <- 1
     layout(l.matrix, widths=c(5, rep(95/length(unique(group.labels)),length(unique(group.labels)))))
 
     par(mar=c(0,0,0,0))
-    plot(0, type="n", axes=F, xlab="", ylab="")
+    plot(0, type="n", axes=FALSE, xlab="", ylab="")
     text(1, 0, "differential expression: relative scale", srt=90, cex=2)
-    plot(0, type="n", axes=F, xlab="", ylab="")
+    plot(0, type="n", axes=FALSE, xlab="", ylab="")
 
     par(mar=c(0.5,2,2,0.5))
     zlim = c(0, 0)
@@ -156,7 +156,7 @@ pipeline.summarySheetsGroups <- function()
           image(matrix(diff.metadata,
                        preferences$dim.1stLvlSom,
                        preferences$dim.1stLvlSom),
-                axes=F, col = colramp(1000), ylab=unique(group.labels)[g1])
+                axes=FALSE, col = colramp(1000), ylab=unique(group.labels)[g1])
 
           par("col.lab"="black", "mgp"=c(3,1,0))
         } else
@@ -164,7 +164,7 @@ pipeline.summarySheetsGroups <- function()
           image(matrix(diff.metadata,
                        preferences$dim.1stLvlSom,
                        preferences$dim.1stLvlSom),
-                axes=F, col = colramp(1000))
+                axes=FALSE, col = colramp(1000))
         }
 
         box()
@@ -187,9 +187,9 @@ pipeline.summarySheetsGroups <- function()
     }
 
     par(mar=c(0,0,0,0))
-    plot(0, type="n", axes=F, xlab="", ylab="")
+    plot(0, type="n", axes=FALSE, xlab="", ylab="")
     text(1, 0, "differential expression: absolute scale", srt=90, cex=2)
-    plot(0, type="n", axes=F, xlab="", ylab="")
+    plot(0, type="n", axes=FALSE, xlab="", ylab="")
     par(mar=c(0.5,2,2,0.5))
 
     for (g1 in 1:length(unique(group.labels)))
@@ -208,7 +208,7 @@ pipeline.summarySheetsGroups <- function()
           image(matrix(diff.metadata,
                        preferences$dim.1stLvlSom,
                        preferences$dim.1stLvlSom),
-                axes=F, col=colramp(1000), zlim=zlim, ylab=unique(group.labels)[g1])
+                axes=FALSE, col=colramp(1000), zlim=zlim, ylab=unique(group.labels)[g1])
 
           par("col.lab"="black", "mgp"=c(3,1,0))
         } else
@@ -216,7 +216,7 @@ pipeline.summarySheetsGroups <- function()
           image(matrix(diff.metadata,
                        preferences$dim.1stLvlSom,
                        preferences$dim.1stLvlSom),
-                axes=F, col = colramp(1000), zlim=zlim)
+                axes=FALSE, col = colramp(1000), zlim=zlim)
         }
 
         box()
@@ -229,20 +229,20 @@ pipeline.summarySheetsGroups <- function()
     }
 
     par(mar=c(0,0,0,0))
-    plot(0, type="n", axes=F, xlab="", ylab="")
+    plot(0, type="n", axes=FALSE, xlab="", ylab="")
     text(1, 0, "significance: log10(p-value)", srt=90, cex=2)
     par(mar=c(8,2,8,1.8))
 
     image(x=1,y=seq(0,6,length.out=1000), z=rbind(1:1000),
           col=colorRampPalette(rep(c("blue3","green","yellow","orange","red","darkred"), each=3))(1000),
-          axes=F, xlab="", ylab="")
+          axes=FALSE, xlab="", ylab="")
 
     axis(2, c(0:6), -c(0:6), las=2, cex.axis=0.75)
     box()
 
     par(mar=c(0.5,2,2,0.5))
 
-    null.differences <- sample(group.metadata, 1000000, replace=T) - sample(group.metadata, 1000000, replace=T)
+    null.differences <- sample(group.metadata, 1000000, replace=TRUE) - sample(group.metadata, 1000000, replace=TRUE)
     null.culdensity <- ecdf(abs(null.differences))
 
     all.p.values <- c()
@@ -262,14 +262,14 @@ pipeline.summarySheetsGroups <- function()
           attributes(col) <- NULL
           par("col.lab"=col, "mgp"=c(1,0,0))
 
-          image(matrix(log10(diff.pvalues), preferences$dim.1stLvlSom), axes=F,
+          image(matrix(log10(diff.pvalues), preferences$dim.1stLvlSom), axes=FALSE,
                 col=rev(colorRampPalette(rep(c("blue3","green","yellow","orange","red","darkred"), each=1))(1000)),
                 zlim=c(-6,0), ylab=unique(group.labels)[g1])
 
           par("col.lab"="black", "mgp"=c(3,1,0))
         } else
         {
-          image(matrix(log10(diff.pvalues), preferences$dim.1stLvlSom), axes=F,
+          image(matrix(log10(diff.pvalues), preferences$dim.1stLvlSom), axes=FALSE,
                 col=rev(colorRampPalette(rep(c("blue3","green","yellow","orange","red","darkred"), each=1))(1000)),
                 zlim=c(-6,0))
         }
@@ -284,20 +284,20 @@ pipeline.summarySheetsGroups <- function()
     }
 
     par(mar=c(0,0,0,0))
-    plot(0, type="n", axes=F, xlab="", ylab="")
+    plot(0, type="n", axes=FALSE, xlab="", ylab="")
     text(1, 0, "significance: fdr", srt=90, cex=2)
     par(mar=c(8,2,8,1.8))
 
     image(x=1,y=seq(0,6,length.out=1000), z=rbind(1:1000),
           col=colorRampPalette(rep(c("blue3","green","yellow","orange","red","darkred"), each=3))(1000),
-          axes=F, xlab="", ylab="")
+          axes=FALSE, xlab="", ylab="")
 
     axis(2, c(0:6), c(1,0.5,0.4,0.3,0.2,0.1,0), las=2, cex.axis=0.75)
     box()
 
     par(mar=c(0.5,2,2,0.5))
 
-    fdrtool.result <- fdrtool(all.p.values, statistic="pvalue", plot=F, verbose=F)
+    fdrtool.result <- fdrtool(all.p.values, statistic="pvalue", plot=FALSE, verbose=FALSE)
 
     for (g1 in 1:length(unique(group.labels)))
     {
@@ -317,14 +317,14 @@ pipeline.summarySheetsGroups <- function()
           attributes(col) <- NULL
           par("col.lab"=col, "mgp"=c(1,0,0))
 
-          image(matrix(diff.fdr, preferences$dim.1stLvlSom), axes=F,
+          image(matrix(diff.fdr, preferences$dim.1stLvlSom), axes=FALSE,
                 col=rev(colorRampPalette(rep(c("blue3","green","yellow","orange","red","darkred"), each=1))(1000)),
                 zlim=c(0,0.6), ylab=unique(group.labels)[g1])
 
           par("col.lab"="black", "mgp"=c(3,1,0))
         } else
         {
-          image(matrix(diff.fdr, preferences$dim.1stLvlSom), axes=F,
+          image(matrix(diff.fdr, preferences$dim.1stLvlSom), axes=FALSE,
                 col=rev(colorRampPalette(rep(c("blue3","green","yellow","orange","red","darkred"), each=1))(1000)),
                 zlim=c(0,0.6))
         }
@@ -464,8 +464,8 @@ pipeline.summarySheetsGroups <- function()
 
         diff.metadata[[hi]] <- rowMeans(metadata[, group.member[mem]])
         diff.metadata[[hi]][which(is.na(diff.metadata[[tl]]))] <- NA
-        diff.metadata[[hi]][which(diff.metadata[[tl]] > quantile(diff.metadata[[tl]],0.9, na.rm=T))] <- NA
-        diff.metadata[[hi]][which(diff.metadata[[tl]] < quantile(diff.metadata[[tl]],0.1, na.rm=T))] <- NA
+        diff.metadata[[hi]][which(diff.metadata[[tl]] > quantile(diff.metadata[[tl]],0.9, na.rm=TRUE))] <- NA
+        diff.metadata[[hi]][which(diff.metadata[[tl]] < quantile(diff.metadata[[tl]],0.1, na.rm=TRUE))] <- NA
       }
 
       diff.metadata <- rev(diff.metadata)
@@ -538,9 +538,9 @@ pipeline.summarySheetsGroups <- function()
         m <- matrix(rowMeans(metadata[, group.member[merges[[ii]]]]) - rowMeans(metadata[, group.member]),
                     preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
 
-        if (max(m,na.rm=T) - min(m,na.rm=T) != 0)
+        if (max(m,na.rm=TRUE) - min(m,na.rm=TRUE) != 0)
         {
-          m <- 1 + (m - min(m,na.rm=T)) / (max(m,na.rm=T) - min(m,na.rm=T)) * 999
+          m <- 1 + (m - min(m,na.rm=TRUE)) / (max(m,na.rm=TRUE) - min(m,na.rm=TRUE)) * 999
         }
 
         m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
@@ -585,9 +585,9 @@ pipeline.summarySheetsGroups <- function()
       {
         m <- matrix(diff.metadata[[ii]], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
 
-        if (max(m,na.rm=T) - min(m,na.rm=T) != 0)
+        if (max(m,na.rm=TRUE) - min(m,na.rm=TRUE) != 0)
         {
-          m <- 1 + (m - min(m,na.rm=T)) / (max(m,na.rm=T) - min(m,na.rm=T)) * 999
+          m <- 1 + (m - min(m,na.rm=TRUE)) / (max(m,na.rm=TRUE) - min(m,na.rm=TRUE)) * 999
         }
 
         m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]

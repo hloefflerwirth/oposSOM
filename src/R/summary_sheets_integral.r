@@ -11,13 +11,13 @@ pipeline.summarySheetsIntegral <- function()
       par(mar=c(5, 4, 4, 1))
 
       image(matrix(set.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=F, col = colramp(1000), main=main, cex.main=1.5)
+            axes=FALSE, col = colramp(1000), main=main, cex.main=1.5)
 
       mtext("landscape", 3)
       box()
       par(mar=c(5, 1, 4, 2))
 
-      plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1),
+      plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1),
            xaxs="i", yaxs="i")
 
       box()
@@ -29,7 +29,7 @@ pipeline.summarySheetsIntegral <- function()
 
     beta.scores <- sapply(set.list$spots, function(x) { x$beta.statistic$beta.score })
 
-    image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), axes=F,
+    image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), axes=FALSE,
           col=colramp(1000)[1 + 999 * beta.scores / max(beta.scores)],
           main=main, cex.main=1.5)
 
@@ -37,13 +37,13 @@ pipeline.summarySheetsIntegral <- function()
     box()
     par(mar=c(5, 1, 4, 2))
 
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1),
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1),
          xaxs="i", yaxs="i")
 
     box()
-    par(new=T)
+    par(new=TRUE)
     par(mar=c(12, 9, 12, 9))
-    image(matrix(1:100, 1, 100), col = colramp(1000), axes=F)
+    image(matrix(1:100, 1, 100), col = colramp(1000), axes=FALSE)
     axis(2, c(0,1), c(0, round(max(beta.scores),1)), las=2)
     box()
 
@@ -54,14 +54,14 @@ pipeline.summarySheetsIntegral <- function()
     image(x=c(1:preferences$dim.1stLvlSom),
           y=c(1:preferences$dim.1stLvlSom),
           z=matrix(set.list$overview.mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-          col=colramp(max(set.list$overview.mask, na.rm=T)),
-          axes=T, main=main, cex.main=1.5, xlab="", ylab="", las=1)
+          col=colramp(max(set.list$overview.mask, na.rm=TRUE)),
+          axes=TRUE, main=main, cex.main=1.5, xlab="", ylab="", las=1)
 
     mtext("annotation", 3)
     box()
-    par(new=T)
+    par(new=TRUE)
 
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,preferences$dim.1stLvlSom),
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,preferences$dim.1stLvlSom),
          ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i")
 
     points(do.call(rbind, lapply(set.list$spots, function(x) { x$position })),
@@ -75,7 +75,7 @@ pipeline.summarySheetsIntegral <- function()
 
     par(mar=c(5, 1, 4, 2))
 
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1),
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1),
          xaxs="i", yaxs="i")
 
     box()
@@ -130,7 +130,7 @@ pipeline.summarySheetsIntegral <- function()
           1:nrow(sample.spot.expression),
           sample.spot.expression.image,
           col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
-          axes=F, ylim=0.5+c(0,nrow(sample.spot.expression)), yaxs="i", xlab="", ylab="",
+          axes=FALSE, ylim=0.5+c(0,nrow(sample.spot.expression)), yaxs="i", xlab="", ylab="",
           zlim=max(max(sample.spot.expression.image),-min(sample.spot.expression.image))*c(-1,1))
 
     box()
@@ -140,7 +140,7 @@ pipeline.summarySheetsIntegral <- function()
       axis(1, 1:ncol(indata), labels=colnames(indata), las=2, line=-0.5, tick=0, cex.axis=1.4)
     }
 
-    plot(0, type="n", xlab="", ylab="", axes=F, xlim=c(0,1),
+    plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,1),
          ylim=0.5+c(0,nrow(sample.spot.expression)), yaxs="i")
 
     text(0.7, nrow(sample.spot.expression):1, rownames(sample.spot.expression),
@@ -159,7 +159,7 @@ pipeline.summarySheetsIntegral <- function()
 
     par(mar=c(0,0,0,0))
 
-    plot(0, type="n", xlab="", ylab="", axes=F, xlim=c(0,1),
+    plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,1),
          ylim=0.5+c(0,nrow(sample.spot.expression)), yaxs="i")
 
     pos <- as.vector(sapply(c(1:nrow(sample.spot.expression)),
@@ -174,11 +174,11 @@ pipeline.summarySheetsIntegral <- function()
 
     image(matrix(1:100, 100, 1),
           col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
-          axes=F, xlab="")
+          axes=FALSE, xlab="")
 
     axis(1, round(max(max(sample.spot.expression.image),
                       -min(sample.spot.expression.image)) * c(-1,1), 1),
-         at=c(0,1), las=2, tick=F, pos=-0.8, cex.axis=1.4)
+         at=c(0,1), las=2, tick=FALSE, pos=-0.8, cex.axis=1.4)
 
     mtext(expression(paste("<",Delta,"e", '' ^ meta, ">")), side=1, line=0.5)
     box()
@@ -205,7 +205,7 @@ pipeline.summarySheetsIntegral <- function()
       par(mar=c(0,0,0,0))
 
       image(1:ncol(indata), 1:nrow(sample.spot.GSZ), sample.spot.GSZ.image,
-            axes=F, ylim=0.5+c(0,nrow(sample.spot.GSZ)), yaxs="i", xlab="", ylab="",
+            axes=FALSE, ylim=0.5+c(0,nrow(sample.spot.GSZ)), yaxs="i", xlab="", ylab="",
             col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
             zlim=max(max(sample.spot.GSZ.image),-min(sample.spot.GSZ.image))*c(-1,1))
 
@@ -217,7 +217,7 @@ pipeline.summarySheetsIntegral <- function()
              tick=0, cex.axis=1.4)
       }
 
-      plot(0, type="n", xlab="", ylab="", axes=F, xlim=c(0,1),
+      plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,1),
            ylim=0.5+c(0,nrow(sample.spot.expression)), yaxs="i")
 
       text(0.7, nrow(sample.spot.expression):1, names(set.list$spots),
@@ -231,12 +231,12 @@ pipeline.summarySheetsIntegral <- function()
         box()
       } else
       {
-        plot(0, type="n", xlab="", ylab="", axes=F)
+        plot(0, type="n", xlab="", ylab="", axes=FALSE)
       }
 
       par(mar=c(0,0,0,0))
 
-      plot(0, type="n", xlab="", ylab="", axes=F, xlim=c(0,1),
+      plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,1),
            ylim=0.5+c(0,nrow(sample.spot.GSZ)), yaxs="i")
 
       pos <- as.vector(sapply(c(1:nrow(sample.spot.GSZ)),
@@ -250,11 +250,11 @@ pipeline.summarySheetsIntegral <- function()
 
       image(matrix(1:100, 100, 1),
             col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
-            axes=F, xlab="")
+            axes=FALSE, xlab="")
 
       axis(1,
            round(max(max(sample.spot.GSZ.image),-min(sample.spot.GSZ.image))*c(-1,1), 1),
-           at=c(0,1), las=2, tick=F, pos=-0.8, cex.axis=1.4)
+           at=c(0,1), las=2, tick=FALSE, pos=-0.8, cex.axis=1.4)
 
       mtext("sample GSZ", side=1, line=0.5)
       box()
@@ -274,7 +274,7 @@ pipeline.summarySheetsIntegral <- function()
       layout(matrix(c(1,2,4,1,3,4,5,5,6,7,7,8), 3, 4), widths=c(1,1,2,2), heights=c(2,1,1))
 
       par(mar=c(0,0,0,0))
-      plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
+      plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
       text(0.1, 0.94, main , cex=2.6, adj=0)
       text(0.1, 0.8, paste("Spot Summary:", names(set.list$spots)[m]) , cex=1.8, adj=0)
       text(0.1, 0.7, paste("# metagenes =", length(set.list$spots[[m]]$metagenes)), adj=0)
@@ -292,7 +292,7 @@ pipeline.summarySheetsIntegral <- function()
                  paste("<r> genes =",
                        round(mean(cor(t(indata[set.list$spots[[m]]$genes,]))), 2)),
                  adj=0)
-          }, silent=T)
+          }, silent=TRUE)
         })
       }
 
@@ -325,7 +325,7 @@ pipeline.summarySheetsIntegral <- function()
       par(mar=c(2,3,3,1))
 
       image(matrix(set.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=F, col = colramp(1000), main="Overview Map", cex.main=1.5)
+            axes=FALSE, col = colramp(1000), main="Overview Map", cex.main=1.5)
 
       axis(1, seq(0, 1, length.out = preferences$dim.1stLvlSom/10+1),
            c(1, seq(10, preferences$dim.1stLvlSom, length.out = preferences$dim.1stLvlSom/10)),
@@ -338,16 +338,16 @@ pipeline.summarySheetsIntegral <- function()
       box()
 
       image(matrix(set.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=F, col = colramp(1000), main="Spot", cex.main=1.5)
+            axes=FALSE, col = colramp(1000), main="Spot", cex.main=1.5)
 
-      par(new=T)
+      par(new=TRUE)
 
       mask <- set.list$spots[[m]]$mask
       mask[which(is.na(set.list$spots[[m]]$mask))] <- 1
       mask[which(!is.na(set.list$spots[[m]]$mask))] <- NA
 
       image(matrix(mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=F, col = "white")
+            axes=FALSE, col = "white")
 
       axis(1, seq(0, 1, length.out = preferences$dim.1stLvlSom/10+1),
            c(1, seq(10, preferences$dim.1stLvlSom, length.out = preferences$dim.1stLvlSom/10)),
@@ -384,10 +384,10 @@ pipeline.summarySheetsIntegral <- function()
 
         if (main %in% c("Sample-Underexpression","Metagene Minima"))
         {
-          o <- names(sort(e.min, decreasing=F))
+          o <- names(sort(e.min, decreasing=FALSE))
         }  else
         {
-          o <- names(sort(e.max, decreasing=T))
+          o <- names(sort(e.max, decreasing=TRUE))
         }
 
         n.genes <- 20
@@ -398,7 +398,7 @@ pipeline.summarySheetsIntegral <- function()
         x.coords <- c(0, 0.06, 0.2, 0.28, 0.36, 0.44, 0.52)
         y.coords <- seq(0.75, 0.02, length.out=length(o))
 
-        plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
+        plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
         text(0, 0.88, "Spot Genelist", cex=1.8, adj=0)
 
@@ -419,7 +419,7 @@ pipeline.summarySheetsIntegral <- function()
         frame()
       }
 
-      plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
+      plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
       if (preferences$geneset.analysis)
       {
@@ -430,7 +430,7 @@ pipeline.summarySheetsIntegral <- function()
         x.coords <- c(0, 0.1, 0.23, 0.34, 0.4)
         y.coords <- seq(0.75, 0.02, length.out=n.sets)
 
-        plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
+        plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
         text(0, 0.88, "Geneset Overrepresentation", cex=1.8, adj=0)
 
@@ -454,9 +454,9 @@ pipeline.summarySheetsIntegral <- function()
 
         try.res <- try({
           fdrtool.result <- suppressWarnings({
-            fdrtool(set.list$spots[[m]]$Fisher.p, statistic="pvalue", verbose=F, plot=F)
+            fdrtool(set.list$spots[[m]]$Fisher.p, statistic="pvalue", verbose=FALSE, plot=FALSE)
           })
-        }, silent=T)
+        }, silent=TRUE)
 
         if (class(try.res) != "try-error")
         {
@@ -468,7 +468,7 @@ pipeline.summarySheetsIntegral <- function()
 
           par(mar=c(3,6,2,6))
 
-          hist(set.list$spots[[m]]$Fisher.p, bre=20, freq=F, xlab="p-value",
+          hist(set.list$spots[[m]]$Fisher.p, bre=20, freq=FALSE, xlab="p-value",
                ylab="", main="p-values", las=1, cex.main=1.5, cex.lab=1, cex.axis=1)
 
           box()
@@ -478,8 +478,8 @@ pipeline.summarySheetsIntegral <- function()
 
           abline(h = n.0.spot.list.samples , col="gray", lwd=2)
 
-          par(new=T)
-          plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=F)
+          par(new=TRUE)
+          plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=FALSE)
           axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=1)
           o = order(set.list$spots[[m]]$Fisher.p)
           lines(set.list$spots[[m]]$Fisher.p[o], Fdr.spot.list.samples[o], lty=2, lwd=2)
@@ -504,7 +504,7 @@ pipeline.summarySheetsIntegral <- function()
 
           par(mar=c(0,0,0,0))
 
-          plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1),
+          plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1),
                ylim=c(0,1), xaxs="i", yaxs="i")
 
           text(x.coords[1], 0.97, i, cex=2, adj=0)
@@ -575,10 +575,10 @@ pipeline.summarySheetsIntegral <- function()
 
       if (main %in% c("Sample-Underexpression","Metagene Minima"))
       {
-        o <- names(sort(e.min, decreasing=F))
+        o <- names(sort(e.min, decreasing=FALSE))
       }  else
       {
-        o <- names(sort(e.max, decreasing=T))
+        o <- names(sort(e.max, decreasing=TRUE))
       }
 
       out <- data.frame(Rank=c(1:length(set.list$spots[[m]]$genes)),
@@ -656,7 +656,7 @@ pipeline.summarySheetsIntegral <- function()
   # prepare directories
   for (dirname in dirnames)
   {
-    dir.create(dirname, showWarnings=F, recursive=T)
+    dir.create(dirname, showWarnings=FALSE, recursive=TRUE)
   }
 
   util.info("Writing:", file.path(dirnames[["pdf"]], "*.pdf"))

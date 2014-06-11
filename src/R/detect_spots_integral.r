@@ -20,20 +20,20 @@ pipeline.detectSpotsIntegral <- function()
 
     spot.i = 0
 
-    while (nrow(which(core == -1, arr.ind=T)) > 0)
+    while (nrow(which(core == -1, arr.ind=TRUE)) > 0)
     {
-      start.pix <- which(core == -1, arr.ind=T)[1,]
+      start.pix <- which(core == -1, arr.ind=TRUE)[1,]
       spot.i <- spot.i + 1
       core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
     }
 
     # shrink each separate region to core size
-    for (s.i in 1:max(core, na.rm=T))
+    for (s.i in 1:max(core, na.rm=TRUE))
     {
-      if (sum(core == s.i, na.rm=T) > preferences$spot.coresize.modules)
+      if (sum(core == s.i, na.rm=TRUE) > preferences$spot.coresize.modules)
       {
         core.metagenes <- which(core == s.i)
-        o <- order(metadata[core.metagenes,m], decreasing=T)[1:preferences$spot.coresize.modules]
+        o <- order(metadata[core.metagenes,m], decreasing=TRUE)[1:preferences$spot.coresize.modules]
         core[setdiff(core.metagenes, core.metagenes[o])] <- NA
       }
     }
@@ -41,15 +41,15 @@ pipeline.detectSpotsIntegral <- function()
     core[which(!is.na(core))] <- -1
     spot.i <- 0
 
-    while (nrow(which(core == -1, arr.ind=T)) > 0)
+    while (nrow(which(core == -1, arr.ind=TRUE)) > 0)
     {
-      start.pix <- which(core == -1, arr.ind=T)[1,]
+      start.pix <- which(core == -1, arr.ind=TRUE)[1,]
       spot.i <- spot.i + 1
       core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
     }
 
     # define spot area around cores
-    for (s.i in 1:max(core,na.rm=T))
+    for (s.i in 1:max(core,na.rm=TRUE))
     {
       n.sample.modules <- n.sample.modules + 1
 
@@ -62,7 +62,7 @@ pipeline.detectSpotsIntegral <- function()
       spot <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
       spot[which(metadata.scaled[,m] > preferences$spot.threshold.modules)] <- -1
 
-      start.pix <- which(!is.na(sample.spot.core.list[[n.sample.modules]]), arr.ind=T)
+      start.pix <- which(!is.na(sample.spot.core.list[[n.sample.modules]]), arr.ind=TRUE)
       start.pix <- start.pix[which.max(sample.spot.core.list[[n.sample.modules]][start.pix]),]
 
       spot <- col.pix(spot, start.pix[1], start.pix[2], 1, preferences$dim.1stLvlSom)
@@ -95,16 +95,16 @@ pipeline.detectSpotsIntegral <- function()
     n.sample.modules <- length(sample.spot.list)
   }
 
-  o <- order(sapply(sample.spot.core.list, function(x) { mean(x, na.rm=T) }), decreasing=T)
+  o <- order(sapply(sample.spot.core.list, function(x) { mean(x, na.rm=TRUE) }), decreasing=TRUE)
   sample.spot.list <- sample.spot.list[o]
   sample.spot.core.list <- sample.spot.core.list[o]
 
   ## merge overlapping sample cores ##
-  merged <- T
+  merged <- TRUE
 
   while (merged)
   {
-    merged <- F
+    merged <- FALSE
     i <- 1
 
     while (i < length(sample.spot.list))
@@ -139,7 +139,7 @@ pipeline.detectSpotsIntegral <- function()
           sample.spot.list <- sample.spot.list[-j]
           sample.spot.core.list <- sample.spot.core.list[-j]
 
-          merged <- T
+          merged <- TRUE
         } else
         {
           j <- j + 1
@@ -150,7 +150,7 @@ pipeline.detectSpotsIntegral <- function()
     }
   }
 
-  o <- order(sapply(sample.spot.core.list, function(x) { mean(x,na.rm=T) }), decreasing=T)
+  o <- order(sapply(sample.spot.core.list, function(x) { mean(x,na.rm=TRUE) }), decreasing=TRUE)
   sample.spot.list <- sample.spot.list[o]
   sample.spot.core.list <- sample.spot.core.list[o]
 
@@ -168,13 +168,13 @@ pipeline.detectSpotsIntegral <- function()
         {
           spot12intersect <- which(spot1 %in% spot2)
 
-          spot1 <- which(!is.na(sample.spot.list[[i]]), arr.ind=T)
-          spot2 <- which(!is.na(sample.spot.list[[j]]), arr.ind=T)
+          spot1 <- which(!is.na(sample.spot.list[[i]]), arr.ind=TRUE)
+          spot2 <- which(!is.na(sample.spot.list[[j]]), arr.ind=TRUE)
 
           spot12intersect <- spot1[spot12intersect,,drop=F]
 
-          core1.center <- colMeans(apply(which(!is.na(sample.spot.core.list[[i]]), arr.ind=T), 2, range))
-          core2.center <- colMeans(apply(which(!is.na(sample.spot.core.list[[j]]), arr.ind=T), 2, range))
+          core1.center <- colMeans(apply(which(!is.na(sample.spot.core.list[[i]]), arr.ind=TRUE), 2, range))
+          core2.center <- colMeans(apply(which(!is.na(sample.spot.core.list[[j]]), arr.ind=TRUE), 2, range))
 
           spot12assoc <- apply(spot12intersect, 1, function(x)
           {
@@ -195,7 +195,7 @@ pipeline.detectSpotsIntegral <- function()
     apply(apply(metadata, 2, function(x) { (x - min(x)) / (max(x) - min(x)) }), 1, max)
 
   spot.list.overexpression$overview.mask <<- rep(NA, preferences$dim.1stLvlSom ^ 2)
-  spot.list.overexpression$filtered <<- F
+  spot.list.overexpression$filtered <<- FALSE
   spot.list.overexpression$spots <<- list()
 
   for (i in 1:length(sample.spot.list))
@@ -262,20 +262,20 @@ pipeline.detectSpotsIntegral <- function()
 
     spot.i <- 0
 
-    while (nrow(which(core == -1, arr.ind=T)) > 0)
+    while (nrow(which(core == -1, arr.ind=TRUE)) > 0)
     {
-      start.pix <- which(core == -1, arr.ind=T)[1,]
+      start.pix <- which(core == -1, arr.ind=TRUE)[1,]
       spot.i <- spot.i + 1
       core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
     }
 
     # shrink each separate region to core size
-    for (s.i in 1:max(core,na.rm=T))
+    for (s.i in 1:max(core,na.rm=TRUE))
     {
-      if (sum(core == s.i, na.rm=T) > preferences$spot.coresize.modules)
+      if (sum(core == s.i, na.rm=TRUE) > preferences$spot.coresize.modules)
       {
         core.metagenes <- which(core == s.i)
-        o <- order(metadata[core.metagenes,m], decreasing=F)[1:preferences$spot.coresize.modules]
+        o <- order(metadata[core.metagenes,m], decreasing=FALSE)[1:preferences$spot.coresize.modules]
         core[setdiff(core.metagenes, core.metagenes[o])] <- NA
       }
     }
@@ -283,15 +283,15 @@ pipeline.detectSpotsIntegral <- function()
     core[which(!is.na(core))] <- -1
     spot.i <- 0
 
-    while (nrow(which(core == -1, arr.ind=T)) > 0)
+    while (nrow(which(core == -1, arr.ind=TRUE)) > 0)
     {
-      start.pix <- which(core == -1, arr.ind=T)[1,]
+      start.pix <- which(core == -1, arr.ind=TRUE)[1,]
       spot.i <- spot.i + 1
       core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
     }
 
     # define spot area around cores
-    for (s.i in 1:max(core,na.rm=T))
+    for (s.i in 1:max(core,na.rm=TRUE))
     {
       n.sample.modules <- n.sample.modules + 1
       sample.spot.core.list[[n.sample.modules]] <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
@@ -300,7 +300,7 @@ pipeline.detectSpotsIntegral <- function()
       spot <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
       spot[which(metadata.scaled[,m] < 1 - preferences$spot.threshold.modules)] <- -1
 
-      start.pix <- which(!is.na(sample.spot.core.list[[n.sample.modules]]), arr.ind=T)
+      start.pix <- which(!is.na(sample.spot.core.list[[n.sample.modules]]), arr.ind=TRUE)
       start.pix <- start.pix[which.max(sample.spot.core.list[[n.sample.modules]][start.pix]),]
 
       spot <- col.pix(spot, start.pix[1], start.pix[2], 1, preferences$dim.1stLvlSom)
@@ -334,16 +334,16 @@ pipeline.detectSpotsIntegral <- function()
     n.sample.modules <- length(sample.spot.list)
   }
 
-  o <- order(sapply(sample.spot.core.list, function(x) { mean(x,na.rm=T) }), decreasing=F)
+  o <- order(sapply(sample.spot.core.list, function(x) { mean(x,na.rm=TRUE) }), decreasing=FALSE)
   sample.spot.list <- sample.spot.list[o]
   sample.spot.core.list <- sample.spot.core.list[o]
 
   ## merge overlapping sample cores ##
-  merged <- T
+  merged <- TRUE
 
   while (merged)
   {
-    merged <- F
+    merged <- FALSE
     i <- 1
 
     while (i < length(sample.spot.list))
@@ -378,7 +378,7 @@ pipeline.detectSpotsIntegral <- function()
           sample.spot.list <- sample.spot.list[-j]
           sample.spot.core.list <- sample.spot.core.list[-j]
 
-          merged <- T
+          merged <- TRUE
         } else
         {
           j <- j + 1
@@ -390,7 +390,7 @@ pipeline.detectSpotsIntegral <- function()
 
   }
 
-  o <- order(sapply(sample.spot.core.list,function(x) { mean(x,na.rm=T) }), decreasing=F)
+  o <- order(sapply(sample.spot.core.list,function(x) { mean(x,na.rm=TRUE) }), decreasing=FALSE)
   sample.spot.list <- sample.spot.list[o]
   sample.spot.core.list <- sample.spot.core.list[o]
 
@@ -409,13 +409,13 @@ pipeline.detectSpotsIntegral <- function()
         {
           spot12intersect <- which(spot1 %in% spot2)
 
-          spot1 <- which(!is.na(sample.spot.list[[i]]), arr.ind=T)
-          spot2 <- which(!is.na(sample.spot.list[[j]]), arr.ind=T)
+          spot1 <- which(!is.na(sample.spot.list[[i]]), arr.ind=TRUE)
+          spot2 <- which(!is.na(sample.spot.list[[j]]), arr.ind=TRUE)
 
           spot12intersect <- spot1[spot12intersect,,drop=F]
 
-          core1.center <- colMeans(apply(which(!is.na(sample.spot.core.list[[i]]), arr.ind=T), 2, range))
-          core2.center <- colMeans(apply(which(!is.na(sample.spot.core.list[[j]]), arr.ind=T), 2, range))
+          core1.center <- colMeans(apply(which(!is.na(sample.spot.core.list[[i]]), arr.ind=TRUE), 2, range))
+          core2.center <- colMeans(apply(which(!is.na(sample.spot.core.list[[j]]), arr.ind=TRUE), 2, range))
 
           spot12assoc <- apply(spot12intersect, 1, function(x)
           {
@@ -436,7 +436,7 @@ pipeline.detectSpotsIntegral <- function()
     apply(apply(metadata, 2, function(x) { (x - min(x)) / (max(x) - min(x)) }), 1, min)
 
   spot.list.underexpression$overview.mask <<- rep(NA, preferences$dim.1stLvlSom ^ 2)
-  spot.list.underexpression$filtered <<- F
+  spot.list.underexpression$filtered <<- FALSE
   spot.list.underexpression$spots <<- list()
 
   for (i in 1:length(sample.spot.list))
@@ -492,7 +492,7 @@ pipeline.detectSpotsIntegral <- function()
   spot.list.correlation <<- list()
   spot.list.correlation$overview.map <<- NA
   spot.list.correlation$overview.mask <<- rep(NA, preferences$dim.1stLvlSom ^ 2)
-  spot.list.correlation$filtered <<- F
+  spot.list.correlation$filtered <<- FALSE
   spot.list.correlation$spots <<- list()
 
   c.map <- cor(t(metadata))
@@ -507,7 +507,7 @@ pipeline.detectSpotsIntegral <- function()
 
   while (is.matrix(c.map) && nrow(c.map) > 0 && ncol(c.map) > 0 && count.cluster <= 30)
   {
-    start.node <- rownames(c.map)[which(c.map == max(c.map, na.rm=T), arr.ind=T)[1,1]]
+    start.node <- rownames(c.map)[which(c.map == max(c.map, na.rm=TRUE), arr.ind=TRUE)[1,1]]
 
     cluster <- names(which(c.map[start.node,] > 0.90))
     cluster <- c(start.node, cluster)
@@ -576,7 +576,7 @@ pipeline.detectSpotsIntegral <- function()
   spot.list.kmeans <<- list()
   spot.list.kmeans$overview.map <<- matrix(res$cluster, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
   spot.list.kmeans$overview.mask <<- rep(NA, preferences$dim.1stLvlSom ^ 2)
-  spot.list.kmeans$filtered <<- F
+  spot.list.kmeans$filtered <<- FALSE
   spot.list.kmeans$spots <<- list()
 
   for (i in 1:n.cluster)
@@ -649,21 +649,21 @@ pipeline.detectSpotsIntegral <- function()
 
       spot.i <- 0
 
-      while (nrow(which(core == -1, arr.ind=T)) > 0)
+      while (nrow(which(core == -1, arr.ind=TRUE)) > 0)
       {
-        start.pix <- which(core == -1, arr.ind=T)[1,]
+        start.pix <- which(core == -1, arr.ind=TRUE)[1,]
 
         spot.i <- spot.i + 1
         core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
       }
 
       # shrink each separate region to core size
-      for (s.i in 1:max(core,na.rm=T))
+      for (s.i in 1:max(core,na.rm=TRUE))
       {
-        if (sum(core == s.i, na.rm=T) > preferences$spot.coresize.groupmap)
+        if (sum(core == s.i, na.rm=TRUE) > preferences$spot.coresize.groupmap)
         {
           core.metagenes <- which(core == s.i)
-          o <- order(group.metadata[core.metagenes,m], decreasing=T)[1:preferences$spot.coresize.groupmap]
+          o <- order(group.metadata[core.metagenes,m], decreasing=TRUE)[1:preferences$spot.coresize.groupmap]
           core[setdiff(core.metagenes, core.metagenes[o])] <- NA
         }
       }
@@ -671,15 +671,15 @@ pipeline.detectSpotsIntegral <- function()
       core[which(!is.na(core))] <- -1
       spot.i <- 0
 
-      while (nrow(which(core == -1, arr.ind=T)) > 0)
+      while (nrow(which(core == -1, arr.ind=TRUE)) > 0)
       {
-        start.pix <- which(core == -1, arr.ind=T)[1,]
+        start.pix <- which(core == -1, arr.ind=TRUE)[1,]
         spot.i <- spot.i + 1
         core <- col.pix(core, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
       }
 
       # define spot area around cores
-      for (s.i in 1:max(core,na.rm=T))
+      for (s.i in 1:max(core,na.rm=TRUE))
       {
         n.sample.modules <- n.sample.modules + 1
 
@@ -689,7 +689,7 @@ pipeline.detectSpotsIntegral <- function()
         spot <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
         spot[which(group.metadata.scaled[,m] > preferences$spot.threshold.groupmap)] <- -1
 
-        start.pix <- which(!is.na(sample.spot.core.list[[n.sample.modules]]), arr.ind=T)
+        start.pix <- which(!is.na(sample.spot.core.list[[n.sample.modules]]), arr.ind=TRUE)
         start.pix <- start.pix[which.max(sample.spot.core.list[[n.sample.modules]][start.pix]),]
 
         spot <- col.pix(spot, start.pix[1], start.pix[2], 1, preferences$dim.1stLvlSom)
@@ -722,16 +722,16 @@ pipeline.detectSpotsIntegral <- function()
       n.sample.modules <- length(sample.spot.list)
     }
 
-    o <- order(sapply(sample.spot.core.list,function(x) mean(x,na.rm=T)), decreasing=T)
+    o <- order(sapply(sample.spot.core.list,function(x) mean(x,na.rm=TRUE)), decreasing=TRUE)
     sample.spot.list <- sample.spot.list[o]
     sample.spot.core.list <- sample.spot.core.list[o]
 
     ## merge overlapping sample cores ##
-    merged <- T
+    merged <- TRUE
 
     while (merged)
     {
-      merged <- F
+      merged <- FALSE
       i <- 1
 
       while (i < length(sample.spot.list))
@@ -766,7 +766,7 @@ pipeline.detectSpotsIntegral <- function()
             sample.spot.list <- sample.spot.list[-j]
             sample.spot.core.list <- sample.spot.core.list[-j]
 
-            merged <- T
+            merged <- TRUE
           } else
           {
             j <- j + 1
@@ -777,7 +777,7 @@ pipeline.detectSpotsIntegral <- function()
       }
     }
 
-    o <- order(sapply(sample.spot.core.list, function(x) { mean(x, na.rm=T) }), decreasing=T)
+    o <- order(sapply(sample.spot.core.list, function(x) { mean(x, na.rm=TRUE) }), decreasing=TRUE)
     sample.spot.list <- sample.spot.list[o]
     sample.spot.core.list <- sample.spot.core.list[o]
 
@@ -795,13 +795,13 @@ pipeline.detectSpotsIntegral <- function()
           {
             spot12intersect <- which(spot1 %in% spot2)
 
-            spot1 <- which(!is.na(sample.spot.list[[i]]), arr.ind=T)
-            spot2 <- which(!is.na(sample.spot.list[[j]]), arr.ind=T)
+            spot1 <- which(!is.na(sample.spot.list[[i]]), arr.ind=TRUE)
+            spot2 <- which(!is.na(sample.spot.list[[j]]), arr.ind=TRUE)
 
             spot12intersect <- spot1[spot12intersect, ,drop=F]
 
-            core1.center <- colMeans(apply(which(!is.na(sample.spot.core.list[[i]]), arr.ind=T), 2, range))
-            core2.center <- colMeans(apply(which(!is.na(sample.spot.core.list[[j]]), arr.ind=T), 2, range))
+            core1.center <- colMeans(apply(which(!is.na(sample.spot.core.list[[i]]), arr.ind=TRUE), 2, range))
+            core2.center <- colMeans(apply(which(!is.na(sample.spot.core.list[[j]]), arr.ind=TRUE), 2, range))
 
             spot12assoc <- apply(spot12intersect, 1, function(x)
             {
@@ -822,7 +822,7 @@ pipeline.detectSpotsIntegral <- function()
       apply(apply(group.metadata, 2, function(x){ (x - min(x)) / (max(x) - min(x)) }), 1, max)
 
     spot.list.group.overexpression$overview.mask <<- rep(NA, preferences$dim.1stLvlSom ^ 2)
-    spot.list.group.overexpression$filtered <<- F
+    spot.list.group.overexpression$filtered <<- FALSE
     spot.list.group.overexpression$spots <<- list()
 
     for (i in 1:length(sample.spot.list))

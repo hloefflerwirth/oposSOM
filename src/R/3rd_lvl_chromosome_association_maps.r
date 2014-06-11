@@ -58,7 +58,7 @@ pipeline.3rdLvlChromosomeAssociationMaps <- function(gene.positions.list)
 
     # spot summary
     par(mar=c(0,0,0,0))
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
     text(0.01, 0.92, paste("Spot", rownames(spot.gene.chromo.pq.matrix)[spot.i]) , cex=2.6, adj=0)
 
     if (spot.i <= length(set.list$spots))
@@ -96,7 +96,7 @@ pipeline.3rdLvlChromosomeAssociationMaps <- function(gene.positions.list)
       par(mar=c(2,4,2,18))
 
       image(matrix(set.list$spots[[spot.i]]$mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=F, col ="darkgreen")
+            axes=FALSE, col ="darkgreen")
 
       box()
     } else
@@ -112,11 +112,11 @@ pipeline.3rdLvlChromosomeAssociationMaps <- function(gene.positions.list)
       image(x=1:nrow(intersect.counts),
             y=1,
             z=matrix(intersect.counts[,spot.i],ncol=1),
-            zlim=c(0,1), col=colkey, axes=F, xlab="",ylab="")
+            zlim=c(0,1), col=colkey, axes=FALSE, xlab="",ylab="")
 
       box()
       abline(v=nrow(intersect.counts)-chr.sep.level+0.5, lwd=0.1, lty=3)
-      axis(1, nrow(intersect.counts)-chr.lab.level,  rev(unique(chr)), las=2, tick=F, line=-0.5)
+      axis(1, nrow(intersect.counts)-chr.lab.level,  rev(unique(chr)), las=2, tick=FALSE, line=-0.5)
     } else
     {
       frame()
@@ -128,7 +128,7 @@ pipeline.3rdLvlChromosomeAssociationMaps <- function(gene.positions.list)
     par(mar=c(2.2,2.2,4,1))
 
     plot(0, type="n", xlab="", ylab="", xlim=c(1,ncol(chromo.data)),
-         ylim=c(1,ncol(chromo.data)), axes=F)
+         ylim=c(1,ncol(chromo.data)), axes=FALSE)
 
     title(main="Absolute numbers", line=0.5, cex.main=1)
     box()
@@ -155,7 +155,7 @@ pipeline.3rdLvlChromosomeAssociationMaps <- function(gene.positions.list)
     # ranked chromo list
     if (spot.i <= length(set.list$spots))
     {
-      o <- names(sort(chromo.data[spot.i,], decreasing=T))
+      o <- names(sort(chromo.data[spot.i,], decreasing=TRUE))
 
       p.values <- sapply(o, function(loci.i)
       {
@@ -175,7 +175,7 @@ pipeline.3rdLvlChromosomeAssociationMaps <- function(gene.positions.list)
       y.coords <- seq(0.91, 0.04, length.out=ncol(chromo.data))
 
       par(mar=c(0,0,0,0))
-      plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
+      plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
       text(x.coords, rep(0.95, 5), c("Rank", "locus", "# genes", "%", "p-value"), cex=1, adj=0)
 
@@ -195,7 +195,7 @@ pipeline.3rdLvlChromosomeAssociationMaps <- function(gene.positions.list)
     par(mar=c(2.2,2.2,4,1))
 
     plot(0, type="n", xlab="", ylab="", xlim=c(1,ncol(chromo.data)),
-         ylim=c(1,ncol(chromo.data)), axes=F)
+         ylim=c(1,ncol(chromo.data)), axes=FALSE)
 
     title(main="Relative numbers", line=0.5, cex.main=1)
     box()
@@ -220,7 +220,7 @@ pipeline.3rdLvlChromosomeAssociationMaps <- function(gene.positions.list)
     # ranked chromo list
     if (spot.i <= length(set.list$spots))
     {
-      o = names(sort(chromo.data[spot.i,], decreasing=T))
+      o = names(sort(chromo.data[spot.i,], decreasing=TRUE))
 
       p.values=sapply(o, function(loci.i)
       {
@@ -240,7 +240,7 @@ pipeline.3rdLvlChromosomeAssociationMaps <- function(gene.positions.list)
       y.coords <- seq(0.91, 0.04, length.out=ncol(chromo.data))
 
       par(mar=c(0,0,0,0))
-      plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
+      plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
       text(x.coords, rep(0.95, 5), c("Rank", "locus", "# genes", "%", "p-value"), cex=1, adj=0)
       text(x.coords[1], y.coords, c(1:length(o)), adj=0)

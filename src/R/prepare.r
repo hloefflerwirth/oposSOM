@@ -135,13 +135,13 @@ pipeline.prepare <- function()
   if (is.null(indata))
   {
     util.fatal("No indata supplied!")
-    return(F)
+    return(FALSE)
   }
 
   if (class(indata) != "matrix" && (is.null(dim(indata)) || dim(indata) < 1))
   {
     util.fatal("Invalid indata supplied!")
-    return(F)
+    return(FALSE)
   }
 
   if (class(indata) != "matrix" ||
@@ -218,8 +218,8 @@ pipeline.prepare <- function()
       "Summary Sheets Integral"=paste(files.name, "- Results/Summary Sheets - Integral"))
 
   # create output dirs
-  dir.create(paste(files.name, "- Results"), showWarnings=F)
-  dir.create(paste(files.name, "- Results/CSV Sheets"), showWarnings=F)
+  dir.create(paste(files.name, "- Results"), showWarnings=FALSE)
+  dir.create(paste(files.name, "- Results/CSV Sheets"), showWarnings=FALSE)
 
   if (is.null(colramp)) {
     colramp <<- colorRampPalette(c("darkblue", "blue", "lightblue", "green",
@@ -357,7 +357,7 @@ pipeline.prepare <- function()
   {
     for (i in 1:preferences$rotate.SOM.portraits)
     {
-      o <- matrix(c(1:(preferences$dim.1stLvlSom^2)), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom, byrow=T)
+      o <- matrix(c(1:(preferences$dim.1stLvlSom^2)), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom, byrow=TRUE)
       o <- o[rev(1:preferences$dim.1stLvlSom),]
       som.result <<- som.result[as.vector(o),]
     }
@@ -365,7 +365,7 @@ pipeline.prepare <- function()
 
   if (preferences$flip.SOM.portraits)
   {
-    o <- matrix(c(1:(preferences$dim.1stLvlSom^2)), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom, byrow=T)
+    o <- matrix(c(1:(preferences$dim.1stLvlSom^2)), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom, byrow=TRUE)
     som.result <<- som.result[as.vector(o),]
   }
 
@@ -401,7 +401,7 @@ pipeline.prepare <- function()
   {
     meta.sign <- sign(x)
     meta <- log10(abs(x))
-    meta <- meta - min(meta, na.rm=T)
+    meta <- meta - min(meta, na.rm=TRUE)
     return(meta * meta.sign)
   })
 
@@ -430,5 +430,5 @@ pipeline.prepare <- function()
   som.nodes <<- (som.result$visual[,"x"] + 1) + som.result$visual[,"y"] * preferences$dim.1stLvlSom
   names(som.nodes) <<- rownames(indata)
 
-  return(T)
+  return(TRUE)
 }

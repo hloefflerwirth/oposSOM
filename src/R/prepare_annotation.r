@@ -18,7 +18,7 @@ pipeline.prepareAnnotation <- function()
   {
     util.warn("biomaRt seems to be down.")
     util.warn("Disabling geneset analysis.")
-    preferences$geneset.analysis <<- F
+    preferences$geneset.analysis <<- FALSE
     return()
   }
 
@@ -34,8 +34,8 @@ pipeline.prepareAnnotation <- function()
         getBM(c(preferences$database.id.type, "external_gene_id"),
               preferences$database.id.type,
               rownames(indata)[seq(1,nrow(indata),length.out=100)],
-              mart, checkFilters=F)
-    }, silent=T)
+              mart, checkFilters=FALSE)
+    }, silent=TRUE)
 
     if (is.null(biomart.table) || nrow(biomart.table) == 0)
     {
@@ -53,7 +53,7 @@ pipeline.prepareAnnotation <- function()
   {
     util.warn("Could not find valid annotation parameters.")
     util.warn("Disabling geneset analysis.")
-    preferences$geneset.analysis <<- F
+    preferences$geneset.analysis <<- FALSE
     return()
   }
 
@@ -67,13 +67,13 @@ pipeline.prepareAnnotation <- function()
                            "chromosome_name",
                            "band"),
                          preferences$database.id.type,
-                         rownames(indata), mart, checkFilters=F)
+                         rownames(indata), mart, checkFilters=FALSE)
 
   if (nrow(biomart.table) == 0)
   {
     util.warn("Could not resolve rownames. Possibly wrong database.id.type")
     util.warn("Disabling geneset analysis.")
-    preferences$geneset.analysis <<- F
+    preferences$geneset.analysis <<- FALSE
   } else
   {
     h <- biomart.table[,2]
@@ -112,7 +112,7 @@ pipeline.prepareAnnotation <- function()
 
   unique.protein.ids <<- unique(gene.ids)
 
-  biomart.table <- getBM(c("ensembl_gene_id", "go_id", "name_1006", "namespace_1003"), "ensembl_gene_id", unique.protein.ids, mart, checkFilters=F)
+  biomart.table <- getBM(c("ensembl_gene_id", "go_id", "name_1006", "namespace_1003"), "ensembl_gene_id", unique.protein.ids, mart, checkFilters=FALSE)
   gs.def.list <<- tapply(biomart.table[,1], biomart.table[,2], c)
   gs.def.list <<- lapply(gs.def.list, function(x) { list(Genes=x, Type="") })
   gs.def.list <<- gs.def.list[- which(names(gs.def.list) == "")]
@@ -177,7 +177,7 @@ pipeline.prepareAnnotation <- function()
     util.info("In total", length(gs.def.list), "gene sets to be considered in analysis")
   } else
   {
-    preferences$geneset.analysis <<- F
+    preferences$geneset.analysis <<- FALSE
     util.warn("No Geneset information -> turning off GS analysis")
   }
 }

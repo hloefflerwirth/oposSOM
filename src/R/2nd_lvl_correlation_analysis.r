@@ -23,7 +23,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
 
     # Maximum Correlation Tree
     adj.matrix <- cor(s) * -1
-    g <- graph.adjacency(adj.matrix, weighted=T, mode="undirected")
+    g <- graph.adjacency(adj.matrix, weighted=TRUE, mode="undirected")
     stg <- minimum.spanning.tree(g)
     layout <- layout.kamada.kawai(stg)
 
@@ -60,13 +60,13 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
 
     adj.matrix <- apply(adj.matrix, 1, function(x)
     {
-      x[order(x,decreasing=T)[-c(1:2)]] <- 0
+      x[order(x,decreasing=TRUE)[-c(1:2)]] <- 0
       return(x)
     })
 
     adj.matrix[which(adj.matrix < 0.5)] <- 0
 
-    g <- graph.adjacency(adj.matrix, weighted=T,  mode="undirected")
+    g <- graph.adjacency(adj.matrix, weighted=TRUE,  mode="undirected")
     layout <- layout.fruchterman.reingold(g)
 
     plot(g, layout=layout, vertex.size=5, vertex.label = colnames(indata),
@@ -103,7 +103,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
 
     if (max(adj.matrix) > 0)
     {
-      g <- graph.adjacency(adj.matrix, weighted=T,  mode="undirected")
+      g <- graph.adjacency(adj.matrix, weighted=TRUE,  mode="undirected")
       layout <- layout.fruchterman.reingold(g, start=matrix(1:(2*ncol(indata)),ncol=2), niter=1000)
 
       plot(g, layout=layout, vertex.size=ifelse(ncol(indata) < 250, 5, 3),
@@ -144,8 +144,8 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
                  col=colramp(1000), scale="n", main=metagene.filter.list[[i]]$n,
                  mar=c(8,8), ColSideColors=group.colors, RowSideColors=group.colors)
 
-    par(new=T)
-    plot(0,type="n", axes=F, xlab="", ylab="")
+    par(new=TRUE)
+    plot(0,type="n", axes=FALSE, xlab="", ylab="")
 
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
            text.col=groupwise.group.colors, bg="white")
@@ -164,8 +164,8 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
                  main=metagene.filter.list[[i]]$n, mar=c(8,8),
                  ColSideColors=group.colors, RowSideColors=group.colors)
 
-    par(new=T)
-    plot(0,type="n", axes=F, xlab="", ylab="")
+    par(new=TRUE)
+    plot(0,type="n", axes=FALSE, xlab="", ylab="")
 
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
            text.col=groupwise.group.colors, bg="white")
@@ -186,8 +186,8 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
                  scale="n", main=metagene.filter.list[[i]]$n, mar=c(8,8),
                  ColSideColors=group.colors[o], RowSideColors=group.colors[o])
 
-    par(new=T)
-    plot(0,type="n", axes=F, xlab="", ylab="")
+    par(new=TRUE)
+    plot(0,type="n", axes=FALSE, xlab="", ylab="")
 
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
            text.col=groupwise.group.colors, bg="white")

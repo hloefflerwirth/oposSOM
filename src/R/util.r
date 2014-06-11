@@ -1,6 +1,6 @@
 # outputs a message
 util.cat <- function(..., suffix="\n") {
-  message(paste(..., collapse=" "), suffix, appendLF=F)
+  message(paste(..., collapse=" "), suffix, appendLF=FALSE)
   flush.console()
 }
 

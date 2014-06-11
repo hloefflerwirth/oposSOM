@@ -5,7 +5,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
 
   for (dirname in dirnames)
   {
-    dir.create(dirname, showWarnings=F)
+    dir.create(dirname, showWarnings=FALSE)
   }
 
   plot.set.list.chromosomes <- function(set.list, main)
@@ -30,7 +30,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
       })
 
       intersect.counts.spot <- unlist(intersect.counts.spot)
-      names(intersect.counts.spot) <- sub(".", " ", names(intersect.counts.spot), fixed=T)
+      names(intersect.counts.spot) <- sub(".", " ", names(intersect.counts.spot), fixed=TRUE)
       intersect.counts[names(intersect.counts.spot), m] <- intersect.counts.spot
     }
 
@@ -46,7 +46,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
                 colorRampPalette(c("purple","black"))(3000),
                 rep("black",5000))
 
-    chr <- sapply(strsplit(rownames(intersect.counts), " ", fixed=T), head, 1)
+    chr <- sapply(strsplit(rownames(intersect.counts), " ", fixed=TRUE), head, 1)
     chr.sep.level <- table(chr)[unique(chr)]
     chr.sep.level <- rev(chr.sep.level)
     chr.sep.level <- chr.sep.level[-length(chr.sep.level)]
@@ -63,7 +63,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
     image(1:ncol(intersect.counts),
           1:nrow(intersect.counts),
           t(intersect.counts[nrow(intersect.counts):1,]),
-          axes=F, xlab="", ylab="", col=colkey, main=main, zlim=c(0,1))
+          axes=FALSE, xlab="", ylab="", col=colkey, main=main, zlim=c(0,1))
 
     box()
     abline(h=chr.sep.level+0.5, lwd=0.1, lty=3)
@@ -74,14 +74,14 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
     axis(2, 1:nrow(intersect.counts), labels = rev(rownames(intersect.counts)),
          las = 2, line = -0.5, tick = 0, cex.axis=0.24)
 
-    axis(2, chr.lab.level,  rev(unique(chr)), las=2, tick=F, line=0.6)
+    axis(2, chr.lab.level,  rev(unique(chr)), las=2, tick=FALSE, line=0.6)
 
-    par(new=T, mar=c(1,0,0,0))
+    par(new=TRUE, mar=c(1,0,0,0))
     layout(matrix(c(0,0,0,0,1,0,0,0,0), 3, 3), c(1.6, 0.03, 0.005), c(0.115, 1.15, 2.15))
-    image(matrix(1:1000, 1, 1000), col = colkey, axes=F)
+    image(matrix(1:1000, 1, 1000), col = colkey, axes=FALSE)
 
     axis(2, at=seq(0, 1, 0.1), paste(seq(0, 100, 10),"%",sep=""),
-         las=2, tick=F, pos=0.5, cex.axis=0.6)
+         las=2, tick=FALSE, pos=0.5, cex.axis=0.6)
 
     box()
 
@@ -105,10 +105,10 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
 
       l <- c(rep(1,ceiling(length(gene.positions.list)/2)), 2:(length(gene.positions.list)+1))
       l <- c(l, rep(0, (ceiling(length(gene.positions.list)/2)*3) - length(l)))
-      layout(matrix(l, 3, ceiling(length(gene.positions.list)/2), byrow=T), heights=c(0.05,1,1))
+      layout(matrix(l, 3, ceiling(length(gene.positions.list)/2), byrow=TRUE), heights=c(0.05,1,1))
 
       par(mar=c(0,0,0,0))
-      plot(0, type="n", xlab="", ylab="", axes=F, xlim=c(0,1))
+      plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,1))
       text(0.005, 0, paste("Spot",names(set.list$spots)[m]), cex=2)
 
       par(mar=c(1.5,2,0.2,0.3))
@@ -118,7 +118,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
         x <- intersect.counts[[chromosome]]
 
         image(1, 1:length(x),  matrix(rev(x), 1, length(x)), zlim=c(0, 1),
-              axes=F, xlab="", ylab="", col=colkey)
+              axes=FALSE, xlab="", ylab="", col=colkey)
 
         box()
         axis(1, 1, labels = chromosome, las = 1, line = -0.8, tick = 0, cex.axis=1.2)

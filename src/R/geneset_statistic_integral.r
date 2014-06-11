@@ -3,7 +3,7 @@ pipeline.genesetStatisticIntegral <- function()
   spot.fisher.p <- function(spot)
   {
     spot$Fisher.p <- GeneSet.Fisher(unique(na.omit(gene.ids[spot$genes])),
-                                    unique.protein.ids, gs.def.list, sort=T)
+                                    unique.protein.ids, gs.def.list, sort=TRUE)
 
     return(spot)
   }
@@ -43,5 +43,5 @@ pipeline.genesetStatisticIntegral <- function()
   util.progress.terminate()
 
   ### stop parallel computing ###
-  try({ stopCluster(cl) }, silent=T)
+  try({ stopCluster(cl) }, silent=TRUE)
 }

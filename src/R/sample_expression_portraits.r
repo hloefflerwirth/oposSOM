@@ -11,7 +11,7 @@ pipeline.sampleExpressionPortraits <- function()
 
   for (gl in 1:length(unique(group.labels)))
   {
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1))
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1))
 
     if (length(unique(group.labels)) > 1)
     {
@@ -19,12 +19,12 @@ pipeline.sampleExpressionPortraits <- function()
             adj=0, col=groupwise.group.colors[gl])
     }
 
-    par(new=T)
+    par(new=TRUE)
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
       image(matrix(metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=F, col=colramp(1000))
+            axes=FALSE, col=colramp(1000))
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
 
@@ -42,7 +42,7 @@ pipeline.sampleExpressionPortraits <- function()
     {
       for (j in 1:(12 - count.col %% 12))
       {
-        plot(0, type="n", axes=F, xlab="", ylab="")
+        plot(0, type="n", axes=FALSE, xlab="", ylab="")
         count.col <- count.col + 1
       }
     }
@@ -54,7 +54,7 @@ pipeline.sampleExpressionPortraits <- function()
 
   for (gl in 1:length(unique(group.labels)))
   {
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1))
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1))
 
     if (length(unique(group.labels)) > 1)
     {
@@ -62,7 +62,7 @@ pipeline.sampleExpressionPortraits <- function()
             adj=0, col=groupwise.group.colors[gl])
     }
 
-    par(new=T)
+    par(new=TRUE)
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
@@ -71,8 +71,8 @@ pipeline.sampleExpressionPortraits <- function()
       zfacet <- md[-1, -1] + md[-1, -nrz] + md[-nrz, -1] + md[-nrz, -nrz]
       facetcol <- cut(zfacet, 1000)
 
-      persp(md, axes=F, border=NA, expand=0.5, col=colramp(1000)[facetcol],
-            phi=45, theta=-5, xlab="", ylab="", zlab="", box=T)
+      persp(md, axes=FALSE, border=NA, expand=0.5, col=colramp(1000)[facetcol],
+            phi=45, theta=-5, xlab="", ylab="", zlab="", box=TRUE)
 
       title(paste(j, ":", colnames(indata)[j]), line=1, cex.main=0.8)
       count.col <- count.col + 1
@@ -82,7 +82,7 @@ pipeline.sampleExpressionPortraits <- function()
     {
       for (j in 1:(12 - count.col %% 12))
       {
-        plot(0, type="n", axes=F, xlab="", ylab="")
+        plot(0, type="n", axes=FALSE, xlab="", ylab="")
         count.col <- count.col + 1
       }
     }
@@ -117,7 +117,7 @@ pipeline.sampleExpressionPortraits <- function()
 
   # Specific SOM Portraits
   par(mar=c(0, 0, 0, 0), mfrow=c(1, 1))
-  plot(0, type="n", xlab="", ylab="", axes=T)
+  plot(0, type="n", xlab="", ylab="", axes=TRUE)
   text(1, 0.3, "Sample Specific SOM Portraits", cex=2)
 
   par(mfrow=c(7, 12))
@@ -126,7 +126,7 @@ pipeline.sampleExpressionPortraits <- function()
 
   for (gl in 1:length(unique(group.labels)))
   {
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0, 1))
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0, 1))
 
     if (length(unique(group.labels)) > 1)
     {
@@ -134,12 +134,12 @@ pipeline.sampleExpressionPortraits <- function()
             adj=0, col=groupwise.group.colors[gl])
     }
 
-    par(new=T)
+    par(new=TRUE)
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
       image(matrix(bleached.metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=F, col=colramp(1000), zlim=range(bleached.metadata))
+            axes=FALSE, col=colramp(1000), zlim=range(bleached.metadata))
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
       box()
@@ -149,7 +149,7 @@ pipeline.sampleExpressionPortraits <- function()
     {
       for (j in 1:(12 - count.col %% 12))
       {
-        plot(0, type="n", axes=F, xlab="", ylab="")
+        plot(0, type="n", axes=FALSE, xlab="", ylab="")
         count.col <- count.col + 1
       }
     }
@@ -157,7 +157,7 @@ pipeline.sampleExpressionPortraits <- function()
 
   # Absolute Metagene Portraits
   par(mar=c(0, 0, 0, 0), mfrow=c(1, 1))
-  plot(0, type="n", xlab="", ylab="", axes=T)
+  plot(0, type="n", xlab="", ylab="", axes=TRUE)
   text(1, 0.3, "Absolute Metagene Portraits", cex=2)
 
   par(mfrow=c(7, 12))
@@ -166,7 +166,7 @@ pipeline.sampleExpressionPortraits <- function()
 
   for (gl in 1:length(unique(group.labels)))
   {
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0, 1))
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0, 1))
 
     if (length(unique(group.labels)) > 1)
     {
@@ -174,12 +174,12 @@ pipeline.sampleExpressionPortraits <- function()
             adj=0, col=groupwise.group.colors[gl])
     }
 
-    par(new=T)
+    par(new=TRUE)
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
       image(matrix(metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=F, col = colramp(1000), zlim=c(min(metadata),max(metadata)))
+            axes=FALSE, col = colramp(1000), zlim=c(min(metadata),max(metadata)))
 
       title(paste(j,":", colnames(indata)[j]), line=1, cex.main=0.8)
       box()
@@ -190,7 +190,7 @@ pipeline.sampleExpressionPortraits <- function()
     {
       for (j in 1:(12 - count.col %% 12))
       {
-        plot(0, type="n", axes=F, xlab="", ylab="")
+        plot(0, type="n", axes=FALSE, xlab="", ylab="")
         count.col <- count.col + 1
       }
     }
@@ -198,7 +198,7 @@ pipeline.sampleExpressionPortraits <- function()
 
   # Significance Portraits
   par(mar=c(0, 0, 0, 0), mfrow=c(1, 1))
-  plot(0, type="n", xlab="", ylab="", axes=T)
+  plot(0, type="n", xlab="", ylab="", axes=TRUE)
   text(1, 0.3, "Significance Portraits", cex=2)
 
   par(mfrow=c(7, 12))
@@ -207,7 +207,7 @@ pipeline.sampleExpressionPortraits <- function()
 
   for (gl in 1:length(unique(group.labels)))
   {
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0, 1))
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0, 1))
 
     if (length(unique(group.labels)) > 1)
     {
@@ -215,12 +215,12 @@ pipeline.sampleExpressionPortraits <- function()
             adj=0, col=groupwise.group.colors[gl])
     }
 
-    par(new=T)
+    par(new=TRUE)
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
       image(matrix(-p.m[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=F,
+            axes=FALSE,
             zlim=c(-1, 0),
             col=colorRampPalette(c("blue4", "blue4", "blue3", "blue3", "blue2",
                                    "blue2", "blue1", "lightblue", "darkgreen",
@@ -237,7 +237,7 @@ pipeline.sampleExpressionPortraits <- function()
     {
       for (j in 1:(12 - count.col %% 12))
       {
-        plot(0, type="n", axes=F, xlab="", ylab="")
+        plot(0, type="n", axes=FALSE, xlab="", ylab="")
         count.col <- count.col + 1
       }
     }
@@ -245,7 +245,7 @@ pipeline.sampleExpressionPortraits <- function()
 
   # WAD Portraits
   par(mar=c(0, 0, 0, 0), mfrow=c(1, 1))
-  plot(0, type="n", xlab="", ylab="", axes=T)
+  plot(0, type="n", xlab="", ylab="", axes=TRUE)
   text(1, 0.3, "WAD Portraits", cex=2)
 
   par(mfrow=c(7, 12))
@@ -254,7 +254,7 @@ pipeline.sampleExpressionPortraits <- function()
 
   for (gl in 1:length(unique(group.labels)))
   {
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1))
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1))
 
     if (length(unique(group.labels)) > 1)
     {
@@ -262,12 +262,12 @@ pipeline.sampleExpressionPortraits <- function()
             adj=0, col=groupwise.group.colors[gl])
     }
 
-    par(new=T)
+    par(new=TRUE)
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
       image(matrix(WAD.metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=F, col=colramp(1000), cex.main=0.6)
+            axes=FALSE, col=colramp(1000), cex.main=0.6)
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
       box()
@@ -278,7 +278,7 @@ pipeline.sampleExpressionPortraits <- function()
     {
       for (j in 1:(12 - count.col %% 12))
       {
-        plot(0, type="n", axes=F, xlab="", ylab="")
+        plot(0, type="n", axes=FALSE, xlab="", ylab="")
         count.col <- count.col + 1
       }
     }
@@ -286,7 +286,7 @@ pipeline.sampleExpressionPortraits <- function()
 
   # loglog FC Portraits
   par(mar=c(0, 0, 0, 0), mfrow=c(1, 1))
-  plot(0, type="n", xlab="", ylab="", axes=T)
+  plot(0, type="n", xlab="", ylab="", axes=TRUE)
   text(1, 0.3, "loglog FC Portraits", cex=2)
 
   par(mfrow=c(7, 12))
@@ -295,7 +295,7 @@ pipeline.sampleExpressionPortraits <- function()
 
   for (gl in 1:length(unique(group.labels)))
   {
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0, 1))
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0, 1))
 
     if (length(unique(group.labels)) > 1)
     {
@@ -303,12 +303,12 @@ pipeline.sampleExpressionPortraits <- function()
             adj=0, col=groupwise.group.colors[gl])
     }
 
-    par(new=T)
+    par(new=TRUE)
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
       image(matrix(loglog.metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=F, col = colramp(1000))
+            axes=FALSE, col = colramp(1000))
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
       box()
@@ -319,7 +319,7 @@ pipeline.sampleExpressionPortraits <- function()
     {
       for (j in 1:(12 - count.col %% 12))
       {
-        plot(0, type="n", axes=F, xlab="", ylab="")
+        plot(0, type="n", axes=FALSE, xlab="", ylab="")
         count.col <- count.col + 1
       }
     }
@@ -327,7 +327,7 @@ pipeline.sampleExpressionPortraits <- function()
 
   # Quantile Scale Portraits
   par(mar=c(0, 0, 0, 0), mfrow=c(1, 1))
-  plot(0, type="n", xlab="", ylab="", axes=T)
+  plot(0, type="n", xlab="", ylab="", axes=TRUE)
   text(1, 0.3, "Quantile Scale Portraits", cex=2)
 
   par(mfrow=c(7, 12))
@@ -336,7 +336,7 @@ pipeline.sampleExpressionPortraits <- function()
 
   for (gl in 1:length(unique(group.labels)))
   {
-    plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1))
+    plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1))
 
     if (length(unique(group.labels)) > 1)
     {
@@ -344,7 +344,7 @@ pipeline.sampleExpressionPortraits <- function()
             adj=0, col=groupwise.group.colors[gl])
     }
 
-    par(new=T)
+    par(new=TRUE)
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
@@ -352,7 +352,7 @@ pipeline.sampleExpressionPortraits <- function()
 
       image(matrix(1:(preferences$dim.1stLvlSom)^2, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             col=colramp(1000)[cut(md, quantile(md, seq(0,1, len=1001)), include.lowest=TRUE)],
-            axes=F)
+            axes=FALSE)
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
       box()
@@ -363,7 +363,7 @@ pipeline.sampleExpressionPortraits <- function()
     {
       for (j in 1:(12 - count.col %% 12))
       {
-        plot(0, type="n", axes=F, xlab="", ylab="")
+        plot(0, type="n", axes=FALSE, xlab="", ylab="")
         count.col <- count.col + 1
       }
     }
@@ -372,7 +372,7 @@ pipeline.sampleExpressionPortraits <- function()
   # Shrinkage-t Portraits
   suppressWarnings ({
     par(mar=c(0, 0, 0, 0), mfrow=c(1, 1))
-    plot(0, type="n", xlab="", ylab="", axes=T)
+    plot(0, type="n", xlab="", ylab="", axes=TRUE)
     text(1, 0.3, "Shrinkage-t Portraits (log(t))", cex=2)
 
     par(mfrow=c(7, 12))
@@ -381,7 +381,7 @@ pipeline.sampleExpressionPortraits <- function()
 
     for (gl in 1:length(unique(group.labels)))
     {
-      plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,1))
+      plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1))
 
       if (length(unique(group.labels)) > 1)
       {
@@ -389,15 +389,15 @@ pipeline.sampleExpressionPortraits <- function()
               adj=0, col=groupwise.group.colors[gl])
       }
 
-      par(new=T)
+      par(new=TRUE)
 
       for (j in which(group.labels == unique(group.labels)[gl]))
       {
         t <- log10(abs(t.m[,j]))
-        t <- t - min(t, na.rm=T)
+        t <- t - min(t, na.rm=TRUE)
         t <- t * sign(t.m[,j])
 
-        image(matrix(t, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom), axes=F,
+        image(matrix(t, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom), axes=FALSE,
               col=colramp(1000))
 
         title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
@@ -409,7 +409,7 @@ pipeline.sampleExpressionPortraits <- function()
       {
         for (j in 1:(12 - count.col %% 12))
         {
-          plot(0, type="n", axes=F, xlab="", ylab="")
+          plot(0, type="n", axes=FALSE, xlab="", ylab="")
           count.col <- count.col + 1
         }
       }
