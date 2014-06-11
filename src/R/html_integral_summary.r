@@ -106,7 +106,7 @@ pipeline.htmlIntegralSummary <- function()
           <tr>
             <td>
               <a href=\"Overexpression.pdf\" target=\"_blank\">
-                Overexpression (PDFALSE)
+                Overexpression (PDF)
               </a>
             </td>
             <td>", sep="", file=outfile)
@@ -135,7 +135,7 @@ pipeline.htmlIntegralSummary <- function()
           <tr>
             <td>
               <a href=\"Group Overexpression.pdf\" target=\"_blank\">
-                Group Overexpression (PDFALSE)
+                Group Overexpression (PDF)
               </a>
             </td>
             <td>", sep="", file=outfile)
@@ -155,7 +155,7 @@ pipeline.htmlIntegralSummary <- function()
           <tr>
             <td>
               <a href=\"Underexpression.pdf\" target=\"_blank\">
-                Underexpression (PDFALSE)
+                Underexpression (PDF)
               </a>
             </td>
             <td>", sep="", file=outfile)
@@ -172,7 +172,7 @@ pipeline.htmlIntegralSummary <- function()
           <tr>
             <td>
               <a href=\"Correlation Cluster.pdf\" target=\"_blank\">
-                Correlation Cluster (PDFALSE)
+                Correlation Cluster (PDF)
               </a>
             </td>
             <td>", sep="", file=outfile)
@@ -189,7 +189,7 @@ pipeline.htmlIntegralSummary <- function()
           <tr>
             <td>
               <a href=\"K-Means Cluster.pdf\" target=\"_blank\">
-                K-Means Cluster (PDFALSE)
+                K-Means Cluster (PDF)
               </a>
             </td>
             <td>", sep="", file = outfile)
@@ -216,17 +216,17 @@ pipeline.htmlIntegralSummary <- function()
       <ul>
         <li>
           <a href=\"../3rd lvl Spot Analysis/Overexpression Spot Report.pdf\" target=\"_blank\">
-            Overexpression Spot Report (PDFALSE)
+            Overexpression Spot Report (PDF)
           </a>
         </li>
         <li>
           <a href=\"../3rd lvl Spot Analysis/Underexpression Spot Report.pdf\" target=\"_blank\">
-            Underexpression Spot Report (PDFALSE)
+            Underexpression Spot Report (PDF)
           </a>
         </li>
         <li>
           <a href=\"../3rd lvl Spot Analysis/K-Means Cluster Report.pdf\" target=\"_blank\">
-            K-Means Cluster Report (PDFALSE)
+            K-Means Cluster Report (PDF)
           </a>
         </li>", sep="", file=outfile)
 
@@ -235,7 +235,7 @@ pipeline.htmlIntegralSummary <- function()
     cat("
         <li>
           <a href=\"../3rd lvl Spot Analysis/Group Overexpression Report.pdf\" target=\"_blank\">
-            Group Overexpression Report (PDFALSE)
+            Group Overexpression Report (PDF)
           </a>
         </li>", sep="", file=outfile)
   }
@@ -254,17 +254,17 @@ pipeline.htmlIntegralSummary <- function()
       <ul>
         <li>
           <a href=\"../3rd lvl Spot Analysis/Overexpression Networks.pdf\" target=\"_blank\">
-            Overexpression Networks (PDFALSE)
+            Overexpression Networks (PDF)
           </a>
         </li>
         <li>
           <a href=\"../3rd lvl Spot Analysis/Underexpression Networks.pdf\" target=\"_blank\">
-            Underexpression Networks (PDFALSE)
+            Underexpression Networks (PDF)
           </a>
         </li>
         <li>
           <a href=\"../3rd lvl Spot Analysis/K-Means Cluster Networks.pdf\" target=\"_blank\">
-            K-Means Cluster Networks (PDFALSE)
+            K-Means Cluster Networks (PDF)
           </a>
         </li>", sep="", file=outfile)
 
@@ -273,7 +273,7 @@ pipeline.htmlIntegralSummary <- function()
     cat("
         <li>
           <a href=\"../3rd lvl Spot Analysis/Group Overexpression Networks.pdf\" target=\"_blank\">
-            Group Overexpression Networks (PDFALSE)
+            Group Overexpression Networks (PDF)
           </a>
         </li>", sep="", file=outfile)
   }
@@ -291,7 +291,7 @@ pipeline.htmlIntegralSummary <- function()
       <ul>
         <li>
           <a href=\"../3rd lvl Spot Analysis/Overexpression Chromosomal Enrichment.pdf\" target=\"_blank\">
-            Overexpression Chromosomal Enrichment (PDFALSE)
+            Overexpression Chromosomal Enrichment (PDF)
           </a>
         </li>", sep="", file=outfile)
 
@@ -300,7 +300,7 @@ pipeline.htmlIntegralSummary <- function()
     cat("
         <li>
           <a href=\"../3rd lvl Spot Analysis/Group Overexpression Chromosomal Enrichment.pdf\" target=\"_blank\">
-            Group Overexpression Chromosomal Enrichment (PDFALSE)
+            Group Overexpression Chromosomal Enrichment (PDF)
           </a>
         </li>
         <li>
@@ -318,7 +318,7 @@ pipeline.htmlIntegralSummary <- function()
         </li>
         <li>
           <a href=\"../3rd lvl Spot Analysis/Underexpression Chromosomal Enrichment.pdf\" target=\"_blank\">
-            Underexpression Chromosomal Enrichment (PDFALSE)
+            Underexpression Chromosomal Enrichment (PDF)
           </a>
         </li>
         <li>
@@ -328,7 +328,7 @@ pipeline.htmlIntegralSummary <- function()
         </li>
         <li>
           <a href=\"../3rd lvl Spot Analysis/K-Means Cluster Chromosomal Enrichment.pdf\" target=\"_blank\">
-            K-Means Cluster Chromosomal Enrichment (PDFALSE)
+            K-Means Cluster Chromosomal Enrichment (PDF)
           </a>
         </li>
         <li>

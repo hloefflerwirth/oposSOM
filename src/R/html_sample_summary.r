@@ -138,7 +138,7 @@ pipeline.htmlSampleSummary <- function()
             <td> ", group.labels[m], "</td>
             <td>
               <a href=\"", fname, ".pdf\" target=\"_blank\">
-                PDFALSE
+                PDF
               </a>
             </td>
             <td>

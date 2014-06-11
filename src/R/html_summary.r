@@ -72,7 +72,7 @@ pipeline.htmlSummary <- function()
       <ul>
         <li>
           <a href=\"LPE/data distribution.pdf\" target=\"_blank\">
-            Raw Data (PDFALSE)
+            Raw Data (PDF)
           </a>
         </li>
       </ul>
@@ -88,17 +88,17 @@ pipeline.htmlSummary <- function()
       <ul>
         <li>
           <a href=\"Expression Portraits.pdf\" target=\"_blank\">
-            1st Level SOM Expression Portraits (PDFALSE)
+            1st Level SOM Expression Portraits (PDF)
           </a>
         </li>
         <li>
           <a href=\"Expression Portraits alternative.pdf\" target=\"_blank\">
-            Alternative Color Scales: absolute, WAD, loglogFC (PDFALSE)
+            Alternative Color Scales: absolute, WAD, loglogFC (PDF)
           </a>
         </li>
         <li>
           <a href=\"Rank Maps.pdf\" target=\"_blank\">
-            Rank Portraits: FC, WAD, shrinkage-t (PDFALSE)
+            Rank Portraits: FC, WAD, shrinkage-t (PDF)
           </a>
         </li>
       </ul>
@@ -106,7 +106,7 @@ pipeline.htmlSummary <- function()
       <ul>
         <li>
           <a href=\"Supporting Maps&amp;Profiles/Supporting Maps.pdf\" target=\"_blank\">
-            Supporting Maps (PDFALSE)
+            Supporting Maps (PDF)
           </a>
         </li>
       </ul>
@@ -114,12 +114,12 @@ pipeline.htmlSummary <- function()
       <ul>
         <li>
           <a href=\"Supporting Maps&amp;Profiles/Entropy Profiles.pdf\" target=\"_blank\">
-            Entropy Profiles (PDFALSE)
+            Entropy Profiles (PDF)
           </a>
         </li>
         <li>
           <a href=\"Supporting Maps&amp;Profiles/Topology Profiles.pdf\" target=\"_blank\">
-            Topology Profiles (PDFALSE)
+            Topology Profiles (PDF)
           </a>
         </li>
       </ul>
@@ -168,22 +168,22 @@ pipeline.htmlSummary <- function()
       <ul>
         <li>
           <a href=\"2nd lvl Metagene Analysis/2nd lvl SOM.pdf\" target=\"_blank\">
-            2nd Level SOM (PDFALSE)
+            2nd Level SOM (PDF)
           </a>
         </li>
         <li>
           <a href=\"2nd lvl Metagene Analysis/Similarity Analysis.pdf\" target=\"_blank\">
-            Similarity Based Methods: Neighbor Joining, Hierarchical Clustering (PDFALSE)
+            Similarity Based Methods: Neighbor Joining, Hierarchical Clustering (PDF)
           </a>
         </li>
         <li>
           <a href=\"2nd lvl Metagene Analysis/Correlation Analysis.pdf\" target=\"_blank\">
-            Correlation Based Methods: Spanning Tree, Networks, Maps (PDFALSE)
+            Correlation Based Methods: Spanning Tree, Networks, Maps (PDF)
           </a>
         </li>
         <li>
           <a href=\"2nd lvl Metagene Analysis/Component Analysis.pdf\" target=\"_blank\">
-            Component Based Methods: 2d-ICA, 3d-ICA (PDFALSE)
+            Component Based Methods: 2d-ICA, 3d-ICA (PDF)
           </a>
         </li>
       </ul>

@@ -111,17 +111,17 @@ pipeline.htmlGenesetAnalysis <- function()
         </li>
         <li>
           <a href=\"0verview Heatmaps.pdf\" target=\"_blank\">
-            Enrichment Score Heatmaps (PDFALSE)
+            Enrichment Score Heatmaps (PDF)
           </a>
         </li>
         <li>
           <a href=\"0verview Cancer Hallmarks.pdf\" target=\"_blank\">
-            Hallmarks of Cancer (PDFALSE)
+            Hallmarks of Cancer (PDF)
           </a>
         </li>
         <li>
           <a href=\"0verview Chromosome Expression.pdf\" target=\"_blank\">
-            Heatmaps of Chromosomewise Expression (PDFALSE)
+            Heatmaps of Chromosomewise Expression (PDF)
           </a>
         </li>
       </ul>
