@@ -138,6 +138,11 @@ pipeline.prepare <- function()
     return(FALSE)
   }
 
+  if (class(indata) == "ExpressionSet")
+  {
+    indata <<- assayData(indata)$exprs
+  }
+
   if (class(indata) != "matrix" && (is.null(dim(indata)) || dim(indata) < 1))
   {
     util.fatal("Invalid indata supplied!")

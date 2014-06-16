@@ -11,3 +11,4 @@ import("parallel")
 import("biomaRt")
 
 importFrom("ape", "nj", "plot.phylo")
+importFrom("Biobase", "ExpressionSet")
