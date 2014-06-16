@@ -7,7 +7,7 @@ pipeline.summarySheetsGroups <- function()
   bleached.WAD.group.metadata <- WAD.group.metadata
   bleached.loglog.group.metadata <- loglog.group.metadata
 
-  for (i in 1:length(unique(group.labels)))
+  for (i in seq_along(unique(group.labels)))
   {
     pos.metagenes <- which(group.metadata[,i] >= 0)
     neg.metagenes <- which(group.metadata[,i] < 0)
@@ -60,7 +60,7 @@ pipeline.summarySheetsGroups <- function()
   par(mfrow=c(5,7))
   par(mar=c(0.5,2.5,4.5,0.5))
 
-  for (i in 1:length(unique(group.labels)))
+  for (i in seq_along(unique(group.labels)))
   {
     plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1))
 
@@ -127,7 +127,7 @@ pipeline.summarySheetsGroups <- function()
   if (length(unique(group.labels)) <= 12)
   {
     # differential portraits
-    l.matrix <- matrix(1:length(unique(group.labels))^2, length(unique(group.labels)), byrow=TRUE)
+    l.matrix <- matrix(seq_along(unique(group.labels))^2, length(unique(group.labels)), byrow=TRUE)
     l.matrix <- cbind(rep(2, length(unique(group.labels))), l.matrix+2)
     l.matrix[1:(nrow(l.matrix)/2),1] <- 1
     layout(l.matrix, widths=c(5, rep(95/length(unique(group.labels)),length(unique(group.labels)))))
@@ -140,9 +140,9 @@ pipeline.summarySheetsGroups <- function()
     par(mar=c(0.5,2,2,0.5))
     zlim = c(0, 0)
 
-    for (g1 in 1:length(unique(group.labels)))
+    for (g1 in seq_along(unique(group.labels)))
     {
-      for (g2 in 1:length(unique(group.labels)))
+      for (g2 in seq_along(unique(group.labels)))
       {
 
         diff.metadata <- group.metadata[,g2] - group.metadata[,g1]
@@ -192,9 +192,9 @@ pipeline.summarySheetsGroups <- function()
     plot(0, type="n", axes=FALSE, xlab="", ylab="")
     par(mar=c(0.5,2,2,0.5))
 
-    for (g1 in 1:length(unique(group.labels)))
+    for (g1 in seq_along(unique(group.labels)))
     {
-      for (g2 in 1:length(unique(group.labels)))
+      for (g2 in seq_along(unique(group.labels)))
       {
 
         diff.metadata <- group.metadata[,g2] - group.metadata[,g1]
@@ -247,9 +247,9 @@ pipeline.summarySheetsGroups <- function()
 
     all.p.values <- c()
 
-    for (g1 in 1:length(unique(group.labels)))
+    for (g1 in seq_along(unique(group.labels)))
     {
-      for (g2 in 1:length(unique(group.labels)))
+      for (g2 in seq_along(unique(group.labels)))
       {
         diff.metadata <- group.metadata[,g2] - group.metadata[,g1]
         diff.pvalues <- 1 - null.culdensity(abs(diff.metadata))
@@ -299,9 +299,9 @@ pipeline.summarySheetsGroups <- function()
 
     fdrtool.result <- fdrtool(all.p.values, statistic="pvalue", plot=FALSE, verbose=FALSE)
 
-    for (g1 in 1:length(unique(group.labels)))
+    for (g1 in seq_along(unique(group.labels)))
     {
-      for (g2 in 1:length(unique(group.labels)))
+      for (g2 in seq_along(unique(group.labels)))
       {
 
         diff.metadata <- group.metadata[,g2] - group.metadata[,g1]
@@ -362,7 +362,7 @@ pipeline.summarySheetsGroups <- function()
   boxplot(mean.bs.boxes, col=groupwise.group.colors, las=2, main="Group Bootstrapping",
           cex.main=2.5, cex.axis=2, xaxt="n")
 
-  axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
+  axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
 
   dev.off()
 
@@ -403,7 +403,7 @@ pipeline.summarySheetsGroups <- function()
   util.info("Writing:", filename)
   pdf(filename , 29.7/2.54, 21/2.54)
 
-  for (i in 1:length(unique(group.labels)))
+  for (i in seq_along(unique(group.labels)))
   {
     group.member <- which(group.labels==unique(group.labels)[i])
 
@@ -420,7 +420,7 @@ pipeline.summarySheetsGroups <- function()
       merges <- list()
       old.cluster.size <- rep(1,length(group.member))
 
-      for (hi in c(1:length(hc$height)))
+      for (hi in c(seq_along(hc$height)))
       {
         new.clusters <- cutree(hc, h=hc$height[hi])
         new.cluster.size <- table(new.clusters)[new.clusters]
@@ -432,13 +432,13 @@ pipeline.summarySheetsGroups <- function()
 
       for (em.i in equal.merges)
       {
-        root.branch <- max(which(setdiff(c(1:length(merges)), equal.merges) < em.i))
+        root.branch <- max(which(setdiff(c(seq_along(merges)), equal.merges) < em.i))
         merges[[em.i]] <- merges[[root.branch]]
       }
 
       top.level <- c(0)
 
-      for (hi in c(2:length(hc$height)))
+      for (hi in seq(2, length(hc$height)))
       {
         mem <- rev(merges)[[hi]]
         last.level <- 0
@@ -457,7 +457,7 @@ pipeline.summarySheetsGroups <- function()
       top.level <- rev(top.level)
       diff.metadata <- list(rowMeans(metadata[, group.member]))
 
-      for (hi in c(2:length(hc$height)))
+      for (hi in seq(2, length(hc$height)))
       {
         mem <- rev(merges)[[hi]]
         tl <- rev(top.level)[hi]
@@ -511,7 +511,7 @@ pipeline.summarySheetsGroups <- function()
 
       if (length(group.member) < 80)
       {
-        for (ii in 1:length(group.member))
+        for (ii in seq_along(group.member))
         {
           m <- matrix(metadata[, group.member[hc$order[ii]]],
                       preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
@@ -559,7 +559,7 @@ pipeline.summarySheetsGroups <- function()
 
       if (length(group.member) < 80)
       {
-        for (ii in 1:length(group.member))
+        for (ii in seq_along(group.member))
         {
           m <- matrix(metadata[, group.member[hc$order[ii]]],
                       preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
@@ -607,7 +607,7 @@ pipeline.summarySheetsGroups <- function()
 
       if (length(group.member) < 80)
       {
-        for (ii in 1:length(group.member))
+        for (ii in seq_along(group.member))
         {
           m <- matrix(metadata[, group.member[hc$order[ii]]],
                       preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)

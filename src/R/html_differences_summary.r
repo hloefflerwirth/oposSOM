@@ -122,7 +122,7 @@ pipeline.htmlDifferencesSummary <- function()
             </td>
             <td>", sep="", file=f)
 
-    for (i in 1:length(spot.list.samples[[m]]$spots))
+    for (i in seq_along(spot.list.samples[[m]]$spots))
     {
       cat("
               <a href=\"CSV Sheets/Gene Lists - Local/", fname, ".", i, ".csv\" target=\"_blank\">

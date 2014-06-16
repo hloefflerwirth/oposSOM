@@ -130,7 +130,7 @@ pipeline.prepareAnnotation <- function()
     biomart.table[,4] <- sub("molecular_function", "MF", biomart.table[,4])
     biomart.table[,4] <- sub("cellular_component", "CC", biomart.table[,4])
 
-    for (i in 1:length(gs.def.list))
+    for (i in seq_along(gs.def.list))
     {
       o <- match(names(gs.def.list)[i], biomart.table[,2])
       names(gs.def.list)[i] <<- biomart.table[o, 3]

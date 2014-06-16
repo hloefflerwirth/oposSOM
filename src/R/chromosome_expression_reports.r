@@ -55,7 +55,7 @@ pipeline.chromosomeExpressionReports <- function()
   names(chr.gs.list) <- paste("Chr", names(gene.positions.list))
   chr.pq.gs.list <- list()
 
-  for (i in 1:length(gene.positions.list))
+  for (i in seq_along(gene.positions.list))
   {
     genes <- unlist(gene.positions.list[[i]])
     names(genes) <- substr(names(genes),1,1)

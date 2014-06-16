@@ -79,7 +79,7 @@ pipeline.3rdLvlChromosomeAssociationMaps <- function(gene.positions.list)
 
       if (length(unique(group.labels)) > 1 && length(samples.with.spot) > 0)
       {
-        for (g in 1:length(samples.with.spot))
+        for (g in seq_along(samples.with.spot))
         {
           text(0.02, 0.58-g*0.1,
                paste(names(samples.with.spot)[g], ":",
@@ -179,7 +179,7 @@ pipeline.3rdLvlChromosomeAssociationMaps <- function(gene.positions.list)
 
       text(x.coords, rep(0.95, 5), c("Rank", "locus", "# genes", "%", "p-value"), cex=1, adj=0)
 
-      text(x.coords[1], y.coords, c(1:length(o)), adj=0)
+      text(x.coords[1], y.coords, c(seq_along(o)), adj=0)
       text(x.coords[2], y.coords, o, adj=0)
       text(x.coords[3], y.coords, spot.gene.chromo.pq.matrix[spot.i,o], adj=0)
       text(x.coords[4], y.coords, round(100*spot.gene.chromo.pq.matrix.scaled[spot.i,o],1), adj=0)
@@ -243,7 +243,7 @@ pipeline.3rdLvlChromosomeAssociationMaps <- function(gene.positions.list)
       plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
       text(x.coords, rep(0.95, 5), c("Rank", "locus", "# genes", "%", "p-value"), cex=1, adj=0)
-      text(x.coords[1], y.coords, c(1:length(o)), adj=0)
+      text(x.coords[1], y.coords, c(seq_along(o)), adj=0)
       text(x.coords[2], y.coords, o, adj=0)
       text(x.coords[3], y.coords, spot.gene.chromo.pq.matrix[spot.i,o], adj=0)
       text(x.coords[4], y.coords, round(100*spot.gene.chromo.pq.matrix.scaled[spot.i,o],1), adj=0)

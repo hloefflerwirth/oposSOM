@@ -66,7 +66,7 @@ pipeline.genesetProfilesAndMaps <- function()
     boxplot(mean.boxes, col=groupwise.group.colors, main=rownames(samples.GSZ.scores)[i],
             cex.main=1, ylim=ylim, axes=FALSE, yaxs="i")
 
-    axis(1, 1:length(unique(group.labels)), unique(group.labels), las=2, tick=FALSE)
+    axis(1, seq_along(unique(group.labels)), unique(group.labels), las=2, tick=FALSE)
     axis(2, las=2)
 
     abline(h=0, lty=2)
@@ -82,7 +82,7 @@ pipeline.genesetProfilesAndMaps <- function()
       x$Fisher.p[names(gs.def.list)[i]]
     }))
 
-    names(spot.fisher.p) <- LETTERS[1:length(spot.fisher.p)]
+    names(spot.fisher.p) <- LETTERS[seq_along(spot.fisher.p)]
 
     barplot(spot.fisher.p, main=paste("Enrichment in spots:", names(gs.def.list)[i]),
             las=1, cex.names=1.2)
@@ -137,7 +137,7 @@ pipeline.genesetProfilesAndMaps <- function()
   }
 
   ## Gensets Population Maps
-  for (i in 1:length(gs.def.list))
+  for (i in seq_along(gs.def.list))
   {
     filename <- paste(substring(make.names(names(gs.def.list)[i]), 1, 100), "map.pdf")
     pdf(file.path(dirname, filename), 21/2.54, 21/2.54)

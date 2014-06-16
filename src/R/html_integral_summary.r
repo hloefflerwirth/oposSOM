@@ -111,7 +111,7 @@ pipeline.htmlIntegralSummary <- function()
             </td>
             <td>", sep="", file=outfile)
 
-  for (m in 1:length(spot.list.overexpression$spots))
+  for (m in seq_along(spot.list.overexpression$spots))
   {
     cat("<a href=\"../CSV Sheets/Spot Lists/Sample-Overexpression ",
         names(spot.list.overexpression$spots)[m],".csv\" target=\"_blank\">",
@@ -140,7 +140,7 @@ pipeline.htmlIntegralSummary <- function()
             </td>
             <td>", sep="", file=outfile)
 
-    for (m in 1:length(spot.list.group.overexpression$spots))
+    for (m in seq_along(spot.list.group.overexpression$spots))
     {
       cat("<a href=\"../CSV Sheets/Spot Lists/Group Overexpression ",
           names(spot.list.group.overexpression$spots)[m],".csv\" target=\"_blank\">",
@@ -160,7 +160,7 @@ pipeline.htmlIntegralSummary <- function()
             </td>
             <td>", sep="", file=outfile)
 
-  for (m in 1:length(spot.list.underexpression$spots))
+  for (m in seq_along(spot.list.underexpression$spots))
   {
     cat("<a href=\"../CSV Sheets/Spot Lists/Sample-Underexpression ",
         names(spot.list.underexpression$spots)[m],".csv\" target=\"_blank\">",
@@ -177,7 +177,7 @@ pipeline.htmlIntegralSummary <- function()
             </td>
             <td>", sep="", file=outfile)
 
-  for (m in 1:length(spot.list.correlation$spots))
+  for (m in seq_along(spot.list.correlation$spots))
   {
     cat("<a href=\"../CSV Sheets/Spot Lists/Correlation Cluster ",
         names(spot.list.correlation$spots)[m],".csv\" target=\"_blank\">",
@@ -194,7 +194,7 @@ pipeline.htmlIntegralSummary <- function()
             </td>
             <td>", sep="", file = outfile)
 
-  for (m in 1:length(spot.list.kmeans$spots))
+  for (m in seq_along(spot.list.kmeans$spots))
   {
     cat("<a href=\"../CSV Sheets/Spot Lists/K-Means Cluster ",
         names(spot.list.kmeans$spots)[m],".csv\" target=\"_blank\">",

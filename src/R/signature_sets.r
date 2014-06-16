@@ -2,7 +2,7 @@ pipeline.signatureSets <- function()
 {
   spotdefined.genesets <- list()
 
-  for (i in 1:length(spot.list.overexpression$spots))
+  for (i in seq_along(spot.list.overexpression$spots))
   {
     r <- sapply(spot.list.overexpression$spots[[i]]$genes, function(x)
     {

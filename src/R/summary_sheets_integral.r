@@ -101,7 +101,7 @@ pipeline.summarySheetsIntegral <- function()
     # Spot - Sample - Heatmap
     sample.spot.expression <- matrix(NA, 0, ncol(indata))
 
-    for (m in 1:length(set.list$spots))
+    for (m in seq_along(set.list$spots))
     {
       mean.FC <- apply(metadata, 2, function(x)
       {
@@ -261,7 +261,7 @@ pipeline.summarySheetsIntegral <- function()
     }
 
     # Individual spot sheets
-    for (m in 1:length(set.list$spots))
+    for (m in seq_along(set.list$spots))
     {
       if (main %in% c("Sample-Underexpression"))
       {
@@ -313,7 +313,7 @@ pipeline.summarySheetsIntegral <- function()
         group.table <- table(group.labels[sample.with.spot])[unique(group.labels)]
         group.table <- group.table[which(!is.na(group.table))]
 
-        for (g in 1:length(group.table))
+        for (g in seq_along(group.table))
         {
           text(0.15, 0.39-g*0.04,
                paste(names(group.table)[g], ":", group.table[g], "(",
@@ -406,7 +406,7 @@ pipeline.summarySheetsIntegral <- function()
              c("Rank", "ID", "max e", "min e", "r", "Symbol", "Description"),
              cex=1, adj=0)
 
-        text(x.coords[1], y.coords, c(1:length(o)), adj=0)
+        text(x.coords[1], y.coords, c(seq_along(o)), adj=0)
         text(x.coords[2], y.coords, o, cex=0.6, adj=0)
         rect(x.coords[3]-0.02, y.coords[1]+0.01, 1, 0, border="white", col="white")
         text(x.coords[3], y.coords, round(e.max[o], 2), cex=0.6, adj=0)
@@ -532,7 +532,7 @@ pipeline.summarySheetsIntegral <- function()
 
   csv.set.list <- function(set.list, main, path)
   {
-    for (m in 1:length(set.list$spots))
+    for (m in seq_along(set.list$spots))
     {
       basename <- paste(main, " ", names(set.list$spots)[m], ".csv", sep="")
 
@@ -581,7 +581,7 @@ pipeline.summarySheetsIntegral <- function()
         o <- names(sort(e.max, decreasing=TRUE))
       }
 
-      out <- data.frame(Rank=c(1:length(set.list$spots[[m]]$genes)),
+      out <- data.frame(Rank=c(seq_along(set.list$spots[[m]]$genes)),
                         ID=o,
                         Symbol=gene.names[o])
 
@@ -667,7 +667,7 @@ pipeline.summarySheetsIntegral <- function()
   # use max 4 cores to avoid preformance issues due disk io
   cl <- makeCluster(min(4, preferences$max.parallel.cores))
 
-  clusterApplyLB(cl, 1:length(sheets), function(i, sheets)
+  clusterApplyLB(cl, seq_along(sheets), function(i, sheets)
   {
     do.call(sheets[[i]]$fn, sheets[[i]]$args)
   }, sheets)

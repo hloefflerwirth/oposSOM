@@ -30,7 +30,7 @@ pipeline.3rdLvlSummarySheets <- function()
       low.level <- -thresh.global
       high.level <- thresh.global
 
-      for (g in 1:length(unique(group.labels)))
+      for (g in seq_along(unique(group.labels)))
       {
         gr <- unique(group.labels)[g]
         gr.mem <- which(group.labels == gr)
@@ -140,7 +140,7 @@ pipeline.3rdLvlSummarySheets <- function()
         t <- table(as.vector(group.labels[samples]))[unique(group.labels)]
         t <- t[!is.na(t)]
 
-        for (ii in 1:length(t))
+        for (ii in seq_along(t))
         {
           t[ii] <- t[ii] / table(as.vector(group.labels))[names(t[ii])]
         }
@@ -150,7 +150,7 @@ pipeline.3rdLvlSummarySheets <- function()
         t2 <- table(as.vector(group.labels[samples]))[unique(group.labels)]
         t2 <- t2[!is.na(t2)]
 
-        for (ii in 1:length(t))
+        for (ii in seq_along(t))
         {
           text(0, 0.8  - ii*0.1,
                paste(names(t)[ii], ": # =", t2[ii], " -> ", t[ii], "%"),
@@ -289,7 +289,7 @@ pipeline.3rdLvlSummarySheets <- function()
 
       box()
 
-      for (i in 1:length(set.list$spots))
+      for (i in seq_along(set.list$spots))
       {
         stars(t(spot.group.assoc[,i]), locations=set.list$spots[[i]]$position,
               len=2, draw.segments=TRUE,  scale=FALSE, add=TRUE, col.segments=groupwise.group.colors)
@@ -340,7 +340,7 @@ pipeline.3rdLvlSummarySheets <- function()
                              dimnames=list(names(set.list$spots),
                                            unique(gs.def.list.categories)))
 
-      for (i in 1:length(set.list$spots))
+      for (i in seq_along(set.list$spots))
       {
         x <- set.list$spots[[i]]
 
@@ -386,7 +386,7 @@ pipeline.3rdLvlSummarySheets <- function()
 
       box()
 
-      for (i in 1:length(set.list$spots))
+      for (i in seq_along(set.list$spots))
       {
         stars(t(sig.gs.types[i,]), locations=set.list$spots[[i]]$position, len=2,
               draw.segments=TRUE,  scale=FALSE, add=TRUE,

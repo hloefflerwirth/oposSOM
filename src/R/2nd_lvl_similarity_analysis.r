@@ -66,7 +66,7 @@ pipeline.2ndLvlSimilarityAnalysis <- function()
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
 
-  for (i in 1:length(metagene.filter.list))
+  for (i in seq_along(metagene.filter.list))
   {
     s <- metadata[metagene.filter.list[[i]]$s ,]
     par(mar=c(1,1,1,1))

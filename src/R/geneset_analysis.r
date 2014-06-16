@@ -27,7 +27,7 @@ GeneSet.Fisher <- function(list.ids, all.ids, gs.def.list, sort=FALSE, cluster=N
   p.values[which(p.values > 1)] <- 1
   p.values[which(p.values < 1e-99)] <- 1e-99
 
-  o <- c(1:length(p.values))
+  o <- c(seq_along(p.values))
 
   if (sort)
   {

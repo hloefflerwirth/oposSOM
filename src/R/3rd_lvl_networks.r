@@ -30,7 +30,7 @@ pipeline.3rdLvlNetworks <- function()
       # plot single spot MST
       mean.spot.expression <- matrix(NA, ncol(indata), 0)
 
-      for (i in 1:length(set.list$spots))
+      for (i in seq_along(set.list$spots))
       {
         spot.metagenes <- set.list$spots[[i]]$metagenes
 
@@ -66,7 +66,7 @@ pipeline.3rdLvlNetworks <- function()
           samples <- which(sample.spot.matrix[i,] == 1)
           tbl <- table(as.vector(group.labels[samples]))
 
-          for (ii in 1:length(tbl))
+          for (ii in seq_along(tbl))
           {
             tbl[ii] <- tbl[ii] / table(as.vector(group.labels))[names(tbl[ii])]
           }
@@ -95,7 +95,7 @@ pipeline.3rdLvlNetworks <- function()
           text(layout[i,1]-w+0.01, layout[i,2]+w+0.025,
                paste("Total :", length(samples)), adj=0, cex=0.6)
 
-          for (ii in 1:length(tbl))
+          for (ii in seq_along(tbl))
           {
             text(layout[i,1]-w+0.01, layout[i,2]+w+0.01  - ii*0.036,
                  paste(names(tbl)[ii], ":", t2[ii], " - ", tbl[ii], "%"),
@@ -124,7 +124,7 @@ pipeline.3rdLvlNetworks <- function()
         samples <- which(sample.spot.matrix[i,] == 1)
         tbl <- table(as.vector(group.labels[samples]))
 
-        for (ii in 1:length(tbl))
+        for (ii in seq_along(tbl))
         {
           tbl[ii] <- tbl[ii] / table(as.vector(group.labels))[names(tbl[ii])]
         }
@@ -153,7 +153,7 @@ pipeline.3rdLvlNetworks <- function()
         text(layout[i,1]-w+0.01, layout[i,2]+w+0.025,
              paste("Total :", length(samples)), adj=0, cex=0.6)
 
-        for (ii in 1:length(tbl))
+        for (ii in seq_along(tbl))
         {
           text(layout[i,1]-w+0.01, layout[i,2]+w+0.01  - ii*0.036,
                paste(names(tbl)[ii], ":", t2[ii], " - ", tbl[ii], "%"),
@@ -204,7 +204,7 @@ pipeline.3rdLvlNetworks <- function()
           samples <- which(sample.spot.matrix[i,] == 1)
           tt <- table(as.vector(group.labels[samples]))
 
-          for (ii in 1:length(tt))
+          for (ii in seq_along(tt))
           {
             tt[ii] <- tt[ii] / table(as.vector(group.labels))[names(tt[ii])]
           }

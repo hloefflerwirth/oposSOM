@@ -15,7 +15,7 @@ pipeline.genesetStatisticSamples <- function()
   {
     gs.null.list <- list()
 
-    for (i in 1:length(gs.def.list))
+    for (i in seq_along(gs.def.list))
     {
       gs.null.list[[i]] <-
         list(Genes=sample(unique.protein.ids, length(gs.def.list[[i]]$Genes)))
@@ -28,7 +28,7 @@ pipeline.genesetStatisticSamples <- function()
 
       scores <- GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.null.list)
 
-      for (spot.i in 1:length(spot.list.samples[[m]]$spots))
+      for (spot.i in seq_along(spot.list.samples[[m]]$spots))
       {
         spot.genes <- spot.list.samples[[m]]$spots[[spot.i]]$genes
         spot.gene.ids <- unique(na.omit(gene.ids[spot.genes]))
@@ -47,7 +47,7 @@ pipeline.genesetStatisticSamples <- function()
   progress.current <- progress.max / 2
   util.progress(progress.current, progress.max)
 
-  spot.list.samples <<- parLapply(cl, 1:length(spot.list.samples) , function(m)
+  spot.list.samples <<- parLapply(cl, seq_along(spot.list.samples) , function(m)
   {
     x <- spot.list.samples[[m]]
     all.gene.statistic <- t.ensID.m[,m]
@@ -62,7 +62,7 @@ pipeline.genesetStatisticSamples <- function()
       names(x$GSZ.p.value) <- names(x$GSZ.score)
     }
 
-    for (spot.i in 1:length(x$spots))
+    for (spot.i in seq_along(x$spots))
     {
       spot.genes <- x$spots[[spot.i]]$genes
       spot.gene.ids <- unique(na.omit(gene.ids[spot.genes]))

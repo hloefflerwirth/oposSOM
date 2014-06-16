@@ -169,7 +169,7 @@ pipeline.htmlGenesetAnalysis <- function()
         </thead>
         <tbody>", sep="", file=outfile)
 
-    for (ii in 1:length(category.gs.list))
+    for (ii in seq_along(category.gs.list))
     {
       cat("
           <tr>

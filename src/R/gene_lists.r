@@ -70,7 +70,7 @@ pipeline.geneLists <- function()
       next
     }
 
-    for (spot.i in 1:length(spot.list.samples[[m]]$spots))
+    for (spot.i in seq_along(spot.list.samples[[m]]$spots))
     {
       if (length(spot.list.samples[[m]]$spots[[spot.i]]$genes) <= 1)
       {
@@ -93,7 +93,7 @@ pipeline.geneLists <- function()
 
       o <- names(sort(p))
 
-      out <- data.frame(Rank=c(1:length(spot.genes)),
+      out <- data.frame(Rank=c(seq_along(spot.genes)),
                         ID=o,
                         Symbol=gene.names[o])
 
@@ -163,7 +163,7 @@ pipeline.geneLists <- function()
       pos.gs.info <- c(pos.gs.info, rep(0, max(0, length(neg.gs.info) - length(pos.gs.info))))
       neg.gs.info <- c(neg.gs.info, rep(0, max(0, length(pos.gs.info) - length(neg.gs.info))))
 
-      gs.info <- data.frame(Rank=c(1:length(pos.gs.info)),
+      gs.info <- data.frame(Rank=c(seq_along(pos.gs.info)),
                             Upregulated=names(pos.gs.info),
                             GSZ=pos.gs.info,
                             "."=rep("",length(pos.gs.info)),

@@ -7,7 +7,8 @@ Get.Area = function(x, y)
   y = y[o]
 
   A = 0
-  for (i in 1:(length(x)-1))
+
+  for (i in seq_len(length(x)-1))
   {
     dx = abs(x[i+1] - x[i])
 

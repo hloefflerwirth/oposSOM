@@ -5,7 +5,7 @@ pipeline.2ndLvlComponentAnalysis <- function()
 
   pdf(filename, 21/2.54, 29.7/2.54)
 
-  for (i in 1:length(metagene.filter.list))
+  for (i in seq_along(metagene.filter.list))
   {
     try({
       ICA.metagenes <- fastICA(t(metadata[metagene.filter.list[[i]]$s ,]), 3)$S
@@ -62,7 +62,7 @@ pipeline.2ndLvlComponentAnalysis <- function()
       if (ncol(indata) < 100)
       {
         legend("bottomright",
-               paste(1:length(colnames(indata)), ":", colnames(indata)),
+               paste(seq_along(colnames(indata)), ":", colnames(indata)),
                cex=0.4, text.col=group.colors, ncol=(ncol(indata)-1)%/%25+1, bg="white")
       }
 

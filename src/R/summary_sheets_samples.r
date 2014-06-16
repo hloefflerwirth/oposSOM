@@ -257,7 +257,7 @@ pipeline.summarySheetsSamples <- function()
       next
     }
 
-    for (spot.i in 1:length(spot.list.samples[[m]]$spots))
+    for (spot.i in seq_along(spot.list.samples[[m]]$spots))
     {
       if (length(spot.list.samples[[m]]$spots[[spot.i]]$genes) <= 1)
       {

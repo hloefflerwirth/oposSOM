@@ -10,7 +10,8 @@ get.SD.estimate = function(data, samples, lambda=0.5)
     LPE.g.m[o] = Get.Running.Average(sd.g.m[o], min(200, round(nrow(data)*0.02)))
 
     SD2 = LPE.g.m[o]
-    for (j in (length(SD2)-1):1)
+
+    for (j in seq(length(SD2)-1, 1))
     {
       if (SD2[j] < SD2[j+1]) SD2[j] = SD2[j+1]
     }
@@ -29,7 +30,8 @@ get.SD.estimate = function(data, samples, lambda=0.5)
     LPE.g.m[which(LPE.g.m == 0)] = 0.0000000001
 
     SD2 = LPE.g.m[o]
-    for (j in (length(SD2)-1):1)
+
+    for (j in seq(length(SD2)-1, 1))
     {
       if (SD2[j] < SD2[j+1]) SD2[j] = SD2[j+1]
     }
@@ -93,7 +95,7 @@ pipeline.differenceAnalyses = function()
   indata <<- indata
   metadata <<- metadata
 
-  for (d in 1:length(differences.list))
+  for (d in seq_along(differences.list))
   {
     samples.indata <-
       list(differences.list[[d]][[1]], differences.list[[d]][[2]])
@@ -151,10 +153,10 @@ pipeline.differenceAnalyses = function()
     WAD.g.m[,d] <<- w.g.m * delta.e.g.m
   }
 
-  indata <<- indata[, -c(1:length(group.labels)), drop=FALSE]
+  indata <<- indata[, -c(seq_along(group.labels)), drop=FALSE]
   colnames(indata) <<- names(differences.list)
 
-  metadata <<- metadata[, -c(1:length(group.labels)), drop=FALSE]
+  metadata <<- metadata[, -c(seq_along(group.labels)), drop=FALSE]
   colnames(metadata) <<- names(differences.list)
 
   group.labels <<- names(differences.list)

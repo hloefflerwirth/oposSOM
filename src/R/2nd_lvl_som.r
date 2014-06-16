@@ -24,7 +24,7 @@ pipeline.2ndLvlSom <- function()
 
   if (ncol(indata) < 100)
   {
-    legend("bottomright",  paste(1:length(colnames(indata)), ":", colnames(indata)),
+    legend("bottomright",  paste(seq_along(colnames(indata)), ":", colnames(indata)),
            cex=0.5, text.col=group.colors, ncol=(ncol(indata)-1)%/%25+1, bg="white")
   }
 
@@ -46,8 +46,8 @@ pipeline.2ndLvlSom <- function()
 
       which.samples <- which.samples[1:min(4, length(which.samples))]
 
-      x.seq <- rep(c(-0.2, 0.2), 2)[1:length(which.samples)]
-      y.seq <- c(rep(0.2, 2), rep(-0.2, 2))[1:length(which.samples)]
+      x.seq <- rep(c(-0.2, 0.2), 2)[seq_along(which.samples)]
+      y.seq <- c(rep(0.2, 2), rep(-0.2, 2))[seq_along(which.samples)]
 
       points(secLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
              -secLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
@@ -86,8 +86,8 @@ pipeline.2ndLvlSom <- function()
 
       which.samples <- which.samples[1:min(4, length(which.samples))]
 
-      x.seq <- rep(c(-0.2, 0.2), 2) [1:length(which.samples)]
-      y.seq <- c(rep(0.2, 2), rep(-0.2, 2)) [1:length(which.samples)]
+      x.seq <- rep(c(-0.2, 0.2), 2) [seq_along(which.samples)]
+      y.seq <- c(rep(0.2, 2), rep(-0.2, 2)) [seq_along(which.samples)]
 
       points(secLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
              -secLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
@@ -119,7 +119,7 @@ pipeline.2ndLvlSom <- function()
          type="n", axes=FALSE, xlab="", ylab="", cex=4, col=group.colors, pch=16,
          xaxs="i", yaxs="i", xlim=xl, ylim=yl)
 
-    for (i in 1:length(unique(group.labels)))
+    for (i in seq_along(unique(group.labels)))
     {
       group.member <- which(group.labels==unique(group.labels)[i])
       group.centroid <- colMeans(secLvlSom.custom$visual[group.member, 1:2])
@@ -140,7 +140,7 @@ pipeline.2ndLvlSom <- function()
   }
 
   ##### Plot SmoothSupersom ######
-  for (i in 1:length(unique(group.labels)))
+  for (i in seq_along(unique(group.labels)))
   {
     col <- colorRampPalette(c("white", groupwise.group.colors[i]))
     coords <- cbind(secLvlSom.custom$visual[,"x"], -secLvlSom.custom$visual[,"y"])
@@ -184,7 +184,7 @@ pipeline.2ndLvlSom <- function()
   if (ncol(indata) < 100)
   {
     legend("bottomright",
-           paste(1:length(colnames(indata)), ":", colnames(indata)),
+           paste(seq_along(colnames(indata)), ":", colnames(indata)),
            cex=0.5, text.col=group.colors, ncol=(ncol(indata)-1)%/%25+1, bg="white")
   }
 
@@ -218,8 +218,8 @@ pipeline.2ndLvlSom <- function()
 
       which.samples <- which.samples[1:min(4, length(which.samples))]
 
-      x.seq <- rep(c(-0.2, 0.2), 2) [1:length(which.samples)]
-      y.seq <- c(rep(0.2, 2), rep(-0.2, 2)) [1:length(which.samples)]
+      x.seq <- rep(c(-0.2, 0.2), 2) [seq_along(which.samples)]
+      y.seq <- c(rep(0.2, 2), rep(-0.2, 2)) [seq_along(which.samples)]
 
       points(secLvlSom.20.20$visual[which.samples[1], "x"]+x.seq,
              -secLvlSom.20.20$visual[which.samples[1], "y"]+y.seq,

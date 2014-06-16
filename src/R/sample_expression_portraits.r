@@ -9,7 +9,7 @@ pipeline.sampleExpressionPortraits <- function()
   par(mar=c(0.3, 0.9, 4.5, 0.9))
   count.col <- 0
 
-  for (gl in 1:length(unique(group.labels)))
+  for (gl in seq_along(unique(group.labels)))
   {
     plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1))
 
@@ -52,7 +52,7 @@ pipeline.sampleExpressionPortraits <- function()
   par(mar=c(0.3, 0.9, 4.5, 0.9))
   count.col <- 0
 
-  for (gl in 1:length(unique(group.labels)))
+  for (gl in seq_along(unique(group.labels)))
   {
     plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1))
 
@@ -124,7 +124,7 @@ pipeline.sampleExpressionPortraits <- function()
   par(mar=c(0.3, 0.9, 4.5, 0.9))
   count.col <- 0
 
-  for (gl in 1:length(unique(group.labels)))
+  for (gl in seq_along(unique(group.labels)))
   {
     plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0, 1))
 
@@ -164,7 +164,7 @@ pipeline.sampleExpressionPortraits <- function()
   par(mar=c(0.3, 0.9, 4.5, 0.9))
   count.col <- 0
 
-  for (gl in 1:length(unique(group.labels)))
+  for (gl in seq_along(unique(group.labels)))
   {
     plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0, 1))
 
@@ -205,7 +205,7 @@ pipeline.sampleExpressionPortraits <- function()
   par(mar=c(0.3, 0.9, 4.5, 0.9))
   count.col <- 0
 
-  for (gl in 1:length(unique(group.labels)))
+  for (gl in seq_along(unique(group.labels)))
   {
     plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0, 1))
 
@@ -252,7 +252,7 @@ pipeline.sampleExpressionPortraits <- function()
   par(mar=c(0.3, 0.9, 4.5, 0.9))
   count.col <- 0
 
-  for (gl in 1:length(unique(group.labels)))
+  for (gl in seq_along(unique(group.labels)))
   {
     plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1))
 
@@ -293,7 +293,7 @@ pipeline.sampleExpressionPortraits <- function()
   par(mar=c(0.3, 0.9, 4.5, 0.9))
   count.col <- 0
 
-  for (gl in 1:length(unique(group.labels)))
+  for (gl in seq_along(unique(group.labels)))
   {
     plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0, 1))
 
@@ -334,7 +334,7 @@ pipeline.sampleExpressionPortraits <- function()
   par(mar=c(0.3, 0.9, 4.5, 0.9))
   count.col <- 0
 
-  for (gl in 1:length(unique(group.labels)))
+  for (gl in seq_along(unique(group.labels)))
   {
     plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1))
 
@@ -379,7 +379,7 @@ pipeline.sampleExpressionPortraits <- function()
     par(mar=c(0.3, 0.9, 4.5, 0.9))
     count.col <- 0
 
-    for (gl in 1:length(unique(group.labels)))
+    for (gl in seq_along(unique(group.labels)))
     {
       plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1))
 

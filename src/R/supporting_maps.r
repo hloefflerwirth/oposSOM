@@ -280,7 +280,7 @@ pipeline.supportingMaps <- function()
       if (length(unique(group.labels)) > 1)
       {
         par(mar=c(5.4, 0, 0, 0))
-        image(cbind(1:length(group.colors)), col=group.colors, axes=FALSE)
+        image(cbind(seq_along(group.colors)), col=group.colors, axes=FALSE)
         par(new=TRUE, mar=c(0, 0, 0, 0))
       }
 
@@ -325,7 +325,7 @@ pipeline.supportingMaps <- function()
              ylim=c(min(co.so.code),max(co.so.code)*1.2),
              xlab="", ylab="", axes=FALSE, type="n", lwd=1.4)
 
-        for (i in 1:length(unique(group.labels)))
+        for (i in seq_along(unique(group.labels)))
         {
           lines(co.so.code[ij, which(group.labels==unique(group.labels)[i])],
                 col=unique(group.colors)[i], lwd=2)

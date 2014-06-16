@@ -264,7 +264,7 @@ pipeline.prepare <- function()
     {
       group.colors <<- rep("", ncol(indata))
 
-      for (i in 1:length(unique(group.labels)))
+      for (i in seq_along(unique(group.labels)))
       {
         group.colors[which(group.labels == unique(group.labels)[i])] <<-
           colorRampPalette(c("blue3", "blue", "lightblue", "green", "gold", "red", "red3"))(length(unique(group.labels)))[i]

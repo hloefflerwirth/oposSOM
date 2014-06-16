@@ -50,7 +50,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
     chr.sep.level <- table(chr)[unique(chr)]
     chr.sep.level <- rev(chr.sep.level)
     chr.sep.level <- chr.sep.level[-length(chr.sep.level)]
-    chr.sep.level <- sapply(1:length(chr.sep.level), function(i) { sum(chr.sep.level[1:i]) })
+    chr.sep.level <- sapply(seq_along(chr.sep.level), function(i) { sum(chr.sep.level[1:i]) })
 
     chr.lab.level <- table(chr)[unique(chr)]
     chr.lab.level <- rev(chr.lab.level)
@@ -91,7 +91,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
       pipeline.3rdLvlChromosomeAssociationMaps(gene.positions.list)
     }
 
-    for (m in 1:length(set.list$spots))
+    for (m in seq_along(set.list$spots))
     {
       intersect.counts <- sapply(gene.positions.list, function(x)
       {
@@ -117,12 +117,12 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
       {
         x <- intersect.counts[[chromosome]]
 
-        image(1, 1:length(x),  matrix(rev(x), 1, length(x)), zlim=c(0, 1),
+        image(1, seq_along(x),  matrix(rev(x), 1, length(x)), zlim=c(0, 1),
               axes=FALSE, xlab="", ylab="", col=colkey)
 
         box()
         axis(1, 1, labels = chromosome, las = 1, line = -0.8, tick = 0, cex.axis=1.2)
-        axis(2, 1:length(x), labels = rev(names(x)), las = 2, line = -0.5, tick = 0, cex.axis=1)
+        axis(2, seq_along(x), labels = rev(names(x)), las = 2, line = -0.5, tick = 0, cex.axis=1)
       }
     }
   }

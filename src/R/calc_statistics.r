@@ -88,7 +88,7 @@ pipeline.calcStatistics <- function()
 
         SD2 <- LPE.g.m[o, m]
 
-        for (j in (length(SD2)-1):1)
+        for (j in seq(length(SD2)-1, 1))
         {
           SD2[j] <- max(SD2[j], SD2[j+1])
         }
@@ -138,7 +138,7 @@ pipeline.calcStatistics <- function()
 
         SD2 <- LPE.g.m[o, m]
 
-        for (j in (length(SD2)-1):1)
+        for (j in seq(length(SD2)-1, 1))
         {
           SD2[j] <- max(SD2[j], SD2[j+1])
         }
@@ -174,7 +174,7 @@ pipeline.calcStatistics <- function()
     col[which(is.nan(col))] <- 0.0000000001
     col[which(col == 0)] <- 0.0000000001
 
-    for (i in (length(col)-1):1)
+    for (i in seq(length(col)-1, 1))
     {
       col[i] <- max(col[i], col[i+1])
     }
@@ -220,7 +220,7 @@ pipeline.calcStatistics <- function()
 
         SD2 <- LPE.g.m[o, m]
 
-        for (j in (length(SD2)-1):1)
+        for (j in seq(length(SD2)-1, 1))
         {
           SD2[j] <- max(SD2[j], SD2[j+1])
         }
@@ -270,7 +270,7 @@ pipeline.calcStatistics <- function()
 
         SD2 <- LPE.g.m[o, m]
 
-        for (j in (length(SD2)-1):1)
+        for (j in seq(length(SD2)-1, 1))
         {
           SD2[j] <- max(SD2[j], SD2[j+1])
         }
@@ -381,7 +381,7 @@ pipeline.calcStatistics <- function()
       dev.off()
     } else if (preferences$error.model == "groups")
     {
-      for (m in 1:length(unique(group.labels)))
+      for (m in seq_along(unique(group.labels)))
       {
         plot.sample <- which(group.labels == unique(group.labels)[m])[1]
 
@@ -484,7 +484,7 @@ pipeline.calcStatistics <- function()
               cex.axis=2,
               xaxt="n")
 
-      axis(1, 1:length(mean.LPE2.boxes), names(mean.LPE2.boxes), las=2)
+      axis(1, seq_along(mean.LPE2.boxes), names(mean.LPE2.boxes), las=2)
     }
 
     dev.off()

@@ -157,9 +157,9 @@ pipeline.detectSpotsIntegral <- function()
   ## shrinking overlapping spots ##
   if (length(sample.spot.list) > 1)
   {
-    for (i in 1:(length(sample.spot.list)-1))
+    for (i in seq_len(length(sample.spot.list)-1))
     {
-      for (j in (i+1):length(sample.spot.list))
+      for (j in seq(i+1, length(sample.spot.list)))
       {
         spot1 <- which(!is.na(sample.spot.list[[i]]))
         spot2 <- which(!is.na(sample.spot.list[[j]]))
@@ -198,7 +198,7 @@ pipeline.detectSpotsIntegral <- function()
   spot.list.overexpression$filtered <<- FALSE
   spot.list.overexpression$spots <<- list()
 
-  for (i in 1:length(sample.spot.list))
+  for (i in seq_along(sample.spot.list))
   {
     spot.metagenes <- which(!is.na(sample.spot.list[[i]]))
     spot.genes <- rownames(indata)[which(som.nodes %in% spot.metagenes)]
@@ -227,7 +227,7 @@ pipeline.detectSpotsIntegral <- function()
   }))
 
   spot.list.overexpression$spots <<- spot.list.overexpression$spots[o]
-  names(spot.list.overexpression$spots) <<- LETTERS[1:length(spot.list.overexpression$spots)]
+  names(spot.list.overexpression$spots) <<- LETTERS[seq_along(spot.list.overexpression$spots)]
 
   spot.list.overexpression$overview.mask[!is.na(spot.list.overexpression$overview.mask)] <<-
     match(spot.list.overexpression$overview.mask[!is.na(spot.list.overexpression$overview.mask)], o)
@@ -397,9 +397,9 @@ pipeline.detectSpotsIntegral <- function()
   ## shrinking overlapping spots ##
   if (length(sample.spot.list) > 1)
   {
-    for (i in 1:(length(sample.spot.list)-1))
+    for (i in seq_len(length(sample.spot.list)-1))
     {
-      for (j in (i+1):length(sample.spot.list))
+      for (j in seq(i+1, length(sample.spot.list)))
       {
         spot1 <- which(!is.na(sample.spot.list[[i]]))
         spot2 <- which(!is.na(sample.spot.list[[j]]))
@@ -439,7 +439,7 @@ pipeline.detectSpotsIntegral <- function()
   spot.list.underexpression$filtered <<- FALSE
   spot.list.underexpression$spots <<- list()
 
-  for (i in 1:length(sample.spot.list))
+  for (i in seq_along(sample.spot.list))
   {
     spot.metagenes <- which(!is.na(sample.spot.list[[i]]))
     spot.genes <- rownames(indata)[which(som.nodes %in% spot.metagenes)]
@@ -468,7 +468,7 @@ pipeline.detectSpotsIntegral <- function()
   }))
 
   spot.list.underexpression$spots <<- spot.list.underexpression$spots[o]
-  names(spot.list.underexpression$spots) <<- letters[1:length(spot.list.underexpression$spots)]
+  names(spot.list.underexpression$spots) <<- letters[seq_along(spot.list.underexpression$spots)]
 
   spot.list.underexpression$overview.mask[!is.na(spot.list.underexpression$overview.mask)] <<-
     match(spot.list.underexpression$overview.mask[!is.na(spot.list.underexpression$overview.mask)], o)
@@ -548,7 +548,7 @@ pipeline.detectSpotsIntegral <- function()
   }))
 
   spot.list.correlation$spots <<- spot.list.correlation$spots[o]
-  names(spot.list.correlation$spots) <<- LETTERS[1:length(spot.list.correlation$spots)]
+  names(spot.list.correlation$spots) <<- LETTERS[seq_along(spot.list.correlation$spots)]
 
   spot.list.correlation$overview.mask[!is.na(spot.list.correlation$overview.mask)] <<-
     match(spot.list.correlation$overview.mask[!is.na(spot.list.correlation$overview.mask)], o)
@@ -608,7 +608,7 @@ pipeline.detectSpotsIntegral <- function()
   }))
 
   spot.list.kmeans$spots <<- spot.list.kmeans$spots[o]
-  names(spot.list.kmeans$spots) <<- LETTERS[1:length(spot.list.kmeans$spots)]
+  names(spot.list.kmeans$spots) <<- LETTERS[seq_along(spot.list.kmeans$spots)]
 
   spot.list.kmeans$overview.mask[!is.na(spot.list.kmeans$overview.mask)] <<-
     match(spot.list.kmeans$overview.mask[!is.na(spot.list.kmeans$overview.mask)], o)
@@ -784,9 +784,9 @@ pipeline.detectSpotsIntegral <- function()
     ## shrinking overlapping spots ##
     if (length(sample.spot.list) > 1)
     {
-      for (i in 1:(length(sample.spot.list)-1))
+      for (i in seq_len(length(sample.spot.list)-1))
       {
-        for (j in (i+1):length(sample.spot.list))
+        for (j in seq(i+1, length(sample.spot.list)))
         {
           spot1 <- which(!is.na(sample.spot.list[[i]]))
           spot2 <- which(!is.na(sample.spot.list[[j]]))
@@ -825,7 +825,7 @@ pipeline.detectSpotsIntegral <- function()
     spot.list.group.overexpression$filtered <<- FALSE
     spot.list.group.overexpression$spots <<- list()
 
-    for (i in 1:length(sample.spot.list))
+    for (i in seq_along(sample.spot.list))
     {
       spot.metagenes <- which(!is.na(sample.spot.list[[i]]))
       spot.genes <- rownames(indata)[which(som.nodes %in% spot.metagenes)]
@@ -868,7 +868,7 @@ pipeline.detectSpotsIntegral <- function()
     o <- order(spot.arcs)
 
     spot.list.group.overexpression$spots <<- spot.list.group.overexpression$spots[o]
-    names(spot.list.group.overexpression$spots) <<- LETTERS[1:length(spot.list.group.overexpression$spots)]
+    names(spot.list.group.overexpression$spots) <<- LETTERS[seq_along(spot.list.group.overexpression$spots)]
 
     spot.list.group.overexpression$overview.mask[!is.na(spot.list.group.overexpression$overview.mask)] <<-
       match(spot.list.group.overexpression$overview.mask[!is.na(spot.list.group.overexpression$overview.mask)], o)

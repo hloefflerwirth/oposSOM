@@ -21,7 +21,7 @@ pipeline.entropyProfiles <- function()
     boxplot(mean.boxes, col=groupwise.group.colors, las=2,
             main="Metagene Mean Expression", cex.main=2.5, cex.axis=2, xaxt="n")
 
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
+    axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
   }
 
   barplot(apply(metadata, 2, var), col=group.colors, main="Metagene Variance",
@@ -37,7 +37,7 @@ pipeline.entropyProfiles <- function()
     boxplot(mean.sd.boxes, col=groupwise.group.colors, las=2,
             main="Metagene Variance", cex.main=2.5, cex.axis=2, xaxt="n")
 
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
+    axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
   }
 
   ### Entropy ###
@@ -80,7 +80,7 @@ pipeline.entropyProfiles <- function()
     boxplot(mean.sd.boxes, col=groupwise.group.colors, las=2,
             main="Standard Metagene Entropy", cex.main=2.5, cex.axis=2, xaxt="n")
 
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
+    axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
   }
 
   ### Weighted sample-related metagene entropy
@@ -106,7 +106,7 @@ pipeline.entropyProfiles <- function()
     boxplot(mean.sd.boxes, col=groupwise.group.colors, las=2,
             main="Weighted Metagene Entropy", cex.main=2.5, cex.axis=2, xaxt="n")
 
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
+    axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
   }
 
   ### Tsallis Entropy
@@ -133,7 +133,7 @@ pipeline.entropyProfiles <- function()
     boxplot(mean.sd.boxes, col=groupwise.group.colors, las=2,
             main="Tsallis Metagene Entropy", cex.main=2.5, cex.axis=2, xaxt="n")
 
-    axis(1, 1:length(groupwise.group.colors), unique(group.labels), las=2)
+    axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
   }
 
   dev.off()
