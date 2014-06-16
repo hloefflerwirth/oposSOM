@@ -19,8 +19,8 @@ summary HTML file.
 \tabular{ll}{
 Package: \tab oposSOM\cr
 Type: \tab Package\cr
-Version: \tab 1.0.0\cr
-Date: \tab 2014-27-05\cr
+Version: \tab 0.99.3\cr
+Date: \tab 2014-11-06\cr
 License: \tab GPL (>= 2)\cr
 }
 }
@@ -41,8 +41,6 @@ integrating concepts of molecular function. (BioData Mining 2012)
 }
 \keyword{ package }
 \examples{
-library("oposSOM")
-
 # Example with artificial data
 env <- opossom.new(list(dataset.name="Example",
                         error.model="all.samples",

@@ -98,7 +98,7 @@ pipeline.genesetProfilesAndMaps <- function()
 
       if (length(g) > 0)
       {
-        return(apply(indata[g,,drop=F], 2, mean))
+        return(apply(indata[g,,drop=FALSE], 2, mean))
       } else
       {
         return(rep(0, ncol(indata)))
@@ -126,7 +126,7 @@ pipeline.genesetProfilesAndMaps <- function()
     out <- data.frame(AffyID=names(gene.ids[genes]),
                       EnsemblID=gene.ids[genes],
                       Metagene=gene.coordinates[genes],
-                      Max.expression.sample=colnames(indata)[apply(indata[genes, ,drop=F], 1, which.max)],
+                      Max.expression.sample=colnames(indata)[apply(indata[genes, ,drop=FALSE], 1, which.max)],
                       GeneSymbol=gene.names[genes],
                       Description=gene.descriptions[genes])
 
@@ -192,7 +192,7 @@ pipeline.genesetProfilesAndMaps <- function()
 
       coords <-
         som.result$visual[which(rownames(indata) %in% names(gene.ids[which(gene.ids %in% gs.def.list[[i]]$Genes)])),
-                          c(1,2), drop=F]
+                          c(1,2), drop=FALSE]
 
       if (nrow(coords) == 1)
       {

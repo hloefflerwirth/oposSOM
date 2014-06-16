@@ -173,7 +173,7 @@ pipeline.supportingMaps <- function()
   {
     genes <- names(which(som.nodes == i))
 
-    e <- apply(indata[genes, ,drop=F], 1, function(x)
+    e <- apply(indata[genes, ,drop=FALSE], 1, function(x)
     {
       1 / (ncol(indata)-1) * sum((x - metadata[i,])^2)
     })

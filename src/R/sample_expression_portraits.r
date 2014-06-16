@@ -100,14 +100,14 @@ pipeline.sampleExpressionPortraits <- function()
     neg.metagenes <- which(metadata[,i] < 0)
 
     bleached.metadata[pos.metagenes,i] <-
-      bleached.metadata[pos.metagenes,i,drop=F] -
-      pmin(bleached.metadata[pos.metagenes,i,drop=F],
-           apply(metadata[pos.metagenes,-i,drop=F], 1, max))
+      bleached.metadata[pos.metagenes,i,drop=FALSE] -
+      pmin(bleached.metadata[pos.metagenes,i,drop=FALSE],
+           apply(metadata[pos.metagenes,-i,drop=FALSE], 1, max))
 
     bleached.metadata[neg.metagenes,i] <-
-      bleached.metadata[neg.metagenes,i,drop=F] -
-      pmax(bleached.metadata[neg.metagenes,i,drop=F],
-           apply(metadata[neg.metagenes,-i,drop=F], 1, min))
+      bleached.metadata[neg.metagenes,i,drop=FALSE] -
+      pmax(bleached.metadata[neg.metagenes,i,drop=FALSE],
+           apply(metadata[neg.metagenes,-i,drop=FALSE], 1, min))
   }
 
   filename <- file.path(paste(files.name, "- Results"), "Expression Portraits alternative.pdf")

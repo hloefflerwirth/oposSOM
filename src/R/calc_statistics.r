@@ -41,7 +41,7 @@ pipeline.calcStatistics <- function()
   {
     if (preferences$error.model == "replicates")
     {
-      e.r.g.m <- as.matrix(indata.original[,which(colnames(indata.original) == unique(colnames(indata))[m]), drop=F])
+      e.r.g.m <- as.matrix(indata.original[,which(colnames(indata.original) == unique(colnames(indata))[m]), drop=FALSE])
     } else
     {
       e.r.g.m <- as.matrix(indata.original[,m])
@@ -75,7 +75,7 @@ pipeline.calcStatistics <- function()
     {
       if (R.m[m] > 1)
       {
-        e.r.g.m <- as.matrix(indata.original[,which(colnames(indata.original) == unique(colnames(indata))[m]), drop=F])
+        e.r.g.m <- as.matrix(indata.original[,which(colnames(indata.original) == unique(colnames(indata))[m]), drop=FALSE])
 
         o <- order(e.g.m[, m])
 
@@ -207,7 +207,7 @@ pipeline.calcStatistics <- function()
     {
       if (R.m[m] > 1)
       {
-        e.r.g.m <- as.matrix(indata.original[,which(group.labels == group.labels[m]), drop=F])
+        e.r.g.m <- as.matrix(indata.original[,which(group.labels == group.labels[m]), drop=FALSE])
 
         o <- order(e.g.m[,m])
 

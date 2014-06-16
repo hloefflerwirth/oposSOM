@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{hyperref}
 \usepackage[authoryear,round]{natbib}
-\usepackage{graphicx} 
+\usepackage{graphicx}
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
@@ -11,19 +11,57 @@
 \maketitle
 
 
-High-throughput technologies such as whole genome transcriptional profiling revolutionized molecular biology and provide an incredible amount of data. On the other hand, these techniques pose elementary methodological challenges simply by the huge and ever increasing amount of data produced: researchers need adequate tools to extract the information content of the data in an effective and intelligent way. This includes algorithmic tasks such as data compression and filtering, feature selection, linkage with the functional context, and proper visualization.
-Especially, the latter task is very important because an intuitive visualization of massive data clearly promotes quality control, the discovery of their intrinsic structure, functional data mining and finally the generation of hypotheses. 
-We aim at adapting a holistic view on the gene activation patterns as seen by expression studies rather than to consider single genes or single pathways. This view requires methods which support an integrative and reductionist approach to disentangle the complex gene-phenotype interactions related to cancer genesis and progression. With this motivation we implemented an analysis pipeline based on data processing by a Self-Organizing Map (SOM) \citep{Wirth2011}\citep{Wirth2012}. This approach simultaneously searches for features which are differentially expressed and correlated in their profiles in the set of samples studied. We include functional information about such co-expressed genes to extract distinct functional modules inherent in the data and attribute them to particular types of cellular and biological processes such as inflammation, cell division, etc. This modular view facilitates the understanding of the gene expression patterns characterizing different cancer subtypes on the molecular level. Importantly, SOMs preserve the information richness of the original data allowing the detailed study of the samples after SOM clustering.
-A central role in our analysis is played by the so-called expression portraits which serve as intuitive and easy-to-interpret fingerprints of the transcriptional activity of the samples. Their analysis provides a holistic view on the expression patterns activated in a particular sample. Importantly, they also allow identification and interpretation of outlier samples and, thus, improve data quality \citep{Hopp2013a}\citep{Hopp2013}. 
+High-throughput technologies such as whole genome transcriptional profiling
+revolutionized molecular biology and provide an incredible amount of data. On
+the other hand, these techniques pose elementary methodological challenges
+simply by the huge and ever increasing amount of data produced: researchers
+need adequate tools to extract the information content of the data in an
+effective and intelligent way. This includes algorithmic tasks such as data
+compression and filtering, feature selection, linkage with the functional
+context, and proper visualization.
+Especially, the latter task is very important because an intuitive
+visualization of massive data clearly promotes quality control, the discovery
+of their intrinsic structure, functional data mining and finally the generation
+of hypotheses.
+We aim at adapting a holistic view on the gene activation patterns as seen by
+expression studies rather than to consider single genes or single pathways.
+This view requires methods which support an integrative and reductionist
+approach to disentangle the complex gene-phenotype interactions related to
+cancer genesis and progression. With this motivation we implemented an analysis
+pipeline based on data processing by a Self-Organizing Map (SOM)
+\citep{Wirth2011}\citep{Wirth2012}. This approach simultaneously searches for
+features which are differentially expressed and correlated in their profiles in
+the set of samples studied. We include functional information about such
+co-expressed genes to extract distinct functional modules inherent in the data
+and attribute them to particular types of cellular and biological processes
+
+such as inflammation, cell division, etc. This modular view facilitates the
+understanding of the gene expression patterns characterizing different cancer
+subtypes on the molecular level. Importantly, SOMs preserve the information
+richness of the original data allowing the detailed study of the samples after
+SOM clustering.
+A central role in our analysis is played by the so-called expression portraits
+which serve as intuitive and easy-to-interpret fingerprints of the
+transcriptional activity of the samples. Their analysis provides a holistic
+view on the expression patterns activated in a particular sample. Importantly,
+they also allow identification and interpretation of outlier samples and, thus,
+improve data quality \citep{Hopp2013a}\citep{Hopp2013}.
 
 
 \section{Example data: transctiptome of healthy human tissue samples}
 
-The data was downloaded from Gene Expression Omnibus repository (\href{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE7307}{GEO accession no. GSE7307}). About 20,000 genes in more than 650 tissue samples were measured using the Affymetrix HGU133-Plus2 microarray. A subset of 12 selected tissues from different categories is used here as example data set for the oposSOM-package.
+The data was downloaded from Gene Expression Omnibus repository
+(\href{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE7307}%
+{GEO accession no. GSE7307}).
+About 20,000 genes in more than 650 tissue samples were measured using the
+Affymetrix HGU133-Plus2 microarray. A subset of 12 selected tissues from
+different categories is used here as example data set for the oposSOM-package.
 
 \section{Setting up the environment}
 
-In order to set the analysis parameters and to create the enclosing environment it is obligatory to use \textbf{opossom.new}. If any parameter is not explicitly defined, default values will be used (see also Parameters section):
+In order to set the analysis parameters and to create the enclosing environment
+it is obligatory to use \textbf{opossom.new}. If any parameter is not
+explicitly defined, default values will be used (see also Parameters section):
 
 <<>>=
 library(oposSOM)
@@ -32,7 +70,8 @@ env <- opossom.new(list(dataset.name="Tissues",
 @
 
 \ \\
-The oposSOM package requires the input data to be a two-dimensional numerical matrix. The columns and rows represent the samples and genes, respectively:
+The oposSOM package requires the input data to be a two-dimensional numerical
+matrix. The columns and rows represent the samples and genes, respectively:
 
 
 <<>>=
@@ -43,33 +82,39 @@ env$indata <- opossom.tissues
 @
 
 \ \\
-Each sample may be assigned to a distinct group and a respective color to improve data visualization and result presentations. If not defined by the user, the samples will be collected within one group and colored using a standard scheme.
+Each sample may be assigned to a distinct group and a respective color to
+improve data visualization and result presentations. If not defined by the
+user, the samples will be collected within one group and colored using a
+standard scheme.
 \pagebreak
 <<>>=
-env$group.labels <- c( rep("Homeostasis", 2),
-                           "Endocrine",
-                           "Digestion",
-                           "Exocrine",
-                           "Epithelium",
-                           "Reproduction",
-                           "Muscle",
-                       rep("Immune System", 2),
-                       rep("Nervous System", 2) )
+env$group.labels <- c(rep("Homeostasis", 2),
+                          "Endocrine",
+                          "Digestion",
+                          "Exocrine",
+                          "Epithelium",
+                          "Reproduction",
+                          "Muscle",
+                      rep("Immune System", 2),
+                      rep("Nervous System", 2) )
 @
 <<>>=
-env$group.colors <- c( rep("gold", 2),
-                           "red2",
-                           "brown",
-                           "purple",
-                           "cyan",
-                           "pink",
-                           "green2",
-                       rep("blue2", 2),
-                       rep("gray", 2) )
+env$group.colors <- c(rep("gold", 2),
+                          "red2",
+                          "brown",
+                          "purple",
+                          "cyan",
+                          "pink",
+                          "green2",
+                      rep("blue2", 2),
+                      rep("gray", 2) )
 @
 
 \ \\
-Finally the pipeline will run through all analysis modules without further input. Periodical status messages are given to inform about running and accomplished tasks. Please note that the tissue sample will take approx. 30min to finish, depending on the users' hardware:
+Finally the pipeline will run through all analysis modules without further
+input. Periodical status messages are given to inform about running and
+accomplished tasks. Please note that the tissue sample will take approx. 30min
+to finish, depending on the users' hardware:
 
 <<>>=
 # opossom.run(env)
@@ -77,16 +122,44 @@ Finally the pipeline will run through all analysis modules without further input
 
 \section{Browsing the results}
 
-The pipeline will store the results in a defined folder structure. These results comprise a variety of PDF documents with plots and images addressing the input data, supplementary descriptions of the SOM generated, the metadata obtained by the SOM algorithm, the sample similarity structures and also functional annotations. The PDF reports are accompanied by detailed CSV spreadsheets which render the complete information richness accessible.\\
-Figure ~\ref{fig:Results summary} shows few selected outputs generated by the pipeline. The expression landscape portraits (Figure ~\ref{fig:Results summary}a) represent fingerprints of transcriptional activity. They are used to identify functional expression modules, which are further visualized and evaluated (Figure ~\ref{fig:Results summary}b). Sample similarity structure is analysed using different algorithms and distance metrics, for example by clustering the pairwise sample correlation matrix (Figure ~\ref{fig:Results summary}c).\\
-Detailed description of the respective algorithms and visualizations would exceed the scope of this outline. We therefore refer to our publications aiming at methodical issues and application of the pipeline \citep{Wirth2011}\citep{Wirth2012m}\citep{Wirth2012}\citep{Wirth2012a}\citep{Steiner2012}\citep{Binder2012}\citep{Hopp2013a}\citep{Hopp2013}.\\
-HTML files are generated to provide straightforward access to this great amount of analysis results (see Figure ~\ref{fig:Results HTML}). They guide the user in terms of giving the most prominent links at a glance and leading from one analsis module to another. The \textbf{Summary.html} is the starting point of this browsing and can be found in the results folder created by the oposSOM pipeline.
+The pipeline will store the results in a defined folder structure. These
+results comprise a variety of PDF documents with plots and images addressing
+the input data, supplementary descriptions of the SOM generated, the metadata
+obtained by the SOM algorithm, the sample similarity structures and also
+functional annotations. The PDF reports are accompanied by detailed CSV
+spreadsheets which render the complete information richness accessible.\\
+Figure ~\ref{fig:Results summary} shows few selected outputs generated by the
+pipeline. The expression landscape portraits
+(Figure ~\ref{fig:Results summary}a) represent fingerprints of transcriptional
+activity. They are used to identify functional expression modules, which are
+further visualized and evaluated (Figure ~\ref{fig:Results summary}b). Sample
+similarity structure is analysed using different algorithms and distance
+metrics, for example by clustering the pairwise sample correlation matrix
+(Figure ~\ref{fig:Results summary}c).\\
+Detailed description of the respective algorithms and visualizations would
+exceed the scope of this outline. We therefore refer to our publications aiming
+at methodical issues and application of the pipeline
+\citep{Wirth2011}\citep{Wirth2012m}\citep{Wirth2012}\citep{Wirth2012a}\citep{Steiner2012}\citep{Binder2012}\citep{Hopp2013a}\citep{Hopp2013}.\\
+HTML files are generated to provide straightforward access to this great
+amount of analysis results (see Figure ~\ref{fig:Results HTML}). They guide the
+user in terms of giving the most prominent links at a glance and leading from
+one analsis module to another. The \textbf{Summary.html} is the starting point
+of this browsing and can be found in the results folder created by the oposSOM
+pipeline.
 
 \begin{figure}[h!]
 	\begin{center}
 	\includegraphics[width=0.9\textwidth]{Summary.pdf}
 	\end{center}
-	\caption{Few selected results provided by the oposSOM package: (a) Expression landscape portraits represent fingerprints of transcriptional activity. The \textit{group.labels} and \textit{group.colors} parameters are used to arrange and represent the samples throughout all analyses. (b) Functional expression modules are identified in the expression landscapes and described using appropriate summary portraits (left part), and expression profiles, enrichment analyses and differential gene lists (right part). (c) Sample similarity structure is analysed using different algorithms and distance metrics. Here a clustered pairwise correlation matrix is shown.}
+	\caption{Few selected results provided by the oposSOM package: (a) Expression
+landscape portraits represent fingerprints of transcriptional activity.
+The \textit{group.labels} and \textit{group.colors} parameters are used to
+arrange and represent the samples throughout all analyses. (b) Functional
+expression modules are identified in the expression landscapes and described
+using appropriate summary portraits (left part), and expression profiles,
+enrichment analyses and differential gene lists (right part). (c) Sample
+similarity structure is analysed using different algorithms and distance
+metrics. Here a clustered pairwise correlation matrix is shown.}
 	\label{fig:Results summary}
 \end{figure}
 
@@ -96,55 +169,93 @@ HTML files are generated to provide straightforward access to this great amount 
 	\begin{center}
 	\includegraphics[width=0.9\textwidth]{HTML.pdf}
 	\end{center}
-	\caption{HTML files allow browsing all results provided by the oposSOM package: (a) The central \textit{Summary.html} serves as starting point and contains general information and results, as well as links to other HTML files such as (b) the sample summary page, (c) the spot module summary page and (d) the functional analyses page.}
+	\caption{HTML files allow browsing all results provided by the oposSOM
+package: (a) The central \textit{Summary.html} serves as starting point and
+contains general information and results, as well as links to other HTML files
+such as (b) the sample summary page, (c) the spot module summary page and (d)
+the functional analyses page.}
 	\label{fig:Results HTML}
 \end{figure}
 
 
 \section{Parameter settings}
 
-All parameters are optional and will be set to default values if missing. However we recommend to adapt the following parameters according to the respective analysis:
+All parameters are optional and will be set to default values if missing.
+However we recommend to adapt the following parameters according to the
+respective analysis:
 
 \begin{itemize}
-	\item \textit{dataset.name} (character): name of the dataset. Used to name results folder and environment image (default:'Unnamed').
-	\item \textit{dim.1stLvlSom} (integer): dimension of primary SOM (default: 20). Given as a single value defining the size of the square SOM grid.
-	\item \textit{max.parallel.cores} (integer, >0): number of CPU cores used by parallelized functions (default: half of the number of CPU cores).\\
-	\item \textit{feature.centralization} (boolean): enables or disables centralization of the features (default: TRUE).
-	\item \textit{sample.quantile.normalization} (boolean): enables quantile normalization of the samples (default: TRUE).
+	\item \textit{dataset.name} (character): name of the dataset. Used to name
+    results folder and environment image (default:'Unnamed').
+	\item \textit{dim.1stLvlSom} (integer): dimension of primary SOM
+    (default: 20). Given as a single value defining the size of the square
+    SOM grid.
+	\item \textit{max.parallel.cores} (integer, >0): number of CPU cores used by
+    parallelized functions (default: half of the number of CPU cores).\\
+	\item \textit{feature.centralization} (boolean): enables or disables
+    centralization of the features (default: TRUE).
+	\item \textit{sample.quantile.normalization} (boolean): enables quantile
+    normalization of the samples (default: TRUE).
 \end{itemize}
 
 \ \\
 The parameters below are secondary and may be left unattended by the user:
 
 \begin{itemize}
-	\item \textit{dim.2ndLvlSom} (integer): dimension of the second level SOM (default: 20). Given as a single value defining the size of the square SOM grid.
-	\item \textit{training.extension} (numerical, >0): factor extending the number of iterations in SOM training (default: 1).
-	\item \textit{rotate.SOM.portraits} (integer \{0,1,2,3\}): number of roations of the primary SOM in counter-clockwise fashion (default: 0). This solely influences the orientation of the portraits.
-	\item \textit{flip.SOM.portraits} (boolean): mirroring the primary SOM along the bottom-left to top-right diagonal (default: FALSE). This solely influences the orientation of the portraits.\\
-	
-	\item \textit{database.dataset} (character): type of ensemble dataset addressed with biomaRt interface (default: "auto"). Use "auto" to detect this parameter automatically.
-	\item \textit{database.id.type} (character): type of rowname identifier in biomaRt database (default: ""). Obsolete if \textit{database.dataset="auto"}.\\
+	\item \textit{dim.2ndLvlSom} (integer): dimension of the second level SOM
+    (default: 20). Given as a single value defining the size of the square SOM
+    grid.
+	\item \textit{training.extension} (numerical, >0): factor extending the
+    number of iterations in SOM training (default: 1).
+	\item \textit{rotate.SOM.portraits} (integer \{0,1,2,3\}): number of roations
+    of the primary SOM in counter-clockwise fashion (default: 0). This solely
+    influences the orientation of the portraits.
+	\item \textit{flip.SOM.portraits} (boolean): mirroring the primary SOM along
+    the bottom-left to top-right diagonal (default: FALSE). This solely
+    influences the orientation of the portraits.\\
 
-	\item \textit{geneset.analysis} (boolean): enables or disables geneset analysis (default: TRUE).
-	\item \textit{geneset.analysis.exact} (boolean): enables or disables p-value and fdr calculation in geneset analysis (default: TRUE). Obsolete if \textit{geneset.analysis=F}.\\
+	\item \textit{database.dataset} (character): type of ensemble dataset
+    addressed with biomaRt interface (default: "auto"). Use "auto" to detect
+    this parameter automatically.
+	\item \textit{database.id.type} (character): type of rowname identifier in
+    biomaRt database (default: ""). Obsolete if
+    \textit{database.dataset="auto"}.\\
 
-	\item \textit{spot.threshold.samples} (numerical, between 0 and 1): expression threshold for the spot regions in single sample portraits (default: 0.65).
-	\item \textit{spot.threshold.modules} (numerical, between 0 and 1): spot detection in summary maps, expression threshold (default: 0.95).
-	\item \textit{spot.coresize.modules} (integer, >0): spot detection in summary maps, minimum spot size (default: 3).
-	\item \textit{spot.threshold.groupmap} (numerical, between 0 and 1): spot detection in group-specific summary maps, expression threshold (default: 0.75).
-	\item \textit{spot.coresize.groupmap} (integer, >0): spot detection in group-specific summary maps, minimum spot size (default: 5).\\
-	
-	\item \textit{pairwise.comparison.list} (list of group lists): group list for pairwise analyses (default: empty list). Each element is a list of two character vectors containing the sample names to be analysed in pairwise comparison. The sample names must be contained in the column names of the input data matrix. For example, the following setting will compare the homeostasis (liver, kidney) to the nervous system samples (accumbens, cortex), and also tongue to the nervous system:
-	
+	\item \textit{geneset.analysis} (boolean): enables or disables geneset
+    analysis (default: TRUE).
+	\item \textit{geneset.analysis.exact} (boolean): enables or disables p-value
+    and fdr calculation in geneset analysis (default: TRUE). Obsolete if
+    \textit{geneset.analysis=F}.\\
+
+	\item \textit{spot.threshold.samples} (numerical, between 0 and 1):
+    expression threshold for the spot regions in single sample portraits
+    (default: 0.65).
+	\item \textit{spot.threshold.modules} (numerical, between 0 and 1): spot
+    detection in summary maps, expression threshold (default: 0.95).
+	\item \textit{spot.coresize.modules} (integer, >0): spot detection in summary
+    maps, minimum spot size (default: 3).
+	\item \textit{spot.threshold.groupmap} (numerical, between 0 and 1): spot
+    detection in group-specific summary maps, expression threshold
+    (default: 0.75).
+	\item \textit{spot.coresize.groupmap} (integer, >0): spot detection in
+    group-specific summary maps, minimum spot size (default: 5).\\
+
+	\item \textit{pairwise.comparison.list} (list of group lists): group list
+    for pairwise analyses (default: empty list). Each element is a list of
+    two character vectors containing the sample names to be analysed in
+    pairwise comparison. The sample names must be contained in the column names
+    of the input data matrix. For example, the following setting will compare
+    the homeostasis (liver, kidney) to the nervous system samples
+    (accumbens, cortex), and also tongue to the nervous system:
+
 <<>>=
 env$preferences$pairwise.comparison.list <-
-    list( list( c("liver","kidney cortex"),
-                c("accumbens","cerebral cortex") ),
-          list( c("tongue"),
-                c("accumbens","cerebral cortex") )																								 
-        )
+    list(list(c("liver","kidney cortex"),
+              c("accumbens","cerebral cortex")),
+         list(c("tongue"),
+              c("accumbens","cerebral cortex")))
 @
-	
+
 \end{itemize}
 
 
@@ -165,13 +276,4 @@ sessionInfo()
 
 \bibliographystyle{plainnat}
 \bibliography{opossom}
-
-
-
 \end{document}
-
-
-
-
-
-

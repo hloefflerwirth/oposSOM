@@ -104,18 +104,18 @@ pipeline.differenceAnalyses = function()
 
     n <- lapply(samples.indata.original, length)
 
-    indata <<- cbind(indata, rowMeans(indata.original[,samples.indata.original[[1]],drop=F]) -
-                                rowMeans(indata.original[,samples.indata.original[[2]],drop=F]))
+    indata <<- cbind(indata, rowMeans(indata.original[,samples.indata.original[[1]],drop=FALSE]) -
+                                rowMeans(indata.original[,samples.indata.original[[2]],drop=FALSE]))
 
-    metadata <<- cbind(metadata, rowMeans(metadata[,samples.indata[[1]],drop=F]) -
-                                    rowMeans(metadata[,samples.indata[[2]],drop=F]))
+    metadata <<- cbind(metadata, rowMeans(metadata[,samples.indata[[1]],drop=FALSE]) -
+                                    rowMeans(metadata[,samples.indata[[2]],drop=FALSE]))
 
     sd.shrink.1 <- get.SD.estimate(data=indata.original, samples=samples.indata.original[[1]])
     sd.shrink.2 <- get.SD.estimate(data=indata.original, samples=samples.indata.original[[2]])
 
 
-    t.g.m[,d] <<- rowMeans(indata.original[,samples.indata.original[[1]],drop=F]) -
-                   rowMeans(indata.original[,samples.indata.original[[2]],drop=F])
+    t.g.m[,d] <<- rowMeans(indata.original[,samples.indata.original[[1]],drop=FALSE]) -
+                   rowMeans(indata.original[,samples.indata.original[[2]],drop=FALSE])
 
     t.g.m[,d] <<- t.g.m[,d] / sqrt(sd.shrink.1 / n[[1]] + sd.shrink.2 / n[[2]])
 
@@ -144,17 +144,17 @@ pipeline.differenceAnalyses = function()
       perc.DE.m[d] <<- 1 - n.0.m[d]
     }
 
-    delta.e.g.m <- rowMeans(indata.original[,samples.indata.original[[1]],drop=F]) -
-                     rowMeans(indata.original[,samples.indata.original[[2]],drop=F])
+    delta.e.g.m <- rowMeans(indata.original[,samples.indata.original[[1]],drop=FALSE]) -
+                     rowMeans(indata.original[,samples.indata.original[[2]],drop=FALSE])
 
     w.g.m <- (delta.e.g.m - min(delta.e.g.m)) / (max(delta.e.g.m) - min(delta.e.g.m))
     WAD.g.m[,d] <<- w.g.m * delta.e.g.m
   }
 
-  indata <<- indata[, -c(1:length(group.labels)), drop=F]
+  indata <<- indata[, -c(1:length(group.labels)), drop=FALSE]
   colnames(indata) <<- names(differences.list)
 
-  metadata <<- metadata[, -c(1:length(group.labels)), drop=F]
+  metadata <<- metadata[, -c(1:length(group.labels)), drop=FALSE]
   colnames(metadata) <<- names(differences.list)
 
   group.labels <<- names(differences.list)

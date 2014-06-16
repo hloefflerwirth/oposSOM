@@ -43,7 +43,7 @@ pipeline.prepare <- function()
   if (!is.logical(preferences$flip.SOM.portraits))
   {
     util.warn("Invalid value of \"flip.SOM.portraits\". Using FALSE")
-    preferences$flip.SOM.portraits <<- F
+    preferences$flip.SOM.portraits <<- FALSE
   }
 
   if (!is.character(preferences$database.dataset))
@@ -61,13 +61,13 @@ pipeline.prepare <- function()
   if (!is.logical(preferences$geneset.analysis))
   {
     util.warn("Invalid value of \"geneset.analysis\". Using FALSE")
-    preferences$geneset.analysis <<- F
+    preferences$geneset.analysis <<- FALSE
   }
 
   if (!is.logical(preferences$geneset.analysis.exact))
   {
     util.warn("Invalid value of \"geneset.analysis.exact\". Using FALSE")
-    preferences$geneset.analysis.exact <<- F
+    preferences$geneset.analysis.exact <<- FALSE
   }
 
   if (!is.numeric(preferences$max.parallel.cores) ||
@@ -122,13 +122,13 @@ pipeline.prepare <- function()
   if (!is.logical(preferences$feature.centralization))
   {
     util.warn("Invalid value of \"feature.centralization\". Using TRUE")
-    preferences$feature.centralization <<- T
+    preferences$feature.centralization <<- TRUE
   }
 
   if (!is.logical(preferences$sample.quantile.normalization))
   {
     util.warn("Invalid value of \"sample.quantile.normalization\". Using TRUE")
-    preferences$sample.quantile.normalization <<- T
+    preferences$sample.quantile.normalization <<- TRUE
   }
 
   # check input parameters/data
@@ -175,7 +175,7 @@ pipeline.prepare <- function()
   if (length(rownames(indata)) == 0)
   {
     rownames(indata) <<- as.character(1:nrow(indata))
-    preferences$geneset.analysis <<- F
+    preferences$geneset.analysis <<- FALSE
     util.warn("No rownames found. Set them to 1,2,3,4...")
   }
 

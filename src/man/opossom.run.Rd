@@ -33,37 +33,8 @@ env <- opossom.new(list(dataset.name="Example",
                         dim.2ndLvlSom=20,
                         geneset.analysis=TRUE))
 
-env$indata <- matrix(runif(10000), 1000, 10)
-
-env$group.labels <- c(rep(c("ABC", "DEF", "GHI"), each=3), "JKL")
+env$indata <- matrix(runif(1000), 100, 10)
 
 opossom.run(env)
 
-# Real Example - This will take several minutes
-#env <- opossom.new(list(dataset.name="Tissues",
-#                        error.model="all.samples",
-#                        dim.1stLvlSom=30,
-#                        dim.2ndLvlSom=30,
-#                        geneset.analysis=TRUE,
-#                        spot.coresize.groupmap=5,
-#                        spot.threshold.groupmap=0.75,
-#                        pairwise.comparison.list=list(
-#                          list("Homeostasis"=c(1, 2), "Imune System"=c(9, 10)),
-#                          list("Homeostasis"=c(1, 2), "Muscle"=c(8))
-#                        )))
-#
-#data(opossom.tissues)
-#env$indata <- opossom.tissues
-#
-#env$group.labels <- c(rep("Homeostasis", 2),
-#                      "Endocrine",
-#                      "Digestion",
-#                      "Exocrine",
-#                      "Epithelium",
-#                      "Reproduction",
-#                      "Muscle",
-#                      rep("Imune System", 2),
-#                      rep("Nervous System", 2))
-#
-#opossom.run(env)
 }

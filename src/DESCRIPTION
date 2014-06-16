@@ -1,6 +1,6 @@
 Package: oposSOM
-Title: Package for comprehensive analysis of transciptome data
-Version: 1.0.0
+Title: Comprehensive analysis of transciptome data
+Version: 0.99.3
 Description: This package translates microarray expression data into metadata
   of reduced dimension. It provides various sample-centered and group-centered
   visualizations, sample similarity analyses and functional enrichment analyses.
@@ -15,3 +15,5 @@ License: GPL (>=2)
 Author: Henry Wirth <wirth@izbi.uni-leipzig.de>
 Maintainer: Martin Kalcher <mkalcher@porkbox.net>
 URL: http://som.izbi.uni-leipzig.de
+biocViews: GeneExpression, DifferentialExpression, GeneSetEnrichment,
+  DataRepresentation, Visualization

@@ -16,8 +16,8 @@ pipeline.groupAssignment <- function()
 
   # Note:
   #
-  # This parallelization tends to be (a lot) slower than non-parallelized code,
-  # when working on a small number of samples (ncol(indata) < 40 ?), but
+  # This parallelization tends to be (a lot) slower than non-parallelized code
+  # when working on a small number of samples (ncol(indata) < 40), but
   # gives great advantages for big datasets.
   cl <- makeCluster(preferences$max.parallel.cores)
 

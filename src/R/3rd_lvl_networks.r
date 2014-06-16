@@ -27,7 +27,7 @@ pipeline.3rdLvlNetworks <- function()
       environment(pipeline.3rdLvlNetworksWto) <- environment()
       pipeline.3rdLvlNetworksWto(set.list, sample.spot.matrix)
 
-      # plot single spot MSTRUE
+      # plot single spot MST
       mean.spot.expression <- matrix(NA, ncol(indata), 0)
 
       for (i in 1:length(set.list$spots))

@@ -1,7 +1,7 @@
 \name{opossom.new}
 \alias{opossom.new}
 \title{
-  Initiaize the oposSOM pipeline.
+  Initialize the oposSOM pipeline.
 }
 \description{
   This function initializes the oposSOM environment and sets the preferences.

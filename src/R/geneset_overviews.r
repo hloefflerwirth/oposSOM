@@ -17,7 +17,7 @@ pipeline.genesetOverviews <- function()
 
   for (i in names(table(gs.def.list.categories)))
   {
-    category.GST.scores <- spots.GSZ.scores[which(gs.def.list.categories == i) , ,drop=F]
+    category.GST.scores <- spots.GSZ.scores[which(gs.def.list.categories == i) , ,drop=FALSE]
 
     if (nrow(category.GST.scores) > 60)
     {
@@ -46,7 +46,7 @@ pipeline.genesetOverviews <- function()
     }
 
     rownames(top.scores) <-
-      paste(LETTERS[apply(summary.spots.fisher.p[rownames(top.scores), ,drop=F], 1, which.min)],
+      paste(LETTERS[apply(summary.spots.fisher.p[rownames(top.scores), ,drop=FALSE], 1, which.min)],
             rownames(top.scores), sep="  ")
 
     colnames(top.scores) <- colnames(indata)
@@ -124,7 +124,7 @@ pipeline.genesetOverviews <- function()
 
   for (i in names(table(gs.def.list.categories)))
   {
-    category.fisher.p <- spots.fisher.p[which(gs.def.list.categories == i),,drop=F]
+    category.fisher.p <- spots.fisher.p[which(gs.def.list.categories == i),,drop=FALSE]
 
     if (nrow(category.fisher.p) > 60)
     {
@@ -158,7 +158,7 @@ pipeline.genesetOverviews <- function()
     }
 
     rownames(top.scores) <-
-      paste(LETTERS[apply(summary.spots.fisher.p[rownames(top.scores), ,drop=F], 1, which.min)],
+      paste(LETTERS[apply(summary.spots.fisher.p[rownames(top.scores), ,drop=FALSE], 1, which.min)],
             rownames(top.scores), sep="  ")
 
     # workaround to heatmap failing when too many equal samples are to be sorted

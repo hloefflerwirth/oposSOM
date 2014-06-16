@@ -161,7 +161,7 @@ pipeline.3rdLvlSummarySheets <- function()
 
     ### Binary spot-group-heatmaps
     map <- B.spot.group.map.global*(1-H.spot.group.map)
-    map <- map[nrow(map):1,,drop=F]
+    map <- map[nrow(map):1,,drop=FALSE]
 
     layout(matrix(c(1, 2), 1, 2), c(3, 1), 1)
     par(mar=c(5,4,4,0))
@@ -244,7 +244,7 @@ pipeline.3rdLvlSummarySheets <- function()
         tapply(x, group.labels, sum) / table(group.labels)
       })
 
-      spot.group.assoc <- spot.group.assoc[unique(group.labels) , ,drop=F]
+      spot.group.assoc <- spot.group.assoc[unique(group.labels) , ,drop=FALSE]
       colnames(spot.group.assoc) <- names(set.list$spots)
 
       spot.goup.mean.number <- sapply(spot.list.samples, function(x)

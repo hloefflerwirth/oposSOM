@@ -15,12 +15,12 @@ pipeline.summarySheetsGroups <- function()
     bleached.group.metadata[pos.metagenes,i] <-
       bleached.group.metadata[pos.metagenes,i] -
       pmin(bleached.group.metadata[pos.metagenes,i],
-           apply(group.metadata[pos.metagenes,-i,drop=F], 1, max))
+           apply(group.metadata[pos.metagenes,-i,drop=FALSE], 1, max))
 
     bleached.group.metadata[neg.metagenes,i] <-
       bleached.group.metadata[neg.metagenes,i] -
       pmax(bleached.group.metadata[neg.metagenes,i],
-           apply(group.metadata[neg.metagenes,-i,drop=F], 1, min))
+           apply(group.metadata[neg.metagenes,-i,drop=FALSE], 1, min))
 
     pos.metagenes <- which(WAD.group.metadata[,i] >= 0)
     neg.metagenes <- which(WAD.group.metadata[,i] < 0)
@@ -28,12 +28,12 @@ pipeline.summarySheetsGroups <- function()
     bleached.WAD.group.metadata[pos.metagenes,i] <-
       bleached.WAD.group.metadata[pos.metagenes,i] -
       pmin(bleached.WAD.group.metadata[pos.metagenes,i],
-           apply(WAD.group.metadata[pos.metagenes,-i,drop=F], 1, max))
+           apply(WAD.group.metadata[pos.metagenes,-i,drop=FALSE], 1, max))
 
     bleached.WAD.group.metadata[neg.metagenes,i] <-
       bleached.WAD.group.metadata[neg.metagenes,i] -
       pmax(bleached.WAD.group.metadata[neg.metagenes,i],
-           apply(WAD.group.metadata[neg.metagenes,-i,drop=F], 1, min))
+           apply(WAD.group.metadata[neg.metagenes,-i,drop=FALSE], 1, min))
 
     pos.metagenes <- which(loglog.group.metadata[,i] >= 0)
     neg.metagenes <- which(loglog.group.metadata[,i] < 0)
@@ -41,12 +41,12 @@ pipeline.summarySheetsGroups <- function()
     bleached.loglog.group.metadata[pos.metagenes,i] <-
       bleached.loglog.group.metadata[pos.metagenes,i] -
       pmin(bleached.loglog.group.metadata[pos.metagenes,i],
-           apply(loglog.group.metadata[pos.metagenes,-i,drop=F], 1, max))
+           apply(loglog.group.metadata[pos.metagenes,-i,drop=FALSE], 1, max))
 
     bleached.loglog.group.metadata[neg.metagenes,i] <-
       bleached.loglog.group.metadata[neg.metagenes,i] -
       pmax(bleached.loglog.group.metadata[neg.metagenes,i],
-           apply(loglog.group.metadata[neg.metagenes,-i,drop=F], 1, min))
+           apply(loglog.group.metadata[neg.metagenes,-i,drop=FALSE], 1, min))
 
   }
 

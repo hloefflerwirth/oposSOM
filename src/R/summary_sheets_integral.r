@@ -379,8 +379,8 @@ pipeline.summarySheetsIntegral <- function()
           return(suppressWarnings(cor(gene, metagene)))
         })
 
-        e.max <- apply(indata[set.list$spots[[m]]$genes, ,drop=F], 1, max)
-        e.min <- apply(indata[set.list$spots[[m]]$genes, ,drop=F], 1, min)
+        e.max <- apply(indata[set.list$spots[[m]]$genes, ,drop=FALSE], 1, max)
+        e.min <- apply(indata[set.list$spots[[m]]$genes, ,drop=FALSE], 1, min)
 
         if (main %in% c("Sample-Underexpression","Metagene Minima"))
         {
@@ -570,8 +570,8 @@ pipeline.summarySheetsIntegral <- function()
 
       chi.p <- 1 - pt(chi.genes, ncol(indata)-1)
 
-      e.max <- apply(indata[set.list$spots[[m]]$genes, ,drop=F], 1, max)
-      e.min <- apply(indata[set.list$spots[[m]]$genes, ,drop=F], 1, min)
+      e.max <- apply(indata[set.list$spots[[m]]$genes, ,drop=FALSE], 1, max)
+      e.min <- apply(indata[set.list$spots[[m]]$genes, ,drop=FALSE], 1, min)
 
       if (main %in% c("Sample-Underexpression","Metagene Minima"))
       {
@@ -594,15 +594,15 @@ pipeline.summarySheetsIntegral <- function()
 
       out <- cbind(out,
                    "mean expression"=indata.gene.mean[o],
-                   "max delta e"=apply(indata[o, ,drop=F], 1, max),
-                   "min delta e"=apply(indata[o, ,drop=F], 1, min),
-                   "% high expressed"=round(apply(indata[o, ,drop=F] + indata.gene.mean[o], 1, function(x)  sum(x > high.low.threshold) / length(x) * 100)),
+                   "max delta e"=apply(indata[o, ,drop=FALSE], 1, max),
+                   "min delta e"=apply(indata[o, ,drop=FALSE], 1, min),
+                   "% high expressed"=round(apply(indata[o, ,drop=FALSE] + indata.gene.mean[o], 1, function(x)  sum(x > high.low.threshold) / length(x) * 100)),
                    "correlation"=r.genes[o],
                    "->t.score"=r.t[o],
                    "->p.value"=r.p[o],
                    "chi2"=chi.genes[o],
                    "->p.value."=chi.p[o],
-                   "SD"=apply(indata[o, ,drop=F], 1, sd),
+                   "SD"=apply(indata[o, ,drop=FALSE], 1, sd),
                    "Metagene"=gene.coordinates[o],
                    "Chromosome"=gene.positions[rownames(indata)[o]],
                    "Description"=gene.descriptions[o])

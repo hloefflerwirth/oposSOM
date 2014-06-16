@@ -10,11 +10,11 @@ pipeline.qualityCheck <- function()
 
     plot(densities.y[subset[1],], type="n", xlim=range(densities.x), ylim=c(0, max(densities.y)), col="white", main=main, xlab="log Expression", ylab="Density")
 
-    lines(densities.x, colMeans(densities.y[subset,,drop=F]), lwd=2, col=col)
+    lines(densities.x, colMeans(densities.y[subset,,drop=FALSE]), lwd=2, col=col)
 
     polygon(
       x= c(densities.x, rev(densities.x)),
-      y= c(colMeans(densities.y[subset,,drop=F])+ apply(densities.y[subset,,drop=F], 2, sd), rev(colMeans(densities.y[subset,,drop=F]) - apply(densities.y[subset,,drop=F], 2, sd))),
+      y= c(colMeans(densities.y[subset,,drop=FALSE])+ apply(densities.y[subset,,drop=FALSE], 2, sd), rev(colMeans(densities.y[subset,,drop=FALSE]) - apply(densities.y[subset,,drop=FALSE], 2, sd))),
       col=col.t, border=col
 )
   }

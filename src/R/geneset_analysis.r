@@ -1,49 +1,4 @@
 
-
-# GeneSet.HG = function(list.symbols, all.gene.symbols, gs.def.list, sort=FALSE)
-# {
-#
-#   list.symbols = list.symbols[!is.na(list.symbols)]
-#
-#
-#
-#   N = length(all.gene.symbols)
-#   n = length(list.symbols)
-#
-#
-#   definition.p = rep(0, length(gs.def.list))
-#   names(definition.p) = names(gs.def.list)
-#
-#   for (i in 1:length(gs.def.list))
-#   {
-#     k = length(which(list.symbols %in% gs.def.list[[i]]$Genes))
-#     M = length(gs.def.list[[i]]$Genes)
-#
-#     p = 0
-#     if (k > 0)
-#       for (P.ki in 0:k)
-#         p = p + dhyper(P.ki, M, N-M, n)
-#     definition.p[i] = 1 - p
-#
-#     if (definition.p[i] <= 0)      # rundungsfehler können zu p < 0 führen
-#       definition.p[i] = 1e-16
-#   }
-#
-#
-#   o = c(1:length(definition.p))
-#   if (sort) o = order(definition.p)
-#
-#
-#   ret = list()
-#
-#   ret$p.value = definition.p[o]
-# #  ret$k = count.definitions.in.geneset[o]
-# #  ret$M = count.definitions.in.def[o]
-#
-#   return(ret)
-#
-# }
-
 GeneSet.Fisher <- function(list.ids, all.ids, gs.def.list, sort=FALSE, cluster=NULL)
 {
   list.ids <- list.ids[!is.na(list.ids)]

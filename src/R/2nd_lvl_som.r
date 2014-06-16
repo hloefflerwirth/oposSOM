@@ -144,7 +144,7 @@ pipeline.2ndLvlSom <- function()
   {
     col <- colorRampPalette(c("white", groupwise.group.colors[i]))
     coords <- cbind(secLvlSom.custom$visual[,"x"], -secLvlSom.custom$visual[,"y"])
-    coords <- coords[which(group.labels==unique(group.labels)[i]) , ,drop=F]
+    coords <- coords[which(group.labels==unique(group.labels)[i]) , ,drop=FALSE]
 
     if (nrow(coords) == 1)
     {
