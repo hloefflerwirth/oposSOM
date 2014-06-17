@@ -140,6 +140,8 @@ pipeline.prepare <- function()
 
   if (class(indata) == "ExpressionSet")
   {
+    group.labels <<- as.character(pData(indata)$group.labels)
+    group.colors <<- as.character(pData(indata)$group.colors)
     indata <<- assayData(indata)$exprs
   }
 
