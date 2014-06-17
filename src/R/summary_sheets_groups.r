@@ -127,7 +127,7 @@ pipeline.summarySheetsGroups <- function()
   if (length(unique(group.labels)) <= 12)
   {
     # differential portraits
-    l.matrix <- matrix(seq_along(unique(group.labels))^2, length(unique(group.labels)), byrow=TRUE)
+    l.matrix <- matrix(seq_len(length(unique(group.labels))^2), length(unique(group.labels)), byrow=TRUE)
     l.matrix <- cbind(rep(2, length(unique(group.labels))), l.matrix+2)
     l.matrix[1:(nrow(l.matrix)/2),1] <- 1
     layout(l.matrix, widths=c(5, rep(95/length(unique(group.labels)),length(unique(group.labels)))))
