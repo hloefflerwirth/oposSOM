@@ -1,3 +1,5 @@
+library(oposSOM)
+
 migrate <- function(fin, fout) {
   old.env <- new.env()
   load(fin, envir=old.env)
@@ -29,32 +31,28 @@ migrate <- function(fin, fout) {
                 summary.spot.core="spot.coresize.modules",
                 summary.spot.threshold="spot.threshold.modules")
 
-  opossom <- new.env()
+  for (x in names(prefs)) {
+    old.env$preferences[prefs[[x]]] <- old.env$preferences[x]
+  }
+  env <- opossom.new(old.env$preferences)
+  rm(preferences, envir=old.env)
 
   for (x in ls(old.env)) {
-    if (x == "preferences") {
-      next
-    }
     y <- x
 
     if (x %in% names(globals)) {
       y <- globals[[x]]
     }
-    assign(y, get(x, envir=old.env), envir=opossom)
+    assign(y, get(x, envir=old.env), envir=env)
   }
-  opossom$preferences <- list()
 
-  for (x in ls(old.env$preferences)) {
-    y <- x
+  env$colramp <-
+    colorRampPalette(c("darkblue", "blue", "lightblue", "green",
+                       "yellow", "red", "darkred"))
 
-    if (x %in% names(prefs)) {
-      y <- prefs[[x]]
-    }
-    opossom$preferences[y] <- old.env$preferences[x]
-  }
-  save(opossom, file=fout)
+  save(env, file=fout)
 }
 
-# usage: migrate("Charles Stroma 18.RData", "opossom.RData")
-#        load("opossom.RData")
-#        ls(opossom)
+# usage: migrate("Charles Stroma 18.RData", "Stroma.RData")
+#        load("Stroma.RData")
+#        ls(env)
