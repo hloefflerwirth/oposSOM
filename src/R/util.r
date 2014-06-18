@@ -55,3 +55,15 @@ util.call <- function(fn, env) {
   environment(fn) <- env
   return(fn())
 }
+
+#
+util.save <- function(env, filename) {
+  return(tools:::makeLazyLoadDB(env, filename))
+}
+
+#
+util.load <- function(filename) {
+  env <- new.env()
+  lazyLoad(filename, envir=env)
+  return(env)
+}

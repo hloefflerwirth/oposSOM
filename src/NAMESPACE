@@ -1,4 +1,4 @@
-exportPattern("^opossom.[[:alpha:]]+")
+exportPattern("^[^\\.]")
 
 import("som")
 import("fastICA")
