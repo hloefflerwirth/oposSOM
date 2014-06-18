@@ -14,7 +14,9 @@
     list with the following optional values:
 
     \itemize{
-      \item{dataset.name}: name of the dataset; used for results folder (character)
+      \item{indata}: input data matrix containing the expression values or an \code{Biobase::ExpressionSet} object (see 'Details' and 'Examples')
+      \item{group.labels}: sample assignment to a distinct group, subtype or class (character; one label for each sample; may be given with \code{indata ExpressionSet})
+      \item{group.colors}: colors of the samples for diverse visualizations (character; one color for each sample; may be given with \code{indata ExpressionSet})
       \item{dim.1stLvlSom}: dimension of primary SOM (integer, >5)
       \item{dim.2ndLvlSom}: dimensions of second level SOM (integer, >5)
       \item{training.extension}: factor to extend the number of iterations in SOM training (numerical, >0)
@@ -32,9 +34,14 @@
       \item{spot.threshold.groupmap}: spot detection in group-specific summary maps, expression threshold (numerical, between 0 and 1)
       \item{feature.centralization}: enables centralization of the features (boolean)
       \item{sample.quantile.normalization}: enables quantile normalization of the samples (boolean)
-      \item{pairwise.comparison.list}: group list for pairwise analyses (list of group lists, see example)
+      \item{pairwise.comparison.list}: group list for pairwise analyses (list of group lists, see 'Examples')
     }
   }
+}
+\details{
+The package then accepts the \code{indata} parameter in two formats:<br>
+Firstly a simple two-dimensional numerical matrix, where the columns and rows represent the samples and genes, respectively. The expression values are usually obtained by calibration and summarization algorithms (e.g. MAS5, VSN or RMA), and transformed into logarithmic scale prior to utilizing them in the pipeline. Secondly the input data can also be given as \code{Biobase::ExpressionSet} object.
+Please check the vignette for more details on the parameters.
 }
 \value{
   A new oposSOM environment which is passed to \code{opossom.run}.
@@ -65,4 +72,20 @@ env <- opossom.new(list(dataset.name="Example",
                         pairwise.comparison.list=list(
                           list("groupA"=c("sample1", "sample2"),
                                "groupB"=c("sample3", "sample4")))))
+
+
+# definition of indata, group.labels and group.colors
+env$indata = matrix( runif(1000), 100, 10 )
+env$group.labels = c( rep("class 1", 5), rep("class 2", 4), "class 3" )
+env$group.labels = c( rep("red", 5), rep("blue", 4), "green" )
+
+# alternative definition of indata, group.labels and group.colors using Biobase::ExpressionSet
+library(Biobase)
+
+env$indata = ExpressionSet( assayData=matrix(runif(1000), 100, 10),
+                            phenoData=AnnotatedDataFrame(data.frame( 
+                                group.labels = c( rep("class 1", 5), rep("class 2", 4), "class 3" ),
+                                group.colors = c( rep("red", 5), rep("blue", 4), "green" ) ))
+                          )
+
 }

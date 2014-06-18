@@ -1,4 +1,6 @@
 \documentclass{article}
+%\VignetteIndexEntry{oposSOM Example}
+
 \usepackage{hyperref}
 \usepackage[authoryear,round]{natbib}
 \usepackage{graphicx}
@@ -70,9 +72,8 @@ env <- opossom.new(list(dataset.name="Tissues",
 @
 
 \ \\
-The oposSOM package requires the input data to be a two-dimensional numerical
-matrix. The columns and rows represent the samples and genes, respectively:
-
+The oposSOM package requires input of the expression data. Usually the raw microarray intensity data is preprocessed using appropiate calibration and summarization algorithms (e.g. MAS5, VSN or RMA), and transformed into logarithmic scale prior to utilizing them in the pipeline.\\
+The package then accepts two formats: Firstly a simple two-dimensional numerical matrix, where the columns and rows represent the samples and genes, respectively:
 
 <<>>=
 data(opossom.tissues)
@@ -81,12 +82,26 @@ str(opossom.tissues, vec.len=3)
 env$indata <- opossom.tissues
 @
 
+\pagebreak
+Secondly the input data can also be given as \textit{Biobase::ExpressionSet} object:
+
+<<>>=
+data(opossom.tissues)
+
+library(Biobase)
+opossom.tissues.eset = ExpressionSet(assayData=opossom.tissues)
+opossom.tissues.eset
+
+env$indata <- opossom.tissues.eset
+@
+
+
 \ \\
 Each sample may be assigned to a distinct group and a respective color to
 improve data visualization and result presentations. If not defined by the
 user, the samples will be collected within one group and colored using a
 standard scheme.
-\pagebreak
+
 <<>>=
 env$group.labels <- c(rep("Homeostasis", 2),
                           "Endocrine",
@@ -110,7 +125,43 @@ env$group.colors <- c(rep("gold", 2),
                       rep("gray", 2) )
 @
 
-\ \\
+\pagebreak
+Alternatively, the \textit{group.labels} and \textit{group.colors} can also be defined within the phenotype information of the ExpressionSet:
+
+<<>>=
+group.info <- data.frame( 
+                  group.labels = c(rep("Homeostasis", 2),
+                                       "Endocrine",
+                                       "Digestion",
+                                       "Exocrine",
+                                       "Epithelium",
+                                       "Reproduction",
+                                       "Muscle",
+                                   rep("Immune System", 2),
+                                   rep("Nervous System", 2) ),
+
+                  group.colors = c(rep("gold", 2),
+                                       "red2",
+                                       "brown",
+                                       "purple",
+                                       "cyan",
+                                       "pink",
+                                       "green2",
+                                   rep("blue2", 2),
+                                   rep("gray", 2) ),
+													
+                  row.names=colnames(opossom.tissues))
+@
+<<>>=
+opossom.tissues.eset = ExpressionSet(assayData=opossom.tissues,
+                                     phenoData=AnnotatedDataFrame(group.info) )
+opossom.tissues.eset
+
+env$indata <- opossom.tissues.eset
+@
+
+
+\pagebreak
 Finally the pipeline will run through all analysis modules without further
 input. Periodical status messages are given to inform about running and
 accomplished tasks. Please note that the tissue sample will take approx. 30min
@@ -120,6 +171,23 @@ to finish, depending on the users' hardware:
 # opossom.run(env)
 @
 
+\begin{figure}[h!]
+	\begin{center}
+	\includegraphics[width=0.9\textwidth]{Summary.pdf}
+	\end{center}
+	\caption{Few selected results provided by the oposSOM package: (a) Expression
+landscape portraits represent fingerprints of transcriptional activity.
+The \textit{group.labels} and \textit{group.colors} parameters are used to
+arrange and represent the samples throughout all analyses. (b) Functional
+expression modules are identified in the expression landscapes and described
+using appropriate summary portraits (left part), and expression profiles,
+enrichment analyses and differential gene lists (right part). (c) Sample
+similarity structure is analysed using different algorithms and distance
+metrics. Here a clustered pairwise correlation matrix is shown.}
+	\label{fig:Results summary}
+\end{figure}
+
+\pagebreak
 \section{Browsing the results}
 
 The pipeline will store the results in a defined folder structure. These
@@ -147,22 +215,6 @@ one analsis module to another. The \textbf{Summary.html} is the starting point
 of this browsing and can be found in the results folder created by the oposSOM
 pipeline.
 
-\begin{figure}[h!]
-	\begin{center}
-	\includegraphics[width=0.9\textwidth]{Summary.pdf}
-	\end{center}
-	\caption{Few selected results provided by the oposSOM package: (a) Expression
-landscape portraits represent fingerprints of transcriptional activity.
-The \textit{group.labels} and \textit{group.colors} parameters are used to
-arrange and represent the samples throughout all analyses. (b) Functional
-expression modules are identified in the expression landscapes and described
-using appropriate summary portraits (left part), and expression profiles,
-enrichment analyses and differential gene lists (right part). (c) Sample
-similarity structure is analysed using different algorithms and distance
-metrics. Here a clustered pairwise correlation matrix is shown.}
-	\label{fig:Results summary}
-\end{figure}
-
 \pagebreak
 
 \begin{figure}[h!]
@@ -177,6 +229,7 @@ the functional analyses page.}
 	\label{fig:Results HTML}
 \end{figure}
 
+\pagebreak
 
 \section{Parameter settings}
 

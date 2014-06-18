@@ -1,5 +1,8 @@
 #!/usr/bin/env Rscript
 
+VERSION <- "0.99.4"
+PKGFILE <- paste("oposSOM_", VERSION, ".tar.gz", sep="")
+
 args <- commandArgs(T)
 fast <- "-f" %in% args
 install <- "-i" %in% args
@@ -59,14 +62,14 @@ save(opossom.genesets, file=filename, compress="xz")
 
 # Build and Check
 cat("\n>> R CMD build --resave-data", dirname, "\n")
-system(paste("R CMD build", dirname))
+system(paste("R CMD build --resave-data", dirname))
 
 if (!fast) {
-  cat(">> R CMD check", "oposSOM_0.99.3.tar.gz", "\n")
-  system(paste("R CMD check", dirname))
+  cat(">> R CMD check", PKGFILE, "\n")
+  system(paste("R CMD check", PKGFILE))
 }
 
 # Install
 if (install) {
-  install.packages("oposSOM_0.99.3.tar.gz")
+  install.packages(PKGFILE)
 }

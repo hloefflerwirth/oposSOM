@@ -3,7 +3,7 @@
 \alias{oposSOM}
 \docType{package}
 \title{
-Package for comprehensive analysis of transciptome data
+Comprehensive analysis of transciptome data
 }
 \description{
 This package translates microarray expression data into metadata of reduced
@@ -19,8 +19,8 @@ summary HTML file.
 \tabular{ll}{
 Package: \tab oposSOM\cr
 Type: \tab Package\cr
-Version: \tab 0.99.3\cr
-Date: \tab 2014-11-06\cr
+Version: \tab 0.99.4\cr
+Date: \tab 2014-17-06\cr
 License: \tab GPL (>= 2)\cr
 }
 }

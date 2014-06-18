@@ -1,5 +1,5 @@
 # Creates a new opossom environment
-opossom.new <- function(preferences)
+opossom.new <- function(preferences=NULL)
 {
   # Init the environment
   env <- new.env()
@@ -86,8 +86,11 @@ opossom.new <- function(preferences)
                           pairwise.comparison.list = list())
 
   # Merge user supplied preferences
-  env$preferences <-
-    modifyList(env$preferences, preferences[names(env$preferences)])
+  if (!is.null(preferences))
+  {
+    env$preferences <-
+      modifyList(env$preferences, preferences[names(env$preferences)])
+  }
 
   return(env)
 }
