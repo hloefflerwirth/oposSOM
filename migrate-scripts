@@ -55,8 +55,8 @@ for (path in commandArgs(TRUE)) {
     }
 
     for (pref in names(prefs)) {
-      rep <- gsub(paste("preferences$", pref, sep=""),
-                  paste("preferences$", prefs[[pref]],
+      rep <- gsub(paste("preferences\\$", pref, sep=""),
+                  paste("preferences\\$", prefs[[pref]],
                   sep=""), line)
 
       if (rep == line) {
