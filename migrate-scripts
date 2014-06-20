@@ -1,0 +1,81 @@
+#!/usr/bin/env Rscript
+#
+# usage: ./migrate-scripts <file> [<file> ...]
+
+globals <-
+  list(GS.infos.correlation="spot.list.correlation",
+       GS.infos.group.overexpression="spot.list.group.overexpression",
+       GS.infos.kmeans="spot.list.kmeans",
+       GS.infos.overexpression="spot.list.overexpression",
+       GS.infos.underexpression="spot.list.underexpression",
+       GS.infos.samples="spot.list.samples",
+       batch.t.g.m="t.ensID.m",
+       genes.coordinates="gene.coordinates",
+       indata.mean.level="indata.gene.mean",
+       supersom.20="secLvlSOM.20.20",
+       supersom.custom="secLvlSOM.custom",
+       unique.group.colors="groupwise.group.colors")
+
+prefs <-
+  list(differences.list="pairwise.comparison.list",
+       dim.som1="dim.1stLvlSom",
+       dim.som2="dim.2ndLvlSom",
+       ensembl.dataset="database.dataset",
+       ensembl.rowname.ids="database.id.type",
+       feature.mean.normalization="feature.centralization",
+       flip.som1="rotate.SOM.portraits",
+       group.spot.core="spot.coresize.groupmap",
+       group.spot.threshold="spot.threshold.groupmap",
+       rotate.som1="rotate.SOM.portraits",
+       sample.spot.cutoff="spot.threshold.samples",
+       summary.spot.core="spot.coresize.modules",
+       summary.spot.threshold="spot.threshold.modules")
+
+STDIN <- file("stdin")
+
+for (path in commandArgs(TRUE)) {
+  res <- c()
+
+  for (line in readLines(path)) {
+    for (global in names(globals)) {
+      rep <- gsub(global, globals[[global]], line)
+
+      if (rep == line) {
+        next
+      }
+      message("> ", line)
+      message("< ", rep)
+      cat("Replace? [Y|n] ")
+      ans <- readLines(STDIN, n=1)
+
+      if (ans == "n") {
+        next
+      }
+      line <- rep
+    }
+
+    for (pref in names(prefs)) {
+      rep <- gsub(paste("preferences$", pref, sep=""),
+                  paste("preferences$", prefs[[pref]],
+                  sep=""), line)
+
+      if (rep == line) {
+        next
+      }
+      message("> ", line)
+      message("< ", rep)
+      cat("Replace? [Y|n] ")
+      ans <- readLines(STDIN, n=1)
+
+      if (ans == "n") {
+        next
+      }
+      line <- rep
+    }
+    res <- c(res, line)
+  }
+
+  cat(paste(res, collapse="\n"), file=paste("new", path, sep="_"))
+}
+
+close(STDIN)
