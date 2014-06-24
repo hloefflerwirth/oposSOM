@@ -1,5 +1,7 @@
 library(oposSOM)
 
+options(error=quote({dump.frames(to.file=TRUE)}))
+
 dir.create(paste(env$files.name, "- Results"), showWarnings=F)
 dir.create(paste(env$files.name, "- Results/CSV Sheets"), showWarnings=F)
 dir.create(paste(env$files.name, "- Results/Geneset Analysis"), showWarnings=F)
@@ -21,6 +23,7 @@ if (!doAll) {
 }
 
 # Get new gene sets
+oposSOM:::util.info("Preparing Annotation")
 oposSOM:::util.call(oposSOM:::pipeline.prepareAnnotation, env)
 
 if (!doAll) {
@@ -40,12 +43,12 @@ if (!doAll) {
   env$gs.def.list <- modifyList(gs.def.list, env$gs.def.list)
   env$gs.def.list.categories <- sapply(gs.def.list, function(x) { x$Type })
 
-  for (i in spot.list.samples) {
+  for (i in seq_along(spot.list.samples)) {
     env$spot.list.samples[[i]]$GSZ.scores <-
       c(spot.list.samples[[i]]$GSZ.scores,
         env$spot.list.samples[[i]]$GSZ.scores)
 
-    for (j in spot.list.samples[[i]]$spots) {
+    for (j in seq_along(spot.list.samples[[i]]$spots)) {
       env$spot.list.samples[[i]]$spots[[j]]$GSZ.score <-
         c(spot.list.samples[[i]]$spots[[j]]$GSZ.score,
           env$spot.list.samples[[i]]$spots[[j]]$GSZ.score)
@@ -56,36 +59,47 @@ if (!doAll) {
     }
   }
 
-  for (i in spot.list.correlation$spots) {
+  for (i in seq_along(spot.list.correlation$spots)) {
     env$spot.list.correlation$spots[[i]]$Fisher.p <-
       c(spot.list.correlation$spots[[i]]$Fisher.p,
         env$spot.list.correlation$spots[[i]]$Fisher.p)
   }
 
-  for (i in spot.list.group.overexpression$spots) {
+  for (i in seq_along(spot.list.group.overexpression$spots)) {
     env$spot.list.group.overexpression$spots[[i]]$Fisher.p <-
       c(spot.list.group.overexpression$spots[[i]]$Fisher.p,
         env$spot.list.group.overexpression$spots[[i]]$Fisher.p)
   }
 
-  for (i in spot.list.kmeans$spots) {
+  for (i in seq_along(spot.list.kmeans$spots)) {
     env$spot.list.kmeans$spots[[i]]$Fisher.p <-
       c(spot.list.kmeans$spots[[i]]$Fisher.p,
         env$spot.list.kmeans$spots[[i]]$Fisher.p)
   }
 
-  for (i in spot.list.overexpression$spots) {
+  for (i in seq_along(spot.list.overexpression$spots)) {
     env$spot.list.overexpression$spots[[i]]$Fisher.p <-
       c(spot.list.overexpression$spots[[i]]$Fisher.p,
         env$spot.list.overexpression$spots[[i]]$Fisher.p)
   }
 
-  for (i in spot.list.underexpression$spots) {
+  for (i in seq_along(spot.list.underexpression$spots)) {
     env$spot.list.underexpression$spots[[i]]$Fisher.p <-
       c(spot.list.underexpression$spots[[i]]$Fisher.p,
         env$spot.list.underexpression$spots[[i]]$Fisher.p)
   }
 }
+
+# Calc GSZ scores
+env$samples.GSZ.scores <- do.call(cbind, lapply(env$spot.list.samples, function(x)
+{
+  x$GSZ.score[names(env$gs.def.list)]
+}))
+
+# And write them to disk
+filename <- file.path(paste(files.name, "- Results"), "CSV Sheets", "Sample GSZ scores.csv")
+util.info("Writing:", filename)
+write.csv2(env$samples.GSZ.scores, filename)
 
 # Output
 oposSOM:::util.call(oposSOM:::pipeline.genesetOverviews, env)

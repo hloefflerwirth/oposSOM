@@ -22,6 +22,7 @@ opossom.new <- function(preferences=NULL)
   env$group.metadata <- NULL
   env$gs.def.list <- NULL
   env$gs.def.list.categories <- NULL
+  env$samples.GSZ.scores <- NULL
   env$spot.list.correlation <- NULL
   env$spot.list.group.overexpression <- NULL
   env$spot.list.kmeans <- NULL

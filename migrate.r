@@ -13,8 +13,8 @@ migrate <- function(fin, fout) {
                   batch.t.g.m="t.ensID.m",
                   genes.coordinates="gene.coordinates",
                   indata.mean.level="indata.gene.mean",
-                  supersom.20="secLvlSOM.20.20",
-                  supersom.custom="secLvlSOM.custom",
+                  supersom.20="secLvlSom.20.20",
+                  supersom.custom="secLvlSom.custom",
                   unique.group.colors="groupwise.group.colors")
 
   prefs <- list(differences.list="pairwise.comparison.list",
@@ -31,25 +31,30 @@ migrate <- function(fin, fout) {
                 summary.spot.core="spot.coresize.modules",
                 summary.spot.threshold="spot.threshold.modules")
 
+  # Fix preferences names
   for (x in names(prefs)) {
     old.env$preferences[prefs[[x]]] <- old.env$preferences[x]
   }
+
+  # Fix environment variables
+  for (x in intersect(names(globals), ls(old.env))) {
+    assign(globals[[x]], get(x, envir=old.env), envir=old.env)
+  }
+
+  # Build a new opossom environment
   env <- opossom.new(old.env$preferences)
   rm(preferences, envir=old.env)
 
-  for (x in ls(old.env)) {
-    y <- x
-
-    if (x %in% names(globals)) {
-      y <- globals[[x]]
-    }
-    assign(y, get(x, envir=old.env), envir=env)
+  for (x in intersect(ls(env), ls(old.env))) {
+    assign(x, get(x, envir=old.env), envir=env)
   }
 
+  # Fix colramp
   env$colramp <-
     colorRampPalette(c("darkblue", "blue", "lightblue", "green",
                        "yellow", "red", "darkred"))
 
+  # Write environment to disk
   save(env, file=fout)
 }
 
