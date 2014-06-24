@@ -97,7 +97,7 @@ env$samples.GSZ.scores <- do.call(cbind, lapply(env$spot.list.samples, function(
 }))
 
 # And write them to disk
-filename <- file.path(paste(files.name, "- Results"), "CSV Sheets", "Sample GSZ scores.csv")
+filename <- file.path(paste(env$files.name, "- Results"), "CSV Sheets", "Sample GSZ scores.csv")
 util.info("Writing:", filename)
 write.csv2(env$samples.GSZ.scores, filename)
 
