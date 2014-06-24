@@ -1,6 +1,6 @@
 pipeline.genesetProfilesAndMaps <- function()
 {
-  samples.GSZ.scores <- do.call(cbind, lapply(spot.list.samples, function(x)
+  samples.GSZ.scores <<- do.call(cbind, lapply(spot.list.samples, function(x)
   {
     x$GSZ.score[names(gs.def.list)]
   }))
