@@ -1,5 +1,9 @@
-library(oposSOM)
 
+if (is.null(env$spot.list.group.overexpression)) {
+  stop("This environment seems to be pretty old. It is missing \"spot.list.group.overexpression\".")
+}
+
+library(oposSOM)
 options(error=quote({dump.frames(to.file=TRUE)}))
 
 dir.create(paste(env$files.name, "- Results"), showWarnings=F)
