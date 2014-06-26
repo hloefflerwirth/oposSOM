@@ -1,15 +1,5 @@
 pipeline.genesetProfilesAndMaps <- function()
 {
-  samples.GSZ.scores <<- do.call(cbind, lapply(spot.list.samples, function(x)
-  {
-    x$GSZ.score[names(gs.def.list)]
-  }))
-
-  ### CSV output ###
-  filename <- file.path(paste(files.name, "- Results"), "CSV Sheets", "Sample GSZ scores.csv")
-  util.info("Writing:", filename)
-  write.csv2(samples.GSZ.scores, filename)
-
   progress.current <- 0
   progress.max <- nrow(samples.GSZ.scores) + length(gs.def.list)
   util.progress(progress.current, progress.max)

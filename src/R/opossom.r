@@ -76,6 +76,7 @@ opossom.new <- function(preferences=NULL)
                           database.id.type = "",
                           geneset.analysis = TRUE,
                           geneset.analysis.exact = FALSE,
+                          geneset.analysis.samplespots = FALSE,
                           max.parallel.cores = detectCores() / 2,
                           spot.threshold.samples = 0.65,
                           spot.coresize.modules = 3,

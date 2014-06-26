@@ -188,7 +188,7 @@ pipeline.summarySheetsIntegral <- function()
     {
       sample.spot.GSZ <- sapply(spot.list.samples, function(x)
       {
-        apply(sapply(x$spots, function(xs){ xs$GSZ.score[unlist(top.GS)] }), 1, max)
+        return(x$GSZ.score[unlist(top.GS)])
       })
 
       sample.spot.GSZ.image <-

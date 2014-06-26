@@ -60,8 +60,14 @@ pipeline.prepare <- function()
 
   if (!is.logical(preferences$geneset.analysis))
   {
-    util.warn("Invalid value of \"geneset.analysis\". Using FALSE")
-    preferences$geneset.analysis <<- FALSE
+    util.warn("Invalid value of \"geneset.analysis\". Using TRUE")
+    preferences$geneset.analysis <<- TRUE
+  }
+
+  if (!is.logical(preferences$geneset.analysis.samplespots))
+  {
+    util.warn("Invalid value of \"geneset.analysis.samplespots\". Using FALSE")
+    preferences$geneset.analysis.samplespots<<- FALSE
   }
 
   if (!is.logical(preferences$geneset.analysis.exact))
