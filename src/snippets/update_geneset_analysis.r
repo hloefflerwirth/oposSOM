@@ -45,7 +45,8 @@ oposSOM:::util.call(oposSOM:::pipeline.genesetProfilesAndMaps, env)
 if (!doAll) {
   # Merge new results
   env$gs.def.list <- modifyList(gs.def.list, env$gs.def.list)
-  env$gs.def.list.categories <- sapply(gs.def.list, function(x) { x$Type })
+  env$gs.def.list.categories <- sapply(env$gs.def.list, function(x) { x$Type })
+  rm(gs.def.list)
 
   for (i in seq_along(spot.list.samples)) {
     env$spot.list.samples[[i]]$GSZ.scores <-
@@ -62,36 +63,42 @@ if (!doAll) {
           env$spot.list.samples[[i]]$spots[[j]]$Fisher.p)
     }
   }
+  rm(spot.list.samples)
 
   for (i in seq_along(spot.list.correlation$spots)) {
     env$spot.list.correlation$spots[[i]]$Fisher.p <-
       c(spot.list.correlation$spots[[i]]$Fisher.p,
         env$spot.list.correlation$spots[[i]]$Fisher.p)
   }
+  rm(spot.list.correlation)
 
   for (i in seq_along(spot.list.group.overexpression$spots)) {
     env$spot.list.group.overexpression$spots[[i]]$Fisher.p <-
       c(spot.list.group.overexpression$spots[[i]]$Fisher.p,
         env$spot.list.group.overexpression$spots[[i]]$Fisher.p)
   }
+  rm(spot.list.group.overexpression)
 
   for (i in seq_along(spot.list.kmeans$spots)) {
     env$spot.list.kmeans$spots[[i]]$Fisher.p <-
       c(spot.list.kmeans$spots[[i]]$Fisher.p,
         env$spot.list.kmeans$spots[[i]]$Fisher.p)
   }
+  rm(spot.list.kmeans)
 
   for (i in seq_along(spot.list.overexpression$spots)) {
     env$spot.list.overexpression$spots[[i]]$Fisher.p <-
       c(spot.list.overexpression$spots[[i]]$Fisher.p,
         env$spot.list.overexpression$spots[[i]]$Fisher.p)
   }
+  rm(spot.list.overexpression)
 
   for (i in seq_along(spot.list.underexpression$spots)) {
     env$spot.list.underexpression$spots[[i]]$Fisher.p <-
       c(spot.list.underexpression$spots[[i]]$Fisher.p,
         env$spot.list.underexpression$spots[[i]]$Fisher.p)
   }
+  rm(spot.list.underexpression)
 }
 
 # Calc GSZ scores
