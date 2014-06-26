@@ -45,7 +45,7 @@ oposSOM:::util.call(oposSOM:::pipeline.genesetProfilesAndMaps, env)
 if (!doAll) {
   # Merge new results
   env$gs.def.list <- modifyList(gs.def.list, env$gs.def.list)
-  env$gs.def.list.categories <- sapply(gs.def.list, function(x) { x$Type })
+  env$gs.def.list.categories <- sapply(env$gs.def.list, function(x) { x$Type })
 
   for (i in seq_along(spot.list.samples)) {
     env$spot.list.samples[[i]]$GSZ.scores <-
