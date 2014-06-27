@@ -1,11 +1,6 @@
-#!/usr/bin/env Rscript
 
-VERSION <- "0.99.4"
-PKGFILE <- paste("oposSOM_", VERSION, ".tar.gz", sep="")
-
-args <- commandArgs(T)
-fast <- "-f" %in% args
-install <- "-i" %in% args
+fast <- TRUE
+install <- TRUE
 
 # Package directories
 dirname <- "oposSOM"
@@ -19,7 +14,7 @@ if (file.exists(dirname)) {
 dir.create("oposSOM")
 
 # Copy everything we need
-for (f in c("R", "vignettes", "man", "inst", "DESCRIPTION", "NAMESPACE", "NEWS")) {
+for (f in c("R", "vignettes", "man", "inst", "DESCRIPTION", "NAMESPACE","NEWS")) {
   cat("* copy", f, "\n")
   file.copy(file.path("src", f), file.path(dirname), recursive=T)
 }
@@ -60,16 +55,32 @@ filename <- file.path(datadir, "opossom.genesets.RData")
 cat("* save", filename, "\n")
 save(opossom.genesets, file=filename, compress="xz")
 
+
+
 # Build and Check
 cat("\n>> R CMD build --resave-data", dirname, "\n")
 system(paste("R CMD build --resave-data", dirname))
 
+unlink("oposSOM",recursive=T)
+
+
+
 if (!fast) {
-  cat(">> R CMD check", PKGFILE, "\n")
-  system(paste("R CMD check", PKGFILE))
+  cat(">> R CMD check", dirname, "\n")
+  system(paste("R CMD check", dirname))
 }
 
 # Install
 if (install) {
-  install.packages(PKGFILE)
+	# remove.packages("oposSOM")
+  install.packages( paste( "H:\\Eigene Dateien\\Entwicklung\\R Scripts\\SOM Pipeline\\oposSOM\\Package Build\\",
+												  	sort( grep( "oposSOM_0.99.", dir(), value=TRUE), decreasing=TRUE )[1], sep="" ),
+														repos=NULL, type="source" )
 }
+
+
+
+
+
+
+
