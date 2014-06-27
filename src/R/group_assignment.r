@@ -1,7 +1,5 @@
 pipeline.groupAssignment <- function()
 {
-  # use silhouette coefficient here!
-
   if (length(unique(group.labels)) < 2)
   {
     group.bootstrap.score <<- rep(100, ncol(indata))
