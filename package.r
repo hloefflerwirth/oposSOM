@@ -11,13 +11,19 @@ if (file.exists(dirname)) {
   cat("* remove existing package dir:", dirname, "\n")
   unlink(dirname, recursive=T)
 }
-dir.create("oposSOM")
+dir.create(dirname)
 
 # Copy everything we need
-for (f in c("R", "vignettes", "man", "inst", "DESCRIPTION", "NAMESPACE","NEWS")) {
+for (f in c("vignettes", "man", "inst", "DESCRIPTION", "NAMESPACE","NEWS")) {
   cat("* copy", f, "\n")
   file.copy(file.path("src", f), file.path(dirname), recursive=T)
 }
+
+cat("* copy R\n")
+
+dir.create(paste(dirname,"/R",sep=""))
+dummy <- file.copy( paste( "src/R/",dir( "src/R" ),sep=""), paste(dirname,"/R/",sep="") )
+
 
 # Move data into the package
 cat("* create data dir:", datadir, "\n")
