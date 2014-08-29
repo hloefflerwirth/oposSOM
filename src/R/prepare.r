@@ -137,6 +137,26 @@ pipeline.prepare <- function()
     preferences$sample.quantile.normalization <<- TRUE
   }
 
+  if (!is.null(preferences$pairwise.comparison.list))
+  {
+    # translate sample names into indexes
+    preferences$pairwise.comparison.list <<- lapply(preferences$pairwise.comparison.list,function(x)
+    {
+      if( class(x[[1]]) == "character" ) x[[1]] <- match(x[[1]],colnames(indata))
+      if( class(x[[2]]) == "character" ) x[[2]] <- match(x[[2]],colnames(indata))
+      return(x)
+    })  
+    
+    # seek for corrupt sets
+    empty.sets <- which( sapply(preferences$pairwise.comparison.list, function(x) min(sapply(x,function(y) length(na.omit(y))))) == 0 )
+    if(length(empty.sets)>0)
+    {   
+      util.warn("Empty sample set found and removed from \"pairwise.comparison.list\".")
+      preferences$pairwise.comparison.list <<- preferences$pairwise.comparison.list[-empty.sets] 
+    }
+  }
+  
+  
   # check input parameters/data
   if (is.null(indata))
   {
