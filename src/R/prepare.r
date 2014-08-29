@@ -95,7 +95,7 @@ pipeline.prepare <- function()
 
   if (!is.numeric(preferences$spot.coresize.modules) ||
       preferences$spot.coresize.modules < 1 ||
-      preferences$spot.coresize.modules > 10)
+      preferences$spot.coresize.modules > 20)
   {
     util.warn("Invalid value of \"spot.coresize.modules\". Using 3")
     preferences$spot.coresize.modules <<- 3
@@ -111,7 +111,7 @@ pipeline.prepare <- function()
 
   if (!is.numeric(preferences$spot.coresize.groupmap) ||
       preferences$spot.coresize.groupmap < 1 ||
-      preferences$spot.coresize.groupmap > 10)
+      preferences$spot.coresize.groupmap > 20)
   {
     util.warn("Invalid value of \"spot.coresize.groupmap\". Using 5")
     preferences$spot.coresize.groupmap <<- 5
