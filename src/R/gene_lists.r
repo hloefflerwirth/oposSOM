@@ -155,35 +155,46 @@ pipeline.geneLists <- function()
 
     for (m in 1:ncol(indata))
     {
-      gs.info <- spot.list.samples[[m]]$GSZ.score
+      gs.gsz <- spot.list.samples[[m]]$GSZ.score
 
-      pos.gs.info <- round(sort(gs.info[which(gs.info>0)],decreasing=TRUE), 8)
-      neg.gs.info <- round(sort(gs.info[which(gs.info<0)],decreasing=FALSE), 8)
+      pos.gs.gsz <- round(sort(gs.gsz[which(gs.gsz>0)],decreasing=TRUE), 8)
+      neg.gs.gsz <- round(sort(gs.gsz[which(gs.gsz<0)],decreasing=FALSE), 8)
 
-      pos.gs.info <- c(pos.gs.info, rep(0, max(0, length(neg.gs.info) - length(pos.gs.info))))
-      neg.gs.info <- c(neg.gs.info, rep(0, max(0, length(pos.gs.info) - length(neg.gs.info))))
+      pos.gs.p <- rep("",length(pos.gs.gsz))
+      neg.gs.p <- rep("",length(neg.gs.gsz))
+      
+      pos.gs.fdr <- rep("",length(pos.gs.gsz))
+      neg.gs.fdr <- rep("",length(neg.gs.gsz))
       
       if(preferences$geneset.analysis.exact)
       {
-        pos.gs.p <- spot.list.samples[[m]]$GSZ.p.value[names(pos.gs.info)]
-        pos.gs.p[which(is.na(pos.gs.p))] = 1        
-        neg.gs.p <- spot.list.samples[[m]]$GSZ.p.value[names(neg.gs.info)]
-        neg.gs.p[which(is.na(neg.gs.p))] = 1
+        pos.gs.p <- spot.list.samples[[m]]$GSZ.p.value[names(pos.gs.gsz)]  
+        neg.gs.p <- spot.list.samples[[m]]$GSZ.p.value[names(neg.gs.gsz)]
         
-      } else
-      {
-        pos.gs.p <- rep("",length(pos.gs.info))
-        neg.gs.p <- rep("",length(neg.gs.info))
+        if(ncol(indata)<100)
+        {
+          pos.gs.fdr <- fdrtool(pos.gs.p,statistic="pvalue",verbose=F,plot=F)$lfdr          
+          neg.gs.fdr <- fdrtool(neg.gs.p,statistic="pvalue",verbose=F,plot=F)$lfdr        
+        }
       }
+            
+      pos.gs.gsz <- c(pos.gs.gsz, rep(0, max(0, length(neg.gs.gsz) - length(pos.gs.gsz))))
+      neg.gs.gsz <- c(neg.gs.gsz, rep(0, max(0, length(pos.gs.gsz) - length(neg.gs.gsz))))
+      pos.gs.p <- c(pos.gs.p, rep(1, max(0, length(neg.gs.p) - length(pos.gs.p))))
+      neg.gs.p <- c(neg.gs.p, rep(1, max(0, length(pos.gs.p) - length(neg.gs.p))))
+      pos.gs.fdr <- c(pos.gs.fdr, rep(1, max(0, length(neg.gs.fdr) - length(pos.gs.fdr))))
+      neg.gs.fdr <- c(neg.gs.fdr, rep(1, max(0, length(pos.gs.fdr) - length(neg.gs.fdr))))    
       
-      gs.info <- data.frame("Rank"=c(seq_along(pos.gs.info)),
-                            "Upregulated"=names(pos.gs.info),
-                            "GSZ"=pos.gs.info,
+      gs.info <- data.frame("Rank"=c(seq_along(pos.gs.gsz)),
+                            "Upregulated"=names(pos.gs.gsz),
+                            "GSZ"=pos.gs.gsz,
                             "p.value"=pos.gs.p,
-                            "."=rep("",length(pos.gs.info)),
-                            "Downregulated"=names(neg.gs.info),
-                            "GSZ."=neg.gs.info,
-                            "p.value."=neg.gs.p)
+                            "fdr"=pos.gs.fdr,
+                            "."=rep("",length(pos.gs.gsz)),
+                            "Downregulated"=names(neg.gs.gsz),
+                            "GSZ."=neg.gs.gsz,
+                            "p.value."=neg.gs.p,
+                            "fdr."=neg.gs.fdr)
 
       basename <- paste(make.names(colnames(indata)[m]), ".csv", sep="")
       write.csv2(gs.info, file.path(dirnames["set"], basename), row.names=FALSE)
