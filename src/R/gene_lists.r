@@ -162,13 +162,28 @@ pipeline.geneLists <- function()
 
       pos.gs.info <- c(pos.gs.info, rep(0, max(0, length(neg.gs.info) - length(pos.gs.info))))
       neg.gs.info <- c(neg.gs.info, rep(0, max(0, length(pos.gs.info) - length(neg.gs.info))))
-
-      gs.info <- data.frame(Rank=c(seq_along(pos.gs.info)),
-                            Upregulated=names(pos.gs.info),
-                            GSZ=pos.gs.info,
+      
+      if(preferences$geneset.analysis.exact)
+      {
+        pos.gs.p <- spot.list.samples[[m]]$GSZ.p.value[names(pos.gs.info)]
+        pos.gs.p[which(is.na(pos.gs.p))] = 1        
+        neg.gs.p <- spot.list.samples[[m]]$GSZ.p.value[names(neg.gs.info)]
+        neg.gs.p[which(is.na(neg.gs.p))] = 1
+        
+      } else
+      {
+        pos.gs.p <- rep("",length(pos.gs.info))
+        neg.gs.p <- rep("",length(neg.gs.info))
+      }
+      
+      gs.info <- data.frame("Rank"=c(seq_along(pos.gs.info)),
+                            "Upregulated"=names(pos.gs.info),
+                            "GSZ"=pos.gs.info,
+                            "p.value"=pos.gs.p,
                             "."=rep("",length(pos.gs.info)),
-                            Downregulated=names(neg.gs.info),
-                            "GSZ."=neg.gs.info)
+                            "Downregulated"=names(neg.gs.info),
+                            "GSZ."=neg.gs.info,
+                            "p.value."=neg.gs.p)
 
       basename <- paste(make.names(colnames(indata)[m]), ".csv", sep="")
       write.csv2(gs.info, file.path(dirnames["set"], basename), row.names=FALSE)
