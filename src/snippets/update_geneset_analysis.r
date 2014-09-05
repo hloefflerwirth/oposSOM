@@ -34,7 +34,7 @@ if (!doAll) {
   # Extract new genesets
   env$gs.def.list <- env$gs.def.list[setdiff(names(env$gs.def.list), names(gs.def.list))]
   env$gs.def.list.categories <- sapply(env$gs.def.list, function(x) { x$Type })
-  oposSOM:::util.info("Got", length(env$gs.def.list), "new GO sets")
+  oposSOM:::util.info("Got", length(env$gs.def.list), "new Gene sets")
 }
 
 # Calc
