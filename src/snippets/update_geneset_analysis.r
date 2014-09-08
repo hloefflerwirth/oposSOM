@@ -4,7 +4,10 @@ if (is.null(env$spot.list.group.overexpression)) {
 }
 
 library(oposSOM)
+library(parallel)
 options(error=quote({dump.frames(to.file=TRUE)}))
+
+if( is.null(env$preferences$geneset.analysis.samplespots) ) env$preferences$geneset.analysis.samplespots = F 
 
 dir.create(paste(env$files.name, "- Results"), showWarnings=F)
 dir.create(paste(env$files.name, "- Results/CSV Sheets"), showWarnings=F)

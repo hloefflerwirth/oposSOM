@@ -18,6 +18,11 @@
     {
       cat("preferences: max.parallel.cores not set correctly\n"); flush.console()
     }    
+
+    if (! ("geneset.analysis.samplespots" %in% names(preferences)))
+    {
+      cat("preferences: geneset.analysis.samplespots not set correctly\n"); flush.console()
+    } 
   
     if (! ("sample.spot.cutoff" %in% names(preferences)))
     {
