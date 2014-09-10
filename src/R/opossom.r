@@ -101,7 +101,7 @@ opossom.new <- function(preferences=NULL)
 opossom.run <- function(env)
 {
   env$preferences$system.info <- Sys.info()
-  env$preferences$started <- format(Sys.time(), "%a %b %d %X")
+  env$preferences$started <- format(Sys.time(), "%a %d %b %Y %X")
 
   # Output some info
   util.info("Started:", env$preferences$started)
