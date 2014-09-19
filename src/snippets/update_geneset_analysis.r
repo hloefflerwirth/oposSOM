@@ -47,7 +47,9 @@ oposSOM:::util.call(oposSOM:::pipeline.genesetProfilesAndMaps, env)
 
 if (!doAll) {
   # Merge new results
-  env$gs.def.list <- modifyList(gs.def.list, env$gs.def.list)
+  if(length(gs.def.list)>0)
+    env$gs.def.list <- modifyList(gs.def.list, env$gs.def.list)
+    
   env$gs.def.list.categories <- sapply(env$gs.def.list, function(x) { x$Type })
   rm(gs.def.list)
 
