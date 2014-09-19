@@ -15,8 +15,7 @@ pipeline.qualityCheck <- function()
     polygon(
       x= c(densities.x, rev(densities.x)),
       y= c(colMeans(densities.y[subset,,drop=FALSE])+ apply(densities.y[subset,,drop=FALSE], 2, sd), rev(colMeans(densities.y[subset,,drop=FALSE]) - apply(densities.y[subset,,drop=FALSE], 2, sd))),
-      col=col.t, border=col
-)
+      col=col.t, border=col)
   }
 
   mi = min(indata); ma = max(indata)
@@ -70,6 +69,11 @@ pipeline.qualityCheck <- function()
     boxplot(mean.boxes, col=groupwise.group.colors, las=2, main="", cex.main=1, cex.axis=0.8, xaxt="n")
     axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2, cex.axis=0.8)
   }
+
+  
+  
+  environment(pipeline.affymetrixQualityCheck) <- environment()
+  pipeline.affymetrixQualityCheck()
 
 
   dev.off()
