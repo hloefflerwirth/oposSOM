@@ -30,7 +30,7 @@ pipeline.genesetProfilesAndMaps <- function()
   {
     filename.prefix <- substring(make.names(names(gs.def.list)[i]), 1, 100)
     pdf(file.path(dirname, paste(filename.prefix, "profile.pdf")), 29.7/2.54, 21/2.54)
-
+  
     par(mar=c(15,6,4,5))
 
     leading.metagenes <-
@@ -67,46 +67,30 @@ pipeline.genesetProfilesAndMaps <- function()
 
     #################################################
 
+    par(mfrow=c(1,2))
+    
     spot.fisher.p <- -log10(sapply(spot.list.overexpression$spots, function(x)
     {
       x$Fisher.p[names(gs.def.list)[i]]
     }))
-
     names(spot.fisher.p) <- LETTERS[seq_along(spot.fisher.p)]
-
-    barplot(spot.fisher.p, main=paste("Enrichment in spots:", names(gs.def.list)[i]),
-            las=1, cex.names=1.2)
-
-    mtext("log( p.value )", side=2, line=3.5, cex=2)
-
-    #################################################
-
-    spot.expression <- t(sapply(spot.list.overexpression$spots, function(x)
+    
+    radarchart( as.data.frame( rbind( rep(10,length(spot.fisher.p) ), rep(0,length(spot.fisher.p) ), spot.fisher.p ) ),   						
+                pcol="#B3B3B3", pfcol="#B3B3B350",	title="Enrichment in overexpression spots", seg=2, pty=32, plwd = 3 )
+    
+    
+    
+    spot.fisher.p <- -log10(sapply(spot.list.kmeans$spots, function(x)
     {
-      g <- intersect(gene.ids[x$genes], gs.def.list[[i]]$Genes)
-      g <- names(gene.ids)[which(gene.ids %in% g)]
+      x$Fisher.p[names(gs.def.list)[i]]
+    }))  
+    names(spot.fisher.p) <- LETTERS[seq_along(spot.fisher.p)]
+    
+    radarchart( as.data.frame( rbind( rep(10,length(spot.fisher.p) ), rep(0,length(spot.fisher.p) ), spot.fisher.p ) ),     					
+                pcol="#B3B3B3", pfcol="#B3B3B350",	title="Enrichment in kMeans clusters", seg=2, pty=32, plwd = 3 )
 
-      if (length(g) > 0)
-      {
-        return(apply(indata[g,,drop=FALSE], 2, mean))
-      } else
-      {
-        return(rep(0, ncol(indata)))
-      }
-    }))
-
-    colnames(spot.expression) <- colnames(indata)
-
-    for (ii in 1:nrow(spot.expression))
-    {
-      barplot(spot.expression[ii,], beside=TRUE,
-              main=paste("Expression of",names(gs.def.list)[i],"in Spot",LETTERS[ii]),
-              las=2, cex.names=1.2, col=group.colors, cex.main=1, ylim=range(spot.expression),
-              border=if (ncol(indata) < 80) "black" else NA)
-
-      mtext(expression(paste(Delta,"e")), side=2, line=3.5, cex=2)
-    }
-
+    
+    
     dev.off()
 
     #################################################
