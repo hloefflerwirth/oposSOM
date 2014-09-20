@@ -2,14 +2,14 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
 {
   bootstrap.col <- group.colors
 
-  bootstrap.col[which(group.bootstrap.score < 80)] <-
-    apply((col2rgb(bootstrap.col[which(group.bootstrap.score < 80)]) + 0.7 *
-           (255 - col2rgb(bootstrap.col[which(group.bootstrap.score < 80)]))) / 255,
+  bootstrap.col[which(group.silhouette.coef < 0.5)] <-
+    apply((col2rgb(bootstrap.col[which(group.silhouette.coef < 0.5)]) + 0.7 *
+           (255 - col2rgb(bootstrap.col[which(group.silhouette.coef < 0.5)]))) / 255,
           2, function(x) rgb(x[1],x[2],x[3]))
 
-  bootstrap.col[which(group.bootstrap.score < 50)] <-
-    apply((col2rgb(bootstrap.col[which(group.bootstrap.score < 50)]) + 0.9 *
-           (255 - col2rgb(bootstrap.col[which(group.bootstrap.score < 50)]))) / 255,
+  bootstrap.col[which(group.silhouette.coef < 0)] <-
+    apply((col2rgb(bootstrap.col[which(group.silhouette.coef < 0)]) + 0.9 *
+           (255 - col2rgb(bootstrap.col[which(group.silhouette.coef < 0)]))) / 255,
           2, function(x) rgb(x[1],x[2],x[3]))
 
   filename <- file.path(paste(files.name, "- Results"), "2nd lvl Metagene Analysis", "Correlation Analysis.pdf")

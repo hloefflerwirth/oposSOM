@@ -30,7 +30,7 @@ pipeline.sampleExpressionPortraits <- function()
 
       if (length(unique(group.labels)) > 1)
       {
-        title(paste(group.bootstrap.score[j],"%",sep=""), line=0.2,
+        title(paste("S =",round(group.silhouette.coef[j],2)), line=0.2,
               cex.main=0.6, col.main=groupwise.group.colors[gl])
       }
 

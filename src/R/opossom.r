@@ -16,7 +16,7 @@ opossom.new <- function(preferences=NULL)
   env$gene.positions.list <- NULL
   env$gene.positions.table <- NULL
   env$gene.coordinates <- NULL
-  env$group.bootstrap.score <- NULL
+  env$group.silhouette.coef <- NULL
   env$group.colors <- NULL
   env$group.labels <- NULL
   env$group.metadata <- NULL
