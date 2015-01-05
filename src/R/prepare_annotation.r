@@ -31,7 +31,7 @@ pipeline.prepareAnnotation <- function()
       mart <- useDataset(preferences$database.dataset, mart=mart)
 
       biomart.table <-
-        getBM(c(preferences$database.id.type, "external_gene_id"),
+        getBM(c(preferences$database.id.type, "hgnc_symbol"),
               preferences$database.id.type,
               rownames(indata)[seq(1,nrow(indata),length.out=100)],
               mart, checkFilters=FALSE)
@@ -61,7 +61,7 @@ pipeline.prepareAnnotation <- function()
   mart <- useDataset(preferences$database.dataset, mart=mart)
 
   biomart.table <- getBM(c(preferences$database.id.type,
-                           "external_gene_id",
+                           "hgnc_symbol",
                            "description",
                            "ensembl_gene_id",
                            "chromosome_name",

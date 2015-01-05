@@ -34,7 +34,7 @@ pipeline.detectEnsemblDataset <- function()
     {
       try({
         biomart.table <-
-          getBM(c(id, "external_gene_id"), id,
+          getBM(c(id, "hgnc_symbol"), id,
                 rownames(indata)[seq(1,nrow(indata),length.out=100)],
                 mart, checkFilters=FALSE)
 
