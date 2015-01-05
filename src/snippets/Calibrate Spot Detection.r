@@ -5,63 +5,47 @@
 
 ###########################################################################
 
-#   # Fine tune parameter old "flooding hills spot detection"
-#   preferences$summary.spot.minsize
-#   preferences$summary.spot.maxsize
-#   preferences$summary.spot.startlevel
-#
-#   # preferences$summary.spot.minsize = 4
-#   # preferences$summary.spot.maxsize = 10
-#   # preferences$summary.spot.startlevel = 0.9
-#
-#   preferences$summary.spot.minsize = 1
-#   preferences$summary.spot.maxsize = 4
-#   preferences$summary.spot.startlevel = 0.9
-#
-#
-#   source("snippets/f - Find  Overexpression spots - old.r")
 
 
-
-  preferences$summary.spot.threshold
-  preferences$summary.spot.core
-  preferences$group.spot.core
-  preferences$group.spot.threshold
+  env$preferences$spot.threshold.modules
+  env$preferences$spot.coresize.modules
+  env$preferences$spot.threshold.groupmap
+  env$preferences$spot.coresize.groupmap
 
   # preferences$summary.spot.threshold = 0.95
   # preferences$summary.spot.core = 5
   # preferences$group.spot.core = 5
   # preferences$group.spot.threshold = 0.75
 
-  preferences$summary.spot.threshold = 0.98
-  preferences$summary.spot.core = 6
-  preferences$group.spot.core = 3
-  preferences$group.spot.threshold = 0.88
+  env$preferences$spot.threshold.modules = 0.9
+  env$preferences$spot.coresize.modules = 2
+  env$preferences$spot.threshold.groupmap = 0.88
+  env$preferences$spot.coresize.groupmap = 3
 
-  source("R/source/detect_spots_integral.r")
+  util.call(pipeline.detectSpotsIntegral,env)
 
-  colramp = colorRampPalette(c("darkblue","blue","lightblue","green","yellow","red","darkred"))
 
+#  colramp = colorRampPalette(c("darkblue","blue","lightblue","green","yellow","red","darkred"))
 
   par(mfrow=c(2,2), mar=c(2,2,2,2))
-  image(matrix(GS.infos.overexpression$overview.map, preferences$dim.som1), col=colramp(1000))
-  image(matrix(GS.infos.overexpression$overview.mask, preferences$dim.som1), col=colramp(1000))
+  image(matrix(env$spot.list.overexpression$overview.map, env$preferences$dim.1stLvlSom), col=env$colramp(1000))
+  image(matrix(env$spot.list.overexpression$overview.mask, env$preferences$dim.1stLvlSom), col=env$colramp(1000))
   par(new=T)
-  plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,preferences$dim.som1), ylim=c(0,preferences$dim.som1), xaxs="i", yaxs="i")
-  points(do.call(rbind, lapply(GS.infos.overexpression$spots, function(x) x$position)), pch=16, cex=1, col="black")
-  points(do.call(rbind, lapply(GS.infos.overexpression$spots, function(x) x$position)), pch=1, cex=1, col="white")
+  plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,env$preferences$dim.1stLvlSom), ylim=c(0,env$preferences$dim.1stLvlSom), xaxs="i", yaxs="i")
+  points(do.call(rbind, lapply(env$spot.list.overexpression$spots, function(x) x$position)), pch=16, cex=1, col="black")
+  points(do.call(rbind, lapply(env$spot.list.overexpression$spots, function(x) x$position)), pch=1, cex=1, col="white")
 
-  length(GS.infos.overexpression$spots)
+  length(env$spot.list.overexpression$spots)
 
 
-  image(matrix(GS.infos.group.overexpression$overview.map, preferences$dim.som1), col=colramp(1000))
-  image(matrix(GS.infos.group.overexpression$overview.mask, preferences$dim.som1), col=colramp(1000))
+  image(matrix(env$spot.list.group.overexpression$overview.map, env$preferences$dim.1stLvlSom), col=env$colramp(1000))
+  image(matrix(env$spot.list.group.overexpression$overview.mask, env$preferences$dim.1stLvlSom), col=env$colramp(1000))
   par(new=T)
-  plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,preferences$dim.som1), ylim=c(0,preferences$dim.som1), xaxs="i", yaxs="i")
-  points(do.call(rbind, lapply(GS.infos.group.overexpression$spots, function(x) x$position)), pch=16, cex=1, col="black")
-  points(do.call(rbind, lapply(GS.infos.group.overexpression$spots, function(x) x$position)), pch=1, cex=1, col="white")
+  plot(0, type="n", axes=F, xlab="", ylab="", xlim=c(0,env$preferences$dim.1stLvlSom), ylim=c(0,env$preferences$dim.1stLvlSom), xaxs="i", yaxs="i")
+  points(do.call(rbind, lapply(env$spot.list.group.overexpression$spots, function(x) x$position)), pch=16, cex=1, col="black")
+  points(do.call(rbind, lapply(env$spot.list.group.overexpression$spots, function(x) x$position)), pch=1, cex=1, col="white")
 
-  length(GS.infos.group.overexpression$spots)
+  length(env$spot.list.group.overexpression$spots)
 
 
 

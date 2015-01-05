@@ -20,6 +20,7 @@ env <- opossom.new(list(dataset.name = "Unnamed",
 
                       geneset.analysis = T,
                       geneset.analysis.exact = T,
+                      geneset.analysis.samplespots = F,
 
                       max.parallel.cores = detectCores() / 2,
 
@@ -49,3 +50,30 @@ env$group.labels <- .....
 # execute
 
 opossom.run(env)
+
+
+
+
+
+
+
+
+
+
+#### Tissue Example from Vignette ####
+
+library(oposSOM)
+
+env <- opossom.new(list(dataset.name="Tissues", dim.1stLvlSom=20))
+data(opossom.tissues)
+
+env$indata <- opossom.tissues
+
+env$group.labels <- c(rep("Homeostasis", 2),"Endocrine","Digestion","Exocrine","Epithelium",
+                          "Reproduction","Muscle",rep("Immune System", 2),rep("Nervous System", 2) )
+env$group.colors <- c(rep("gold", 2),"red2","brown","purple","cyan","pink","green2",rep("blue2", 2),rep("gray", 2) )
+
+opossom.run(env)
+
+
+

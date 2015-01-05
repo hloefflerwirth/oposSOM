@@ -17,7 +17,7 @@ biomart.available <- function()
     mart <- useMart('ensembl')
     mart <- useDataset("hsapiens_gene_ensembl", mart=mart)
 
-    test.table <- getBM(c("external_gene_id", "ensembl_gene_id"),
+    test.table <- getBM(c("hgnc_symbol", "ensembl_gene_id"),
                         "ensembl_gene_id",
                         test.rownames,
                         mart=mart)
