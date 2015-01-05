@@ -27,7 +27,7 @@ License: \tab GPL (>= 2)\cr
 \author{
 Author: Henry Wirth <wirth@izbi.uni-leipzig.de>
 
-Maintainer: Martin Kalcher <mkalcher@porkbox.net>
+Maintainer: Martin Kalcher <mkalcher@porkbox.net> and Henry Wirth <wirth@izbi.uni-leipzig.de>
 }
 \references{
 Wirth, Loeffler, v.Bergen, Binder: Expression cartography of human tissues %
