@@ -12,8 +12,8 @@ Depends: R (>= 3.0)
 Imports: som, fastICA, scatterplot3d, pixmap, fdrtool, ape, igraph,
         KernSmooth, parallel, biomaRt, Biobase
 License: GPL (>=2)
-Author: Henry Wirth <wirth@izbi.uni-leipzig.de>
-Maintainer: Martin Kalcher <mkalcher@porkbox.net> and Henry Wirth <wirth@izbi.uni-leipzig.de>
+Author: Henry Wirth <wirth@izbi.uni-leipzig.de> and Martin Kalcher <mkalcher@porkbox.net>
+Maintainer: Henry Wirth <wirth@izbi.uni-leipzig.de>
 URL: http://som.izbi.uni-leipzig.de
 biocViews: GeneExpression, DifferentialExpression, GeneSetEnrichment,
         DataRepresentation, Visualization
