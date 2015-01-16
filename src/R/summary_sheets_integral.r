@@ -542,7 +542,7 @@ pipeline.summarySheetsIntegral <- function()
         next
       }
 
-      if (length(set.list$spots[[m]]$genes) > 5000)
+      if (length(set.list$spots[[m]]$genes) > 2000)
       {
         util.warn("Skip generating table (too many genes):", basename)
         next
@@ -559,16 +559,16 @@ pipeline.summarySheetsIntegral <- function()
       r.t <- r.genes / sqrt((1-r.genes^2) / (ncol(indata)-2))
       r.p <- 1 - pt(r.t, ncol(indata)-2)
 
-      chi.genes <- sapply(set.list$spots[[m]]$genes, function(x)
-      {
-        gene <- indata[x,]
-        metagene <- metadata[som.nodes[x],]
-
-        z <- ((gene-metagene)^2) / sd.g.m[x,]
-        mean(z)
-      })
-
-      chi.p <- 1 - pt(chi.genes, ncol(indata)-1)
+#       chi.genes <- sapply(set.list$spots[[m]]$genes, function(x)
+#       {
+#         gene <- indata[x,]
+#         metagene <- metadata[som.nodes[x],]
+# 
+#         z <- ((gene-metagene)^2) / sd.g.m[x,]
+#         mean(z)
+#       })
+# 
+#       chi.p <- 1 - pt(chi.genes, ncol(indata)-1)
 
       e.max <- apply(indata[set.list$spots[[m]]$genes, ,drop=FALSE], 1, max)
       e.min <- apply(indata[set.list$spots[[m]]$genes, ,drop=FALSE], 1, min)
@@ -600,8 +600,8 @@ pipeline.summarySheetsIntegral <- function()
                    "correlation"=r.genes[o],
                    "->t.score"=r.t[o],
                    "->p.value"=r.p[o],
-                   "chi2"=chi.genes[o],
-                   "->p.value."=chi.p[o],
+#                   "chi2"=chi.genes[o],
+#                   "->p.value."=chi.p[o],
                    "SD"=apply(indata[o, ,drop=FALSE], 1, sd),
                    "Metagene"=gene.coordinates[o],
                    "Chromosome"=gene.positions[rownames(indata)[o]],
@@ -651,7 +651,7 @@ pipeline.summarySheetsIntegral <- function()
          args=list(path=dirnames[["csv"]], main=x[[1]], set.list=x[[2]]))
   })
 
-  sheets <- c(pdf.sheets, csv.sheets)
+  
 
   # prepare directories
   for (dirname in dirnames)
@@ -659,18 +659,34 @@ pipeline.summarySheetsIntegral <- function()
     dir.create(dirname, showWarnings=FALSE, recursive=TRUE)
   }
 
-  util.info("Writing:", file.path(dirnames[["pdf"]], "*.pdf"))
-  util.info("Writing:", file.path(dirnames[["csv"]], "*.csv"))
 
-  # do the math
-  #
+
+
+
+  util.info("Writing:", file.path(dirnames[["pdf"]], "*.pdf"))
+
   # use max 4 cores to avoid preformance issues due disk io
   cl <- makeCluster(min(4, preferences$max.parallel.cores))
 
-  clusterApplyLB(cl, seq_along(sheets), function(i, sheets)
+  clusterApplyLB(cl, seq_along(pdf.sheets), function(i, pdf.sheets)
   {
-    do.call(sheets[[i]]$fn, sheets[[i]]$args)
-  }, sheets)
+    do.call(pdf.sheets[[i]]$fn, pdf.sheets[[i]]$args)
+  }, pdf.sheets)
 
   stopCluster(cl)
+
+
+
+  util.info("Writing:", file.path(dirnames[["csv"]], "*.csv"))
+  
+  # use max 2 cores to avoid preformance issues due disk io
+  cl <- makeCluster(min(2, preferences$max.parallel.cores))
+
+  clusterApplyLB(cl, seq_along(csv.sheets), function(i, csv.sheets)
+  {
+    do.call(csv.sheets[[i]]$fn, csv.sheets[[i]]$args)
+  }, csv.sheets)
+
+  stopCluster(cl)
+
 }
