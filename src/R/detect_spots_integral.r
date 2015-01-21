@@ -551,7 +551,7 @@ pipeline.detectSpotsIntegral <- function()
   names(spot.list.correlation$spots) <<- LETTERS[seq_along(spot.list.correlation$spots)]
 
   spot.list.correlation$overview.mask[!is.na(spot.list.correlation$overview.mask)] <<-
-    match(spot.list.correlation$overview.mask[!is.na(spot.list.correlation$overview.mask)], o)
+    match(spot.list.correlation$overview.mask[!is.na(spot.list.correlation$overview.mask)], sort(unique(spot.list.correlation$overview.mask))[o])
 
   spot.list.correlation$spotdata <<-
     t(sapply(spot.list.correlation$spots, function(x)
@@ -611,7 +611,7 @@ pipeline.detectSpotsIntegral <- function()
   names(spot.list.kmeans$spots) <<- LETTERS[seq_along(spot.list.kmeans$spots)]
 
   spot.list.kmeans$overview.mask[!is.na(spot.list.kmeans$overview.mask)] <<-
-    match(spot.list.kmeans$overview.mask[!is.na(spot.list.kmeans$overview.mask)], o)
+    match(spot.list.kmeans$overview.mask[!is.na(spot.list.kmeans$overview.mask)], sort(unique(spot.list.kmeans$overview.mask))[o])
 
   spot.list.kmeans$spotdata <<-
     t(sapply(spot.list.kmeans$spots, function(x)
