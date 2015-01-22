@@ -520,16 +520,16 @@ pipeline.detectSpotsIntegral <- function()
       if (length(geneset.genes) > 0)
       {
         spot.list.correlation$overview.mask[as.numeric(cluster)] <<- count.cluster
-        spot.list.correlation$spots[[count.cluster]] <<- list()
-        spot.list.correlation$spots[[count.cluster]]$metagenes <<- as.numeric(cluster)
-        spot.list.correlation$spots[[count.cluster]]$genes <<- geneset.genes
-        spot.list.correlation$spots[[count.cluster]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
-        spot.list.correlation$spots[[count.cluster]]$mask[as.numeric(cluster)] <<- 1
+        spot.list.correlation$spots[[LETTERS[count.cluster]]] <<- list()
+        spot.list.correlation$spots[[LETTERS[count.cluster]]]$metagenes <<- as.numeric(cluster)
+        spot.list.correlation$spots[[LETTERS[count.cluster]]]$genes <<- geneset.genes
+        spot.list.correlation$spots[[LETTERS[count.cluster]]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
+        spot.list.correlation$spots[[LETTERS[count.cluster]]]$mask[as.numeric(cluster)] <<- 1
 
-        spot.list.correlation$spots[[count.cluster]]$position <<-
+        spot.list.correlation$spots[[LETTERS[count.cluster]]]$position <<-
           apply(apply(som.result$code.sum[cluster, 1:2], 2, range), 2, mean) + 0.5
 
-        spot.list.correlation$spots[[count.cluster]]$beta.statistic <<-
+        spot.list.correlation$spots[[LETTERS[count.cluster]]]$beta.statistic <<-
           get.beta.statistic(set.data=metadata[spot.list.correlation$spots[[count.cluster]]$metagenes,,drop=FALSE],
                              weights=som.result$code.sum[spot.list.correlation$spots[[count.cluster]]$metagenes,]$nobs)
 
