@@ -4,25 +4,27 @@ pipeline.genesetProfilesAndMaps <- function()
   progress.max <- nrow(samples.GSZ.scores) + length(gs.def.list)
   util.progress(progress.current, progress.max)
 
+
+#   if (preferences$geneset.analysis.exact)
+#   {
+#     fdr.threshold <- 0.1
+# 
+#     GSZs <-
+#       cbind(as.vector(unlist(sapply(spot.list.samples, function(x) { x$GSZ.score[names(gs.def.list)] }))),
+#             as.vector(unlist(sapply(spot.list.samples, function(x) { x$GSZ.p.value[names(gs.def.list)] }))))
+# 
+#     GSZs <- GSZs[which(!is.na(GSZs[,2])),]
+# 
+#     fdrtool.result <- fdrtool(GSZs[,2], statistic="pvalue", verbose=FALSE, plot=FALSE)
+#     fdr.significant.spot.list.samples <- length(which(fdrtool.result$lfdr < fdr.threshold))
+#     fdr.gsz.threshold <- sort(GSZs[,1], decreasing=TRUE)[fdr.significant.spot.list.samples]
+#   } else
+#   {
+#     fdr.gsz.threshold <- 0
+#   }
+
+
   ## Geneset Profiles over Samples
-  if (preferences$geneset.analysis.exact)
-  {
-    fdr.threshold <- 0.1
-
-    GSZs <-
-      cbind(as.vector(unlist(sapply(spot.list.samples, function(x) { x$GSZ.score[names(gs.def.list)] }))),
-            as.vector(unlist(sapply(spot.list.samples, function(x) { x$GSZ.p.value[names(gs.def.list)] }))))
-
-    GSZs <- GSZs[which(!is.na(GSZs[,2])),]
-
-    fdrtool.result <- fdrtool(GSZs[,2], statistic="pvalue", verbose=FALSE, plot=FALSE)
-    fdr.significant.spot.list.samples <- length(which(fdrtool.result$lfdr < fdr.threshold))
-    fdr.gsz.threshold <- sort(GSZs[,1], decreasing=TRUE)[fdr.significant.spot.list.samples]
-  } else
-  {
-    fdr.gsz.threshold <- 0
-  }
-
   dirname <- file.path(paste(files.name, "- Results"), "Geneset Analysis")
   util.info("Writing:", file.path(dirname, "*.{csv,pdf}"))
 
@@ -30,40 +32,95 @@ pipeline.genesetProfilesAndMaps <- function()
   {
     filename.prefix <- substring(make.names(names(gs.def.list)[i]), 1, 100)
     pdf(file.path(dirname, paste(filename.prefix, "profile.pdf")), 29.7/2.54, 21/2.54)
-  
-    par(mar=c(15,6,4,5))
-
-    leading.metagenes <-
-      as.numeric(names(sort(table(som.nodes[names(gene.ids)[which(gene.ids %in% gs.def.list[[i]]$Genes)]]),
-                            decreasing=TRUE))[1:5])
-
+     
+    
+    dens = density(samples.GSZ.scores[i,],adjust=1)
+    
+    dens.dev = dens$y[1:511] - dens$y[2:512]
+    dens.extrema = which( sign(dens.dev[1:511]) != sign(dens.dev[2:512]) )
+    dens.off.peak = min(dens.extrema)
+    dens.on.peak = max(dens.extrema)
+    
+    dens.off.thres = dens$x[ 2*dens.off.peak ]
+    dens.on.thres = dens$x[ dens.on.peak-(512-dens.on.peak) ]
+    
+    dens.off.sd = sd(samples.GSZ.scores[i,][which(samples.GSZ.scores[i,]<dens.off.thres)])
+    dens.on.sd = sd(samples.GSZ.scores[i,][which(samples.GSZ.scores[i,]>dens.on.thres)])
+    
+    dens.off.thres = dens$x[dens.off.peak]+dens.off.sd
+    dens.on.thres = dens$x[dens.on.peak]-dens.on.sd
+    
+    if ( dens.on.thres < dens.off.thres )
+    {
+      h = dens.on.thres
+      dens.on.thres = dens.off.thres
+      dens.off.thres = h
+    }
+    
+    dens.left = dens
+    dens.left$y[ dens.off.peak:(2*dens.off.peak-1) ] = rev( dens.left$y[ 1:dens.off.peak ] )
+    dens.left$y[ (2*dens.off.peak):512 ] = 0
+    dens.right = dens
+    dens.right$y[ (dens.on.peak-(512-dens.on.peak)):dens.on.peak ] = rev( dens.right$y[ dens.on.peak:512 ] )
+    dens.right$y[ 1:(dens.on.peak-(512-dens.on.peak)-1) ] = 0
+    
+    
+    
+    
+    layout(matrix(c(1,3,2,2),ncol=2),widths=c(1,0.2), heights=c(1,0.08))
+       
+    
+    # barplot
     ylim <- c(-10, 20)
-
+    
+    par(mar=c(14,6,4,2))
     bar.coords <- barplot(samples.GSZ.scores[i,], beside=TRUE,
                           main=rownames(samples.GSZ.scores)[i], las=2,
                           cex.names=1.2, col=group.colors, cex.main=1,
                           ylim=ylim,
-                          border=if (ncol(indata) < 80) "black" else NA ,
+                          border=if (ncol(indata) < 80) "black" else NA,
                           names.arg=if (ncol(indata)<100) colnames(indata) else rep("",ncol(indata)))
-
-    abline(h=fdr.gsz.threshold, lty=2)
-    abline(h=-fdr.gsz.threshold, lty=2)
-
+    
+    abline(h=c(dens.off.thres,dens.on.thres), lty=2)
+    
+    
     mtext("GSZ", side=2, line=3.5, cex=2)
-
-    mean.boxes <- by(samples.GSZ.scores[i,], group.labels, c)[unique(group.labels)]
-
-    boxplot(mean.boxes, col=groupwise.group.colors, main=rownames(samples.GSZ.scores)[i],
-            cex.main=1, ylim=ylim, axes=FALSE, yaxs="i")
-
-    axis(1, seq_along(unique(group.labels)), unique(group.labels), las=2, tick=FALSE)
-    axis(2, las=2)
-
-    abline(h=0, lty=2)
-    abline(h=fdr.gsz.threshold, lty=2)
-    abline(h=-fdr.gsz.threshold, lty=2)
-
-    mtext("GSZ", side=2, line=3.5, cex=2)
+    
+    
+    
+    # density
+    ylim <- c(-21.8, 21.5)
+    
+    par(mar=c(5,0.1,1,2))
+    plot(rev(dens$y), rev(dens$x), type="l", xlab="", ylab="", axes=F, ylim=ylim, lwd=2, col="gray" )
+    lines( rev(dens.left$y), rev(dens.left$x) )
+    lines( rev(dens.right$y), rev(dens.right$x) )
+    
+    abline(h=c(dens$x[dens.off.peak],dens$x[dens.on.peak]))
+    
+    abline( h=dens$x[dens.off.peak]-dens.off.sd, lty=2, col="gray" )
+    abline( h=dens$x[dens.on.peak]+dens.on.sd, lty=2, col="gray" )
+    
+    abline(h=c(dens.off.thres,dens.on.thres),lty=2)
+    
+    box()
+    
+    
+    
+    # barcode
+    par(mar=c(1,8,0.1,4))
+    
+    col = rep("gray60",ncol(indata))
+    col[which(samples.GSZ.scores[i,]<dens.off.thres)] = "white"
+    col[which(samples.GSZ.scores[i,]>dens.on.thres)] = "black"
+    
+    image( matrix(1:ncol(indata),ncol(indata),1), col=col, axes=F )
+    box()
+    
+    
+    
+    
+    
 
     #################################################
 
@@ -76,7 +133,7 @@ pipeline.genesetProfilesAndMaps <- function()
     names(spot.fisher.p) <- LETTERS[seq_along(spot.fisher.p)]
     
     radarchart( as.data.frame( rbind( rep(10,length(spot.fisher.p) ), rep(0,length(spot.fisher.p) ), spot.fisher.p ) ),   						
-                pcol="#B3B3B3", pfcol="#B3B3B350",	title="Enrichment in overexpression spots", seg=2, pty=32, plwd = 3 )
+                pcol="gray50", pfcol="gray80",	title="Enrichment in overexpression spots", seg=2, pty=32, plwd = 3 )
     
     
     
@@ -87,7 +144,7 @@ pipeline.genesetProfilesAndMaps <- function()
     names(spot.fisher.p) <- LETTERS[seq_along(spot.fisher.p)]
     
     radarchart( as.data.frame( rbind( rep(10,length(spot.fisher.p) ), rep(0,length(spot.fisher.p) ), spot.fisher.p ) ),     					
-                pcol="#B3B3B3", pfcol="#B3B3B350",	title="Enrichment in kMeans clusters", seg=2, pty=32, plwd = 3 )
+                pcol="gray50", pfcol="gray80",	title="Enrichment in kMeans clusters", seg=2, pty=32, plwd = 3 )
 
     
     
