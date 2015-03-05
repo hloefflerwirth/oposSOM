@@ -34,36 +34,52 @@ pipeline.genesetProfilesAndMaps <- function()
     pdf(file.path(dirname, paste(filename.prefix, "profile.pdf")), 29.7/2.54, 21/2.54)
      
     
-    dens = density(samples.GSZ.scores[i,],adjust=1)
+    dens <- density(samples.GSZ.scores[i,],adjust=1)
     
-    dens.dev = dens$y[1:511] - dens$y[2:512]
-    dens.extrema = which( sign(dens.dev[1:511]) != sign(dens.dev[2:512]) )
-    dens.off.peak = min(dens.extrema)
-    dens.on.peak = max(dens.extrema)
+    dens.dev <- dens$y[1:511] - dens$y[2:512]
+    dens.extrema <- which( sign(dens.dev[1:511]) != sign(dens.dev[2:512]) )
+    dens.off.peak <- min(dens.extrema)
+    dens.on.peak <- max(dens.extrema)
     
-    dens.off.thres = dens$x[ 2*dens.off.peak ]
-    dens.on.thres = dens$x[ dens.on.peak-(512-dens.on.peak) ]
-    
-    dens.off.sd = sd(samples.GSZ.scores[i,][which(samples.GSZ.scores[i,]<dens.off.thres)])
-    dens.on.sd = sd(samples.GSZ.scores[i,][which(samples.GSZ.scores[i,]>dens.on.thres)])
-    
-    dens.off.thres = dens$x[dens.off.peak]+dens.off.sd
-    dens.on.thres = dens$x[dens.on.peak]-dens.on.sd
-    
-    if ( dens.on.thres < dens.off.thres )
-    {
-      h = dens.on.thres
-      dens.on.thres = dens.off.thres
-      dens.off.thres = h
+    if( dens.on.peak != dens.off.peak )
+    {    
+      dens.off.thres <- dens$x[ min( 2*dens.off.peak, 512 ) ]
+      dens.on.thres <- dens$x[ max( dens.on.peak-(512-dens.on.peak), 1 ) ]
+            
+      if( sum(samples.GSZ.scores[i,]<dens.off.thres) > 3 && sum(samples.GSZ.scores[i,]>dens.on.thres) > 3 )
+      {
+        dens.left <- dens
+        dens.left$y[ dens.off.peak:min( (2*dens.off.peak-1), 512 ) ] <- rev( dens.left$y[ 1:length(dens.off.peak:min( (2*dens.off.peak-1), 512 )) ] )
+        dens.left$y[ min( 2*dens.off.peak, 512 ):512 ] <- 0
+        dens.right <- dens
+        dens.right$y[ max( (dens.on.peak-(512-dens.on.peak)), 1 ):dens.on.peak ] <- rev( dens.right$y[ dens.on.peak:( dens.on.peak + length(max( (dens.on.peak-(512-dens.on.peak)), 1 ):dens.on.peak) - 1 ) ] )
+        dens.right$y[ 1:max( (dens.on.peak-(512-dens.on.peak)-1), 1 ) ] <- 0    
+        
+        dens.off.sd <- sd(samples.GSZ.scores[i,][which(samples.GSZ.scores[i,]<dens.off.thres)])
+        dens.on.sd <- sd(samples.GSZ.scores[i,][which(samples.GSZ.scores[i,]>dens.on.thres)])      
+        
+        dens.off.thres <- dens$x[dens.off.peak]+dens.off.sd
+        dens.on.thres <- dens$x[dens.on.peak]-dens.on.sd
+                
+        if ( dens.on.thres < dens.off.thres )
+        {
+          h <- dens.on.thres
+          dens.on.thres <- dens.off.thres
+          dens.off.thres <- h
+        }
+        
+      } else
+      {      
+        dens.on.peak <- dens.off.peak
+        dens.off.thres <- -sd(samples.GSZ.scores[i,])
+        dens.on.thres <- sd(samples.GSZ.scores[i,])
+      }
+            
+    } else
+    {      
+      dens.off.thres <- -sd(samples.GSZ.scores[i,])
+      dens.on.thres <- sd(samples.GSZ.scores[i,])
     }
-    
-    dens.left = dens
-    dens.left$y[ dens.off.peak:(2*dens.off.peak-1) ] = rev( dens.left$y[ 1:dens.off.peak ] )
-    dens.left$y[ (2*dens.off.peak):512 ] = 0
-    dens.right = dens
-    dens.right$y[ (dens.on.peak-(512-dens.on.peak)):dens.on.peak ] = rev( dens.right$y[ dens.on.peak:512 ] )
-    dens.right$y[ 1:(dens.on.peak-(512-dens.on.peak)-1) ] = 0
-    
     
     
     
@@ -93,13 +109,16 @@ pipeline.genesetProfilesAndMaps <- function()
     
     par(mar=c(5,0.1,1,2))
     plot(rev(dens$y), rev(dens$x), type="l", xlab="", ylab="", axes=F, ylim=ylim, lwd=2, col="gray" )
-    lines( rev(dens.left$y), rev(dens.left$x) )
-    lines( rev(dens.right$y), rev(dens.right$x) )
+    if( dens.on.peak != dens.off.peak )
+    {  
+      lines( rev(dens.left$y), rev(dens.left$x) )
+      lines( rev(dens.right$y), rev(dens.right$x) )
     
-    abline(h=c(dens$x[dens.off.peak],dens$x[dens.on.peak]))
-    
-    abline( h=dens$x[dens.off.peak]-dens.off.sd, lty=2, col="gray" )
-    abline( h=dens$x[dens.on.peak]+dens.on.sd, lty=2, col="gray" )
+      abline( h=c(dens$x[dens.off.peak],dens$x[dens.on.peak]) )
+      
+      abline( h=dens$x[dens.off.peak]-dens.off.sd, lty=2, col="gray" )
+      abline( h=dens$x[dens.on.peak]+dens.on.sd, lty=2, col="gray" )
+    }
     
     abline(h=c(dens.off.thres,dens.on.thres),lty=2)
     
@@ -125,6 +144,7 @@ pipeline.genesetProfilesAndMaps <- function()
     #################################################
 
     par(mfrow=c(1,2))
+    par(mar=c(5,6,4,5))
     
     spot.fisher.p <- -log10(sapply(spot.list.overexpression$spots, function(x)
     {
