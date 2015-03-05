@@ -14,12 +14,6 @@ pipeline.prepareAnnotation <- function()
   gene.positions.table <<- matrix(0,0,0)
   gene.positions.list <<- list()
 
-  if (preferences$database.dataset=="off" || preferences$database.id.type=="off" )
-  {
-    preferences$geneset.analysis <<- FALSE
-    return()
-  }
-
   if (!biomart.available())
   {
     util.warn("biomaRt seems to be down.")
