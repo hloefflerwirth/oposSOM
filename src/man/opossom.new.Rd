@@ -77,7 +77,7 @@ env <- opossom.new(list(dataset.name="Example",
 # definition of indata, group.labels and group.colors
 env$indata = matrix( runif(1000), 100, 10 )
 env$group.labels = c( rep("class 1", 5), rep("class 2", 4), "class 3" )
-env$group.labels = c( rep("red", 5), rep("blue", 4), "green" )
+env$group.colors = c( rep("red", 5), rep("blue", 4), "green" )
 
 # alternative definition of indata, group.labels and group.colors using Biobase::ExpressionSet
 library(Biobase)
