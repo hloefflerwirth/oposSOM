@@ -27,15 +27,6 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
     stg <- minimum.spanning.tree(g)
     layout <- layout.kamada.kawai(stg)
 
-    plot(stg, layout=layout, vertex.size=5, vertex.label = colnames(indata),
-         vertex.label.cex=if (ncol(indata)<100) 1.2 else 0.6,
-         vertex.color=group.colors, main=metagene.filter.list[[i]]$n)
-
-    legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-           text.col=groupwise.group.colors, bg="white")
-
-    box()
-
     plot(stg, layout=layout, vertex.size=5, vertex.label = rep("",ncol(indata)),
          vertex.label.cex=if (ncol(indata)<100) 1.2 else 0.6,
          vertex.color=group.colors, main=metagene.filter.list[[i]]$n)
@@ -45,15 +36,29 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
 
     box()
 
-    plot(stg, layout=layout, vertex.size=5, vertex.label = rep("",ncol(indata)),
-         vertex.label.cex=if (ncol(indata)<100) 1.2 else 0.6,
-         vertex.color=bootstrap.col, main=metagene.filter.list[[i]]$n)
 
-    legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-           text.col=groupwise.group.colors, bg="white")
-
-    box()
-
+    if (ncol(metadata) < 1000)
+    {
+      plot(stg, layout=layout, vertex.size=5, vertex.label = colnames(indata),
+           vertex.label.cex=if (ncol(indata)<100) 1.2 else 0.6,
+           vertex.color=group.colors, main=metagene.filter.list[[i]]$n)
+      
+      legend("bottomright", as.character(unique(group.labels)), cex=0.5,
+             text.col=groupwise.group.colors, bg="white")
+      
+      box()
+      
+      plot(stg, layout=layout, vertex.size=5, vertex.label = rep("",ncol(indata)),
+           vertex.label.cex=if (ncol(indata)<100) 1.2 else 0.6,
+           vertex.color=bootstrap.col, main=metagene.filter.list[[i]]$n)
+  
+      legend("bottomright", as.character(unique(group.labels)), cex=0.5,
+             text.col=groupwise.group.colors, bg="white")
+  
+      box()
+    }
+    
+    
     # Collelation Backbone
     adj.matrix <- cor(s)
     diag(adj.matrix) <- 0
@@ -69,32 +74,35 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
     g <- graph.adjacency(adj.matrix, weighted=TRUE,  mode="undirected")
     layout <- layout.fruchterman.reingold(g)
 
-    plot(g, layout=layout, vertex.size=5, vertex.label = colnames(indata),
-         vertex.label.cex=if (ncol(indata)<100) 1.2 else 0.6,
-         vertex.color=group.colors, main=metagene.filter.list[[i]]$n)
-
-    legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-           text.col=groupwise.group.colors, bg="white")
-
-    box()
-
     plot(g, layout=layout, vertex.size=5, vertex.label = rep("",ncol(indata)),
          vertex.label.cex=if (ncol(indata)<100) 1.2 else 0.6,
          vertex.color=group.colors, main=metagene.filter.list[[i]]$n)
-
+    
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
            text.col=groupwise.group.colors, bg="white")
-
+    
     box()
-
-    plot(g, layout=layout, vertex.size=5, vertex.label = rep("",ncol(indata)),
-         vertex.label.cex=if (ncol(indata)<100) 1.2 else 0.6,
-         vertex.color=bootstrap.col, main=metagene.filter.list[[i]]$n)
-
-    legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-           text.col=groupwise.group.colors, bg="white")
-
-    box()
+    
+    if (ncol(metadata) < 1000)
+    {
+      plot(g, layout=layout, vertex.size=5, vertex.label = colnames(indata),
+           vertex.label.cex=if (ncol(indata)<100) 1.2 else 0.6,
+           vertex.color=group.colors, main=metagene.filter.list[[i]]$n)
+  
+      legend("bottomright", as.character(unique(group.labels)), cex=0.5,
+             text.col=groupwise.group.colors, bg="white")
+  
+      box()
+  
+      plot(g, layout=layout, vertex.size=5, vertex.label = rep("",ncol(indata)),
+           vertex.label.cex=if (ncol(indata)<100) 1.2 else 0.6,
+           vertex.color=bootstrap.col, main=metagene.filter.list[[i]]$n)
+  
+      legend("bottomright", as.character(unique(group.labels)), cex=0.5,
+             text.col=groupwise.group.colors, bg="white")
+  
+      box()
+    }
 
     # Correlation Network
     adj.matrix <- cor(s)
@@ -106,35 +114,38 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
       g <- graph.adjacency(adj.matrix, weighted=TRUE,  mode="undirected")
       layout <- layout.fruchterman.reingold(g, start=matrix(1:(2*ncol(indata)),ncol=2), niter=1000)
 
-      plot(g, layout=layout, vertex.size=ifelse(ncol(indata) < 250, 5, 3),
-           vertex.label=colnames(indata),
-           vertex.label.cex=if (ncol(indata)<100) 1.2 else 0.6,
-           vertex.color=group.colors, main=metagene.filter.list[[i]]$n)
-
-      legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-             text.col=groupwise.group.colors, bg="white")
-
-      box()
-
       plot(g, layout=layout, vertex.size=ifelse(ncol(indata)<250, 5, 3),
            vertex.label = rep("",ncol(indata)),
            vertex.label.cex=if (ncol(indata) < 100) 1.2 else 0.6,
            vertex.color=group.colors, main=metagene.filter.list[[i]]$n)
-
+      
       legend("bottomright", as.character(unique(group.labels)), cex=0.5,
              text.col=groupwise.group.colors, bg="white")
-
+      
       box()
-
-      plot(g, layout=layout, vertex.size=ifelse(ncol(indata) < 250, 5, 3),
-           vertex.label = rep("",ncol(indata)),
-           vertex.label.cex=if (ncol(indata)<100) 1.2 else 0.6,
-           vertex.color=bootstrap.col, main=metagene.filter.list[[i]]$n)
-
-      legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-             text.col=groupwise.group.colors, bg="white")
-
-      box()
+      
+      if (ncol(metadata) < 1000)
+      {      
+        plot(g, layout=layout, vertex.size=ifelse(ncol(indata) < 250, 5, 3),
+             vertex.label=colnames(indata),
+             vertex.label.cex=if (ncol(indata)<100) 1.2 else 0.6,
+             vertex.color=group.colors, main=metagene.filter.list[[i]]$n)
+  
+        legend("bottomright", as.character(unique(group.labels)), cex=0.5,
+               text.col=groupwise.group.colors, bg="white")
+  
+        box()
+  
+        plot(g, layout=layout, vertex.size=ifelse(ncol(indata) < 250, 5, 3),
+             vertex.label = rep("",ncol(indata)),
+             vertex.label.cex=if (ncol(indata)<100) 1.2 else 0.6,
+             vertex.color=bootstrap.col, main=metagene.filter.list[[i]]$n)
+  
+        legend("bottomright", as.character(unique(group.labels)), cex=0.5,
+               text.col=groupwise.group.colors, bg="white")
+  
+        box()
+      }
     }
 
     # PCM
@@ -150,7 +161,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
     legend("bottomright", as.character(unique(group.labels)), cex=0.5,
            text.col=groupwise.group.colors, bg="white")
 
-    if (i <= 2)
+    if (ncol(metadata) < 1000 && i <= 2)
     {
       def.par <- par(no.readonly = TRUE)
 
@@ -160,37 +171,40 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
       par(def.par)
     }
 
-    heatmap.wrap(x=cor(s), Rowv=NA, Colv=NA, col=colramp(1000), scale="n",
-                 main=metagene.filter.list[[i]]$n, mar=c(8,8),
-                 ColSideColors=group.colors, RowSideColors=group.colors)
-
-    par(new=TRUE)
-    plot(0,type="n", axes=FALSE, xlab="", ylab="")
-
-    legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-           text.col=groupwise.group.colors, bg="white")
-
-    o <- unlist(sapply(unique(group.labels), function(gr)
+    if (ncol(metadata) < 1000)
     {
-      idx <- names(group.labels)[which(group.labels == gr)]
-
-      if (length(idx) > 1)
+      heatmap.wrap(x=cor(s), Rowv=NA, Colv=NA, col=colramp(1000), scale="n",
+                   main=metagene.filter.list[[i]]$n, mar=c(8,8),
+                   ColSideColors=group.colors, RowSideColors=group.colors)
+  
+      par(new=TRUE)
+      plot(0,type="n", axes=FALSE, xlab="", ylab="")
+  
+      legend("bottomright", as.character(unique(group.labels)), cex=0.5,
+             text.col=groupwise.group.colors, bg="white")
+  
+      o <- unlist(sapply(unique(group.labels), function(gr)
       {
-        hc <- hclust(dist(t(s[,idx])))
-        return(hc$labels[hc$order])
-      }
-      return(idx)
-    }))
-
-    heatmap.wrap(x=cor(s)[o,o], Rowv=NA, Colv=NA, col=colramp(1000),
-                 scale="n", main=metagene.filter.list[[i]]$n, mar=c(8,8),
-                 ColSideColors=group.colors[o], RowSideColors=group.colors[o])
-
-    par(new=TRUE)
-    plot(0,type="n", axes=FALSE, xlab="", ylab="")
-
-    legend("bottomright", as.character(unique(group.labels)), cex=0.5,
-           text.col=groupwise.group.colors, bg="white")
+        idx <- names(group.labels)[which(group.labels == gr)]
+  
+        if (length(idx) > 1)
+        {
+          hc <- hclust(dist(t(s[,idx])))
+          return(hc$labels[hc$order])
+        }
+        return(idx)
+      }))
+  
+      heatmap.wrap(x=cor(s)[o,o], Rowv=NA, Colv=NA, col=colramp(1000),
+                   scale="n", main=metagene.filter.list[[i]]$n, mar=c(8,8),
+                   ColSideColors=group.colors[o], RowSideColors=group.colors[o])
+  
+      par(new=TRUE)
+      plot(0,type="n", axes=FALSE, xlab="", ylab="")
+  
+      legend("bottomright", as.character(unique(group.labels)), cex=0.5,
+             text.col=groupwise.group.colors, bg="white")
+    }
   }
 
   dev.off()

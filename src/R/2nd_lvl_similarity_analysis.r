@@ -34,28 +34,28 @@ pipeline.2ndLvlSimilarityAnalysis <- function()
   metagene.filter.list[[2]] <<- list(s=spot.metagenes,
                                      n=paste(length(spot.metagenes), "Spot-Metagenes"))
 
-  if (preferences$dim.1stLvlSom^2 > 1000)
+  if (ncol(metadata) < 1000 && preferences$dim.1stLvlSom^2 > 1000)
   {
     metagene.filter.list[[length(metagene.filter.list)+1]] <<-
       list(s=order(apply(abs(metadata), 1, max), decreasing=TRUE)[1:1000],
            n="High Expression: 1000 Metagenes")
   }
 
-  if (preferences$dim.1stLvlSom^2 > 100)
+  if (ncol(metadata) < 1000 && preferences$dim.1stLvlSom^2 > 100)
   {
     metagene.filter.list[[length(metagene.filter.list)+1]] <<-
       list(s=order(apply(abs(metadata), 1, max), decreasing=TRUE)[1:100],
            n="High Expression: 100 Metagenes")
   }
 
-  if (preferences$dim.1stLvlSom^2 > 1000)
+  if (ncol(metadata) < 1000 && preferences$dim.1stLvlSom^2 > 1000)
   {
     metagene.filter.list[[length(metagene.filter.list)+1]] <<-
       list(s=order(apply(abs(metadata), 1, var), decreasing=TRUE)[1:1000],
            n="Variance: 1000 Metagenes")
   }
 
-  if (preferences$dim.1stLvlSom^2 > 100)
+  if (ncol(metadata) < 1000 && preferences$dim.1stLvlSom^2 > 100)
   {
     metagene.filter.list[[length(metagene.filter.list)+1]] <<-
       list(s=order(apply(abs(metadata), 1, var), decreasing=TRUE)[1:100],
