@@ -1,5 +1,7 @@
 pipeline.summarySheetsSamples <- function()
 {
+  if(ncol(metadata) > 1000) return()
+  
   dir.create(output.paths["Summary Sheets Samples"], showWarnings=FALSE)
 
   #### Summary Sheets ####

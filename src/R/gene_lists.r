@@ -1,5 +1,7 @@
 pipeline.geneLists <- function()
 {
+  if(ncol(metadata) > 1000) return()
+  
   dirnames <- c("global"=file.path(output.paths["CSV"], "Gene Lists - Global"),
                 "local"=file.path(output.paths["CSV"], "Gene Lists - Local"),
                 "set"=file.path(output.paths["CSV"], "Gene Set Lists - Global"))
