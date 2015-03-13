@@ -4,9 +4,6 @@ pipeline.genesetStatisticSamples <- function()
   progress.max <- ncol(indata)
   util.progress(progress.current, progress.max)
 
-  ### init parallel computing ###
-  cl <- makeCluster(preferences$max.parallel.cores)
-
   ### perform GS analysis ###
   t.ensID.m <<- t.g.m[which(rownames(indata) %in% names(gene.ids)),]
   t.ensID.m <<- do.call(rbind, by(t.ensID.m, gene.ids, colMeans))
@@ -21,7 +18,7 @@ pipeline.genesetStatisticSamples <- function()
         list(Genes=sample(unique.protein.ids, length(gs.def.list[[i]]$Genes)))
     }
 
-    null.scores <- parSapply(cl, 1:ncol(indata), function(m)
+    null.scores <- sapply( 1:ncol(indata), function(m)
     {
       all.gene.statistic <- t.ensID.m[,m]
       spot.gene.ids <- unique.protein.ids
@@ -47,7 +44,7 @@ pipeline.genesetStatisticSamples <- function()
   progress.current <- progress.max / 2
   util.progress(progress.current, progress.max)
 
-  spot.list.samples <<- parLapply(cl, seq_along(spot.list.samples) , function(m)
+  spot.list.samples <<- lapply(seq_along(spot.list.samples) , function(m)
   {
     x <- spot.list.samples[[m]]
     all.gene.statistic <- t.ensID.m[,m]
@@ -100,9 +97,7 @@ pipeline.genesetStatisticSamples <- function()
   progress.current <- progress.max * 0.9
   util.progress(progress.current, progress.max)
 
-  ### stop parallel computing ###
-  try({ stopCluster(cl) }, silent=TRUE)
-
+  ### GSZ table output ###
   samples.GSZ.scores <<- do.call(cbind, lapply(spot.list.samples, function(x)
   {
     return(x$GSZ.score[names(gs.def.list)])
