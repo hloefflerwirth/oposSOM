@@ -353,9 +353,8 @@ pipeline.summarySheetsGroups <- function()
 
   S = group.silhouette.coef
   S = unlist( tapply( S, group.labels, sort, decreasing=TRUE )[unique(group.labels)] )
-  names(S) = sapply( strsplit( names(S), ".", fixed=TRUE ), tail, 1 )
-
-   
+  names(S) = sub( paste(paste(unique(group.labels),".",sep=""),collapse="|"), "", names(S) )
+     
   PCM <- cor( metadata )
   diag(PCM) <- NA
    
@@ -373,7 +372,7 @@ pipeline.summarySheetsGroups <- function()
   #par(mfrow=c(2,1))
   par(mar=c(5,3,3,2))
   
-  b=barplot( S, col=group.colors, main="Correlation Silhouette", names.arg=if(ncol(indata)<80) names(S) else rep("",length(S)), las=2, cex.main=1, cex.lab=1, cex.axis=0.8, cex.names=0.6, border = ifelse(ncol(indata)<80,"black",NA), xpd=FALSE, ylim=c(-.25,1) )  
+  b=barplot( S, col=group.colors[names(S)], main="Correlation Silhouette", names.arg=if(ncol(indata)<80) names(S) else rep("",length(S)), las=2, cex.main=1, cex.lab=1, cex.axis=0.8, cex.names=0.6, border = ifelse(ncol(indata)<80,"black",NA), xpd=FALSE, ylim=c(-.25,1) )  
   abline( h=c(0,0.25,0.5,0.75), lty=2, col="gray80" )
   title( sub= bquote("<" ~ s ~ "> = " ~ .(round(mean(S),2))), line=1 )
   box()
