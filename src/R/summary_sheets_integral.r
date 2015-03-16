@@ -488,42 +488,6 @@ pipeline.summarySheetsIntegral <- function()
           legend("topright", c("p", expression(eta[0]), "Fdr", "fdr"),
                  col=c("black","gray","black","black"), lty=c(1,1,2,3), lwd=c(1,1,1,2), cex=0.7)
         }
-
-        ## Splitted Genesets Sheet
-        n.sets <- 20
-        n.cat <- length(table(gs.def.list.categories))
-        par(mfrow=c(ceiling(n.cat/3), min(n.cat, 3)))
-
-        for (i in names(table(gs.def.list.categories)))
-        {
-          top.gs.p <-
-            sort(set.list$spots[[m]]$Fisher.p[names(which(gs.def.list.categories == i))])[1:n.sets]
-
-          x.coords <- c(0.05, 0.15, 0.28, 0.39, 0.45)
-          y.coords <- seq(0.88, 0.05, length.out=n.sets)
-
-          par(mar=c(0,0,0,0))
-
-          plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1),
-               ylim=c(0,1), xaxs="i", yaxs="i")
-
-          text(x.coords[1], 0.97, i, cex=2, adj=0)
-          text(x.coords, 0.92, c("Rank", "p-value", "#in/all", "Geneset", ""), cex=1, adj=0)
-          text(x.coords[1], y.coords, c(1:n.sets), adj=0)
-          text(x.coords[2], y.coords, format(top.gs.p, digits=1), cex=0.6, adj=0)
-
-          text(x.coords[3], y.coords,
-               paste(sapply(gs.def.list[names(top.gs.p)], function(x)
-                     {
-                        length(intersect(x$Genes, gene.ids[set.list$spots[[m]]$genes]))
-                     }), "/",
-                     sapply(gs.def.list[names(top.gs.p)], function(x)
-                     {
-                       length(x$Genes)
-                     })), cex=0.6, adj=0)
-
-          text(x.coords[4], y.coords, names(top.gs.p), cex=0.6, adj=0)
-        }
       }
     }
 
@@ -559,16 +523,6 @@ pipeline.summarySheetsIntegral <- function()
       r.t <- r.genes / sqrt((1-r.genes^2) / (ncol(indata)-2))
       r.p <- 1 - pt(r.t, ncol(indata)-2)
 
-#       chi.genes <- sapply(set.list$spots[[m]]$genes, function(x)
-#       {
-#         gene <- indata[x,]
-#         metagene <- metadata[som.nodes[x],]
-# 
-#         z <- ((gene-metagene)^2) / sd.g.m[x,]
-#         mean(z)
-#       })
-# 
-#       chi.p <- 1 - pt(chi.genes, ncol(indata)-1)
 
       e.max <- apply(indata[set.list$spots[[m]]$genes, ,drop=FALSE], 1, max)
       e.min <- apply(indata[set.list$spots[[m]]$genes, ,drop=FALSE], 1, min)
@@ -600,8 +554,6 @@ pipeline.summarySheetsIntegral <- function()
                    "correlation"=r.genes[o],
                    "->t.score"=r.t[o],
                    "->p.value"=r.p[o],
-#                   "chi2"=chi.genes[o],
-#                   "->p.value."=chi.p[o],
                    "SD"=apply(indata[o, ,drop=FALSE], 1, sd),
                    "Metagene"=gene.coordinates[o],
                    "Chromosome"=gene.positions[rownames(indata)[o]],
@@ -615,28 +567,34 @@ pipeline.summarySheetsIntegral <- function()
   dirnames <- c("pdf"=as.character(output.paths["Summary Sheets Integral"]),
                 "csv"=file.path(output.paths["CSV"], "Spot Lists"))
 
+  for (dirname in dirnames)
+  {
+    dir.create(dirname, showWarnings=FALSE, recursive=TRUE)
+  }
+  
+  
   # pdf sheets to generate
   pdf.sheets <- list(
-    list("Overexpression.pdf", "Sample-Overexpression", spot.list.overexpression),
-    list("Underexpression.pdf", "Sample-Underexpression", spot.list.underexpression),
-    list("Correlation Cluster.pdf", "Correlation Cluster", spot.list.correlation),
-    list("K-Means Cluster.pdf", "K-Means Cluster", spot.list.kmeans))
+    list("Overexpression.pdf", "Overexpression Spots", spot.list.overexpression),
+    list("Underexpression.pdf", "Underexpression Spots", spot.list.underexpression),
+    list("Correlation Cluster.pdf", "Correlation Clusters", spot.list.correlation),
+    list("K-Means Cluster.pdf", "K-Means Clusters", spot.list.kmeans))
 
   # csv sheets to generate
   csv.sheets <- list(
-    list("Sample-Overexpression", spot.list.overexpression),
-    list("Sample-Underexpression", spot.list.underexpression),
-    list("Correlation Cluster", spot.list.correlation),
-    list("K-Means Cluster", spot.list.kmeans))
+    list("Overexpression Spots", spot.list.overexpression),
+    list("Underexpression Spots", spot.list.underexpression),
+    list("Correlation Clusters", spot.list.correlation),
+    list("K-Means Clusters", spot.list.kmeans))
 
   # generate group expression sheets?
   if (length(unique(group.labels)) > 1)
   {
     pdf.sheets[[length(pdf.sheets)+1]] <-
-      list("Group Overexpression.pdf", "Group Overexpression", spot.list.group.overexpression)
+      list("Group Overexpression.pdf", "Group Overexpression Spots", spot.list.group.overexpression)
 
     csv.sheets[[length(csv.sheets)+1]] <-
-      list("Group Overexpression", spot.list.group.overexpression)
+      list("Group Overexpression Spots", spot.list.group.overexpression)
   }
 
   pdf.sheets <- lapply(pdf.sheets, function(x)
@@ -651,42 +609,26 @@ pipeline.summarySheetsIntegral <- function()
          args=list(path=dirnames[["csv"]], main=x[[1]], set.list=x[[2]]))
   })
 
-  
-
-  # prepare directories
-  for (dirname in dirnames)
-  {
-    dir.create(dirname, showWarnings=FALSE, recursive=TRUE)
-  }
-
-
 
 
 
   util.info("Writing:", file.path(dirnames[["pdf"]], "*.pdf"))
 
-  # use max 4 cores to avoid preformance issues due disk io
-  cl <- makeCluster(min(4, preferences$max.parallel.cores))
-
-  clusterApplyLB(cl, seq_along(pdf.sheets), function(i, pdf.sheets)
+  dummy = sapply( seq_along(pdf.sheets), function(i, pdf.sheets)
   {
     do.call(pdf.sheets[[i]]$fn, pdf.sheets[[i]]$args)
   }, pdf.sheets)
 
-  stopCluster(cl)
 
 
 
   util.info("Writing:", file.path(dirnames[["csv"]], "*.csv"))
   
-  # use max 2 cores to avoid preformance issues due disk io
-  cl <- makeCluster(min(2, preferences$max.parallel.cores))
-
-  clusterApplyLB(cl, seq_along(csv.sheets), function(i, csv.sheets)
+  dummy = sapply( seq_along(csv.sheets), function(i, csv.sheets)
   {
     do.call(csv.sheets[[i]]$fn, csv.sheets[[i]]$args)
   }, csv.sheets)
 
-  stopCluster(cl)
+
 
 }

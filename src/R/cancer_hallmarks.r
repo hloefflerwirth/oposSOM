@@ -72,20 +72,17 @@ pipeline.cancerHallmarks <- function()
 
   hallmark.sets.list <- lapply(hallmark.sets.genes, function(x) list(Genes=x,Type=""))
 
-  cl <- makeCluster(preferences$max.parallel.cores)
-
-  hallmark.GSZ.matrix <- unlist(parSapply(cl, 1:ncol(indata), function(m)
+  hallmark.GSZ.matrix <- unlist(sapply( 1:ncol(indata), function(m)
   {
     return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[,m], hallmark.sets.list, sort=FALSE))
   }))
 
-  hallmark.spot.enrichment <- unlist(parSapply(cl, spot.list.overexpression$spots, function(x)
+  hallmark.spot.enrichment <- unlist(sapply( spot.list.overexpression$spots, function(x)
   {
     spot.ens.ids <- unique(na.omit(gene.ids[x$genes]))
     return(GeneSet.Fisher(spot.ens.ids, unique.protein.ids, hallmark.sets.list, sort=FALSE))
   }))
 
-  try({ stopCluster(cl) }, silent=TRUE)
 
   ### Output
   filename <- file.path(paste(files.name, "- Results"), "Geneset Analysis", "0verview Cancer Hallmarks.pdf")
@@ -99,9 +96,9 @@ pipeline.cancerHallmarks <- function()
     hallmark.sets.group.profiles <-
       tapply(hallmark.GSZ.matrix[i,], group.labels, c)[unique(group.labels)]
 
-    par(mar=c(5,3,4,2))
+    par(mar=c(5,4,4,2))
 
-    boxplot(hallmark.sets.group.profiles, col=groupwise.group.colors, las=2,
+    boxplot(hallmark.sets.group.profiles, col=groupwise.group.colors, las=2, ylab="GSZ",
             main=names(hallmark.sets.names)[i], ylim=range(hallmark.GSZ.matrix))
 
     abline(h=0, lty=2)

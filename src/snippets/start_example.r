@@ -19,10 +19,8 @@ env <- opossom.new(list(dataset.name = "Unnamed",
                       database.id.type = "auto",
 
                       geneset.analysis = T,
-                      geneset.analysis.exact = T,
+                      geneset.analysis.exact = F,
                       geneset.analysis.samplespots = F,
-
-                      max.parallel.cores = detectCores() / 2,
 
                       spot.threshold.samples = 0.65,
                       spot.coresize.modules = 3,

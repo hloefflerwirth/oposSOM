@@ -1,6 +1,4 @@
 \documentclass{article}
-%\VignetteIndexEntry{oposSOM Example}
-
 \usepackage{hyperref}
 \usepackage[authoryear,round]{natbib}
 \usepackage{graphicx}
@@ -243,8 +241,6 @@ respective analysis:
 	\item \textit{dim.1stLvlSom} (integer): dimension of primary SOM
     (default: 20). Given as a single value defining the size of the square
     SOM grid.
-	\item \textit{max.parallel.cores} (integer, >0): number of CPU cores used by
-    parallelized functions (default: half of the number of CPU cores).\\
 	\item \textit{feature.centralization} (boolean): enables or disables
     centralization of the features (default: TRUE).
 	\item \textit{sample.quantile.normalization} (boolean): enables quantile

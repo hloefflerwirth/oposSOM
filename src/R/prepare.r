@@ -76,15 +76,6 @@ pipeline.prepare <- function()
     preferences$geneset.analysis.exact <<- FALSE
   }
 
-  if (!is.numeric(preferences$max.parallel.cores) ||
-      preferences$max.parallel.cores < 1 ||
-      preferences$max.parallel.cores > detectCores())
-  {
-    preferences$max.parallel.cores <<- detectCores() / 2
-    util.warn("Invalid value of \"max.parallel.cores\". Using",
-              preferences$max.parallel.cores)
-  }
-
   if (!is.numeric(preferences$spot.threshold.samples) ||
       preferences$spot.threshold.samples <= 0 ||
       preferences$spot.threshold.samples >= 1)
@@ -380,7 +371,7 @@ pipeline.prepare <- function()
 
 
   ## SOM
-  util.info("Processing SOM")
+  util.info("Processing SOM. This may take several minutes until next notification.")
 
   som.result <<- som.init(indata, xdim=preferences$dim.1stLvlSom, ydim=preferences$dim.1stLvlSom, init="linear")
 

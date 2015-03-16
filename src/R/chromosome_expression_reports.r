@@ -46,6 +46,8 @@ sort.label <- function(x)
 
 pipeline.chromosomeExpressionReports <- function()
 {
+  if(ncol(metadata) > 1000) return()
+  
   # prepare chromosome geneset lists
   chr.gs.list <- lapply(gene.positions.list, function(x)
   {
@@ -71,12 +73,11 @@ pipeline.chromosomeExpressionReports <- function()
     list(Genes=gene.ids[x], Type="Chr")
   })
 
+  
   # Calculate GSZ
-  cl <- parallel::makeCluster(preferences$max.parallel.cores)
-
   util.progress(0, 10)
 
-  sample.chr.GSZ <- do.call(cbind, parLapply(cl, 1:ncol(indata), function(m)
+  sample.chr.GSZ <- do.call(cbind, lapply( 1:ncol(indata), function(m)
   {
     return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[,m], chr.gs.list, sort=FALSE))
   }))
@@ -85,7 +86,7 @@ pipeline.chromosomeExpressionReports <- function()
 
   util.progress(5, 10)
 
-  sample.chr.pq.GSZ <- do.call(cbind, parLapply(cl, 1:ncol(indata), function(m)
+  sample.chr.pq.GSZ <- do.call(cbind, lapply( 1:ncol(indata), function(m)
   {
     return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[,m], chr.pq.gs.list, sort=FALSE))
   }))
@@ -94,8 +95,8 @@ pipeline.chromosomeExpressionReports <- function()
 
   util.progress.terminate()
 
-  try({ stopCluster(cl) }, silent=TRUE)
 
+  
   # Heatmap Outputs
   filename <- file.path(paste(files.name, "- Results"),
                         "Geneset Analysis",
