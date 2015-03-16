@@ -34,8 +34,7 @@ pipeline.groupSpecificGenesets <- function()
       barplot(samples.GSZ.scores[names(top.gs)[i],], beside=TRUE, las=2,
               cex.names=1.2, col=group.colors, cex.main=1, ylim=ylim,
               border=if (ncol(indata) < 80) "black" else NA,
-              names.arg=if (ncol(indata)<100) colnames(indata) else rep("",ncol(indata)),
-              cex.axis=1.4)
+              names.arg=rep("",ncol(indata)), cex.axis=1.4)
 
       abline(h=0,lty=2)
       title(main=names(top.gs)[i], cex.main=1.2, line=1)

@@ -100,7 +100,7 @@ pipeline.genesetProfilesAndMaps <- function()
     abline(h=c(dens.off.thres,dens.on.thres), lty=2)
     
     
-    mtext("GSZ", side=2, line=3.5, cex=2)
+    mtext("GSZ", side=2, line=2.5, cex=1.5)
     
     
     
@@ -108,7 +108,7 @@ pipeline.genesetProfilesAndMaps <- function()
     ylim <- c(-21.8, 21.5)
     
     par(mar=c(5,0.1,1,2))
-    plot(rev(dens$y), rev(dens$x), type="l", xlab="", ylab="", axes=F, ylim=ylim, lwd=2, col="gray" )
+    plot(rev(dens$y), rev(dens$x), type="l", xlab="", ylab="", axes=FALSE, ylim=ylim, lwd=2, col="gray" )
     if( dens.on.peak != dens.off.peak )
     {  
       lines( rev(dens.left$y), rev(dens.left$x) )
@@ -133,10 +133,12 @@ pipeline.genesetProfilesAndMaps <- function()
     col[which(samples.GSZ.scores[i,]<dens.off.thres)] = "white"
     col[which(samples.GSZ.scores[i,]>dens.on.thres)] = "black"
     
-    image( matrix(1:ncol(indata),ncol(indata),1), col=col, axes=F )
+    image( matrix(1:ncol(indata),ncol(indata),1), col=col, axes=FALSE )
     box()
     
-    
+    par(new=TRUE, mar=c(1,3,0.1,4))
+    frame()
+    legend("left",c("on","-","off"),fill=c("black","gray60","white"),border="black",bty="n")
     
     
     

@@ -56,6 +56,8 @@ pipeline.prepareAnnotation <- function()
     preferences$geneset.analysis <<- FALSE
     return()
   }
+  
+  util.info("Loading gene annotations from database. This may take several minutes until next notification.")
 
   mart <- useMart('ensembl')
   mart <- useDataset(preferences$database.dataset, mart=mart)

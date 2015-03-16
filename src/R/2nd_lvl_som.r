@@ -20,13 +20,7 @@ pipeline.2ndLvlSom <- function()
   yl <- c(min(-secLvlSom.custom$visual[,"y"])-1.2, max(-secLvlSom.custom$visual[,"y"])+1.2)
 
   plot(secLvlSom.custom$visual[,"x"], -secLvlSom.custom$visual[,"y"], type="n",
-       axes=FALSE, xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i")
-
-  if (ncol(indata) < 100)
-  {
-    legend("bottomright",  paste(seq_along(colnames(indata)), ":", colnames(indata)),
-           cex=0.5, text.col=group.colors, ncol=(ncol(indata)-1)%/%25+1, bg="white")
-  }
+       axes=FALSE, xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i",main="Second level SOM", cex.main=1)
 
   if (length(unique(group.labels)) > 1)
   {
@@ -44,29 +38,25 @@ pipeline.2ndLvlSom <- function()
     if (!is.na(which.samples[1]))
     {
 
-      which.samples <- which.samples[1:min(4, length(which.samples))]
+      which.samples <- which.samples[1:min(9, length(which.samples))]
 
-      x.seq <- rep(c(-0.2, 0.2), 2)[seq_along(which.samples)]
-      y.seq <- c(rep(0.2, 2), rep(-0.2, 2))[seq_along(which.samples)]
-
-      points(secLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
-             -secLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
-             pch=16, col=group.colors[which.samples], cex=2.5)
+      x.seq <- c(0,0.3,0,-0.3,0,-0.3,0.3,-0.3,0.3)[seq_along(which.samples)]
+      y.seq <- c(0,0,0.3,0,-0.3,-0.3,-0.3,0.3,0.3)[seq_along(which.samples)]
 
       points(secLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
              -secLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
-             pch=1, col="gray20", cex=2.5, lwd=1)
+             pch=16, col=group.colors[which.samples], cex=1.5)
 
-      text(secLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
-           -secLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
-           which.samples, col="gray20", cex=0.8)
+      points(secLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
+             -secLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
+             pch=1, col="gray20", cex=1.5, lwd=1)
     }
   }
 
   box()
 
   plot(secLvlSom.custom$visual[,"x"], -secLvlSom.custom$visual[,"y"], type="n",
-       axes=FALSE, xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i")
+       axes=FALSE, xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i",main="Second level SOM", cex.main=1)
 
   if (length(unique(group.labels)) > 1)
   {
@@ -84,22 +74,22 @@ pipeline.2ndLvlSom <- function()
     if (!is.na(which.samples[1]))
     {
 
-      which.samples <- which.samples[1:min(4, length(which.samples))]
+      which.samples <- which.samples[1:min(9, length(which.samples))]
 
-      x.seq <- rep(c(-0.2, 0.2), 2) [seq_along(which.samples)]
-      y.seq <- c(rep(0.2, 2), rep(-0.2, 2)) [seq_along(which.samples)]
-
-      points(secLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
-             -secLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
-             pch=16, col=group.colors[which.samples], cex=2.5)
+      x.seq <- c(0,0.3,0,-0.3,0,-0.3,0.3,-0.3,0.3)[seq_along(which.samples)]
+      y.seq <- c(0,0,0.3,0,-0.3,-0.3,-0.3,0.3,0.3)[seq_along(which.samples)]
 
       points(secLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
              -secLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
-             pch=1, col="gray20", cex=2.5, lwd=1)
+             pch=16, col=group.colors[which.samples], cex=1.5)
+
+      points(secLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
+             -secLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
+             pch=1, col="gray20", cex=1.5, lwd=1)
 
       text(secLvlSom.custom$visual[which.samples[1], "x"]+x.seq,
            -secLvlSom.custom$visual[which.samples[1], "y"]+y.seq,
-           colnames(indata)[which.samples], col="gray20", cex=0.8)
+           colnames(indata)[which.samples], col="gray20", cex=0.6)
     }
   }
 
@@ -117,7 +107,7 @@ pipeline.2ndLvlSom <- function()
 
     plot(secLvlSom.custom$visual[,"x"], -secLvlSom.custom$visual[,"y"],
          type="n", axes=FALSE, xlab="", ylab="", cex=4, col=group.colors, pch=16,
-         xaxs="i", yaxs="i", xlim=xl, ylim=yl)
+         xaxs="i", yaxs="i", xlim=xl, ylim=yl,main="Second level SOM, group outlines", cex.main=1)
 
     for (i in seq_along(unique(group.labels)))
     {
@@ -139,39 +129,6 @@ pipeline.2ndLvlSom <- function()
     box()
   }
 
-  ##### Plot SmoothSupersom ######
-  for (i in seq_along(unique(group.labels)))
-  {
-    col <- colorRampPalette(c("white", groupwise.group.colors[i]))
-    coords <- cbind(secLvlSom.custom$visual[,"x"], -secLvlSom.custom$visual[,"y"])
-    coords <- coords[which(group.labels==unique(group.labels)[i]) , ,drop=FALSE]
-
-    if (nrow(coords) == 1)
-    {
-      coords <- rbind(coords,coords)
-    }
-
-    smoothScatter(coords, main="", xlim=xl, ylim=yl, axes=FALSE, xlab="", ylab="",
-                  nrpoints=0, colramp=col, bandwidth=2, nbin=128,
-                  transformation=function(x) { x^0.25 }, xaxs="i", yaxs="i")
-
-    if (i < length(unique(group.labels)))
-    {
-      par(new=TRUE)
-    }
-  }
-
-  par(new=TRUE)
-
-  plot(secLvlSom.custom$visual[,"x"], -secLvlSom.custom$visual[,"y"],
-       pch=16, col=group.colors, axes=FALSE, xlab="",ylab="", xlim=xl,ylim=yl,
-       xaxs="i", yaxs="i")
-
-  if (length(unique(group.labels)) > 1)
-  {
-    legend("topright", as.character(unique(group.labels)), cex=0.5,
-           text.col=groupwise.group.colors, bg="white")
-  }
 
   ##### Plot Supersom with real expression profiles ######
   par(mar=c(1,1,1,1))
@@ -179,14 +136,7 @@ pipeline.2ndLvlSom <- function()
   yl <- c(min(-secLvlSom.20.20$visual[,"y"])-1, max(-secLvlSom.20.20$visual[,"y"])+1)
 
   plot(secLvlSom.20.20$visual[,"x"], -secLvlSom.20.20$visual[,"y"], type="p", axes=FALSE,
-       xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i")
-
-  if (ncol(indata) < 100)
-  {
-    legend("bottomright",
-           paste(seq_along(colnames(indata)), ":", colnames(indata)),
-           cex=0.5, text.col=group.colors, ncol=(ncol(indata)-1)%/%25+1, bg="white")
-  }
+       xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i",main="Second level SOM with expresson portraits", cex.main=1)
 
   if (length(unique(group.labels)) > 1)
   {
@@ -216,22 +166,18 @@ pipeline.2ndLvlSom <- function()
               secLvlSom.20.20$visual[which.samples[1], "x"]+c(-0.45,0.455),
               -secLvlSom.20.20$visual[which.samples[1], "y"]+c(-0.45,0.45))
 
-      which.samples <- which.samples[1:min(4, length(which.samples))]
+      which.samples <- which.samples[1:min(9, length(which.samples))]
 
-      x.seq <- rep(c(-0.2, 0.2), 2) [seq_along(which.samples)]
-      y.seq <- c(rep(0.2, 2), rep(-0.2, 2)) [seq_along(which.samples)]
-
-      points(secLvlSom.20.20$visual[which.samples[1], "x"]+x.seq,
-             -secLvlSom.20.20$visual[which.samples[1], "y"]+y.seq,
-             pch=16, col=group.colors[which.samples], cex=2.5)
+      x.seq <- c(0,0.3,0,-0.3,0,-0.3,0.3,-0.3,0.3)[seq_along(which.samples)]
+      y.seq <- c(0,0,0.3,0,-0.3,-0.3,-0.3,0.3,0.3)[seq_along(which.samples)]
 
       points(secLvlSom.20.20$visual[which.samples[1], "x"]+x.seq,
              -secLvlSom.20.20$visual[which.samples[1], "y"]+y.seq,
-             pch=1, col="gray20", cex=2.5, lwd=1)
+             pch=16, col=group.colors[which.samples], cex=1.5)
 
-      text(secLvlSom.20.20$visual[which.samples[1], "x"]+x.seq,
-           -secLvlSom.20.20$visual[which.samples[1], "y"]+y.seq,
-           which.samples, col="gray20", cex=0.8)
+      points(secLvlSom.20.20$visual[which.samples[1], "x"]+x.seq,
+             -secLvlSom.20.20$visual[which.samples[1], "y"]+y.seq,
+             pch=1, col="gray20", cex=1.5, lwd=1)
     }
   }
 

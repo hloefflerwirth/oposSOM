@@ -85,7 +85,7 @@ pipeline.htmlGroupSummary <- function()
 
       <p>
         The SOM portraits are aggregated in groupwise fashions. Further,
-        group stability scores are calculated using bootstrapped clustering.
+        group stability scores are calculated using correlation silhouette method.
         Finally, samples within each group are clustered and visualized as
         hierarchical dendrograms.
       </p>

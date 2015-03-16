@@ -8,10 +8,8 @@ pipeline.entropyProfiles <- function()
   par(mar=c(10, 6, 4, 5))
 
   barplot(apply(metadata, 2, mean), col=group.colors,
-          main="Metagene Mean Expression", names.arg=colnames(indata), las=2,
-          cex.main=2.5, cex.lab=2, cex.axis=2, cex.names=1.2,
-          border=if (ncol(indata) < 80) "black" else NA)
-
+          main=bquote("Mean metagene expression: <e"[m]^meta~">"), names.arg=colnames(indata), las=2,
+          cex.main=2.5,border=if (ncol(indata) < 80) "black" else NA)
   box()
 
   if (length(unique(group.labels)) > 1)
@@ -19,15 +17,13 @@ pipeline.entropyProfiles <- function()
     mean.boxes <- by(apply(metadata, 2, mean), group.labels, c)[unique(group.labels)]
 
     boxplot(mean.boxes, col=groupwise.group.colors, las=2,
-            main="Metagene Mean Expression", cex.main=2.5, cex.axis=2, xaxt="n")
-
+            main=bquote("Mean metagene expression: <e"[m]^meta~">"), cex.main=2.5, xaxt="n")
+  
     axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
   }
 
-  barplot(apply(metadata, 2, var), col=group.colors, main="Metagene Variance",
-          names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2,
-          cex.axis=2, cex.names=1.2, border=if (ncol(indata) < 80) "black" else NA)
-
+  barplot(apply(metadata, 2, var), col=group.colors, main=bquote("Metagene variance: var(e"[m]^meta~")"),
+          names.arg=colnames(indata), las=2, cex.main=2.5, border=if (ncol(indata) < 80) "black" else NA)
   box()
 
   if (length(unique(group.labels)) > 1)
@@ -35,7 +31,7 @@ pipeline.entropyProfiles <- function()
     mean.sd.boxes <- by(apply(metadata, 2, var), group.labels, c)[unique(group.labels)]
 
     boxplot(mean.sd.boxes, col=groupwise.group.colors, las=2,
-            main="Metagene Variance", cex.main=2.5, cex.axis=2, xaxt="n")
+            main=bquote("Metagene variance: var(e"[m]^meta~")"), cex.main=2.5, xaxt="n")
 
     axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
   }
@@ -66,10 +62,9 @@ pipeline.entropyProfiles <- function()
 
   ylim <- c(min(H)-0.1*(max(H)-min(H)),max(H)+0.1*(max(H)-min(H)))
 
-  barplot(H, col=group.colors, main="Standard Metagene Entropy",
-          names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2,
-          cex.axis=2, cex.names=1.2, ylim=ylim, xpd=FALSE,
-          border=if (ncol(indata) < 80) "black" else NA)
+  barplot(H, col=group.colors, main=bquote("Standard metagene entropy: h"[m]),
+          names.arg=colnames(indata), las=2, cex.main=2.5,
+          ylim=ylim, xpd=FALSE, border=if (ncol(indata) < 80) "black" else NA)
 
   box()
 
@@ -78,7 +73,7 @@ pipeline.entropyProfiles <- function()
     mean.sd.boxes <- by(H, group.labels, c)[unique(group.labels)]
 
     boxplot(mean.sd.boxes, col=groupwise.group.colors, las=2,
-            main="Standard Metagene Entropy", cex.main=2.5, cex.axis=2, xaxt="n")
+            main=bquote("Standard metagene entropy: h"[m]~""), cex.main=2.5, xaxt="n")
 
     axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
   }
@@ -92,10 +87,9 @@ pipeline.entropyProfiles <- function()
 
   ylim <- c(min(H)-0.1*(max(H)-min(H)),max(H)+0.1*(max(H)-min(H)))
 
-  barplot(H, col=group.colors, main="Weighted Metagene Entropy",
-          names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2,
-          cex.axis=2, cex.names=1.2, ylim=ylim, xpd=FALSE,
-          border=if (ncol(indata) < 80) "black" else NA)
+  barplot(H, col=group.colors, main=bquote("Metagene entropy weighted for metagene population: h"[m]^weighted),
+          names.arg=colnames(indata), las=2, cex.main=2.5, ylim=ylim, 
+          xpd=FALSE, border=if (ncol(indata) < 80) "black" else NA)
 
   box()
 
@@ -104,7 +98,7 @@ pipeline.entropyProfiles <- function()
     mean.sd.boxes <- by(H, group.labels, c)[unique(group.labels)]
 
     boxplot(mean.sd.boxes, col=groupwise.group.colors, las=2,
-            main="Weighted Metagene Entropy", cex.main=2.5, cex.axis=2, xaxt="n")
+            main=bquote("Metagene entropy weighted for metagene population: h"[m]^weighted~""), cex.main=2.5, xaxt="n")
 
     axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
   }
@@ -119,10 +113,9 @@ pipeline.entropyProfiles <- function()
 
   ylim <- c(min(H)-0.1*(max(H)-min(H)),max(H)+0.1*(max(H)-min(H)))
 
-  barplot(H, col=group.colors, main="Tsallis Metagene Entropy",
-          names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2,
-          cex.axis=2, cex.names=1.2, ylim=ylim, xpd=FALSE,
-          border=if (ncol(indata) < 80) "black" else NA)
+  barplot(H, col=group.colors, main=bquote("Tsallis metagene entropy: h"[m]^Tsallis~""),
+          names.arg=colnames(indata), las=2, cex.main=2.5, ylim=ylim, 
+          xpd=FALSE, border=if (ncol(indata) < 80) "black" else NA)
 
   box()
 
@@ -131,7 +124,7 @@ pipeline.entropyProfiles <- function()
     mean.sd.boxes <- by(H, group.labels, c)[unique(group.labels)]
 
     boxplot(mean.sd.boxes, col=groupwise.group.colors, las=2,
-            main="Tsallis Metagene Entropy", cex.main=2.5, cex.axis=2, xaxt="n")
+            main=bquote("Tsallis metagene entropy: h"[m]^Tsallis~""), cex.main=2.5, xaxt="n")
 
     axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
   }

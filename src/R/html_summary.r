@@ -92,8 +92,8 @@ pipeline.htmlSummary <- function()
           </a>
         </li>
         <li>
-          <a href=\"Expression Portraits alternative.pdf\" target=\"_blank\">
-            Alternative Color Scales: absolute, WAD, loglogFC (PDF)
+          <a href=\"Expression Portraits - alternative scales.pdf\" target=\"_blank\">
+            Alternative Color Scales: absolute expression, WAD, loglogFC (PDF)
           </a>
         </li>
         <li>

@@ -80,12 +80,12 @@ pipeline.3rdLvlSummarySheets <- function()
     par(mar=c(8, 3, 6, 3))
 
     image(matrix(set.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-          axes=FALSE, col = colramp(1000), main=main, cex.main=1.5)
+          axes=FALSE, col = colramp(1000), main=paste("Overview map,",main), cex.main=1.5)
 
     box()
 
     image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-          axes=FALSE, col = "darkgreen", main="Spots", cex.main=1.5)
+          axes=FALSE, col = "darkgreen", main="Detected spots", cex.main=1)
 
     box()
 
@@ -94,9 +94,9 @@ pipeline.3rdLvlSummarySheets <- function()
     plot(0, type="n", axes=TRUE, xlab="", ylab="", xlim=c(0,preferences$dim.1stLvlSom),
          ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i", las=1)
 
-    points(do.call(rbind, lapply(set.list$spots, function(x) x$position)), pch=16, cex=3, col="black")
-    points(do.call(rbind, lapply(set.list$spots, function(x) x$position)), pch=1, cex=3, col="white")
-    text(do.call(rbind, lapply(set.list$spots, function(x) x$position)), names(set.list$spots), col="white")
+    points(do.call(rbind, lapply(set.list$spots, function(x) x$position)), pch=16, cex=2.6, col="black")
+    points(do.call(rbind, lapply(set.list$spots, function(x) x$position)), pch=1, cex=2.6, col="white")
+    text(do.call(rbind, lapply(set.list$spots, function(x) x$position)), names(set.list$spots), col="white", cex=0.8)
 
     ## plot single spot overview
     layout(matrix(1:18, 6, 3, byrow=TRUE), widths=c(1,4,1.5))
@@ -159,7 +159,7 @@ pipeline.3rdLvlSummarySheets <- function()
       }
     }
 
-    ### Binary spot-group-heatmaps
+    ### Spot homogeneity map
     map <- B.spot.group.map.global*(1-H.spot.group.map)
     map <- map[nrow(map):1,,drop=FALSE]
 
@@ -167,7 +167,7 @@ pipeline.3rdLvlSummarySheets <- function()
     par(mar=c(5,4,4,0))
 
     image(t(map), col=colorRampPalette(c("darkblue","white","darkred"))(1000),
-          main="Spot homogeneity map", zlim=c(-1,1), axes=FALSE, cex.main=2.5)
+          main="Spot homogeneity map", zlim=c(-1,1), axes=FALSE, cex.main=1.5)
 
     box()
     axis(1, seq(0,1,length.out=ncol(map)), colnames(map), las=2, cex.axis=1.1)
@@ -187,11 +187,11 @@ pipeline.3rdLvlSummarySheets <- function()
     layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
     par(mar=c(5, 4, 4, 2))
 
-    image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="mistyrose", axes=FALSE)
+    image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="mistyrose", axes=FALSE, main="Spot homogeneity map - overexpressed spots", cex.main=1.5)
     par(new=TRUE)
 
     plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,preferences$dim.1stLvlSom),
-         ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i") #, main="Group Association", cex.main=2.5
+         ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i")
 
     box()
 
@@ -205,16 +205,16 @@ pipeline.3rdLvlSummarySheets <- function()
     par(mar=c(0,0,4,0))
     plot(0,type="n",axes=FALSE,xlab="",ylab="")
 
-    legend("topleft", legend=unique(group.labels), cex=1.3, col=groupwise.group.colors,
-           pch=15, pt.cex=2, bty="n")
-
+    legend("topleft", legend=unique(group.labels), cex=1, col=groupwise.group.colors,
+           pch=15, pt.cex=1.4)   
+    
     map = 1-H.spot.group.map
     map[which(B.spot.group.map.global>=0)] <- 0
 
     layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
     par(mar=c(5, 4, 4, 2))
 
-    image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="lightsteelblue1", axes=FALSE)
+    image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="lightsteelblue1", main="Spot homogeneity map - underexpressed spots", cex.main=1.5)
     par(new=TRUE)
 
     plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,preferences$dim.1stLvlSom),
@@ -233,9 +233,9 @@ pipeline.3rdLvlSummarySheets <- function()
     par(mar=c(0,0,4,0))
     plot(0,type="n",axes=FALSE,xlab="",ylab="")
 
-    legend("topleft", legend=unique(group.labels), cex=1.3, col=groupwise.group.colors,
-           pch=15, pt.cex=2, bty="n")
-
+    legend("topleft", legend=unique(group.labels), cex=1, col=groupwise.group.colors,
+           pch=15, pt.cex=1.4)   
+  
     ### Group association barplots
     if (length(unique(group.labels)) > 1)
     {
@@ -267,25 +267,25 @@ pipeline.3rdLvlSummarySheets <- function()
       par(mar=c(5, 4, 4, 2))
 
       barplot(spot.group.assoc[,ncol(spot.group.assoc):1],
-              main="Group Association", cex.main=2.5, cex.axis=2, cex.names=1,
+              main="Association of the groups to the spots", cex.main=1.5, cex.axis=2, cex.names=1,
               col=groupwise.group.colors, horiz=TRUE, las=1)
 
       par(mar=c(5, 1, 4, 2))
 
-      plot(0, main="< #spots >", cex.main=2.5, type="n", axes=FALSE, xlab="",
+      plot(0, main="", cex.main=1, type="n", axes=FALSE, xlab="",
            ylab="", xlim=c(0,1), ylim=c(0,1), xaxs="i", yaxs="i")
 
-      legend("topleft",
-             legend=paste(unique(group.labels), "(", round(spot.goup.mean.number,1), ")"),
-             cex=1.3, col=groupwise.group.colors, pch=15, pt.cex=2, bty="n")
+      legend("topleft",  legend=paste(unique(group.labels), "(", round(spot.goup.mean.number,1), ")"),
+             col=groupwise.group.colors, pch=15, pt.cex=1.4, title="< #spots >")
 
       layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
       par(mar=c(5, 4, 4, 2))
 
-      image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=FALSE)
+      image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=FALSE,
+            main="Association of the groups to the spots", cex.main=1.5)
       par(new=TRUE)
       plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,preferences$dim.1stLvlSom),
-           ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i") #, main="Group Association", cex.main=2.5
+           ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i")
 
       box()
 
@@ -310,110 +310,7 @@ pipeline.3rdLvlSummarySheets <- function()
       plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1),
            xaxs="i", yaxs="i")
 
-      legend("topleft", legend=unique(group.labels), cex=1.3, col=groupwise.group.colors,
-             pch=15, pt.cex=2, bty="n")
-
-      group.spot.mean.number <- apply(ceiling(spot.group.assoc), 2, sum)
-
-      layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
-      par(mar=c(5, 8, 4, 2))
-
-      barplot(t(spot.group.assoc)[,nrow(spot.group.assoc):1],
-              main="Spot Association", cex.main=2.5, cex.axis=2, cex.names=0.8,
-              col=colramp(N.spots), horiz=TRUE, las=1)
-
-      par(mar=c(5, 1, 4, 2))
-
-      plot(0, main="#groups", cex.main=2.5, type="n", axes=FALSE, xlab="", ylab="",
-           xlim=c(0,1), ylim=c(0,1), xaxs="i", yaxs="i")
-
-      legend("topleft",
-             legend=paste(names(set.list$spots), "(", group.spot.mean.number, ")"),
-             cex=1.3, col=colramp(N.spots), pch=15, pt.cex=2, bty="n")
-    }
-
-    if (preferences$geneset.analysis)
-    {
-      sig.gs.types <- matrix(0,
-                             length(set.list$spots),
-                             length(unique(gs.def.list.categories)),
-                             dimnames=list(names(set.list$spots),
-                                           unique(gs.def.list.categories)))
-
-      for (i in seq_along(set.list$spots))
-      {
-        x <- set.list$spots[[i]]
-
-        sig.gs <- names(which(x$Fisher.p < 1e-4))
-        sig.gs.types.table <- table(gs.def.list.categories[sig.gs])
-
-        sig.gs.types[i, names(sig.gs.types.table)] <- sig.gs.types.table
-      }
-
-      for (i in 1:ncol(sig.gs.types))
-      {
-        sig.gs.types[,i] <-
-          sig.gs.types[,i] / sum(gs.def.list.categories == colnames(sig.gs.types)[i]) * 100
-      }
-
-      layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
-      par(mar=c(5, 4, 4, 2))
-
-      barplot(t(sig.gs.types)[,nrow(sig.gs.types):1], main="%Significant Genesets",
-              cex.main=2.5, cex.axis=2, cex.names=1,
-              col=colramp(length(unique(gs.def.list.categories))),
-              horiz=TRUE, las=1)
-
-      par(mar=c(5, 1, 4, 2))
-
-      plot(0, main="", cex.main=2.5, type="n", axes=FALSE, xlab="", ylab="",
-           xlim=c(0,1), ylim=c(0,1), xaxs="i", yaxs="i")
-
-      legend("topleft", legend=unique(gs.def.list.categories), cex=1.3,
-             col=colramp(length(unique(gs.def.list.categories))), pch=15,
-             pt.cex=2, bty="n")
-
-      sig.gs.types = sig.gs.types / max(sig.gs.types)
-
-      layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
-      par(mar=c(5, 4, 4, 2))
-
-      image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=FALSE)
-      par(new=TRUE)
-
-      plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,preferences$dim.1stLvlSom),
-           ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i") #, main="Group Association", cex.main=2.5
-
-      box()
-
-      for (i in seq_along(set.list$spots))
-      {
-        stars(t(sig.gs.types[i,]), locations=set.list$spots[[i]]$position, len=2,
-              draw.segments=TRUE,  scale=FALSE, add=TRUE,
-              col.segments=colramp(length(unique(gs.def.list.categories))))
-
-        par(fg="gray", lty=2)
-
-        stars(t(c(0.5)), locations=set.list$spots[[i]]$position, len=2,
-              draw.segments=TRUE,  scale=FALSE, add=TRUE, col.segments=NA)
-
-        par(fg="black", lty="solid")
-
-        text(set.list$spots[[i]]$position[1],
-             set.list$spots[[i]]$position[2]+preferences$dim.1stLvlSom*0.05,
-             names(set.list$spots)[i], col="gray50")
-      }
-
-      par(mar=c(5, 1, 4, 2))
-
-      plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1),
-           xaxs="i", yaxs="i")
-
-      legend("topleft",
-             legend=unique(gs.def.list.categories),
-             cex=1.3, col=colramp(length(unique(gs.def.list.categories))),
-             pch=15, pt.cex=2, bty="n")
-
+      legend("topleft", legend=unique(group.labels), col=groupwise.group.colors, pch=15, pt.cex=1.4)
     }
   }
 
@@ -422,43 +319,43 @@ pipeline.3rdLvlSummarySheets <- function()
   filename <-
     if (spot.list.overexpression$filtered)
     {
-      file.path(dirname, "Overexpression Spot Report filtered.pdf")
+      file.path(dirname, "Spot Report - Overexpression Spots filtered.pdf")
     } else
     {
-      file.path(dirname, "Overexpression Spot Report.pdf")
+      file.path(dirname, "Spot Report - Overexpression Spots.pdf")
     }
 
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list.reports(set.list=spot.list.overexpression, main="Sample-Overexpression")
+  plot.set.list.reports(set.list=spot.list.overexpression, main="Overexpression Spots")
   dev.off()
 
   filename <-
     if (spot.list.underexpression$filtered)
     {
-      file.path(dirname, "Underexpression Spot Report filtered.pdf")
+      file.path(dirname, "Spot Report - Underexpression Spots filtered.pdf")
     } else
     {
-      file.path(dirname, "Underexpression Spot Report.pdf")
+      file.path(dirname, "Spot Report - Underexpression Spots.pdf")
     }
 
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list.reports(set.list=spot.list.underexpression, main="Sample-Underexpression")
+  plot.set.list.reports(set.list=spot.list.underexpression, main="Underexpression Spots")
   dev.off()
 
-  filename <- file.path(dirname, "K-Means Cluster Report.pdf")
+  filename <- file.path(dirname, "Spot Report - K-Means Clusters.pdf")
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
-  plot.set.list.reports(set.list=spot.list.kmeans, main="K-Means Cluster")
+  plot.set.list.reports(set.list=spot.list.kmeans, main="K-Means Clusters")
   dev.off()
 
   if (length(unique(group.labels)) > 1)
   {
-    filename <- file.path(dirname, "Group Overexpression Report.pdf")
+    filename <- file.path(dirname, "Spot Report - Group Overexpression Spots.pdf")
     util.info("Writing:", filename)
     pdf(filename, 29.7/2.54, 21/2.54)
-    plot.set.list.reports(set.list=spot.list.group.overexpression, main="Group Overexpression")
+    plot.set.list.reports(set.list=spot.list.group.overexpression, main="Group Overexpression Spots")
     dev.off()
   }
 }

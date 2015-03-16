@@ -57,8 +57,8 @@ pipeline.summarySheetsGroups <- function()
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
 
-  par(mfrow=c(5,7))
-  par(mar=c(0.5,2.5,4.5,0.5))
+  par(mfrow=c(5,6))
+  par(mar=c(0.5,2.5,4.5,1.5))
 
   for (i in seq_along(unique(group.labels)))
   {
@@ -73,14 +73,6 @@ pipeline.summarySheetsGroups <- function()
           axes=FALSE, col = colramp(1000))
 
     title(main="logFC", cex.main=1.5, line=0.5)
-    box()
-
-    image(matrix(group.metadata[,i] * (1-group.metadata.sd[,i]/max(group.metadata.sd)),
-                 preferences$dim.1stLvlSom,
-                 preferences$dim.1stLvlSom),
-          axes=FALSE, col = colramp(1000), zlim=range(group.metadata[,i]))
-
-    title(main="robustness", cex.main=1.3, line=0.5)
     box()
 
     image(matrix(bleached.group.metadata[,i],
@@ -373,8 +365,9 @@ pipeline.summarySheetsGroups <- function()
   par(mar=c(5,3,3,2))
   
   b=barplot( S, col=group.colors[names(S)], main="Correlation Silhouette", names.arg=if(ncol(indata)<80) names(S) else rep("",length(S)), las=2, cex.main=1, cex.lab=1, cex.axis=0.8, cex.names=0.6, border = ifelse(ncol(indata)<80,"black",NA), xpd=FALSE, ylim=c(-.25,1) )  
+  mtext("S",2,line=1.9,cex=0.8)
   abline( h=c(0,0.25,0.5,0.75), lty=2, col="gray80" )
-  title( sub= bquote("<" ~ s ~ "> = " ~ .(round(mean(S),2))), line=1 )
+  title( main= bquote("<" ~ s ~ "> = " ~ .(round(mean(S),2))), line=0.5, cex.main=1 )
   box()
   points( b, rep(-0.2,ncol(indata)), pch=15, cex=1, col=groupwise.group.colors[apply( group.correlations[,names(S)], 2, which.max )] )
   
@@ -383,6 +376,7 @@ pipeline.summarySheetsGroups <- function()
   
   par(mar=c(5,3,0,2))
   boxplot( mean.boxes, col=groupwise.group.colors, las=2, main="", cex.main=1, cex.axis=0.8, xaxt="n", ylim=c(-.25,1) )
+  mtext("S",2,line=1.9,cex=0.8)
   abline( h=c(0,0.25,0.5,0.75), lty=2, col="gray80" )
   axis( 1, 1:length(groupwise.group.colors), paste( unique(group.labels), "\n<s> =", round(mean.mean.S,2) ), las=2, cex.axis=0.8 )
 
@@ -406,10 +400,10 @@ pipeline.summarySheetsGroups <- function()
     for( i in seq(samples.o) )
     {
       axis(2, seq(0,1,length.out=length(samples.o))[i], samples.o[i], las=2, col.axis=groupwise.group.colors[gr], line=10, tick=FALSE, cex.axis=0.6 )      
-      axis(2, seq(0,1,length.out=length(samples.o))[i], bquote("<" ~ r[1] ~ "> = " ~ .(round(group.correlations[gr,samples.o[i]],2)) ) , las=2, col.axis=groupwise.group.colors[gr], line=5, tick=FALSE, cex.axis=0.6 )
+      axis(2, seq(0,1,length.out=length(samples.o))[i], bquote("<" ~ r[best] ~ "> = " ~ .(round(group.correlations[gr,samples.o[i]],2)) ) , las=2, col.axis=groupwise.group.colors[gr], line=5, tick=FALSE, cex.axis=0.6 )
       
       second.corr.group <- names( which.max(group.correlations[-which(rownames(group.correlations)==gr),samples.o[i]]) )
-      axis(2, seq(0,1,length.out=length(samples))[i], bquote("<" ~ r[2] ~ "> = " ~ .(round(group.correlations[second.corr.group,samples.o[i]],2)) ) , las=2, col.axis=groupwise.group.colors[second.corr.group], line=0, tick=FALSE, cex.axis=0.6 )					
+      axis(2, seq(0,1,length.out=length(samples))[i], bquote("<" ~ r[2^nd] ~ "> = " ~ .(round(group.correlations[second.corr.group,samples.o[i]],2)) ) , las=2, col.axis=groupwise.group.colors[second.corr.group], line=0, tick=FALSE, cex.axis=0.6 )					
     }
     
   }
@@ -631,53 +625,6 @@ pipeline.summarySheetsGroups <- function()
         }
       }
 
-      plot(hc, main=unique(group.labels)[i], col.main=unique(group.colors)[i], xlab="", sub="")
-      mtext("mean branch portraits; extremes of upper level blanked out")
-
-      for (ii in (if (length(group.member)<80) 1 else ceiling(length(merges)/3)):length(merges))
-      {
-        m <- matrix(diff.metadata[[ii]], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
-
-        if (max(m,na.rm=TRUE) - min(m,na.rm=TRUE) != 0)
-        {
-          m <- 1 + (m - min(m,na.rm=TRUE)) / (max(m,na.rm=TRUE) - min(m,na.rm=TRUE)) * 999
-        }
-
-        m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
-        m[which(is.na(m))] <- 0
-
-        x <- pixmapIndexed(m , col = c("gray90", colramp(1000)), cellres=10)
-
-        addlogo(x,
-                coords.x[ii]+cex.branch.portraits[1]*c(-1,1),
-                coords.h[ii]+cex.branch.portraits[2]*c(-1,1))
-
-        rect(coords.x[ii] - cex.branch.portraits[1],
-             coords.h[ii] - cex.branch.portraits[2],
-             coords.x[ii] + cex.branch.portraits[1],
-             coords.h[ii] + cex.branch.portraits[2])
-      }
-
-      if (length(group.member) < 80)
-      {
-        for (ii in seq_along(group.member))
-        {
-          m <- matrix(metadata[, group.member[hc$order[ii]]],
-                      preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
-
-          if (max(m) - min(m) != 0)
-          {
-            m <- 1 + (m - min(m)) / (max(m) - min(m)) * 999
-          }
-
-          m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
-          x <- pixmapIndexed(m , col = colramp(1000), cellres=10)
-
-          addlogo(x,
-                  ii+cex.sample.portraits[1]*c(-1,1),
-                  y.sample.portraits+cex.sample.portraits[2]*c(-1,1))
-        }
-      }
     }
   }
 

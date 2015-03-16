@@ -342,14 +342,15 @@ pipeline.calcStatistics <- function()
         plot(sd.g.m[,m] ~ e.g.m[,m],
              xlab="e",
              ylab="",
-             main=colnames(indata)[m],
+             main="Locally pooled error estimate (LPE)",
              xlim=c(min(e.g.m,na.rm=TRUE), max(e.g.m,na.rm=TRUE)),
              ylim=c(0,max(sd.g.m,na.rm=TRUE)),
              las=1,
-             cex.main=2.5,
+             cex.main=1.5,
              cex.lab=2,
              cex.axis=2)
 
+        title(main=colnames(indata)[m],line=0.5)
         mtext(expression(sigma), side=2, line=4, cex= 2, las=2)
 
         a <- round(mean.LPE2[colnames(indata)[m]], 2)
@@ -370,12 +371,12 @@ pipeline.calcStatistics <- function()
       plot(apply(indata.original, 1, sd) ~ apply(indata.original, 1, mean),
            xlab=expression(e[g]),
            ylab="",
-           main="LPE",
+           main="Locally pooled error estimate (LPE)",
            las=1,
-           cex.main=2.5,
+           cex.main=1.5,
            cex.lab=2,
-           cex.axis=2)
-
+           cex.axis=2)      
+      
       mtext(expression(sigma[g]), side=2, line=4, cex= 2, las=2)
       points(LPE.g.m[,1] ~ apply(indata.original, 1, mean), col="green", pch=16)
       dev.off()
@@ -394,14 +395,15 @@ pipeline.calcStatistics <- function()
         plot(sd.g.m[,plot.sample] ~ e.g.m[,plot.sample],
              xlab="e",
              ylab="",
-             main=unique(group.labels)[m],
+             main="Locally pooled error estimate (LPE)",
              xlim=c(min(e.g.m,na.rm=TRUE), max(e.g.m,na.rm=TRUE)),
              ylim=c(0,max(sd.g.m,na.rm=TRUE)),
              las=1,
-             cex.main=2.5,
+             cex.main=1.5,
              cex.lab=2,
              cex.axis=2)
 
+        title(main=unique(group.labels)[m],line=0.5)
         mtext(expression(sigma), side=2, line=4, cex= 2, las=2)
         points(LPE.g.m[,plot.sample] ~ e.g.m[,plot.sample], col="green", pch=16)
         dev.off()
@@ -460,15 +462,15 @@ pipeline.calcStatistics <- function()
 
     pdf(filename, 8, 8)
     par(mar=c(10, 6, 4, 5))
-    mean.LPE.string <- expression(paste("<", sigma[LPE], ">", sep=""))
+    mean.LPE.string <- expression(paste("standard deviation derived from LPE model:  <", sigma[LPE], ">", sep=""))
 
     barplot(mean.LPE2,
             col=group.colors,
             main=mean.LPE.string,
             las=2,
-            cex.main=2.5,
-            cex.lab=2,
-            cex.axis=2)
+            cex.main=1.5,
+            cex.lab=1,
+            cex.axis=1)
 
     box()
 
@@ -480,8 +482,8 @@ pipeline.calcStatistics <- function()
               col=unique(group.colors),
               main=mean.LPE.string,
               las=2,
-              cex.main=2.5,
-              cex.axis=2,
+              cex.main=1.5,
+              cex.axis=1,
               xaxt="n")
 
       axis(1, seq_along(mean.LPE2.boxes), names(mean.LPE2.boxes), las=2)

@@ -58,7 +58,7 @@ pipeline.genesetOverviews <- function()
     box()
     axis(1, c(0,0.5,1), round(max(max(top.scores),-min(top.scores))*c(-1,0,1)), cex.axis=1.4)
     mtext("GSZ score", cex=2, line=32)
-    mtext(i, cex=1.2, line=30)
+    mtext(paste("Category",i), cex=1, line=30)
 
     heatmap.wrap(x=top.scores, cex.main=2,
                  col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
@@ -73,7 +73,7 @@ pipeline.genesetOverviews <- function()
     box()
     axis(1, c(0,0.5,1), round(max(max(top.scores),-min(top.scores))*c(-1,0,1)), cex.axis=1.4)
     mtext("GSZ score", cex=2, line=33.5)
-    mtext(i, cex=1.2, line=32)
+    mtext(paste("Category",i), cex=1, line=32)
 
     o <- unlist(sapply(unique(group.labels), function(gr)
     {
@@ -101,7 +101,7 @@ pipeline.genesetOverviews <- function()
     box()
     axis( 1, c(0,0.5,1), round(max(max(top.scores),-min(top.scores))*c(-1,0,1)), cex.axis=1.4 )
     mtext( "GSZ score", cex=2, line=33.5 )
-    mtext( i, cex=1.2, line=32 )
+    mtext(paste("Category",i), cex=1, line=32)
   }
 
   ### p Histogram + FDR

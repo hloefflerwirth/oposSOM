@@ -246,6 +246,6 @@ pipeline.2ndLvlModuleCorrelation <- function(s, hcl)
     plot(ddr, horiz=TRUE, axes=FALSE, yaxs="i", leaflab="none")
     par(mar=c(0, 0, 1, 8))
     plot(ddr, axes=FALSE, xaxs="i", leaflab="none")
-    title("Module Correlation Map", cex.main = 1.5)
+    title(paste("Expression module correlation map,",metagene.filter.list[[i]]$n), cex.main = 1.5)
   }
 }

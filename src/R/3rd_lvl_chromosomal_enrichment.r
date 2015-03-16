@@ -63,8 +63,9 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
     image(1:ncol(intersect.counts),
           1:nrow(intersect.counts),
           t(intersect.counts[nrow(intersect.counts):1,]),
-          axes=FALSE, xlab="", ylab="", col=colkey, main=main, zlim=c(0,1))
+          axes=FALSE, xlab="", ylab="", col=colkey, main=paste("Chromosome Map,",main), zlim=c(0,1))
 
+    title(main="(% band genes found in a spot)",line=0.1,cex.main=0.6)
     box()
     abline(h=chr.sep.level+0.5, lwd=0.1, lty=3)
 
@@ -85,12 +86,6 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
 
     box()
 
-    if (length(set.list$spots) > 1)
-    {
-      environment(pipeline.3rdLvlChromosomeAssociationMaps) <- environment()
-      pipeline.3rdLvlChromosomeAssociationMaps(gene.positions.list)
-    }
-
     for (m in seq_along(set.list$spots))
     {
       intersect.counts <- sapply(gene.positions.list, function(x)
@@ -110,6 +105,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
       par(mar=c(0,0,0,0))
       plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,1))
       text(0.005, 0, paste("Spot",names(set.list$spots)[m]), cex=2)
+      text(0.2, 0, "(% band genes found in this spot)", cex=1.2)
 
       par(mar=c(1.5,2,0.2,0.3))
 
@@ -127,51 +123,51 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
     }
   }
 
-  filename <- file.path(dirnames["pdf"], "Overexpression Chromosomal Enrichment.pdf")
+  filename <- file.path(dirnames["pdf"], "Chromosomal Enrichment - Overexpression spots.pdf")
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 29.7/2.54)
 
   if (length(gene.positions.list) > 0)
   {
     plot.set.list.chromosomes(set.list=spot.list.overexpression,
-                              main="Overexpression Spot Chromosome Map")
+                              main="Overexpression Spots")
   }
 
   dev.off()
 
-  filename <- file.path(dirnames["pdf"], "Underexpression Chromosomal Enrichment.pdf")
+  filename <- file.path(dirnames["pdf"], "Chromosomal Enrichment - Underexpression spots.pdf")
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 29.7/2.54)
 
   if (length(gene.positions.list) > 0)
   {
     plot.set.list.chromosomes(spot.list.underexpression,
-                              main="Underexpression Spot Chromosome Map")
+                              main="Underexpression Spots")
   }
 
   dev.off()
 
-  filename <- file.path(dirnames["pdf"], "K-Means Cluster Chromosomal Enrichment.pdf")
+  filename <- file.path(dirnames["pdf"], "Chromosomal Enrichment - K-Means Clusters.pdf")
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 29.7/2.54)
 
   if (length(gene.positions.list) > 0)
   {
-    plot.set.list.chromosomes(spot.list.kmeans, main="K-Means Cluster Chromosome Map")
+    plot.set.list.chromosomes(spot.list.kmeans, main="K-Means Clusters")
   }
 
   dev.off()
 
   if (length(unique(group.labels)) > 1)
   {
-    filename <- file.path(dirnames["pdf"], "Group Overexpression Chromosomal Enrichment.pdf")
+    filename <- file.path(dirnames["pdf"], "Chromosomal Enrichment - Group Overexpression Spots.pdf")
     util.info("Writing:", filename)
     pdf(filename, 21/2.54, 29.7/2.54)
 
     if (length(gene.positions.list) > 0)
     {
       plot.set.list.chromosomes(set.list=spot.list.group.overexpression,
-                                main="Group Overexpression Chromosome Map")
+                                main="Group Overexpression Spots")
     }
 
     dev.off()

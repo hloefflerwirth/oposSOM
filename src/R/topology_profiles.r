@@ -22,18 +22,16 @@ pipeline.topologyProfiles <- function()
     sum(sapply(x$spots, function(x){ if (x$type=="overexpressed") 1 else 0 }))
   })
 
-  barplot(n.spots, col=group.colors, main="Number of overexpressed spots (logFC)",
-          names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2,
-          cex.names=1.2, border=if (ncol(indata) < 80) "black" else NA)
+  barplot(n.spots, col=group.colors, main="Number of overexpressed spots",
+          names.arg=colnames(indata), las=2, cex.main=2, 
+          border=if (ncol(indata) < 80) "black" else NA)
   box()
 
   if (length(unique(group.labels)) > 1)
   {
     mean.boxes <- by(n.spots, group.labels, c)[unique(group.labels)]
 
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
-            main="Number of overexpressed spots (logFC)",
-            cex.main=2.5, cex.axis=2, xaxt="n")
+    boxplot(mean.boxes, col=groupwise.group.colors, las=2, xaxt="n")
 
     axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
   }
@@ -60,18 +58,16 @@ pipeline.topologyProfiles <- function()
 
   barplot(as.vector(n.spots.groups), col=rep(groupwise.group.colors,each=max(n.spots)),
           names.arg=rep(c(1:max(n.spots)), length(unique(group.labels))), las=1,
-          main="Relative numbers of overexpressed spots (logFC)",
-          cex.main=2.5, cex.lab=2, cex.axis=2, cex.names=0.9,
-          border=if (ncol(indata) < 80) "black" else NA, ylim=c(0, 1))
+          main="Fraction of samples showing respective number of overexpression spots",
+          cex.main=2, border=if (ncol(indata) < 80) "black" else NA, ylim=c(0, 1))
 
   par(mfrow=c(1, 2))
 
   ### Fraction of red metagenes ###
   K.red <- apply(metadata.scaled, 2, function(x) { length(which(x > 0.9)) }) / preferences$dim.1stLvlSom^2
 
-  barplot(K.red, col=group.colors, main="Fraction of red metagenes (logFC)",
-          names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2,
-          cex.names=1.2, border=if (ncol(indata) < 80) "black" else NA)
+  barplot(K.red, col=group.colors, main="Fraction of overexpressed metagenes", cex.main=2,
+          names.arg=colnames(indata), las=2, border=if (ncol(indata) < 80) "black" else NA)
 
   box()
 
@@ -79,66 +75,7 @@ pipeline.topologyProfiles <- function()
   {
     mean.boxes <- by(K.red, group.labels, c)[unique(group.labels)]
 
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
-            main="Fraction of red metagenes (logFC)", cex.main=2.5, cex.axis=2, xaxt="n")
-
-    axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
-  }
-
-  K.red.loglog <- apply(metadata.scaled.loglog, 2, function(x) { length(which(x > 0.5)) }) / preferences$dim.1stLvlSom^2
-
-  barplot(K.red.loglog, col=group.colors, main="Fraction of red metagenes (loglogFC)",
-          names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2,
-          cex.names=1.2, border=if (ncol(indata) < 80) "black" else NA)
-
-  box()
-
-  if (length(unique(group.labels)) > 1)
-  {
-    mean.boxes <- by(K.red.loglog, group.labels, c)[unique(group.labels)]
-
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
-            main="Fraction of red metagenes (loglogFC)", cex.main=2.5, cex.axis=2, xaxt="n")
-
-    axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
-  }
-
-  ### Fraction of genes in red metagenes ###
-  f <- apply(metadata.scaled, 2, function(x) { sum(som.result$code.sum[which(x > 0.9), "nobs"]) }) / nrow(indata)
-
-  barplot(f, col=group.colors, main="Fraction of red genes (logFC)",
-          names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2,
-          cex.names=1.2, border=if (ncol(indata) < 80) "black" else NA)
-
-  box()
-
-  if (length(unique(group.labels)) > 1)
-  {
-    mean.boxes <- by(f, group.labels, c)[unique(group.labels)]
-
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
-            main="Fraction of red genes (logFC)", cex.main=2.5, cex.axis=2, xaxt="n")
-
-    axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
-  }
-
-  f <- apply(metadata.scaled.loglog, 2, function(x)
-  {
-    sum(som.result$code.sum[which(x > 0.5), "nobs"])
-  }) / nrow(indata)
-
-  barplot(f, col=group.colors, main="Fraction of red genes (loglogFC)",
-          names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2,
-          cex.names=1.2, border=if (ncol(indata) < 80) "black" else NA)
-
-  box()
-
-  if (length(unique(group.labels)) > 1)
-  {
-    mean.boxes <- by(f, group.labels, c)[unique(group.labels)]
-
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
-            main="Fraction of red genes (loglogFC)", cex.main=2.5, cex.axis=2, xaxt="n")
+    boxplot(mean.boxes, col=groupwise.group.colors, las=2, main="", xaxt="n")
 
     axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
   }
@@ -173,9 +110,9 @@ pipeline.topologyProfiles <- function()
     return(count.border.metagenes)
   })
 
-  barplot(K.border, col=group.colors, main="Length of borderline (logFC)",
-          names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2,
-          cex.names=1.2, border=if (ncol(indata) < 80) "black" else NA)
+  barplot(K.border, col=group.colors, main="Length of borderline along overexpressed metagenes",
+          names.arg=colnames(indata), las=2, cex.main=1.8, 
+          border=if (ncol(indata) < 80) "black" else NA)
 
   box()
 
@@ -183,54 +120,7 @@ pipeline.topologyProfiles <- function()
   {
     mean.boxes = by(K.border, group.labels, c)[unique(group.labels)]
 
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
-            main="Length of borderline (logFC)", cex.main=2.5, cex.axis=2, xaxt="n")
-
-    axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
-  }
-
-  K.border.loglog <- apply(metadata.scaled.loglog, 2, function(x)
-  {
-    m <- matrix(x, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
-    m[which(m < 0.9)] <- NA
-    count.border.metagenes <- 0
-
-    for (i in 1:preferences$dim.1stLvlSom)
-    {
-      for (j in 1:preferences$dim.1stLvlSom)
-      {
-        if (!is.na(m[i,j]))
-        {
-          neighbours <- sapply(get.neighbors(i, j, preferences$dim.1stLvlSom),
-                               function(x){ m[x[1],x[2]] })
-
-          if (length(which(is.na(neighbours))))
-          {
-            count.border.metagenes <- count.border.metagenes + 1
-          } else if (i %in% c(1, preferences$dim.1stLvlSom) || j %in% c(1, preferences$dim.1stLvlSom))
-          {
-            count.border.metagenes <- count.border.metagenes + 1
-          }
-        }
-      }
-    }
-
-    return(count.border.metagenes)
-  })
-
-
-  barplot(K.border.loglog, col=group.colors, main="Length of borderline (loglogFC)",
-          names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2,
-          cex.names=1.2, border=if (ncol(indata) < 80) "black" else NA)
-
-  box()
-
-  if (length(unique(group.labels)) > 1)
-  {
-    mean.boxes <- by(K.border.loglog, group.labels, c)[unique(group.labels)]
-
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
-            main="Length of borderline (loglogFC)", cex.main=2.5, cex.axis=2, xaxt="n")
+    boxplot(mean.boxes, col=groupwise.group.colors, las=2, main="", xaxt="n")
 
     axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
   }
@@ -238,9 +128,9 @@ pipeline.topologyProfiles <- function()
   ### Compactness of spots ###
   C <- K.red / K.border
 
-  barplot(C, col=group.colors, main="Compactness of spots (logFC)",
-          names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2,
-          cex.names=1.2, border=if (ncol(indata) < 80) "black" else NA)
+  barplot(C, col=group.colors, main="Compactness of spots",
+          names.arg=colnames(indata), las=2, cex.main=2, 
+          border=if (ncol(indata) < 80) "black" else NA)
 
   box()
 
@@ -248,26 +138,7 @@ pipeline.topologyProfiles <- function()
   {
     mean.boxes <- by(C, group.labels, c)[unique(group.labels)]
 
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
-            main="Compactness of spots (logFC)", cex.main=2.5, cex.axis=2, xaxt="n")
-
-    axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
-  }
-
-  C <- K.red.loglog / K.border.loglog
-
-  barplot(C, col=group.colors, main="Compactness of spots (loglogFC)",
-          names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2,
-          cex.names=1.2, border=if (ncol(indata) < 80) "black" else NA)
-
-  box()
-
-  if (length(unique(group.labels)) > 1)
-  {
-    mean.boxes <- by(C, group.labels, c)[unique(group.labels)]
-
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
-            main="Compactness of spots (loglogFC)", cex.main=2.5, cex.axis=2, xaxt="n")
+    boxplot(mean.boxes, col=groupwise.group.colors, las=2, main="", xaxt="n")
 
     axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
   }
@@ -275,9 +146,9 @@ pipeline.topologyProfiles <- function()
   ### Shape of spots ###
   C <- (K.red * preferences$dim.1stLvlSom^2) / K.border^2
 
-  barplot(C, col=group.colors, main="Shape of spots (logFC)",
-          names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2,
-          cex.names=1.2, border=if (ncol(indata) < 80) "black" else NA)
+  barplot(C, col=group.colors, main="Shape of spots",
+          names.arg=colnames(indata), las=2, cex.main=2, 
+          border=if (ncol(indata) < 80) "black" else NA)
 
   box()
 
@@ -285,26 +156,7 @@ pipeline.topologyProfiles <- function()
   {
     mean.boxes <- by(C, group.labels, c)[unique(group.labels)]
 
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2,
-            main="Shape of spots (logFC)", cex.main=2.5, cex.axis=2, xaxt="n")
-
-    axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
-  }
-
-  C <- (K.red.loglog * preferences$dim.1stLvlSom^2) / K.border.loglog^2
-
-  barplot(C, col=group.colors, main="Shape of spots (loglogFC)",
-          names.arg=colnames(indata), las=2, cex.main=2.5, cex.lab=2, cex.axis=2,
-          cex.names=1.2, border=if (ncol(indata) < 80) "black" else NA)
-
-  box()
-
-  if (length(unique(group.labels)) > 1)
-  {
-    mean.boxes <- by(C, group.labels, c)[unique(group.labels)]
-
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2, main="Shape of spots (loglogFC)",
-            cex.main=2.5, cex.axis=2, xaxt="n")
+    boxplot(mean.boxes, col=groupwise.group.colors, las=2, main="",xaxt="n")
 
     axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2)
   }
