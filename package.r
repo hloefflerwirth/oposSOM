@@ -80,7 +80,7 @@ if (!fast) {
 if (install) {
 	# remove.packages("oposSOM")
   install.packages( paste( "H:\\Eigene Dateien\\Entwicklung\\R Scripts\\SOM Pipeline\\oposSOM\\Package Build\\",
-												  	sort( grep( "oposSOM_1.1.", dir(), value=TRUE), decreasing=TRUE )[1], sep="" ),
+												  	sort( grep( "oposSOM_", dir(), value=TRUE), decreasing=TRUE )[1], sep="" ),
 														repos=NULL, type="source" )
 }
 
