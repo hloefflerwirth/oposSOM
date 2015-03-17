@@ -86,7 +86,7 @@ if (install) {
 
 
 
-
+system("timeout /T 600")
 
 
 
