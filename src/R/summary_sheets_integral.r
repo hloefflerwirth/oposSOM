@@ -500,15 +500,8 @@ pipeline.summarySheetsIntegral <- function()
     {
       basename <- paste(main, " ", names(set.list$spots)[m], ".csv", sep="")
 
-      if (length(set.list$spots[[m]]$genes) <= 0)
+      if (length(set.list$spots[[m]]$genes) <= 0 || length(set.list$spots[[m]]$genes) > 2000)
       {
-        util.warn("Skip generating table (not enough genes):", basename)
-        next
-      }
-
-      if (length(set.list$spots[[m]]$genes) > 2000)
-      {
-        util.warn("Skip generating table (too many genes):", basename)
         next
       }
 
