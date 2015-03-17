@@ -86,13 +86,25 @@ opossom.new <- function(preferences=NULL)
                           sample.quantile.normalization = TRUE,
                           pairwise.comparison.list = list())
 
-  # Merge user supplied preferences
+  # Merge user supplied information
   if (!is.null(preferences))
   {
     env$preferences <-
       modifyList(env$preferences, preferences[names(env$preferences)])
   }
-
+  if(!is.null(preferences$indata))
+  {
+    env$indata <- preferences$indata
+  }
+  if(!is.null(preferences$group.labels))
+  {
+    env$group.labels <- preferences$group.labels
+  }
+  if(!is.null(preferences$group.colors))
+  {
+    env$group.colors <- preferences$group.colors
+  }
+  
   return(env)
 }
 
