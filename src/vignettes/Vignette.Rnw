@@ -309,6 +309,31 @@ env$preferences$pairwise.comparison.list <-
 
 
 \pagebreak
+\section{New functionalities introduced with oposSOM 1.0 on Bioconductor}
+The oposSOM-package release on Bioconductor is highly superior to the version released on CRAN in 2011:
+\begin{itemize}
+  \item Structure of the source code was thoroughly revised to meet the requirements of Bioconductor.
+  \item Organization and presentation of the results output was improved, accompanied with an extended HTML interface to access all results.
+  \item A package vignette was introduced.
+  \item New analysis modules were implemented:
+  \begin{itemize}
+    \item Metagene entropy and portrait topology analyses
+    \item Neighbor-joining clustering of the samples
+    \item Correlation Network analysis of the samples
+    \item GSZ-profiles for the individual gene sets
+    \item Overview heatmaps summarizing enrichment of a large number of gene sets
+    \item Cancer hallmark enrichment analyses
+    \item Enrichment analyses for genes sets relating to chromosomal positions
+    \item Spot report sheets and spot correlation (wTO) networks  
+    \item Expression portraits, differential expression analyses and functional characteristics summarized for the groups defined
+    \item Stability analyses of the groups using correlation silhouette methods
+    \item Differential expression analyses for pairs of samples or groups of samples, including differential expression portraits and functional characterization    
+  \end{itemize}    
+  \item Primary input data can be given as Bioconductor 'ExpressionSet' object.
+\end{itemize}
+
+
+
 \section{Citing oposSOM}
 
 Please cite \citep{Wirth2011} and \citep{Wirth2012} when using the package.
