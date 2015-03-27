@@ -153,7 +153,8 @@ pipeline.genesetProfilesAndMaps <- function()
       x$Fisher.p[names(gs.def.list)[i]]
     }))
     names(spot.fisher.p) <- LETTERS[seq_along(spot.fisher.p)]
-    
+    spot.fisher.p <- pmin( spot.fisher.p, 16 )
+
     radarchart( as.data.frame( rbind( rep(10,length(spot.fisher.p) ), rep(0,length(spot.fisher.p) ), spot.fisher.p ) ),   						
                 pcol="gray50", pfcol="gray80",	title="Enrichment in overexpression spots", seg=2, pty=32, plwd = 3 )
     
@@ -164,7 +165,8 @@ pipeline.genesetProfilesAndMaps <- function()
       x$Fisher.p[names(gs.def.list)[i]]
     }))  
     names(spot.fisher.p) <- LETTERS[seq_along(spot.fisher.p)]
-    
+    spot.fisher.p <- pmin( spot.fisher.p, 16 )
+
     radarchart( as.data.frame( rbind( rep(10,length(spot.fisher.p) ), rep(0,length(spot.fisher.p) ), spot.fisher.p ) ),     					
                 pcol="gray50", pfcol="gray80",	title="Enrichment in kMeans clusters", seg=2, pty=32, plwd = 3 )
 
