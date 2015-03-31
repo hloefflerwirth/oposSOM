@@ -371,7 +371,7 @@ pipeline.prepare <- function()
 
 
   ## SOM
-  util.info("Processing SOM. This may take several minutes until next notification.")
+  util.info("Processing SOM. This may take several time until next notification.")
 
   som.result <<- som.init(indata, xdim=preferences$dim.1stLvlSom, ydim=preferences$dim.1stLvlSom, init="linear")
 
