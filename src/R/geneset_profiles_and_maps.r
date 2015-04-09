@@ -143,6 +143,26 @@ pipeline.genesetProfilesAndMaps <- function()
     
     
 
+    ## Geneset Profiles - Group boxplots
+    ylim <- c(-10, 20)
+    
+    layout(1)
+    par(mar=c(15,6,4,5))
+    
+    mean.boxes <- by(samples.GSZ.scores[i,], group.labels, c)[unique(group.labels)]
+    boxplot(mean.boxes, col=groupwise.group.colors, main=rownames(samples.GSZ.scores)[i],
+            cex.main=1, ylim=ylim, axes=FALSE, yaxs="i")
+
+    axis(1, seq_along(unique(group.labels)), unique(group.labels), las=2, tick=FALSE)
+    axis(2, las=2)
+
+    abline(h=0, lty=2)
+
+    mtext("GSZ", side=2, line=2.5, cex=1.5)
+
+
+
+
     #################################################
 
     if( length(spot.list.overexpression$spots) > 2 )
