@@ -1,3 +1,4 @@
+%\VignetteIndexEntry{The oposSOM users guide}
 \documentclass{article}
 \usepackage{hyperref}
 \usepackage[authoryear,round]{natbib}
