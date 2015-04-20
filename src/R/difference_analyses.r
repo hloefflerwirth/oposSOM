@@ -45,28 +45,27 @@ get.SD.estimate = function(data, samples, lambda=0.5)
 
 pipeline.differenceAnalyses = function()
 {
-  if (length(unique(group.labels)) < 2)
+  
+  if (length(unique(group.labels)) >= 2 && length(unique(group.labels)) <= 8 )
   {
-    util.warn("Skip differences analyses: not enough different groups")
-    return()
+    differences.list <- apply(combn(unique(group.labels), 2), 2, function(x)
+    {
+      list(which(group.labels==x[1]), which(group.labels==x[2]))
+    })
+    
+    names(differences.list) <-
+      apply(combn(unique(group.labels), 2), 2, paste, collapse=" vs ")
+    
+  } else
+  {
+    differences.list <- list()
+    util.warn("Skip pairwise group analyses: too few or many groups")
   }
-
-  if (length(unique(group.labels)) > 7)
-  {
-    util.warn("Skip differences analyses: too many different groups")
-    return()
-  }
-
-  differences.list <- apply(combn(unique(group.labels), 2), 2, function(x)
-  {
-    list(which(group.labels==x[1]), which(group.labels==x[2]))
-  })
-
-  names(differences.list) <-
-    apply(combn(unique(group.labels), 2), 2, paste, collapse=" vs ")
-
-  differences.list <- c(preferences$pairwise.comparison.list, differences.list)
-
+  
+  differences.list <- c( preferences$pairwise.comparison.list, differences.list )
+  
+  
+  
   util.info("Processing Differences Analyses")
   dir.create(paste(files.name, "- Results/Summary Sheets - Differences"), showWarnings=FALSE)
   dir.create(paste(files.name, "- Results/Summary Sheets - Differences/CSV Sheets"), showWarnings=FALSE)
