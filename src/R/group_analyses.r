@@ -1,6 +1,6 @@
 pipeline.groupAnalysis <- function()
 {
-  if (length(unique(group.labels)) <= 1)
+  if (length(unique(group.labels)) < 2)
   {
     return()
   }

@@ -343,28 +343,30 @@ pipeline.summarySheetsGroups <- function()
   pdf(filename, 21/2.54, 29.7/2.54)
 
 
-  S = group.silhouette.coef
-  S = unlist( tapply( S, group.labels, sort, decreasing=TRUE )[unique(group.labels)] )
-  names(S) = sub( paste(paste(unique(group.labels),".",sep=""),collapse="|"), "", names(S) )
-     
+  S <- tapply( group.silhouette.coef, group.labels, sort, decreasing=TRUE, simplify=FALSE )[unique(group.labels)]
+  names(S) <- NA
+  S <- unlist(S)
+  names(S) <- sub( paste("^NA.",sep=""), "", names(S) )
+  
+  
   PCM <- cor( metadata )
   diag(PCM) <- NA
    
   group.correlations <- sapply( seq(ncol(metadata)), function(i)
   {
-    mean.group.correlations = tapply( PCM[,i], group.labels, mean, na.rm=TRUE )[unique(group.labels)]
+    mean.group.correlations <- tapply( PCM[,i], group.labels, mean, na.rm=TRUE )[unique(group.labels)]
     
     return(  mean.group.correlations )
   } )
-  colnames(group.correlations) = colnames(indata)
-  group.correlations[which(is.nan(group.correlations))] = 0
+  colnames(group.correlations) <- colnames(indata)
+  group.correlations[which(is.nan(group.correlations))] <- 0
     
   
   layout(matrix(c(0,1,2,0),ncol=1))
   #par(mfrow=c(2,1))
   par(mar=c(5,3,3,2))
   
-  b=barplot( S, col=group.colors[names(S)], main="Correlation Silhouette", names.arg=if(ncol(indata)<80) names(S) else rep("",length(S)), las=2, cex.main=1, cex.lab=1, cex.axis=0.8, cex.names=0.6, border = ifelse(ncol(indata)<80,"black",NA), xpd=FALSE, ylim=c(-.25,1) )  
+  b<-barplot( S, col=group.colors[names(S)], main="Correlation Silhouette", names.arg=if(ncol(indata)<80) names(S) else rep("",length(S)), las=2, cex.main=1, cex.lab=1, cex.axis=0.8, cex.names=0.6, border = ifelse(ncol(indata)<80,"black",NA), xpd=FALSE, ylim=c(-.25,1) )  
   mtext("S",2,line=1.9,cex=0.8)
   abline( h=c(0,0.25,0.5,0.75), lty=2, col="gray80" )
   title( main= bquote("<" ~ s ~ "> = " ~ .(round(mean(S),2))), line=0.5, cex.main=1 )
