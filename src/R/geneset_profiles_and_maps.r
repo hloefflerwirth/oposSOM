@@ -217,7 +217,7 @@ pipeline.genesetProfilesAndMaps <- function()
   for (i in seq_along(gs.def.list))
   {
     filename <- paste(substring(make.names(names(gs.def.list)[i]), 1, 100), "map.pdf")
-    pdf(file.path(dirname, filename), 21/2.54, 21/2.54)
+    pdf(file.path(dirname, filename), 21/2.54, 21/2.54, useDingbats=FALSE)
 
     ### Population Map ###
     n.map <- matrix(0,preferences$dim.1stLvlSom,preferences$dim.1stLvlSom)

@@ -3,7 +3,7 @@ pipeline.2ndLvlComponentAnalysis <- function()
   filename <- file.path(paste(files.name, "- Results"), "2nd lvl Metagene Analysis", "Component Analysis.pdf")
   util.info("Writing:", filename)
 
-  pdf(filename, 21/2.54, 29.7/2.54)
+  pdf(filename, 21/2.54, 29.7/2.54, useDingbats=FALSE)
 
   for (i in seq_along(metagene.filter.list))
   {

@@ -12,7 +12,7 @@ pipeline.2ndLvlSom <- function()
 
   filename <- file.path(paste(files.name, "- Results"), "2nd lvl Metagene Analysis", "2nd lvl SOM.pdf")
   util.info("Writing:", filename)
-  pdf(filename, 21/2.54, 21/2.54)
+  pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
 
   ##### Plot Supersom #####
   par(mar=c(1, 1, 1, 1))
