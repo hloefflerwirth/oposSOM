@@ -541,15 +541,15 @@ pipeline.summarySheetsIntegral <- function()
 
       out <- cbind(out,
                    "mean expression"=indata.gene.mean[o],
+                   "SD"=apply(indata[o, ,drop=FALSE], 1, sd),
                    "max delta e"=apply(indata[o, ,drop=FALSE], 1, max),
                    "min delta e"=apply(indata[o, ,drop=FALSE], 1, min),
                    "% high expressed"=round(apply(indata[o, ,drop=FALSE] + indata.gene.mean[o], 1, function(x)  sum(x > high.low.threshold) / length(x) * 100)),
                    "correlation"=r.genes[o],
                    "->t.score"=r.t[o],
                    "->p.value"=r.p[o],
-                   "SD"=apply(indata[o, ,drop=FALSE], 1, sd),
                    "Metagene"=gene.coordinates[o],
-                   "Chromosome"=gene.positions[rownames(indata)[o]],
+                   "Chromosome"=gene.positions[o],
                    "Description"=gene.descriptions[o])
 
       write.csv2(out, file.path(path, basename))

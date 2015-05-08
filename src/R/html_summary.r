@@ -61,6 +61,8 @@ pipeline.htmlSummary <- function()
         <dd>", length(unique(group.labels)), "</dd>
         <dt>Number of genes</dt>
         <dd>", nrow(indata), "</dd>
+        <dt>ID type of genes</dt>
+        <dd>", preferences$database.id.type , "</dd>
         <dt>Dimension 1st level SOM</dt>
         <dd>", preferences$dim.1stLvlSom, " x ", preferences$dim.1stLvlSom, "</dd>
         <dt>Analysis finished</dt>
