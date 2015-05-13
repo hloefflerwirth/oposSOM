@@ -488,6 +488,43 @@ pipeline.summarySheetsIntegral <- function()
           legend("topright", c("p", expression(eta[0]), "Fdr", "fdr"),
                  col=c("black","gray","black","black"), lty=c(1,1,2,3), lwd=c(1,1,1,2), cex=0.7)
         }
+        
+        ## Splitted Genesets Sheet
+        n.sets <- 20
+        n.cat <- length(table(gs.def.list.categories))
+        par(mfrow=c(ceiling(n.cat/3), min(n.cat, 3)))
+        
+        for (i in names(table(gs.def.list.categories)))
+        {
+          top.gs.p <-
+            sort(set.list$spots[[m]]$Fisher.p[names(which(gs.def.list.categories == i))])[1:n.sets]
+          
+          x.coords <- c(0.05, 0.15, 0.28, 0.39, 0.45)
+          y.coords <- seq(0.88, 0.05, length.out=n.sets)
+          
+          par(mar=c(0,0,0,0))
+          
+          plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1),
+               ylim=c(0,1), xaxs="i", yaxs="i")
+          
+          text(x.coords[1], 0.97, i, cex=2, adj=0)
+          text(x.coords, 0.92, c("Rank", "p-value", "#in/all", "Geneset", ""), cex=1, adj=0)
+          text(x.coords[1], y.coords, c(1:n.sets), adj=0)
+          text(x.coords[2], y.coords, format(top.gs.p, digits=1), cex=0.6, adj=0)
+          
+          text(x.coords[3], y.coords,
+               paste(sapply(gs.def.list[names(top.gs.p)], function(x)
+               {
+                 length(intersect(x$Genes, gene.ids[set.list$spots[[m]]$genes]))
+               }), "/",
+               sapply(gs.def.list[names(top.gs.p)], function(x)
+               {
+                 length(x$Genes)
+               })), cex=0.6, adj=0)
+          
+          text(x.coords[4], y.coords, names(top.gs.p), cex=0.6, adj=0)
+        }
+        
       }
     }
 
