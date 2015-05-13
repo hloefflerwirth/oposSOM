@@ -39,6 +39,31 @@ pipeline.2ndLvlComponentAnalysis <- function()
              text.col=groupwise.group.colors, bg="white")
 
       
+      layout(matrix(c(1,2)))
+      par(mar=c(0.1,3,1,3))
+      
+      plot(ICA.metagenes[,1], ICA.metagenes[,3], type="p", pch=16,
+           col=group.colors, cex=3, axes=FALSE, xlab="", ylab="",
+           main=paste("Independent component analysis,",metagene.filter.list[[i]]$n), cex.main=0.8)
+      
+      mtext("component 3",2,cex=0.8)
+      points(ICA.metagenes[,1], ICA.metagenes[,3], pch=16, col=group.colors, cex=3)
+      points(ICA.metagenes[,1], ICA.metagenes[,3], pch=1, col="black", cex=3)
+      box()
+      
+      par(mar=c(1,3,0.1,3))
+      
+      plot(ICA.metagenes[,1], ICA.metagenes[,2], type="p", pch=16,
+           col=group.colors, cex=3, axes=FALSE, xlab="", ylab="", main="")
+      
+      mtext("component 1",1,cex=0.8)
+      mtext("component 2",2,cex=0.8)
+      
+      points(ICA.metagenes[,1], ICA.metagenes[,2], pch=16, col=group.colors, cex=3)
+      points(ICA.metagenes[,1], ICA.metagenes[,2], pch=1, col="black", cex=3)
+      box()
+      
+      
       
       layout(matrix(c(1,2)))
       par(mar=c(0.1,3,1,3))
