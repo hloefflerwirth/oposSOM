@@ -149,12 +149,7 @@ pipeline.prepareAnnotation <- function()
   names(chr.gs.list) <- paste("Chr", names(gene.positions.list))
   gs.def.list <<- c(gs.def.list, chr.gs.list)
 
-  small.gs <- which(sapply(sapply(gs.def.list, head, 1), length) < 10)
 
-  if (length(small.gs) > 0)
-  {
-    gs.def.list <<- gs.def.list[- small.gs]
-  }
 
   # load custom genesets
   data(opossom.genesets)
