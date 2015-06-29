@@ -47,7 +47,7 @@ Please check the vignette for more details on the parameters.
   A new oposSOM environment which is passed to \code{opossom.run}.
 }
 \author{
-Author: Henry Wirth <wirth@izbi.uni-leipzig.de>
+Author: Henry Loeffler-Wirth <wirth@izbi.uni-leipzig.de>
 
 Maintainer: Martin Kalcher <mkalcher@porkbox.net>
 }

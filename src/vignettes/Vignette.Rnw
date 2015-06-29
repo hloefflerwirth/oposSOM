@@ -8,7 +8,7 @@
 \SweaveOpts{concordance=TRUE}
 
 \title{The oposSOM Package}
-\author{Henry Wirth, Martin Kalcher}
+\author{Henry L\"offler-Wirth, Martin Kalcher}
 \maketitle
 
 
@@ -166,8 +166,8 @@ input. Periodical status messages are given to inform about running and
 accomplished tasks. Please note that the tissue sample will take approx. 30min
 to finish, depending on the users' hardware:
 
-<<>>=
-# opossom.run(env)
+<<eval=FALSE>>=
+opossom.run(env)
 @
 
 \begin{figure}[h!]
@@ -249,6 +249,19 @@ respective analysis:
 \end{itemize}
 
 \ \\
+Database parameters are required to enable gene annotations and functional analyses (details are given below):
+
+\begin{itemize}
+  \item \textit{database.dataset} (character): type of ensemble dataset
+    queried using biomaRt interface (default: "auto"). Use "auto" to detect
+    database parameters automatically.
+	\item \textit{database.id.type} (character): type of rowname identifier in
+    biomaRt database (default: ""). Obsolete if
+    \textit{database.dataset="auto"}. 
+    
+\end{itemize}
+
+\ \\
 The parameters below are secondary and may be left unattended by the user:
 
 \begin{itemize}
@@ -263,13 +276,6 @@ The parameters below are secondary and may be left unattended by the user:
 	\item \textit{flip.SOM.portraits} (boolean): mirroring the primary SOM along
     the bottom-left to top-right diagonal (default: FALSE). This solely
     influences the orientation of the portraits.\\
-
-	\item \textit{database.dataset} (character): type of ensemble dataset
-    addressed with biomaRt interface (default: "auto"). Use "auto" to detect
-    this parameter automatically.
-	\item \textit{database.id.type} (character): type of rowname identifier in
-    biomaRt database (default: ""). Obsolete if
-    \textit{database.dataset="auto"}.\\
 
 	\item \textit{geneset.analysis} (boolean): enables or disables geneset
     analysis (default: TRUE).
@@ -310,6 +316,28 @@ env$preferences$pairwise.comparison.list <-
 
 
 \pagebreak
+\section{Biomart database settings}
+
+Two parameters are required to access gene annotations and functional information via biomaRt interface:\\
+\\
+\textbf{\textit{database.dataset}} defines the Ensembl data set to be queried, e.g.\\ "hsapiens\_gene\_ensembl", "mmusculus\_gene\_ensembl" or "rnorvegicus\_gene\_ensembl". A complete list of possible entries can be obtained by
+<<eval=FALSE>>=
+library(biomaRt)
+mart<-useMart("ensembl")
+listDatasets(mart)
+@
+The default setting "auto" will cause oposSOM to test frequently used settings of \textit{database.dataset} and \textit{database.id.type}. If this automatic download of annotation data fails, a warning will be given and manual definition of the parameters will be necessary to enable functional analyses.\\
+\\
+\textbf{\textit{database.id.type}} provides information about the identifier type constituted by the rownames of the expression matrix, e.g. "ensembl\_gene\_id", "refseq\_mrna" or "affy\_hg\_u133\_plus\_2". A complete list of possible entries can be obtained by
+<<eval=FALSE>>=
+library(biomaRt)
+mart<-useMart(biomart="ensembl", dataset="hsapiens_gene_ensembl")
+listFilters(mart)
+@
+
+
+
+\pagebreak
 \section{New functionalities introduced with oposSOM 1.0 on Bioconductor}
 The oposSOM-package release on Bioconductor is highly superior to the version released on CRAN in 2011:
 \begin{itemize}
@@ -337,9 +365,9 @@ The oposSOM-package release on Bioconductor is highly superior to the version re
 
 \section{Citing oposSOM}
 
-Please cite \citep{Wirth2011} and \citep{Wirth2012} when using the package.
+Please cite \citep{Loffler-Wirth2015} when using the package.
 
-
+\pagebreak
 \section{Details}
 
 This document was written using:
@@ -347,7 +375,6 @@ This document was written using:
 sessionInfo()
 @
 
-\pagebreak
 
 \bibliographystyle{plainnat}
 \bibliography{opossom}

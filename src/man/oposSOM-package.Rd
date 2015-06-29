@@ -19,25 +19,25 @@ summary HTML file.
 \tabular{ll}{
 Package: \tab oposSOM\cr
 Type: \tab Package\cr
-Version: \tab 1.5.1\cr
-Date: \tab 2015-08-05\cr
+Version: \tab 1.5.2\cr
+Date: \tab 2015-29-06\cr
 License: \tab GPL (>= 2)\cr
 }
 }
 \author{
-Author: Henry Wirth <wirth@izbi.uni-leipzig.de> and Martin Kalcher <mkalcher@porkbox.net>
+Author: Henry Loeffler-Wirth <wirth@izbi.uni-leipzig.de> and Martin Kalcher <mkalcher@porkbox.net>
 
-Maintainer: Henry Wirth <wirth@izbi.uni-leipzig.de>
+Maintainer: Henry Loeffler-Wirth <wirth@izbi.uni-leipzig.de>
 }
 \references{
 Wirth, Loeffler, v.Bergen, Binder: Expression cartography of human tissues %
 using self organizing maps. (BMC Bioinformatics 2011)
 
-Wirth, v.Bergen, Binder: MALDI-typing of infectious algae of the genus %
-Prototheca using SOM portraits. (Journal of microbiological methods 2012)
-
 Wirth, v.Bergen, Binder: Mining SOM expression portraits: feature selection and %
 integrating concepts of molecular function. (BioData Mining 2012)
+
+Loeffler-Wirth, Kalcher, Binder: oposSOM: R-package for high-dimensional portraying %
+of genome-wide expression landscapes on Bioconductor. (Bioinformatics 2015)
 }
 \keyword{ package }
 \examples{

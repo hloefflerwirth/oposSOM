@@ -21,7 +21,7 @@ opossom.run(env)
   }
 }
 \author{
-Author: Henry Wirth <wirth@izbi.uni-leipzig.de>
+Author: Henry Loeffler-Wirth <wirth@izbi.uni-leipzig.de>
 
 Maintainer: Martin Kalcher <mkalcher@porkbox.net>
 }
