@@ -402,10 +402,11 @@ pipeline.summarySheetsGroups <- function()
     for( i in seq(samples.o) )
     {
       axis(2, seq(0,1,length.out=length(samples.o))[i], samples.o[i], las=2, col.axis=groupwise.group.colors[gr], line=10, tick=FALSE, cex.axis=0.6 )      
-      axis(2, seq(0,1,length.out=length(samples.o))[i], bquote("<" ~ r[best] ~ "> = " ~ .(round(group.correlations[gr,samples.o[i]],2)) ) , las=2, col.axis=groupwise.group.colors[gr], line=5, tick=FALSE, cex.axis=0.6 )
-      
-      second.corr.group <- names( which.max(group.correlations[-which(rownames(group.correlations)==gr),samples.o[i]]) )
-      axis(2, seq(0,1,length.out=length(samples))[i], bquote("<" ~ r[2^nd] ~ "> = " ~ .(round(group.correlations[second.corr.group,samples.o[i]],2)) ) , las=2, col.axis=groupwise.group.colors[second.corr.group], line=0, tick=FALSE, cex.axis=0.6 )					
+      axis(2, seq(0,1,length.out=length(samples.o))[i], bquote("<" ~ r[.(gr)] ~ "> = " ~ .(round(group.correlations[gr,samples.o[i]],2)) ) , las=2, col.axis=groupwise.group.colors[gr], line=5, tick=FALSE, cex.axis=0.6 )
+            
+      second.corr.group <- sort( group.correlations[,samples.o[i]], decreasing=TRUE )      
+      second.corr.group <- names(second.corr.group)[ which(names(second.corr.group)!=gr)[1] ]
+      axis(2, seq(0,1,length.out=length(samples))[i], bquote("<" ~ r[.(second.corr.group)] ~ "> = " ~ .(round(group.correlations[second.corr.group,samples.o[i]],2)) ) , las=2, col.axis=groupwise.group.colors[second.corr.group], line=0, tick=FALSE, cex.axis=0.6 )					
     }
     
   }
