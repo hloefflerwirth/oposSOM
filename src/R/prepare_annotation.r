@@ -1,5 +1,7 @@
 pipeline.prepareAnnotation <- function()
 {
+  util.info("Loading gene annotations from database. This may take several minutes until next notification.")
+  
   gene.ids <<- rep("", nrow(indata))
   names(gene.ids) <<- rownames(indata)
 
@@ -30,8 +32,9 @@ pipeline.prepareAnnotation <- function()
       mart <- useMart('ensembl')
       mart <- useDataset(preferences$database.dataset, mart=mart)
 
+      query = c("hgnc_symbol","wikigene_name","uniprot_genename")[ which( c("hgnc_symbol","wikigene_name","uniprot_genename") %in% listAttributes(mart)[,1] ) ][1]
       biomart.table <-
-        getBM(c(preferences$database.id.type, "hgnc_symbol"),
+        getBM(c(preferences$database.id.type, query),
               preferences$database.id.type,
               rownames(indata)[seq(1,nrow(indata),length.out=100)],
               mart, checkFilters=FALSE)
@@ -57,13 +60,13 @@ pipeline.prepareAnnotation <- function()
     return()
   }
   
-  util.info("Loading gene annotations from database. This may take several minutes until next notification.")
 
   mart <- useMart('ensembl')
   mart <- useDataset(preferences$database.dataset, mart=mart)
 
+  query = c("hgnc_symbol","wikigene_name","uniprot_genename")[ which( c("hgnc_symbol","wikigene_name","uniprot_genename") %in% listAttributes(mart)[,1] ) ][1]
   biomart.table <- getBM(c(preferences$database.id.type,
-                           "hgnc_symbol",
+                           query,
                            "description",
                            "ensembl_gene_id",
                            "chromosome_name",

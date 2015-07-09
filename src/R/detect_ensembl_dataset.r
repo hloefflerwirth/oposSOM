@@ -11,14 +11,17 @@ pipeline.detectEnsemblDataset <- function()
 
   auto.datasets <-
     list("hsapiens_gene_ensembl"=c("affy_hg_u133_plus_2",
-                                   "affy_hg_u133a",
                                    "affy_hugene_1_0_st_v1",
+                                   "affy_hugene_2_0_st_v1",
                                    "ipi",
                                    "refseq_mrna"),
          "mmusculus_gene_ensembl"=c("affy_moe430a",
                                     "affy_mogene_1_0_st_v1",
+                                    "affy_mogene_2_1_st_v1",
                                     "illumina_mousewg_6_v2"),
-         "rnorvegicus_gene_ensembl"=c("affy_rae230a"),
+         "rnorvegicus_gene_ensembl"=c("affy_rae230a",
+                                      "affy_ragene_1_0_st_v1",
+                                      "affy_ragene_2_0_st_v1"),
          "scerevisiae_gene_ensembl"=c("affy_yg_s98",
                                       "affy_yeast_2"))
 
@@ -33,8 +36,9 @@ pipeline.detectEnsemblDataset <- function()
     for (id in c(auto.datasets[[ds]], auto.rowname.ids))
     {
       try({
+        query = c("hgnc_symbol","wikigene_name","uniprot_genename")[ which( c("hgnc_symbol","wikigene_name","uniprot_genename") %in% listAttributes(mart)[,1] ) ][1]
         biomart.table <-
-          getBM(c(id, "hgnc_symbol"), id,
+          getBM(c(id, query), id,
                 rownames(indata)[seq(1,nrow(indata),length.out=100)],
                 mart, checkFilters=FALSE)
 
