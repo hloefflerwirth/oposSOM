@@ -64,6 +64,10 @@ pipeline.differenceAnalyses = function()
   
   differences.list <- c( preferences$pairwise.comparison.list, differences.list )
   
+  if (length(differences.list) == 0)
+  {
+    return()
+  }
   
   
   util.info("Processing Differences Analyses")
