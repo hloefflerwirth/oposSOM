@@ -31,7 +31,8 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
     adj.matrix <- cor.s * -1
     g <- graph.adjacency(adj.matrix, weighted=TRUE, mode="undirected")
     stg <- minimum.spanning.tree(g)
-    layout <- layout.kamada.kawai(stg)
+    E(stg)$weight <- (2 + E(stg)$weight)/2
+    layout <- layout_with_kk(stg)
 
     plot(stg, layout=layout, vertex.size=5, vertex.label = rep("",ncol(indata)),
          vertex.label.cex=if (ncol(indata)<100) 1.2 else 0.6,
@@ -79,7 +80,9 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
     adj.matrix[which(adj.matrix < 0.5)] <- 0
 
     g <- graph.adjacency(adj.matrix, weighted=TRUE,  mode="undirected")
-    layout <- layout.fruchterman.reingold(g)
+    E(g)$weight <- (2 + E(g)$weight)/2
+    layout <- layout_with_kk(g)
+#    layout <- layout.fruchterman.reingold(g)
 
     plot(g, layout=layout, vertex.size=5, vertex.label = rep("",ncol(indata)),
          vertex.label.cex=if (ncol(indata)<100) 1.2 else 0.6,
@@ -120,7 +123,9 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
     if (max(adj.matrix) > 0)
     {
       g <- graph.adjacency(adj.matrix, weighted=TRUE,  mode="undirected")
-      layout <- layout.fruchterman.reingold(g, start=matrix(1:(2*ncol(indata)),ncol=2), niter=1000)
+      E(g)$weight <- (2 + E(g)$weight)/2
+      layout <- layout_with_kk( g )
+      #layout <- layout.fruchterman.reingold(g, start=matrix(1:(2*ncol(indata)),ncol=2), niter=1000)
 
       plot(g, layout=layout, vertex.size=ifelse(ncol(indata)<250, 5, 3),
            vertex.label = rep("",ncol(indata)),

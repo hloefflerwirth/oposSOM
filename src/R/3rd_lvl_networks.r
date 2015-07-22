@@ -51,9 +51,10 @@ pipeline.3rdLvlNetworks <- function()
       omega[which(abs(omega) < 0.5)] <- 0
       
       g <- graph.adjacency(omega, weighted=TRUE, mode="undirected")
-      
-      layout <- layout.fruchterman.reingold(g)
-      layout <- layout.norm(layout, xmin=-1, xmax=1, ymin=-1, ymax=1)
+      E(g)$weight <- rep( 1, length( E(g)$weight ) )
+      layout <- layout_with_kk( g )     
+#      layout <- layout.fruchterman.reingold(g)
+#      layout <- layout.norm(layout, xmin=-1, xmax=1, ymin=-1, ymax=1)
       
       V(g)$label <- names(set.list$spots)
       n.spot <- apply(sample.spot.matrix, 1, sum)
