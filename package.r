@@ -33,29 +33,75 @@ filename <- "opossom.tissues.RData"
 cat("* copy", filename, "\n")
 file.copy(file.path("src", "data", filename), datadir) -> x
 
-filename <- file.path("src", "data", "geneset_collection.csv")
-cat("* load", filename, "\n")
-genesets <- read.csv2(filename, as.is=T)
 
-# collapse gene sets in more than one cell
-for(i in 1:nrow(genesets)) {
-  cells <- sum(sapply(genesets[i, c(4:ncol(genesets))], nchar) > 0)
-
-  if (cells > 1) {
-    genesets[i,4] = paste(genesets[i, c(4:(4+cells-1))], collapse=",")
+### build gene set collection
+  
+  ### from csv collection
+  filename <- file.path("src", "data", "geneset_collection.csv")
+  cat("* load", filename, "\n")
+  genesets <- read.csv2(filename, as.is=T)
+  
+  # collapse gene sets in more than one cell
+  for(i in 1:nrow(genesets)) {
+    cells <- sum(sapply(genesets[i, c(4:ncol(genesets))], nchar) > 0)
+  
+    if (cells > 1) {
+      genesets[i,4] = paste(genesets[i, c(4:(4+cells-1))], collapse=",")
+    }
   }
-}
+  
+  opossom.genesets <- apply(genesets, 1, function(x) {
+    list(Genes=as.vector(x["Genes"]), Type=as.vector(x["Type"]))
+  })
+  
+  names(opossom.genesets) <- genesets[,"Name"]
+  
+  opossom.genesets <- lapply(opossom.genesets, function(x) {
+    x$Genes = strsplit(x$Genes, ",")[[1]]
+    return(x)
+  })
 
-opossom.genesets <- apply(genesets, 1, function(x) {
-  list(Genes=as.vector(x["Genes"]), Type=as.vector(x["Type"]))
-})
+  opossom.genesets <- opossom.genesets[ which( names(opossom.genesets) != "" ) ]
 
-names(opossom.genesets) <- genesets[,"Name"]
 
-opossom.genesets <- lapply(opossom.genesets, function(x) {
-  x$Genes = strsplit(x$Genes, ",")[[1]]
-  return(x)
-})
+
+  ### from gsea files
+  library(biomaRt)
+  mart<-useMart(biomart="ensembl", dataset="hsapiens_gene_ensembl")
+
+
+  filename <- file.path("src", "data", "h.all.v5.0.entrez.gmt")
+  cat("* load", filename, "\n")
+  genesets <- readLines(filename)
+  genesets <- sapply( lapply( genesets, strsplit, "\t" ), head, 1 )
+  names(genesets) <- sapply(genesets, head,1)
+  genesets  <- sapply(genesets, function(x) x[-c(1,2)] )
+  
+  biomart.table <- getBM( c( "entrezgene", "ensembl_gene_id" ) , "entrezgene", unique(unlist(genesets)), mart )
+  genesets <- sapply(genesets, function(x) biomart.table[match(x,biomart.table[,1]),2] )
+  genesets <- lapply(genesets, function(x) as.vector(na.omit(x)) )
+  genesets <- genesets[ which( sapply(genesets,length) > 0 ) ]
+  genesets <- lapply(genesets, function(x) list(Genes=x, Type="HM") )
+
+  opossom.genesets <- c( opossom.genesets, genesets )
+  
+  
+  filename <- file.path("src", "data", "c2.all.v5.0.entrez.gmt")
+  cat("* load", filename, "\n")
+  genesets <- readLines(filename)
+  genesets <- sapply( lapply( genesets, strsplit, "\t" ), head, 1 )
+  names(genesets) <- sapply(genesets, head,1)
+  genesets  <- sapply(genesets, function(x) x[-c(1,2)] )
+  
+  biomart.table <- getBM( c( "entrezgene", "ensembl_gene_id" ) , "entrezgene", unique(unlist(genesets)), mart )
+  genesets <- sapply(genesets, function(x) biomart.table[match(x,biomart.table[,1]),2] )
+  genesets <- lapply(genesets, function(x) as.vector(na.omit(x)) )
+  genesets <- genesets[ which( sapply(genesets,length) > 0 ) ]
+  genesets <- lapply(genesets, function(x) list(Genes=x, Type="GSEA C2") )
+
+  opossom.genesets <- c( opossom.genesets, genesets )
+  
+
 
 filename <- file.path(datadir, "opossom.genesets.RData")
 cat("* save", filename, "\n")
