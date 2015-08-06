@@ -53,7 +53,6 @@ file.copy(file.path("src", "data", filename), datadir) -> x
   opossom.genesets <- apply(genesets, 1, function(x) {
     list(Genes=as.vector(x["Genes"]), Type=as.vector(x["Type"]))
   })
-  
   names(opossom.genesets) <- genesets[,"Name"]
   
   opossom.genesets <- lapply(opossom.genesets, function(x) {
@@ -63,7 +62,41 @@ file.copy(file.path("src", "data", filename), datadir) -> x
 
   opossom.genesets <- opossom.genesets[ which( names(opossom.genesets) != "" ) ]
 
+  
 
+  ### from csv collection - inhouse
+  filename <- file.path("src", "data", "geneset_collection - inhouse.csv")
+  cat("* load", filename, "\n")
+  genesets <- read.csv2(filename, as.is=T)
+  
+  # collapse gene sets in more than one cell
+  for(i in 1:nrow(genesets)) {
+    cells <- sum(sapply(genesets[i, c(4:ncol(genesets))], nchar) > 0)
+    
+    if (cells > 1) {
+      genesets[i,4] = paste(genesets[i, c(4:(4+cells-1))], collapse=",")
+    }
+  }
+  
+  n = genesets$Name
+  genesets <- apply(genesets, 1, function(x) {
+    list(Genes=as.vector(x["Genes"]), Type=as.vector(x["Type"]))
+  })
+  names(genesets) <- n
+  
+  genesets <- lapply(genesets, function(x) {
+    x$Genes = strsplit(x$Genes, ",")[[1]]
+    return(x)
+  })
+  
+  genesets <- genesets[ which( names(genesets) != "" ) ]  
+  
+  
+  opossom.genesets <- c( opossom.genesets, genesets )
+  
+  
+  
+  
 
   ### from gsea files
   library(biomaRt)
