@@ -7,7 +7,6 @@ opossom.new <- function(preferences=NULL)
   env$colramp <- NULL
   env$Fdr.g.m <- NULL
   env$fdr.g.m <- NULL
-  env$fdr.m <- NULL
   env$files.name <- NULL
   env$gene.descriptions <- NULL
   env$gene.ids <- NULL

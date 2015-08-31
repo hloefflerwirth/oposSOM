@@ -277,7 +277,7 @@ pipeline.calcStatistics <- function()
   util.info("Processing Metagenes")
   util.progress(progress.current, progress.max)
 
-  t.m <<- p.m <<- fdr.m <<-
+  t.m <<- p.m <<-
     matrix(NA, preferences$dim.1stLvlSom ^ 2, ncol(indata),
            dimnames=list(1:(preferences$dim.1stLvlSom ^ 2), colnames(indata)))
 
@@ -298,11 +298,9 @@ pipeline.calcStatistics <- function()
     if (class(try.res) != "try-error")
     {
       p.m[which(!is.na(t.m[,m])),m] <<- fdrtool.result$pval
-      fdr.m[which(!is.na(t.m[,m])),m] <<- fdrtool.result$lfdr
     } else # happens for eg phenotype data
     {
       p.m[which(!is.na(t.m[,m])),m] <<- t.m[which(!is.na(t.m[,m])),m] / max(t.m[,m], na.rm=TRUE)
-      fdr.m[which(!is.na(t.m[,m])),m] <<- p.m[which(!is.na(t.m[,m])),m]
     }
 
     progress.current <- progress.current + 0.6
