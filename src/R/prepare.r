@@ -7,9 +7,9 @@ pipeline.prepare <- function()
     preferences$dataset.name <<- "Unnamed"
   }
 
-  if (!preferences$error.model %in% c("replicates", "all.samples", "groups")) {
-    util.warn("Invalid value of \"error.model\". Using \"all.samples\"")
-    preferences$error.model <<- "all.samples"
+  if (!preferences$error.model %in% c("single.sample", "groups")) {
+    util.warn("Invalid value of \"error.model\". Using \"single.sample\"")
+    preferences$error.model <<- "single.sample"
   }
 
   if (!is.numeric(preferences$dim.1stLvlSom) || preferences$dim.1stLvlSom < 1)
@@ -342,8 +342,8 @@ pipeline.prepare <- function()
 
   if (preferences$error.model == "replicates" && max(table(colnames(indata))) == 1)
   {
-    util.warn("No replicates found in column names. Using \"all.samples\"")
-    preferences$error.model <<- "all.samples"
+    util.warn("No replicates found in column names. Using \"single.sample\"")
+    preferences$error.model <<- "single.sample"
   }
 
   if (preferences$error.model == "replicates")
