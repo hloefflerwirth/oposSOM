@@ -340,24 +340,10 @@ pipeline.prepare <- function()
     indata.original <<- indata
   }
 
-  if (preferences$error.model == "replicates" && max(table(colnames(indata))) == 1)
-  {
-    util.warn("No replicates found in column names. Using \"single.sample\"")
-    preferences$error.model <<- "single.sample"
-  }
+  colnames(indata) <<- make.unique(colnames(indata))
+  names(group.labels) <<- make.unique(names(group.labels))
+  names(group.colors) <<- make.unique(names(group.colors))
 
-  if (preferences$error.model == "replicates")
-  {
-    indata <<- do.call(cbind, by(t(indata), colnames(indata), colMeans))[,unique(colnames(indata))]
-    group.labels <<- group.labels[colnames(indata)]
-    group.colors <<- group.colors[colnames(indata)]
-    indata.sample.mean <<- tapply(indata.sample.mean, colnames(indata.original), mean)[colnames(indata)]
-  } else
-  {
-    colnames(indata) <<- make.unique(colnames(indata))
-    names(group.labels) <<- make.unique(names(group.labels))
-    names(group.colors) <<- make.unique(names(group.colors))
-  }
 
   indata.gene.mean <<- rowMeans(indata)
 
