@@ -89,8 +89,8 @@ pipeline.htmlIntegralSummary <- function()
         expression profiles of the selected features in the series of samples.
         Single spot summary sheets provide detailed information on each of
         the spots such as the ranked list of samples which overexpress this
-        feature in decreasing order according to the mean t-shrinkage
-        statistics of the spot and the ranked list of the overrepresented
+        feature in decreasing order according to the mean t-statistics of the
+        spot and the ranked list of the overrepresented
         gene sets together with the histogram of the respective p-value
         distribution.
       <p>

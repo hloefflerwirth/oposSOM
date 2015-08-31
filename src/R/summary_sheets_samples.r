@@ -79,7 +79,7 @@ pipeline.summarySheetsSamples <- function()
 
     text(0.1, 0.425, paste("# genes in genesets =", n.genes.in.genesets), adj=0)
     text(0.1, 0.35,  paste("<FC> =", round(mean(indata[,m]), 2)), adj=0)
-    text(0.1, 0.3, paste("<shrinkage-t> =", round(mean(t.g.m[,m]), 2)), adj=0)
+    text(0.1, 0.3, paste("<t-score> =", round(mean(t.g.m[,m]), 2)), adj=0)
     text(0.1, 0.25,  paste("<p-value> =", round(10 ^ mean(log10(p.g.m[,m])), 2)), adj=0)
     text(0.1, 0.2, paste("<fdr> =", round(mean(fdr.g.m[,m]), 2)), adj=0)
 
@@ -341,7 +341,7 @@ pipeline.summarySheetsSamples <- function()
       }
 
       text(0.1, 0.15, paste("<FC> =", round(mean(indata[spot.genes,m]), 2)), adj=0)
-      text(0.1, 0.1,  paste("<shrinkage-t> =", round(mean(t.g.m[spot.genes,m]), 2)), adj=0)
+      text(0.1, 0.1,  paste("<t-score> =", round(mean(t.g.m[spot.genes,m]), 2)), adj=0)
       text(0.1, 0.05, paste("<p-value> =", round(10 ^ mean(log10(p.g.m[spot.genes,m])), 2)), adj=0)
       text(0.1, 0.0,  paste("<fdr> =", round(mean(fdr.g.m[spot.genes,m]), 2)), adj=0)
 

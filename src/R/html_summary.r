@@ -100,7 +100,7 @@ pipeline.htmlSummary <- function()
         </li>
         <li>
           <a href=\"Rank Maps.pdf\" target=\"_blank\">
-            Rank Portraits: FC, WAD, shrinkage-t (PDF)
+            Rank Portraits: FC, WAD, t-score (PDF)
           </a>
         </li>
       </ul>
