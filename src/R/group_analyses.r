@@ -29,6 +29,8 @@ pipeline.groupAnalysis <- function()
                    dimnames=list(rownames(indata), unique(group.labels)))
   fdr.g.m <<- matrix(NA, nrow(indata), length(unique(group.labels)),
                      dimnames=list(rownames(indata), unique(group.labels)))
+  Fdr.g.m <<- matrix(NA, nrow(indata), length(unique(group.labels)),
+                     dimnames=list(rownames(indata), unique(group.labels)))
   n.0.m <<- rep(NA, length(unique(group.labels)))
     names(n.0.m) <<- unique(group.labels)
   perc.DE.m <<- rep(NA, length(unique(group.labels)))
@@ -41,25 +43,27 @@ pipeline.groupAnalysis <- function()
     
     n <- length(samples.indata)
     t.g.m[,gr] <<- sqrt(n) * apply(indata[,samples.indata,drop=FALSE],1,function(x) mean(x) / sd(x) )
- #   p.g.m[,gr] <<- 2 - 2*pt( abs(t.g.m[,gr]), n-1 )
+    p.g.m[,gr] <<- 2 - 2*pt( abs(t.g.m[,gr]), n-1 )
 
     suppressWarnings({
       try.res <- try({
-#        fdrtool.result <- fdrtool(p.g.m[,gr], statistic="pvalue", verbose=FALSE, plot=FALSE)
-        fdrtool.result <- fdrtool(t.g.m[,gr], verbose=FALSE, plot=FALSE)
+        fdrtool.result <- fdrtool(p.g.m[,gr], statistic="pvalue", verbose=FALSE, plot=FALSE)
+#        fdrtool.result <- fdrtool(t.g.m[,gr], verbose=FALSE, plot=FALSE)
       }, silent=TRUE)
     })
     
     if (class(try.res) != "try-error")
     {
-      p.g.m[,gr] <<- fdrtool.result$pval
+#      p.g.m[,gr] <<- fdrtool.result$pval
       fdr.g.m[,gr] <<- fdrtool.result$lfdr
+      Fdr.g.m[,gr] <<- fdrtool.result$qval
       n.0.m[gr] <<- fdrtool.result$param[1,"eta0"]
       perc.DE.m[gr] <<- 1 - n.0.m[gr]
     } else
     {
-      p.g.m[,gr] <<- order(apply(indata[,samples.indata,drop=FALSE],1,mean)) / nrow(indata)
+#      p.g.m[,gr] <<- order(apply(indata[,samples.indata,drop=FALSE],1,mean)) / nrow(indata)
       fdr.g.m[,gr] <<- p.g.m[,gr]
+      Fdr.g.m[,gr] <<- p.g.m[,gr]
       n.0.m[gr] <<- 0.5
       perc.DE.m[gr] <<- 0.5
     }
