@@ -165,12 +165,11 @@ pipeline.summarySheetsSamples <- function()
     plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=FALSE)
     axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=1)
     o <- order(p.g.m[,m])
-    lines(p.g.m[o,m], Fdr.g.m[o,m], lty=2, lwd=2)
     lines(p.g.m[o,m], fdr.g.m[o,m], lty=3, lwd=3)
 
-    legend("topright", c("p", expression(eta[0]), "Fdr", "fdr"),
-           col=c("black","gray","black","black"), lty=c(1,1,2,3),
-           lwd=c(1,1,1,2), cex=0.7)
+    legend("topright", c("p", expression(eta[0]), "fdr"),
+           col=c("black","gray","black"), lty=c(1,1,3),
+           lwd=c(1,1,2), cex=0.7)
 
     if (preferences$geneset.analysis)
     {
@@ -222,7 +221,6 @@ pipeline.summarySheetsSamples <- function()
 
         fdrtool.result <- suppressWarnings(fdrtool(p, statistic="pvalue", verbose=FALSE, plot=FALSE))
         fdr.spot.list.samples <- fdrtool.result$lfdr
-        Fdr.spot.list.samples <- fdrtool.result$qval
 
         n.0.spot.list.samples <- fdrtool.result$param[1,"eta0"]
         perc.DE.spot.list.samples <- 1 - n.0.spot.list.samples
@@ -243,13 +241,12 @@ pipeline.summarySheetsSamples <- function()
         plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=FALSE)
         axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=1)
         o = order(p)
-        lines(p[o], Fdr.spot.list.samples[o], lty=2, lwd=2)
         lines(p[o], fdr.spot.list.samples[o], lty=3, lwd=3)
 
         legend("topright",
-               c("p", expression(eta[0]), "Fdr", "fdr"),
-               col=c("black","gray","black","black"),
-               lty=c(1,1,2,3), lwd=c(1,1,1,2), cex=0.7)
+               c("p", expression(eta[0]), "fdr"),
+               col=c("black","gray","black"),
+               lty=c(1,1,3), lwd=c(1,1,2), cex=0.7)
       }
     }
 
@@ -275,10 +272,7 @@ pipeline.summarySheetsSamples <- function()
       fdrtool.result <- suppressWarnings(fdrtool(local.p, statistic="pvalue", verbose=FALSE, plot=FALSE))
 
       local.fdr <- fdrtool.result$lfdr
-      local.Fdr <- fdrtool.result$qval
-
       names(local.fdr) <- spot.genes
-      names(local.Fdr) <- spot.genes
 
       local.n.0 <- fdrtool.result$param[1,"eta0"]
       local.perc.DE <- 1 - local.n.0
@@ -418,13 +412,12 @@ pipeline.summarySheetsSamples <- function()
       axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=1)
 
       o <- order(local.p)
-      lines(local.p[o], local.Fdr[o], lty=2, lwd=2)
       lines(local.p[o], local.fdr[o], lty=3, lwd=3)
 
       legend("topright",
-             c("p", expression(eta[0]), "Fdr", "fdr"),
-             col=c("black","gray","black","black"), lty=c(1,1,2,3),
-             lwd=c(1,1,1,2), cex=0.7)
+             c("p", expression(eta[0]), "fdr"),
+             col=c("black","gray","black"), lty=c(1,1,3),
+             lwd=c(1,1,2), cex=0.7)
 
       if (preferences$geneset.analysis && preferences$geneset.analysis.samplespots)
       {
@@ -499,7 +492,6 @@ pipeline.summarySheetsSamples <- function()
 
           fdrtool.result <- suppressWarnings(fdrtool(p, statistic="pvalue", verbose=FALSE, plot=FALSE))
           fdr.spot.list.samples <- fdrtool.result$lfdr
-          Fdr.spot.list.samples <- fdrtool.result$qval
 
           n.0.spot.list.samples <- fdrtool.result$param[1,"eta0"]
           perc.DE.spot.list.samples <- 1 - n.0.spot.list.samples
@@ -520,12 +512,11 @@ pipeline.summarySheetsSamples <- function()
           plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=FALSE)
           axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=1)
           o = order(p)
-          lines(p[o], Fdr.spot.list.samples[o], lty=2, lwd=2)
           lines(p[o], fdr.spot.list.samples[o], lty=3, lwd=3)
 
-          legend("topright", c("p", expression(eta[0]), "Fdr", "fdr"),
-                 col=c("black","gray","black","black"), lty=c(1,1,2,3),
-                 lwd=c(1,1,1,2), cex=0.7)
+          legend("topright", c("p", expression(eta[0]), "fdr"),
+                 col=c("black","gray","black"), lty=c(1,1,3),
+                 lwd=c(1,1,2), cex=0.7)
         }
       }
     }

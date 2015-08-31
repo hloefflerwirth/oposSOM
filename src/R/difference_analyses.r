@@ -86,9 +86,6 @@ pipeline.differenceAnalyses = function()
   fdr.g.m <<- matrix(NA, nrow(indata), length(differences.list),
                      dimnames=list(rownames(indata), names(differences.list)))
 
-  Fdr.g.m <<- matrix(NA, nrow(indata), length(differences.list),
-                     dimnames=list(rownames(indata), names(differences.list)))
-
   n.0.m <<- rep(NA, length(differences.list))
   names(n.0.m) <<- names(differences.list)
 
@@ -135,7 +132,6 @@ pipeline.differenceAnalyses = function()
     {
       p.g.m[,d] <<- fdrtool.result$pval
       fdr.g.m[,d] <<- fdrtool.result$lfdr
-      Fdr.g.m[,d] <<- fdrtool.result$qval
 
       n.0.m[d] <<- fdrtool.result$param[1,"eta0"]
       perc.DE.m[d] <<- 1 - n.0.m[d]
@@ -143,7 +139,6 @@ pipeline.differenceAnalyses = function()
     {
       p.g.m[,d] <<- order(indata[,d]) / nrow(indata)
       fdr.g.m[,d] <<- p.g.m[,d]
-      Fdr.g.m[,d] <<- p.g.m[,d]
 
       n.0.m[d] <<- 0.5
       perc.DE.m[d] <<- 1 - n.0.m[d]

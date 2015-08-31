@@ -34,7 +34,6 @@ pipeline.geneLists <- function()
                  T.Score=t.g.m[o, m],
                  p.value=p.g.m[o, m],
                  fdr=fdr.g.m[o, m],
-                 Fdr=Fdr.g.m[o, m],
                  Metagene=gene.coordinates[o],
                  Chromosome=gene.positions[rownames(indata)[o]],
                  Description=gene.descriptions[o])
@@ -85,10 +84,8 @@ pipeline.geneLists <- function()
       p <- p.g.m[spot.genes, m]
       fdrtool.result <- suppressWarnings(fdrtool(p, statistic="pvalue", verbose=FALSE, plot=FALSE))
       fdr.spot <- fdrtool.result$lfdr
-      Fdr.spot <- fdrtool.result$qval
 
       names(fdr.spot) <- spot.genes
-      names(Fdr.spot) <- spot.genes
 
       n.0.spot <- fdrtool.result$param[1,"eta0"]
       perc.DE.spot <- 1 - n.0.spot
@@ -110,7 +107,6 @@ pipeline.geneLists <- function()
                    T.Score=t.g.m[o, m],
                    p.value=p.g.m[o, m],
                    fdr=fdr.spot[o],
-                   Fdr=Fdr.spot[o],
                    Metagene=gene.coordinates[o],
                    Chromosome=gene.positions[o],
                    Description=gene.descriptions[o])

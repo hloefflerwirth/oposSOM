@@ -461,7 +461,6 @@ pipeline.summarySheetsIntegral <- function()
         if (class(try.res) != "try-error")
         {
           fdr.spot.list.samples <- fdrtool.result$lfdr
-          Fdr.spot.list.samples <- fdrtool.result$qval
 
           n.0.spot.list.samples <- fdrtool.result$param[1,"eta0"]
           perc.DE.spot.list.samples <-1 - n.0.spot.list.samples
@@ -482,11 +481,10 @@ pipeline.summarySheetsIntegral <- function()
           plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=FALSE)
           axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=1)
           o = order(set.list$spots[[m]]$Fisher.p)
-          lines(set.list$spots[[m]]$Fisher.p[o], Fdr.spot.list.samples[o], lty=2, lwd=2)
           lines(set.list$spots[[m]]$Fisher.p[o], fdr.spot.list.samples[o], lty=3, lwd=3)
 
-          legend("topright", c("p", expression(eta[0]), "Fdr", "fdr"),
-                 col=c("black","gray","black","black"), lty=c(1,1,2,3), lwd=c(1,1,1,2), cex=0.7)
+          legend("topright", c("p", expression(eta[0]), "fdr"),
+                 col=c("black","gray","black"), lty=c(1,1,3), lwd=c(1,1,2), cex=0.7)
         }
         
         ## Splitted Genesets Sheet
