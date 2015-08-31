@@ -10,7 +10,7 @@ pipeline.calcStatistics <- function()
                 col.names=FALSE)
   }
 
-  util.info("Calculating Single Statistic")
+  util.info("Calculating Single Gene Statistic")
   util.progress(0, 48)
 
   mean.e.g <- rowMeans(indata.original)
@@ -274,7 +274,7 @@ pipeline.calcStatistics <- function()
   util.info("Calculating Metagene Statistic")
   util.progress(progress.current, progress.max)
 
-  t.m <<- p.m <<- <<-
+  t.m <<- p.m <<-
     matrix(NA, preferences$dim.1stLvlSom ^ 2, ncol(indata),
            dimnames=list(1:(preferences$dim.1stLvlSom ^ 2), colnames(indata)))
 
