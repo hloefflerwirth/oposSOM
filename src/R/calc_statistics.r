@@ -10,7 +10,7 @@ pipeline.calcStatistics <- function()
                 col.names=FALSE)
   }
 
-  util.info("Calculating Single Gene Statistic")
+  util.info("Processing Single Genes")
   util.progress(0, 48)
 
   mean.e.g <- rowMeans(indata.original)
@@ -32,6 +32,7 @@ pipeline.calcStatistics <- function()
   names(perc.DE.m) <<- colnames(indata)
 
   fdr.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
+  Fdr.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
 
   mean.LPE2 <- rep(NA, ncol(indata))
   names(mean.LPE2) <- colnames(indata)
@@ -189,6 +190,7 @@ pipeline.calcStatistics <- function()
     {
       p.g.m[,m] <<- fdrtool.result$pval
       fdr.g.m[,m] <<- fdrtool.result$lfdr
+      Fdr.g.m[,m] <<- fdrtool.result$qval
 
       n.0.m[m] <<- fdrtool.result$param[1,"eta0"]
       perc.DE.m[m] <<- 1 - n.0.m[m]
@@ -196,6 +198,7 @@ pipeline.calcStatistics <- function()
     {
       p.g.m[,m] <<- order(indata[,m]) / nrow(indata)
       fdr.g.m[,m] <<- p.g.m[,m]
+      Fdr.g.m[,m] <<- p.g.m[,m]
 
       n.0.m[m] <<- 0.5
       perc.DE.m[m] <<- 1 - n.0.m[m]
@@ -271,10 +274,10 @@ pipeline.calcStatistics <- function()
   progress.current <- 0
   progress.max <- ncol(indata)
 
-  util.info("Calculating Metagene Statistic")
+  util.info("Processing Metagenes")
   util.progress(progress.current, progress.max)
 
-  t.m <<- p.m <<-
+  t.m <<- p.m <<- fdr.m <<-
     matrix(NA, preferences$dim.1stLvlSom ^ 2, ncol(indata),
            dimnames=list(1:(preferences$dim.1stLvlSom ^ 2), colnames(indata)))
 
@@ -295,9 +298,11 @@ pipeline.calcStatistics <- function()
     if (class(try.res) != "try-error")
     {
       p.m[which(!is.na(t.m[,m])),m] <<- fdrtool.result$pval
+      fdr.m[which(!is.na(t.m[,m])),m] <<- fdrtool.result$lfdr
     } else # happens for eg phenotype data
     {
       p.m[which(!is.na(t.m[,m])),m] <<- t.m[which(!is.na(t.m[,m])),m] / max(t.m[,m], na.rm=TRUE)
+      fdr.m[which(!is.na(t.m[,m])),m] <<- p.m[which(!is.na(t.m[,m])),m]
     }
 
     progress.current <- progress.current + 0.6
