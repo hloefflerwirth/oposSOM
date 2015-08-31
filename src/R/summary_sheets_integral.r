@@ -375,8 +375,7 @@ pipeline.summarySheetsIntegral <- function()
         r.genes <- sapply(set.list$spots[[m]]$genes, function(x)
         {
           gene <- indata[x,]
-          metagene <- metadata[som.nodes[x],]
-          return(suppressWarnings(cor(gene, metagene)))
+          return(suppressWarnings(cor(gene, set.list$spotdata[m,])))
         })
 
         e.max <- apply(indata[set.list$spots[[m]]$genes, ,drop=FALSE], 1, max)
@@ -546,8 +545,7 @@ pipeline.summarySheetsIntegral <- function()
       r.genes <- sapply(set.list$spots[[m]]$genes, function(x)
       {
         gene <- indata[x,]
-        metagene <- metadata[som.nodes[x],]
-        return(suppressWarnings(cor(gene, metagene)))
+        return(suppressWarnings(cor(gene, set.list$spotdata[m,])))
       })
 
       r.t <- r.genes / sqrt((1-r.genes^2) / (ncol(indata)-2))
