@@ -220,10 +220,6 @@ pipeline.prepare <- function()
   if (length(na.rows) > 0)
   {
     indata <<- indata[-na.rows,]
-
-    if (!is.null(indata.original)) {
-      indata.original <<- indata.original[-na.rows,]
-    }
     util.warn("Removed NAs from data set")
   }
 
@@ -321,23 +317,6 @@ pipeline.prepare <- function()
   if (preferences$sample.quantile.normalization)
   {
     indata <<- Quantile.Normalization(indata)
-
-    if (!is.null(indata.original))
-    {
-      indata.original <<- Quantile.Normalization(indata.original)
-      util.warn("Separate quantile normalization of indata AND indata.original")
-    }
-  }
-
-  if (!is.null(indata.original) && any(dim(indata) != dim(indata.original)))
-  {
-    indata.original <<- NULL
-    util.warn("Existing 'indata.original' does not fit 'indata' object")
-  }
-
-  if (is.null(indata.original))
-  {
-    indata.original <<- indata
   }
 
   colnames(indata) <<- make.unique(colnames(indata))

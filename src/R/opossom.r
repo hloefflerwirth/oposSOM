@@ -30,7 +30,6 @@ opossom.new <- function(preferences=NULL)
   env$spot.list.underexpression <- NULL
   env$indata <- NULL
   env$indata.gene.mean <- NULL
-  env$indata.original <- NULL
   env$indata.sample.mean <- NULL
   env$loglog.group.metadata <- NULL
   env$loglog.metadata <- NULL
