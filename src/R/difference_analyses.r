@@ -1,48 +1,3 @@
-get.SD.estimate = function(data, samples, lambda=0.5)
-{
-  if (length(samples) > 1)
-  {
-    sd.g.m = apply(data[,samples], 1, sd)
-    LPE.g.m = rep(NA, nrow(data))
-    names(LPE.g.m) = rownames(data)
-
-    o = order(rowMeans(data[,samples]))
-    LPE.g.m[o] = Get.Running.Average(sd.g.m[o], min(200, round(nrow(data)*0.02)))
-
-    SD2 = LPE.g.m[o]
-
-    for (j in seq(length(SD2)-1, 1))
-    {
-      if (SD2[j] < SD2[j+1]) SD2[j] = SD2[j+1]
-    }
-    LPE.g.m[o] = SD2
-
-    sd.estimate = sqrt(lambda * sd.g.m^2 + (1 - lambda) * LPE.g.m^2)
-  } else
-  {
-    sd = apply(data, 1, sd)
-    LPE.g.m = rep(NA, nrow(data))
-    names(LPE.g.m) = rownames(data)
-
-    o = order(rowMeans(data))
-    LPE.g.m[o] = Get.Running.Average(sd[o] , min(200, round(nrow(data)*0.02)))
-    LPE.g.m[which(is.nan(LPE.g.m))] = 0.0000000001
-    LPE.g.m[which(LPE.g.m == 0)] = 0.0000000001
-
-    SD2 = LPE.g.m[o]
-
-    for (j in seq(length(SD2)-1, 1))
-    {
-      if (SD2[j] < SD2[j+1]) SD2[j] = SD2[j+1]
-    }
-    LPE.g.m[o] = SD2
-
-    sd.estimate = LPE.g.m
-  }
-
-  return(sd.estimate)
-}
-
 pipeline.differenceAnalyses = function()
 {
   
@@ -95,71 +50,67 @@ pipeline.differenceAnalyses = function()
   perc.DE.m <<- rep(NA, length(differences.list))
   names(perc.DE.m) <<- names(differences.list)
 
-  indata <<- indata
-  metadata <<- metadata
+  indata.d <- matrix(NA, nrow(indata), length(differences.list),
+                      dimnames=list(rownames(indata), names(differences.list)))
+  metadata.d <- matrix(NA, nrow(metadata), length(differences.list),
+                        dimnames=list(rownames(metadata), names(differences.list)))
 
   for (d in seq_along(differences.list))
   {
     samples.indata <-
       list(differences.list[[d]][[1]], differences.list[[d]][[2]])
 
-    samples.indata.original <-
-      list(which(colnames(indata.original) %in% colnames(indata)[samples.indata[[1]]]),
-           which(colnames(indata.original) %in% colnames(indata)[samples.indata[[2]]]))
+    
+    indata.d[,d] <- rowMeans(indata[,samples.indata[[1]],drop=FALSE]) -
+                     rowMeans(indata[,samples.indata[[2]],drop=FALSE])
+    
+    metadata.d[,d] <- rowMeans(metadata[,samples.indata[[1]],drop=FALSE]) -
+                        rowMeans(metadata[,samples.indata[[2]],drop=FALSE])
+    
+    
+    n <- length(samples.indata[[1]])
+    m <- length(samples.indata[[2]])
 
-    n <- lapply(samples.indata.original, length)
+    S2.x <- apply(indata[,samples.indata[[1]],drop=FALSE],1,var)
+    S2.y <- apply(indata[,samples.indata[[2]],drop=FALSE],1,var)
 
-    indata <<- cbind(indata, rowMeans(indata.original[,samples.indata.original[[1]],drop=FALSE]) -
-                                rowMeans(indata.original[,samples.indata.original[[2]],drop=FALSE]))
+    t.g.m[,d] <<- indata.d[,d] / sqrt( S2.x/n + S2.y/m )
 
-    metadata <<- cbind(metadata, rowMeans(metadata[,samples.indata[[1]],drop=FALSE]) -
-                                    rowMeans(metadata[,samples.indata[[2]],drop=FALSE]))
-
-    sd.shrink.1 <- get.SD.estimate(data=indata.original, samples=samples.indata.original[[1]])
-    sd.shrink.2 <- get.SD.estimate(data=indata.original, samples=samples.indata.original[[2]])
-
-
-    t.g.m[,d] <<- rowMeans(indata.original[,samples.indata.original[[1]],drop=FALSE]) -
-                   rowMeans(indata.original[,samples.indata.original[[2]],drop=FALSE])
-
-    t.g.m[,d] <<- t.g.m[,d] / sqrt(sd.shrink.1 / n[[1]] + sd.shrink.2 / n[[2]])
-
-
+    df <- ( S2.x/n + S2.y/m )^2  / ( S2.x^2 / (n^2*(n-1)) + S2.y^2 / (m^2*(m-1)) )
+    
+    p.g.m[,d] <<- 2 - 2*pt( abs(t.g.m[,d]), df )
+    
+    
     suppressWarnings({
       try.res <- try({
-        fdrtool.result <- fdrtool(t.g.m[,d], verbose=FALSE, plot=FALSE)
+        fdrtool.result <- fdrtool(p.g.m[,d], statistic="pvalue", verbose=FALSE, plot=FALSE)
       }, silent=TRUE)
     })
 
     if (class(try.res) != "try-error")
     {
-      p.g.m[,d] <<- fdrtool.result$pval
       fdr.g.m[,d] <<- fdrtool.result$lfdr
       Fdr.g.m[,d] <<- fdrtool.result$qval
-
       n.0.m[d] <<- fdrtool.result$param[1,"eta0"]
       perc.DE.m[d] <<- 1 - n.0.m[d]
     } else
     {
-      p.g.m[,d] <<- order(indata[,d]) / nrow(indata)
       fdr.g.m[,d] <<- p.g.m[,d]
       Fdr.g.m[,d] <<- p.g.m[,d]
-
       n.0.m[d] <<- 0.5
-      perc.DE.m[d] <<- 1 - n.0.m[d]
+      perc.DE.m[d] <<- 0.5
     }
 
-    delta.e.g.m <- rowMeans(indata.original[,samples.indata.original[[1]],drop=FALSE]) -
-                     rowMeans(indata.original[,samples.indata.original[[2]],drop=FALSE])
+    delta.e.g.m <- indata.d[,d]
 
     w.g.m <- (delta.e.g.m - min(delta.e.g.m)) / (max(delta.e.g.m) - min(delta.e.g.m))
     WAD.g.m[,d] <<- w.g.m * delta.e.g.m
   }
 
-  indata <<- indata[, -c(seq_along(group.labels)), drop=FALSE]
+  indata <<- indata.d
   colnames(indata) <<- names(differences.list)
 
-  metadata <<- metadata[, -c(seq_along(group.labels)), drop=FALSE]
+  metadata <<- metadata.d
   colnames(metadata) <<- names(differences.list)
 
   group.labels <<- names(differences.list)
