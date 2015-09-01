@@ -43,7 +43,7 @@ pipeline.calcStatistics <- function()
   fdr.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
   Fdr.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
   
-  if (preferences$error.model == "single.sample")      ##################################
+  if (preferences$error.model == "all.samples.LPE")      ##################################
   {
     o <- order(indata.gene.mean)
     sdo <- apply(indata, 1, sd)[o]
@@ -65,9 +65,9 @@ pipeline.calcStatistics <- function()
 
     progress.current <- progress.current + (0.6 * ncol(indata))
     util.progress(progress.current, progress.max)
-  } # END error.model "single.sample"
+  } # END error.model "all.samples.LPE"
 
-  if (preferences$error.model == "groups")      ##################################
+  if (preferences$error.model == "group.SD")      ##################################
   {
     for (gr in seq_along(unique(group.labels)))
     {
@@ -121,7 +121,7 @@ pipeline.calcStatistics <- function()
     
     progress.current <- progress.current + (0.6 * ncol(indata))
     util.progress(progress.current, progress.max)      
-  } # END error.model "groups"
+  } # END error.model "group.SD"
 
 
   ### calculate significance and fdr ###
@@ -166,7 +166,7 @@ pipeline.calcStatistics <- function()
 
   if (verbose)
   {
-    if (preferences$error.model == "single.sample")
+    if (preferences$error.model == "all.samples.LPE")
     {
       filename <- file.path(output.paths["LPE"], "all_sample_LPE.bmp")
       util.info("Writing:", filename)
@@ -188,7 +188,7 @@ pipeline.calcStatistics <- function()
       legend("topright","LPE",lwd=4,col="green")
       dev.off()
       
-    } else if (preferences$error.model == "groups")
+    } else if (preferences$error.model == "group.SD")
     {
       for (gr in seq_along(unique(group.labels)))
       {

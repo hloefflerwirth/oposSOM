@@ -7,9 +7,9 @@ pipeline.prepare <- function()
     preferences$dataset.name <<- "Unnamed"
   }
 
-  if (!preferences$error.model %in% c("single.sample", "groups")) {
-    util.warn("Invalid value of \"error.model\". Using \"single.sample\"")
-    preferences$error.model <<- "single.sample"
+  if (!preferences$error.model %in% c("all.samples.LPE", "group.SD")) {
+    util.warn("Invalid value of \"error.model\". Using \"all.samples.LPE\"")
+    preferences$error.model <<- "all.samples.LPE"
   }
 
   if (!is.numeric(preferences$dim.1stLvlSom) || preferences$dim.1stLvlSom < 1)

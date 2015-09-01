@@ -6,7 +6,7 @@ library(oposSOM)
 # Set preferences
 
 env <- opossom.new(list(dataset.name = "Unnamed",
-                      error.model = "single.sample",
+                      error.model = "all.samples.LPE",
 
                       dim.1stLvlSom = 20,
                       dim.2ndLvlSom = 20,
