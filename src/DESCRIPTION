@@ -8,8 +8,8 @@ Description: This package translates microarray expression data into metadata
   scaling and dimension reduction, along with strong visualization capabilities.
   It enables extraction and description of functional expression modules inherent
   in the data.
-Depends: R (>= 3.0)
-Imports: som, fastICA, scatterplot3d, pixmap, fdrtool, ape, igraph,
+Depends: R (>= 3.0), igraph (>= 1.0.0)
+Imports: som, fastICA, scatterplot3d, pixmap, fdrtool, ape,
         KernSmooth, biomaRt, Biobase
 License: GPL (>=2)
 Author: Henry Loeffler-Wirth <wirth@izbi.uni-leipzig.de> and Martin Kalcher <mkalcher@porkbox.net>
