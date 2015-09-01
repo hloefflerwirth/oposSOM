@@ -41,7 +41,6 @@ opossom.new <- function(preferences=NULL)
   env$p.g.m <- NULL
   env$p.m <- NULL
   env$perc.DE.m <- NULL
-  env$sd.g.m <- NULL
   env$som.nodes <- NULL
   env$som.result <- NULL
   env$secLvlSom.20.20 <- NULL

@@ -10,54 +10,43 @@ pipeline.calcStatistics <- function()
                 col.names=FALSE)
   }
 
-  util.info("Processing Single Genes")
+  util.info("Calculating Single Gene Statistic")
   util.progress(0, 48)
-
-  mean.e.g <- rowMeans(indata.original)
-  e.g.m <- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
-  delta.e.g.m <- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
-
-  sd.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
-  LPE.g.m <- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
-
+ 
   WAD.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
-
-  t.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
-  p.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
-
-  n.0.m <<- rep(NA, ncol(indata))
-  names(n.0.m) <<- colnames(indata)
-
-  perc.DE.m <<- rep(NA, ncol(indata))
-  names(perc.DE.m) <<- colnames(indata)
-
-  fdr.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
-  Fdr.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
-
-  mean.LPE2 <- rep(NA, ncol(indata))
-  names(mean.LPE2) <- colnames(indata)
-
+  
   for (m in 1:ncol(indata))
   {
-    e.r.g.m <- as.matrix(indata.original[,m])
-    e.g.m[,m] <- rowMeans(e.r.g.m)
-
-    delta.e.r.g.m <- e.r.g.m - mean.e.g
-    delta.e.g.m[,m] <- rowMeans(delta.e.r.g.m)
-
-    w.g.m <- (delta.e.g.m[,m] - min(delta.e.g.m[,m])) / (max(delta.e.g.m[,m]) - min(delta.e.g.m[,m]))
-    WAD.g.m[,m] <<- w.g.m * delta.e.g.m[,m]
+    delta.e.g.m <- indata[,m]
+  
+    w.g.m <- (delta.e.g.m - min(delta.e.g.m)) / (max(delta.e.g.m) - min(delta.e.g.m))
+    WAD.g.m[,m] <<- w.g.m * delta.e.g.m
   }
 
-  # Track the progress
+  
+  # Calculate T-score and significance
   progress.max <- ncol(indata)
   progress.current <- 0
 
-
+  
+  sd.g.m <- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
+  
+  t.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
+  p.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
+  
+  n.0.m <<- rep(NA, ncol(indata))
+  names(n.0.m) <<- colnames(indata)
+  
+  perc.DE.m <<- rep(NA, ncol(indata))
+  names(perc.DE.m) <<- colnames(indata)
+  
+  fdr.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
+  Fdr.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
+  
   if (preferences$error.model == "single.sample")      ##################################
   {
-    o <- order(apply(indata.original, 1, mean))
-    sdo <- apply(indata.original, 1, sd)[o]
+    o <- order(indata.gene.mean)
+    sdo <- apply(indata, 1, sd)[o]
     col <- Get.Running.Average(sdo, min(200, round(nrow(indata) * 0.02)))
     col[which(is.nan(col))] <- 0.0000000001
     col[which(col == 0)] <- 0.0000000001
@@ -67,63 +56,32 @@ pipeline.calcStatistics <- function()
       col[i] <- max(col[i], col[i+1])
     }
 
-    sd.g.m[o,] <<- col
-    LPE.g.m <- sd.g.m
+    sd.g.m[o,] <- col
 
-    t.g.m <<- apply(e.g.m, 2, function(e.g.m.col, root)
+    t.g.m <<- apply(indata, 2, function(x, root)
     {
-      return(root * (e.g.m.col - mean.e.g) / sd.g.m[,1])
+      return(root * x / sd.g.m[,1])
     }, sqrt(ncol(indata)))
 
     progress.current <- progress.current + (0.6 * ncol(indata))
     util.progress(progress.current, progress.max)
   } # END error.model "single.sample"
 
-
   if (preferences$error.model == "groups")      ##################################
   {
-    R.m <- sapply(group.labels, function(label)
+    for (gr in seq_along(unique(group.labels)))
     {
-      length(which(group.labels == label))
-    })
-    names(R.m) <- colnames(indata)
-
-    sd.shrink.g.m <- matrix(NA, nrow(indata), ncol(indata),
-                            dimnames=list(rownames(indata), colnames(indata)))
-
-    for (m in 1:ncol(indata))
-    {
-      if (R.m[m] > 1)
+      samples.indata <- which(group.labels==unique(group.labels)[gr])
+      
+      n <- length(samples.indata)
+      
+      if (n > 1)
       {
-        e.r.g.m <- as.matrix(indata.original[,which(group.labels == group.labels[m]), drop=FALSE])
-
-        o <- order(e.g.m[,m])
-
-        sd.g.m[, m] <<- sapply(c(1:nrow(indata)), function(x)
-        {
-          sqrt(sum((e.r.g.m[x,] - e.g.m[x,m]) ^ 2) / R.m[m])
-        })
-
-        LPE.g.m[o, m] <- Get.Running.Average(sd.g.m[o,m], min(200, round(nrow(indata) * 0.02)))
-
-        SD2 <- LPE.g.m[o, m]
-
-        for (j in seq(length(SD2)-1, 1))
-        {
-          SD2[j] <- max(SD2[j], SD2[j+1])
-        }
-        LPE.g.m[o, m] <- SD2
-
-        lambda <- 0.5
-        sd.shrink.g.m[, m] <- sqrt(lambda * sd.g.m[, m] ^ 2 + (1 - lambda) * LPE.g.m[, m] ^ 2)
+        sd.g.m[,samples.indata] = apply(indata[,samples.indata,drop=FALSE],1,sd)
       }
-
-      progress.current <- progress.current + 0.5
-      util.progress(progress.current, progress.max)
     }
 
-    no.sd.samples <- colnames(indata)[which(is.na(apply(sd.shrink.g.m, 2, mean)))]
-
+    no.sd.samples <- colnames(indata)[which(is.na(sd.g.m[1,]))]
     if (length(no.sd.samples) > 0)
     {
       for (i in 1:nrow(indata))
@@ -146,42 +104,35 @@ pipeline.calcStatistics <- function()
           window[which(window > length(gene.expression.order.help))] <- NA
           window <- na.omit(window)
 
-          sd.g.m[i, m] <<- mean(sd.g.m[i, gene.expression.order.help[window]])
+          sd.g.m[i, m] <- mean(sd.g.m[i, gene.expression.order.help[window]])
         }
-      }
-
-      for (m in no.sd.samples)
-      {
-        o <- order(e.g.m[,m])
-
-        LPE.g.m[o, m] <- Get.Running.Average(sd.g.m[o,m], min(200, round(nrow(indata) * 0.02)))
-
-        SD2 <- LPE.g.m[o, m]
-
-        for (j in seq(length(SD2)-1, 1))
-        {
-          SD2[j] <- max(SD2[j], SD2[j+1])
-        }
-        LPE.g.m[o,m] <- SD2
-
-        lambda <- 0.5
-        sd.shrink.g.m[,m] <- sqrt(lambda * sd.g.m[,m] ^ 2 + (1 - lambda) * LPE.g.m[,m] ^ 2)
       }
     } # END no.sd.samples
 
-    t.g.m <<- matrix(sapply(1:ncol(indata), function(i)
+    t.g.m <<- indata / sd.g.m
+    for (gr in seq_along(unique(group.labels)))
     {
-      return(sqrt(R.m[i]) * (e.g.m[,i] - mean.e.g) / sd.shrink.g.m[,i])
-    }), ncol=ncol(indata))
+      samples.indata <- which(group.labels==unique(group.labels)[gr])
+      
+      n <- length(samples.indata)
+      
+      t.g.m[,samples.indata] = t.g.m[,samples.indata] * sqrt(n)
+    }
+    
+    progress.current <- progress.current + (0.6 * ncol(indata))
+    util.progress(progress.current, progress.max)      
   } # END error.model "groups"
 
 
-  ### calculate significances ###
+  ### calculate significance and fdr ###
 
   for (m in 1:ncol(indata))
   {
+#    p.g.m[,m] <<- 2 - 2*pt( abs(t.g.m[,m]), ncol(indata) - 1 )
+    
     suppressWarnings({
       try.res <- try({
+#        fdrtool.result <- fdrtool(p.g.m[,m], statistic="pvalue", verbose=FALSE, plot=FALSE)
         fdrtool.result <- fdrtool(t.g.m[,m], verbose=FALSE, plot=FALSE)
       }, silent=TRUE)
     })
@@ -204,8 +155,6 @@ pipeline.calcStatistics <- function()
       perc.DE.m[m] <<- 1 - n.0.m[m]
     }
 
-    mean.LPE2[m] <- sqrt(Get.Area(e.g.m[,m], LPE.g.m[,m] ^ 2) / (max(e.g.m[,m]) - min(e.g.m[,m])))
-
     progress.current <- progress.current + 0.4
     util.progress(progress.current, progress.max)
   }
@@ -213,19 +162,19 @@ pipeline.calcStatistics <- function()
   util.progress.terminate()
 
 
-  ### LPE plots ###
+  ### error plots ###
 
   if (verbose)
   {
     if (preferences$error.model == "single.sample")
     {
-      filename <- file.path(output.paths["LPE"], "all_samples.bmp")
+      filename <- file.path(output.paths["LPE"], "all_sample_LPE.bmp")
       util.info("Writing:", filename)
 
       bmp(filename, 600, 600)
       par(mar=c(5, 6, 4, 5))
 
-      plot(apply(indata.original, 1, sd) ~ apply(indata.original, 1, mean),
+      plot(apply(indata, 1, sd) ~ indata.gene.mean,
            xlab=expression(e[g]),
            ylab="",
            main="Locally pooled error estimate (LPE)",
@@ -234,38 +183,39 @@ pipeline.calcStatistics <- function()
            cex.lab=2,
            cex.axis=2)      
       
-      mtext(expression(sigma[g]), side=2, line=4, cex= 2, las=2)
-      points(LPE.g.m[,1] ~ apply(indata.original, 1, mean), col="green", pch=16)
+      mtext(expression(sigma[g]), side=2, line=4, las=2, cex=2)
+      points(sd.g.m[,1] ~ indata.gene.mean, col="green", pch=16)
+      legend("topright","LPE",lwd=4,col="green")
       dev.off()
+      
     } else if (preferences$error.model == "groups")
     {
-      for (m in seq_along(unique(group.labels)))
+      for (gr in seq_along(unique(group.labels)))
       {
-        plot.sample <- which(group.labels == unique(group.labels)[m])[1]
+        group.samples <- which(group.labels == unique(group.labels)[gr])
 
-        filename <- file.path(output.paths["LPE"], paste(unique(group.labels)[m], ".bmp", sep=""))
-        util.info("Writing:", filename)
+        filename <- file.path(output.paths["LPE"], paste(unique(group.labels)[gr], ".bmp", sep=""))
 
         bmp(filename, 600, 600)
         par(mar=c(5, 6, 4, 5))
 
-        plot(sd.g.m[,plot.sample] ~ e.g.m[,plot.sample],
+        plot(sd.g.m[,group.samples[1]] ~ rowMeans((indata+indata.gene.mean)[,group.samples,drop=FALSE]),
              xlab="e",
              ylab="",
-             main="Locally pooled error estimate (LPE)",
-             xlim=c(min(e.g.m,na.rm=TRUE), max(e.g.m,na.rm=TRUE)),
+             main="Error estimate",
+             xlim=range(indata+indata.gene.mean),
              ylim=c(0,max(sd.g.m,na.rm=TRUE)),
              las=1,
              cex.main=1.5,
              cex.lab=2,
              cex.axis=2)
 
-        title(main=unique(group.labels)[m],line=0.5)
-        mtext(expression(sigma), side=2, line=4, cex= 2, las=2)
-        points(LPE.g.m[,plot.sample] ~ e.g.m[,plot.sample], col="green", pch=16)
+        title(main=unique(group.labels)[gr],line=0.5)
+        mtext(expression(sigma), side=2, line=4, las=2, cex=2)
         dev.off()
       }
     }
+    
   }
 
 
@@ -274,7 +224,7 @@ pipeline.calcStatistics <- function()
   progress.current <- 0
   progress.max <- ncol(indata)
 
-  util.info("Processing Metagenes")
+  util.info("Calculating Metagene Statistic")
   util.progress(progress.current, progress.max)
 
   t.m <<- p.m <<-
@@ -309,41 +259,4 @@ pipeline.calcStatistics <- function()
 
   util.progress.terminate()
 
-
-  if (verbose)
-  {
-    filename <- file.path(output.paths["LPE"], "Sigma_LPE.pdf")
-    util.info("Writing:", filename)
-
-    pdf(filename, 8, 8)
-    par(mar=c(10, 6, 4, 5))
-    mean.LPE.string <- expression(paste("standard deviation derived from LPE model:  <", sigma[LPE], ">", sep=""))
-
-    barplot(mean.LPE2,
-            col=group.colors,
-            main=mean.LPE.string,
-            las=2,
-            cex.main=1.5,
-            cex.lab=1,
-            cex.axis=1)
-
-    box()
-
-    if (length(unique(group.labels)) > 1)
-    {
-      mean.LPE2.boxes <- by(mean.LPE2, group.labels[names(mean.LPE2)], c)[unique(group.labels)]
-
-      boxplot(mean.LPE2.boxes,
-              col=unique(group.colors),
-              main=mean.LPE.string,
-              las=2,
-              cex.main=1.5,
-              cex.axis=1,
-              xaxt="n")
-
-      axis(1, seq_along(mean.LPE2.boxes), names(mean.LPE2.boxes), las=2)
-    }
-
-    dev.off()
-  }
 }
