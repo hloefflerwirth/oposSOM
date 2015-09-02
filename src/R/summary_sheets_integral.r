@@ -10,8 +10,9 @@ pipeline.summarySheetsIntegral <- function()
       layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
       par(mar=c(5, 4, 4, 1))
 
+      col <- if(main!="D-Clusters") colramp(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
       image(matrix(set.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=FALSE, col = colramp(1000), main=main, cex.main=1.5)
+            axes=FALSE, col=col, main=main, cex.main=1.5)
 
       mtext("landscape", 3)
       box()
@@ -324,8 +325,9 @@ pipeline.summarySheetsIntegral <- function()
 
       par(mar=c(2,3,3,1))
 
+      col <- if(main!="D-Clusters") colramp(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
       image(matrix(set.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=FALSE, col = colramp(1000), main="Overview Map", cex.main=1.5)
+            axes=FALSE, col=col, main="Overview Map", cex.main=1.5)
 
       axis(1, seq(0, 1, length.out = preferences$dim.1stLvlSom/10+1),
            c(1, seq(10, preferences$dim.1stLvlSom, length.out = preferences$dim.1stLvlSom/10)),
@@ -338,7 +340,7 @@ pipeline.summarySheetsIntegral <- function()
       box()
 
       image(matrix(set.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=FALSE, col = colramp(1000), main="Spot", cex.main=1.5)
+            axes=FALSE, col=col, main="Spot", cex.main=1.5)
 
       par(new=TRUE)
 
@@ -606,14 +608,16 @@ pipeline.summarySheetsIntegral <- function()
     list("Overexpression.pdf", "Overexpression Spots", spot.list.overexpression),
     list("Underexpression.pdf", "Underexpression Spots", spot.list.underexpression),
     list("Correlation Cluster.pdf", "Correlation Clusters", spot.list.correlation),
-    list("K-Means Cluster.pdf", "K-Means Clusters", spot.list.kmeans))
+    list("K-Means Cluster.pdf", "K-Means Clusters", spot.list.kmeans),
+    list("D-Clusters.pdf", "D-Clusters", spot.list.dmap))
 
   # csv sheets to generate
   csv.sheets <- list(
     list("Overexpression Spots", spot.list.overexpression),
     list("Underexpression Spots", spot.list.underexpression),
     list("Correlation Clusters", spot.list.correlation),
-    list("K-Means Clusters", spot.list.kmeans))
+    list("K-Means Clusters", spot.list.kmeans),
+    list("D-Clusters", spot.list.dmap))
 
   # generate group expression sheets?
   if (length(unique(group.labels)) > 1)

@@ -154,4 +154,10 @@ pipeline.3rdLvlNetworks <- function()
     plot.set.list.networks(set.list=spot.list.group.overexpression, main="Group Overexpression Spots")
     dev.off()
   }
+  
+  filename <- file.path(dirname, "wTO Networks - D-Clusters.pdf")
+  util.info("Writing:", filename)
+  pdf(filename, 29.7/2.54, 21/2.54)
+  plot.set.list.networks(set.list=spot.list.dmap, main="D-Clusters")
+  dev.off()
 }

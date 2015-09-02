@@ -79,11 +79,9 @@ pipeline.htmlIntegralSummary <- function()
       <h1>Integral Maps Summary Sheets</h1>
 
       <p>
-        These analyses apply different criteria of spot selection such as
-        overexpression, underexpression, maximum and minimum of metagene
-        expression. Additionaly, mutual correlations between the metagenes
-        and k-means clustering was applied to define spots of co-regulated
-        metagenes.
+        These analyses apply different criteria to define spot clusters of co-regulated metagenes:
+        overexpression and underexpression, mutual correlations between the metagenes,
+        k-means clustering and cluster detection in the distance map.
         Gene set enrichment analysis provides the leading sets of each of
         the spots considered. Spot-related heatmaps characterize the
         expression profiles of the selected features in the series of samples.
@@ -201,6 +199,24 @@ pipeline.htmlIntegralSummary <- function()
         names(spot.list.kmeans$spots)[m],"</a>", sep="", file=outfile)
   }
 
+  
+  cat("</td>
+          </tr>
+          <tr>
+            <td>
+              <a href=\"D-Clusters.pdf\" target=\"_blank\">
+                Distance Map Clusters (PDF)
+              </a>
+            </td>
+            <td>", sep="", file = outfile)
+  
+  for (m in seq_along(spot.list.dmap$spots))
+  {
+    cat("<a href=\"../CSV Sheets/Spot Lists/D-Clusters ",
+        names(spot.list.dmap$spots)[m],".csv\" target=\"_blank\">",
+        names(spot.list.dmap$spots)[m],"</a>", sep="", file=outfile)
+  }
+  
   cat("</td>
           </tr>
         </tbody>
@@ -227,6 +243,11 @@ pipeline.htmlIntegralSummary <- function()
         <li>
           <a href=\"../3rd lvl Spot Analysis/Spot Report - K-Means Clusters.pdf\" target=\"_blank\">
             K-Means Cluster Report (PDF)
+          </a>
+        </li>
+        <li>
+          <a href=\"../3rd lvl Spot Analysis/Spot Report - D-Clusters.pdf\" target=\"_blank\">
+            D-Cluster Report (PDF)
           </a>
         </li>", sep="", file=outfile)
 
@@ -265,6 +286,11 @@ pipeline.htmlIntegralSummary <- function()
         <li>
           <a href=\"../3rd lvl Spot Analysis/wTO Networks - K-Means Clusters.pdf\" target=\"_blank\">
             K-Means Cluster Networks (PDF)
+          </a>
+        </li>
+        <li>
+          <a href=\"../3rd lvl Spot Analysis/wTO Networks - D-Clusters.pdf\" target=\"_blank\">
+            D-Cluster Networks (PDF)
           </a>
         </li>", sep="", file=outfile)
 
@@ -335,6 +361,16 @@ pipeline.htmlIntegralSummary <- function()
         <li>
           <a href=\"../CSV Sheets/Chromosomal Enrichment/K-Means Clusters.csv\" target=\"_blank\">
             Chromosomal Enrichment of K-Means Cluster Spot Chromosome Map (CSV)
+          </a>
+        </li>
+        <li>
+          <a href=\"../3rd lvl Spot Analysis/Chromosomal Enrichment - D-Clusters.pdf\" target=\"_blank\">
+            Chromosomal Enrichment of D-Cluster Chromosomal Enrichment (PDF)
+          </a>
+        </li>
+        <li>
+          <a href=\"../CSV Sheets/Chromosomal Enrichment/D-Clusters.csv\" target=\"_blank\">
+            Chromosomal Enrichment of D-Cluster Spot Chromosome Map (CSV)
           </a>
         </li>
       </ul>

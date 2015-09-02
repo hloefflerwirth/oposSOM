@@ -79,8 +79,9 @@ pipeline.3rdLvlSummarySheets <- function()
     par(mfrow=c(1,2))
     par(mar=c(8, 3, 6, 3))
 
+    col <- if(main!="D-Clusters") colramp(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
     image(matrix(set.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-          axes=FALSE, col = colramp(1000), main=paste("Overview map,",main), cex.main=1.5)
+          axes=FALSE, col=col, main=paste("Overview map,",main), cex.main=1.5)
 
     box()
 
@@ -358,4 +359,10 @@ pipeline.3rdLvlSummarySheets <- function()
     plot.set.list.reports(set.list=spot.list.group.overexpression, main="Group Overexpression Spots")
     dev.off()
   }
+  
+  filename <- file.path(dirname, "Spot Report - D-Clusters.pdf")
+  util.info("Writing:", filename)
+  pdf(filename, 29.7/2.54, 21/2.54)
+  plot.set.list.reports(set.list=spot.list.dmap, main="D-Clusters")
+  dev.off()
 }

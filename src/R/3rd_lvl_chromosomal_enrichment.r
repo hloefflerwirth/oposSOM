@@ -172,4 +172,16 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
 
     dev.off()
   }
+  
+  filename <- file.path(dirnames["pdf"], "Chromosomal Enrichment - D-Clusters.pdf")
+  util.info("Writing:", filename)
+  pdf(filename, 21/2.54, 29.7/2.54)
+  
+  if (length(gene.positions.list) > 0)
+  {
+    plot.set.list.chromosomes(spot.list.dmap, main="D-Clusters")
+  }
+  
+  dev.off()
+  
 }

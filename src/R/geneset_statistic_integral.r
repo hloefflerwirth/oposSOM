@@ -31,6 +31,8 @@ pipeline.genesetStatisticIntegral <- function()
   {
     spot.list.group.overexpression$spots <<- lapply( spot.list.group.overexpression$spots, spot.fisher.p)
   }
+  
+  spot.list.dmap$spots <<- lapply( spot.list.dmap$spots, spot.fisher.p)
 
   util.progress.terminate()
 

@@ -219,7 +219,7 @@ pipeline.supportingMaps <- function()
   par(mar=c(5, 6, 4, 5))
 
   image(matrix(-log10((uh)), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-        axes=FALSE, col=colorRampPalette(c("white","black"))(1000),
+        axes=FALSE, col=colorRampPalette(c("red2","white","blue2"))(1000),
         main="Distance Map", cex.main=2.5)
 
   mtext("deviation of adjacent metagenes", side=1, line=1, cex=1.4)
@@ -227,7 +227,7 @@ pipeline.supportingMaps <- function()
 
   par(new=TRUE, mar=c(1, 0, 0, 0))
   layout(matrix(c(0, 0, 0, 0, 1, 0, 0, 0, 0), 3, 3), c(1, 0.05, 0.02), c(0.14, 0.3, 1))
-  image(matrix(1:100, 1, 100), col = colorRampPalette(c("white", "black"))(1000), axes=FALSE)
+  image(matrix(1:100, 1, 100), col = colorRampPalette(c("red2","white","blue2"))(1000), axes=FALSE)
 
   axis(2, c(round(min(uh,na.rm=TRUE),2), round(max(uh,na.rm=TRUE),2)),
        at=c(0,1), las=2, tick=FALSE, pos=-0.5, cex.axis=1.4)

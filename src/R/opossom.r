@@ -23,6 +23,7 @@ opossom.new <- function(preferences=NULL)
   env$gs.def.list.categories <- NULL
   env$samples.GSZ.scores <- NULL
   env$spot.list.correlation <- NULL
+  env$spot.list.dmap <- NULL
   env$spot.list.group.overexpression <- NULL
   env$spot.list.kmeans <- NULL
   env$spot.list.overexpression <- NULL
