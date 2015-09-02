@@ -63,7 +63,6 @@ opossom.new <- function(preferences=NULL)
 
   # Set default preferences
   env$preferences <- list(dataset.name = "Unnamed",
-                          error.model = "all.samples.LPE",
                           dim.1stLvlSom = 20,
                           dim.2ndLvlSom = 20,
                           training.extension = 1,

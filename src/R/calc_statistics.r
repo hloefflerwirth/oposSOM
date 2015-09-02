@@ -2,14 +2,8 @@ pipeline.calcStatistics <- function()
 {
   verbose = (output.paths["LPE"] != "")
 
-  if (verbose)
-  {
-    write.table(preferences$error.model,
-                file.path(output.paths["LPE"], "1_error_model.txt"),
-                row.names=FALSE,
-                col.names=FALSE)
-  }
 
+  
   util.info("Calculating Single Gene Statistic")
   util.progress(0, 48)
  
@@ -43,7 +37,7 @@ pipeline.calcStatistics <- function()
   fdr.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
   Fdr.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
   
-  if (preferences$error.model == "all.samples.LPE")      ##################################
+
   {
     o <- order(indata.gene.mean)
     sdo <- apply(indata, 1, sd)[o]
@@ -65,63 +59,8 @@ pipeline.calcStatistics <- function()
 
     progress.current <- progress.current + (0.6 * ncol(indata))
     util.progress(progress.current, progress.max)
-  } # END error.model "all.samples.LPE"
+  } 
 
-  if (preferences$error.model == "group.SD")      ##################################
-  {
-    for (gr in seq_along(unique(group.labels)))
-    {
-      samples.indata <- which(group.labels==unique(group.labels)[gr])
-      
-      n <- length(samples.indata)
-      
-      if (n > 1)
-      {
-        sd.g.m[,samples.indata] = apply(indata[,samples.indata,drop=FALSE],1,sd)
-      }
-    }
-
-    no.sd.samples <- colnames(indata)[which(is.na(sd.g.m[1,]))]
-    if (length(no.sd.samples) > 0)
-    {
-      for (i in 1:nrow(indata))
-      {
-        gene.expression.order <- colnames(indata)[order(indata[i,])]
-
-        for (m in no.sd.samples)
-        {
-          position <- which(gene.expression.order == m)
-
-          gene.expression.order.help <- gene.expression.order
-          gene.expression.order.help[gene.expression.order.help %in% no.sd.samples] <- NA
-          gene.expression.order.help[position] <- m
-          gene.expression.order.help <- na.omit(gene.expression.order.help)
-
-          position <- which(gene.expression.order.help == m)
-
-          window <- position + c(-2, -1, 1, 2)
-          window[which(window < 1)] <- NA
-          window[which(window > length(gene.expression.order.help))] <- NA
-          window <- na.omit(window)
-
-          sd.g.m[i, m] <- mean(sd.g.m[i, gene.expression.order.help[window]])
-        }
-      }
-    } # END no.sd.samples
-
-    t.g.m <<- indata / sd.g.m
-    for (gr in seq_along(unique(group.labels)))
-    {
-      samples.indata <- which(group.labels==unique(group.labels)[gr])
-      
-      n <- length(samples.indata)
-      
-      t.g.m[,samples.indata] = t.g.m[,samples.indata] * sqrt(n)
-    }
-    
-    progress.current <- progress.current + (0.6 * ncol(indata))
-    util.progress(progress.current, progress.max)      
-  } # END error.model "group.SD"
 
 
   ### calculate significance and fdr ###
@@ -166,56 +105,25 @@ pipeline.calcStatistics <- function()
 
   if (verbose)
   {
-    if (preferences$error.model == "all.samples.LPE")
-    {
-      filename <- file.path(output.paths["LPE"], "all_sample_LPE.bmp")
-      util.info("Writing:", filename)
+    filename <- file.path(output.paths["LPE"], "all_sample_LPE.bmp")
+    util.info("Writing:", filename)
 
-      bmp(filename, 600, 600)
-      par(mar=c(5, 6, 4, 5))
+    bmp(filename, 600, 600)
+    par(mar=c(5, 6, 4, 5))
 
-      plot(apply(indata, 1, sd) ~ indata.gene.mean,
-           xlab=expression(e[g]),
-           ylab="",
-           main="Locally pooled error estimate (LPE)",
-           las=1,
-           cex.main=1.5,
-           cex.lab=2,
-           cex.axis=2)      
-      
-      mtext(expression(sigma[g]), side=2, line=4, las=2, cex=2)
-      points(sd.g.m[,1] ~ indata.gene.mean, col="green", pch=16)
-      legend("topright","LPE",lwd=4,col="green")
-      dev.off()
-      
-    } else if (preferences$error.model == "group.SD")
-    {
-      for (gr in seq_along(unique(group.labels)))
-      {
-        group.samples <- which(group.labels == unique(group.labels)[gr])
-
-        filename <- file.path(output.paths["LPE"], paste(unique(group.labels)[gr], ".bmp", sep=""))
-
-        bmp(filename, 600, 600)
-        par(mar=c(5, 6, 4, 5))
-
-        plot(sd.g.m[,group.samples[1]] ~ rowMeans((indata+indata.gene.mean)[,group.samples,drop=FALSE]),
-             xlab="e",
-             ylab="",
-             main="Error estimate",
-             xlim=range(indata+indata.gene.mean),
-             ylim=c(0,max(sd.g.m,na.rm=TRUE)),
-             las=1,
-             cex.main=1.5,
-             cex.lab=2,
-             cex.axis=2)
-
-        title(main=unique(group.labels)[gr],line=0.5)
-        mtext(expression(sigma), side=2, line=4, las=2, cex=2)
-        dev.off()
-      }
-    }
+    plot(apply(indata, 1, sd) ~ indata.gene.mean,
+         xlab=expression(e[g]),
+         ylab="",
+         main="Locally pooled error estimate (LPE)",
+         las=1,
+         cex.main=1.5,
+         cex.lab=2,
+         cex.axis=2)      
     
+    mtext(expression(sigma[g]), side=2, line=4, las=2, cex=2)
+    points(sd.g.m[,1] ~ indata.gene.mean, col="green", pch=16)
+    legend("topright","LPE",lwd=4,col="green")
+    dev.off()
   }
 
 
