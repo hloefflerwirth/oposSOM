@@ -5,24 +5,6 @@ pipeline.genesetProfilesAndMaps <- function()
   util.progress(progress.current, progress.max)
 
 
-#   if (preferences$geneset.analysis.exact)
-#   {
-#     fdr.threshold <- 0.1
-# 
-#     GSZs <-
-#       cbind(as.vector(unlist(sapply(spot.list.samples, function(x) { x$GSZ.score[names(gs.def.list)] }))),
-#             as.vector(unlist(sapply(spot.list.samples, function(x) { x$GSZ.p.value[names(gs.def.list)] }))))
-# 
-#     GSZs <- GSZs[which(!is.na(GSZs[,2])),]
-# 
-#     fdrtool.result <- fdrtool(GSZs[,2], statistic="pvalue", verbose=FALSE, plot=FALSE)
-#     fdr.significant.spot.list.samples <- length(which(fdrtool.result$lfdr < fdr.threshold))
-#     fdr.gsz.threshold <- sort(GSZs[,1], decreasing=TRUE)[fdr.significant.spot.list.samples]
-#   } else
-#   {
-#     fdr.gsz.threshold <- 0
-#   }
-
 
   ## Geneset Profiles over Samples
   dirname <- file.path(paste(files.name, "- Results"), "Geneset Analysis")
@@ -33,58 +15,10 @@ pipeline.genesetProfilesAndMaps <- function()
     filename.prefix <- substring(make.names(names(gs.def.list)[i]), 1, 100)
     pdf(file.path(dirname, paste(filename.prefix, "profile.pdf")), 29.7/2.54, 21/2.54)
      
-    
-    dens <- density(samples.GSZ.scores[i,],adjust=1)
-    
-    dens.dev <- dens$y[1:511] - dens$y[2:512]
-    dens.extrema <- which( sign(dens.dev[1:511]) != sign(dens.dev[2:512]) )
-    dens.off.peak <- min(dens.extrema)
-    dens.on.peak <- max(dens.extrema)
-    
-    if( dens.on.peak != dens.off.peak )
-    {    
-      dens.off.thres <- dens$x[ min( 2*dens.off.peak, 512 ) ]
-      dens.on.thres <- dens$x[ max( dens.on.peak-(512-dens.on.peak), 1 ) ]
-            
-      if( sum(samples.GSZ.scores[i,]<dens.off.thres) > 3 && sum(samples.GSZ.scores[i,]>dens.on.thres) > 3 )
-      {
-        dens.left <- dens
-        dens.left$y[ dens.off.peak:min( (2*dens.off.peak-1), 512 ) ] <- rev( dens.left$y[ 1:length(dens.off.peak:min( (2*dens.off.peak-1), 512 )) ] )
-        dens.left$y[ min( 2*dens.off.peak, 512 ):512 ] <- 0
-        dens.right <- dens
-        dens.right$y[ max( (dens.on.peak-(512-dens.on.peak)), 1 ):dens.on.peak ] <- rev( dens.right$y[ dens.on.peak:( dens.on.peak + length(max( (dens.on.peak-(512-dens.on.peak)), 1 ):dens.on.peak) - 1 ) ] )
-        dens.right$y[ 1:max( (dens.on.peak-(512-dens.on.peak)-1), 1 ) ] <- 0    
-        
-        dens.off.sd <- sd(samples.GSZ.scores[i,][which(samples.GSZ.scores[i,]<dens.off.thres)])
-        dens.on.sd <- sd(samples.GSZ.scores[i,][which(samples.GSZ.scores[i,]>dens.on.thres)])      
-        
-        dens.off.thres <- dens$x[dens.off.peak]+dens.off.sd
-        dens.on.thres <- dens$x[dens.on.peak]-dens.on.sd
-                
-        if ( dens.on.thres < dens.off.thres )
-        {
-          h <- dens.on.thres
-          dens.on.thres <- dens.off.thres
-          dens.off.thres <- h
-        }
-        
-      } else
-      {      
-        dens.on.peak <- dens.off.peak
-        dens.off.thres <- -sd(samples.GSZ.scores[i,])
-        dens.on.thres <- sd(samples.GSZ.scores[i,])
-      }
-            
-    } else
-    {      
-      dens.off.thres <- -sd(samples.GSZ.scores[i,])
-      dens.on.thres <- sd(samples.GSZ.scores[i,])
-    }
-    
-    
+    off.thres <- -sd(samples.GSZ.scores[i,])
+    on.thres <- sd(samples.GSZ.scores[i,])
     
     layout(matrix(c(1,3,2,2),ncol=2),widths=c(1,0.2), heights=c(1,0.08))
-       
     
     # barplot
     ylim <- c(-10, 20)
@@ -97,8 +31,7 @@ pipeline.genesetProfilesAndMaps <- function()
                           border=if (ncol(indata) < 80) "black" else NA,
                           names.arg=if (ncol(indata)<100) colnames(indata) else rep("",ncol(indata)))
     
-    abline(h=c(dens.off.thres,dens.on.thres), lty=2)
-    
+    abline(h=c(off.thres,on.thres), lty=2)
     
     mtext("GSZ", side=2, line=2.5, cex=1.5)
     
@@ -107,20 +40,11 @@ pipeline.genesetProfilesAndMaps <- function()
     # density
     ylim <- c(-21.8, 21.5)
     
+    dens <- density(samples.GSZ.scores[i,],adjust=1)
+    
     par(mar=c(5,0.1,1,2))
     plot(rev(dens$y), rev(dens$x), type="l", xlab="", ylab="", axes=FALSE, ylim=ylim, lwd=2, col="gray" )
-    if( dens.on.peak != dens.off.peak )
-    {  
-      lines( rev(dens.left$y), rev(dens.left$x) )
-      lines( rev(dens.right$y), rev(dens.right$x) )
-    
-      abline( h=c(dens$x[dens.off.peak],dens$x[dens.on.peak]) )
-      
-      abline( h=dens$x[dens.off.peak]-dens.off.sd, lty=2, col="gray" )
-      abline( h=dens$x[dens.on.peak]+dens.on.sd, lty=2, col="gray" )
-    }
-    
-    abline(h=c(dens.off.thres,dens.on.thres),lty=2)
+    abline(h=c(off.thres,on.thres),lty=2)
     
     box()
     
@@ -130,8 +54,8 @@ pipeline.genesetProfilesAndMaps <- function()
     par(mar=c(1,8,0.1,4))
     
     col = rep("gray60",ncol(indata))
-    col[which(samples.GSZ.scores[i,]<dens.off.thres)] = "white"
-    col[which(samples.GSZ.scores[i,]>dens.on.thres)] = "black"
+    col[which(samples.GSZ.scores[i,]<off.thres)] = "white"
+    col[which(samples.GSZ.scores[i,]>on.thres)] = "black"
     
     image( matrix(1:ncol(indata),ncol(indata),1), col=col, axes=FALSE )
     box()
