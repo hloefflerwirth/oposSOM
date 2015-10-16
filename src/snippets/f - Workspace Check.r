@@ -9,16 +9,11 @@
     {
       cat("preferences: error model not set correctly\n"); flush.console()
     }
-    if (! preferences$error.model %in% c("replicates", "all.samples", "groups")) 
+    if (! preferences$error.model %in% c("all.samples.LPE", "group.SD")) 
     {
       cat("preferences: error model not set correctly\n"); flush.console()
     }
     
-    if (! ("max.parallel.cores" %in% names(preferences)))
-    {
-      cat("preferences: max.parallel.cores not set correctly\n"); flush.console()
-    }    
-
     if (! ("geneset.analysis.samplespots" %in% names(preferences)))
     {
       cat("preferences: geneset.analysis.samplespots not set correctly\n"); flush.console()
@@ -56,26 +51,10 @@
     {
       cat("indata: empty object\n"); flush.console()
     }
-    if (nrow(indata.original) == 0 || ncol(indata.original) == 0)
-    {
-      cat("indata.original: empty object\n"); flush.console()
-    }  
-    if (nrow(indata.original) != nrow(indata) || !all(rownames(indata) == rownames(indata.original)))
-    {
-      cat("indata.original: not the same features as indata\n"); flush.console()
-    }    
     if (any(is.na(rownames(indata))) || any(is.na(colnames(indata))))  
     {
       cat("indata: NA in dimnames\n"); flush.console()
     }      
-    if (any(is.na(rownames(indata.original))) || any(is.na(colnames(indata.original))))  
-    {
-      cat("indata.original: NA in dimnames\n"); flush.console()
-    }    
-    if (!all(unique(colnames(indata.original)) == unique(colnames(indata))))
-    {
-      cat("indata.original: not the same samples as indata\n"); flush.console()
-    }
     if (nrow(metadata) == 0 || ncol(metadata) == 0)
     {
       cat("metadata: empty object\n"); flush.console()
@@ -145,10 +124,6 @@
     if (!all(colnames(t.g.m) == colnames(indata)) || !all(rownames(t.g.m) == rownames(indata)))
     {
       cat("t.g.m: does not fit to indata\n"); flush.console()            
-    }  
-    if (!all(colnames(sd.g.m) == colnames(indata)) || !all(rownames(sd.g.m) == rownames(indata)))
-    {
-      cat("sd.g.m: does not fit to indata\n"); flush.console()            
     }  
     if (!all(colnames(p.g.m) == colnames(indata)) || !all(rownames(p.g.m) == rownames(indata)))
     {
