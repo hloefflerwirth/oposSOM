@@ -3,12 +3,6 @@ pipeline.detectEnsemblDataset <- function()
   preferences$database.dataset <<- ""
   util.info("Autodetecting annotation parameters")
 
-  if (!suppressWarnings(any(is.na(as.numeric(rownames(indata))))) ||
-      !suppressWarnings(any(is.na(as.numeric(colnames(indata))))))
-  {
-    return()
-  }
-
   auto.datasets <-
     list("hsapiens_gene_ensembl"=c("affy_hg_u133_plus_2",
                                    "affy_hugene_1_0_st_v1",

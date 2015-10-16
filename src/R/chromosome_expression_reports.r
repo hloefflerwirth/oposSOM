@@ -46,7 +46,7 @@ sort.label <- function(x)
 
 pipeline.chromosomeExpressionReports <- function()
 {
-  if(ncol(metadata) > 1000) return()
+  if(ncol(metadata) > 1000 || length(gene.positions.list) == 0 ) return()
   
   # prepare chromosome geneset lists
   chr.gs.list <- lapply(gene.positions.list, function(x)

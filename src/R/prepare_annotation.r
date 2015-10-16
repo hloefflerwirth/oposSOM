@@ -107,8 +107,11 @@ pipeline.prepareAnnotation <- function()
     gene.positions <<- gene.positions[which(!gene.positions.table[,1] %in% junk.chrnames)]
     gene.positions.table <<- gene.positions.table[which(!gene.positions.table[,1] %in% junk.chrnames),]
 
-    gene.positions.list <<- tapply(rownames(gene.positions.table), gene.positions.table[,1], c)
-    gene.positions.list <<- lapply(gene.positions.list, function(x) { tapply(x, gene.positions.table[x,2], c) })
+    if(length(gene.positions)>0)
+    {
+      gene.positions.list <<- tapply(rownames(gene.positions.table), gene.positions.table[,1], c)
+      gene.positions.list <<- lapply(gene.positions.list, function(x) { tapply(x, gene.positions.table[x,2], c) })
+    }
   }
 
   if (!preferences$geneset.analysis) {
@@ -148,10 +151,12 @@ pipeline.prepareAnnotation <- function()
     util.warn("No GO annotation found")
   }
 
-  chr.gs.list <- lapply(gene.positions.list, function(x) { list(Genes=gene.ids[unlist(x)], Type="Chr") })
-  names(chr.gs.list) <- paste("Chr", names(gene.positions.list))
-  gs.def.list <<- c(gs.def.list, chr.gs.list)
-
+  if(length(gene.positions.list)>0)
+  {
+    chr.gs.list <- lapply(gene.positions.list, function(x) { list(Genes=gene.ids[unlist(x)], Type="Chr") })
+    names(chr.gs.list) <- paste("Chr", names(gene.positions.list))
+    gs.def.list <<- c(gs.def.list, chr.gs.list)
+  }
 
 
   # load custom genesets

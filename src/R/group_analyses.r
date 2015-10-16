@@ -42,8 +42,15 @@ pipeline.groupAnalysis <- function()
     samples.indata <- which(group.labels==unique(group.labels)[gr])
     
     n <- length(samples.indata)
-    t.g.m[,gr] <<- sqrt(n) * apply(indata[,samples.indata,drop=FALSE],1,function(x) mean(x) / sd(x) )
-    p.g.m[,gr] <<- 2 - 2*pt( abs(t.g.m[,gr]), n-1 )
+    t.g.m[,gr] <<- sqrt(n) * apply(indata[,samples.indata,drop=FALSE],1,function(x)
+    {
+      sd.estimate = if( n>1 ) sd(x) else 1
+      if( sd.estimate == 0 ) sd.estimate = 1
+        
+      return( mean(x) / sd.estimate )
+    } )
+#    t.g.m[which(is.nan(t.g.m[,gr])|is.infinite(t.g.m[,gr])),gr] <<- 0
+    p.g.m[,gr] <<- 2 - 2*pt( abs(t.g.m[,gr]), max(n-1,1) )
 
     suppressWarnings({
       try.res <- try({
