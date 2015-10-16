@@ -1,1 +1,2 @@
 oposSOM 1.5.4: A bug was fixed, which was caused by an altered function from igraph package.
+oposSOM 1.7.1: Bumped version number by Bioconductor + a series of bugs were fixed.
