@@ -1,3 +1,20 @@
+GeneSet.maxmean <- function(z, gs.def.list)
+{
+  s.plus <- pmax(z,0)
+  s.minus <- pmin(z,0)
+  
+  S <- sapply(gs.def.list, function(x, S.plus, S.minus )
+  {
+    S.plus <- mean( s.plus[x$Genes] )
+    S.minus <- mean( s.minus[x$Genes] )
+    
+    if( S.plus >= abs(S.minus) ) S.plus else S.minus
+    
+  }, s.plus, s.minus )
+  
+  return(S)
+}
+
 
 GeneSet.Fisher <- function(list.ids, all.ids, gs.def.list, sort=FALSE, cluster=NULL)
 {
