@@ -56,8 +56,8 @@ pipeline.genesetStatisticSamples <- function()
 
     if (preferences$geneset.analysis.exact)
     {
-#       x$GSZ.p.value <- 1 - null.culdensity(abs(x$GSZ.score))
-#       names(x$GSZ.p.value) <- names(x$GSZ.score)
+       x$GSZ.p.value <- 1 - null.culdensity(abs(x$GSZ.score))
+       names(x$GSZ.p.value) <- names(x$GSZ.score)
     }
 
     if (preferences$geneset.analysis.samplespots)
