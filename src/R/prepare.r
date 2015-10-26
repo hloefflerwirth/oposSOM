@@ -210,12 +210,12 @@ pipeline.prepare <- function()
     util.warn("Duplicate rownames. Averaged multiple features")
   }
 
-  na.rows <- which(apply(apply(indata, 1, is.na), 2, sum) > 0)
-
+  na.rows <- which( apply(indata, 1, function(x) sum( is.na(x) | is.infinite(x) ) ) > 0 )
+  
   if (length(na.rows) > 0)
   {
     indata <<- indata[-na.rows,]
-    util.warn("Removed NAs from data set")
+    util.warn("Removed NAs or infinite values from data set")
   }
 
   ## set up global variables
