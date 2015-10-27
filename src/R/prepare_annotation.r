@@ -64,7 +64,7 @@ pipeline.prepareAnnotation <- function()
   mart <- useMart('ensembl')
   mart <- useDataset(preferences$database.dataset, mart=mart)
 
-  query = c("hgnc_symbol","wikigene_name","uniprot_genename")[ which( c("hgnc_symbol","wikigene_name","uniprot_genename") %in% listAttributes(mart)[,1] ) ][1]
+  query = c("wikigene_name","hgnc_symbol","uniprot_genename")[ which( c("wikigene_name","hgnc_symbol","uniprot_genename") %in% listAttributes(mart)[,1] ) ][1]
   biomart.table <- getBM(c(preferences$database.id.type,
                            query,
                            "description",

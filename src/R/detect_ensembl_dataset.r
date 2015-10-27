@@ -30,7 +30,7 @@ pipeline.detectEnsemblDataset <- function()
     for (id in c(auto.datasets[[ds]], auto.rowname.ids))
     {
       try({
-        query = c("hgnc_symbol","wikigene_name","uniprot_genename")[ which( c("hgnc_symbol","wikigene_name","uniprot_genename") %in% listAttributes(mart)[,1] ) ][1]
+        query = c("wikigene_name","hgnc_symbol","uniprot_genename")[ which( c("wikigene_name","hgnc_symbol","uniprot_genename") %in% listAttributes(mart)[,1] ) ][1]
         biomart.table <-
           getBM(c(id, query), id,
                 rownames(indata)[seq(1,nrow(indata),length.out=100)],
