@@ -14,10 +14,17 @@ pipeline.differenceAnalyses = function()
   } else
   {
     differences.list <- list()
-    util.warn("Skip pairwise group analyses: too few or many groups")
+    util.warn("Skipped pairwise group analyses: too few or many groups")
   }
   
   differences.list <- c( preferences$pairwise.comparison.list, differences.list )
+  
+  singleton.differences <- sapply( differences.list, function(x) length(x[[1]])<2 || length(x[[2]])<2 )
+  if( any(singleton.differences) )
+  {
+    differences.list <- differences.list[which(!singleton.differences)]
+    util.warn("Skipped difference analysis for groups with only one sample")
+  }
   
   if (length(differences.list) == 0)
   {
@@ -72,8 +79,10 @@ pipeline.differenceAnalyses = function()
     m <- length(samples.indata[[2]])
 
     S2.x <- apply(indata[,samples.indata[[1]],drop=FALSE],1,var)
+    S2.x[which(S2.x==0)] <- min(S2.x[which(S2.x!=0)])
     S2.y <- apply(indata[,samples.indata[[2]],drop=FALSE],1,var)
-
+    S2.y[which(S2.y==0)] <- min(S2.y[which(S2.y!=0)])
+    
     t.g.m[,d] <<- indata.d[,d] / sqrt( S2.x/n + S2.y/m )
 
     df <- ( S2.x/n + S2.y/m )^2  / ( S2.x^2 / (n^2*(n-1)) + S2.y^2 / (m^2*(m-1)) )
