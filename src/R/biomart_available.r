@@ -14,7 +14,7 @@ biomart.available <- function()
                      "ENSG00000162511")
 
   try({
-    mart <- useMart('ensembl')
+    mart <- useMart('ENSEMBL_MART_ENSEMBL',host="www.ensembl.org")
     mart <- useDataset("hsapiens_gene_ensembl", mart=mart)
 
     test.table <- getBM(c("hgnc_symbol", "ensembl_gene_id"),

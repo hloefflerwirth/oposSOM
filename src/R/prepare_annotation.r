@@ -29,7 +29,7 @@ pipeline.prepareAnnotation <- function()
     biomart.table <- NULL
 
     try({
-      mart <- useMart('ensembl')
+      mart <- useMart('ENSEMBL_MART_ENSEMBL',host="www.ensembl.org")
       mart <- useDataset(preferences$database.dataset, mart=mart)
 
       query = c("hgnc_symbol","wikigene_name","uniprot_genename")[ which( c("hgnc_symbol","wikigene_name","uniprot_genename") %in% listAttributes(mart)[,1] ) ][1]
@@ -61,7 +61,7 @@ pipeline.prepareAnnotation <- function()
   }
   
 
-  mart <- useMart('ensembl')
+  mart <- useMart('ENSEMBL_MART_ENSEMBL',host="www.ensembl.org")
   mart <- useDataset(preferences$database.dataset, mart=mart)
 
   query = c("wikigene_name","hgnc_symbol","uniprot_genename")[ which( c("wikigene_name","hgnc_symbol","uniprot_genename") %in% listAttributes(mart)[,1] ) ][1]

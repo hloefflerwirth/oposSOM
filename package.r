@@ -100,7 +100,8 @@ file.copy(file.path("src", "data", filename), datadir) -> x
 
   ### from gsea files
   library(biomaRt)
-  mart<-useMart(biomart="ensembl", dataset="hsapiens_gene_ensembl")
+  #mart<-useMart(biomart="ensembl", dataset="hsapiens_gene_ensembl")
+  mart<-useMart(biomart='ENSEMBL_MART_ENSEMBL', dataset="hsapiens_gene_ensembl",host="www.ensembl.org")
 
 
   filename <- file.path("src", "data", "h.all.v5.0.entrez.gmt")
