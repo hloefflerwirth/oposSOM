@@ -51,8 +51,8 @@ pipeline.genesetStatisticSamples <- function()
     spot.gene.ids <- unique.protein.ids
 
     x$GSZ.score <-
-#      GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.def.list, sort=FALSE)
-      GeneSet.maxmean(all.gene.statistic, gs.def.list)
+      GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.def.list, sort=FALSE)
+#      GeneSet.maxmean(all.gene.statistic, gs.def.list)
 
     if (preferences$geneset.analysis.exact)
     {
