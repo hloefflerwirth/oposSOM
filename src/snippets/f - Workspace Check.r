@@ -1,50 +1,17 @@
 
+  attach(env)
 
   cat("Perform Workspace Check\n\n"); flush.console()
   
   
     # standard preferences
         
-    if (! ("error.model" %in% names(preferences)))
-    {
-      cat("preferences: error model not set correctly\n"); flush.console()
-    }
-    if (! preferences$error.model %in% c("all.samples.LPE", "group.SD")) 
-    {
-      cat("preferences: error model not set correctly\n"); flush.console()
-    }
-    
     if (! ("geneset.analysis.samplespots" %in% names(preferences)))
     {
       cat("preferences: geneset.analysis.samplespots not set correctly\n"); flush.console()
     } 
   
-    if (! ("sample.spot.cutoff" %in% names(preferences)))
-    {
-      cat("preferences: sample.spot.cutoff not set correctly\n"); flush.console()
-    }    
-  
-    if (! ("summary.spot.core" %in% names(preferences)))  
-    {
-      cat("preferences: summary.spot.core not set correctly\n"); flush.console()
-    }    
-    if (! ("summary.spot.threshold" %in% names(preferences)))
-    {
-      cat("preferences: summary.spot.threshold not set correctly\n"); flush.console()
-    }    
-  
-    if (! ("group.spot.core" %in% names(preferences)))  
-    {
-      cat("preferences: group.spot.core not set correctly\n"); flush.console()
-    }      
-    if (! ("group.spot.threshold" %in% names(preferences)))
-    {
-      cat("preferences: group.spot.threshold not set correctly\n"); flush.console()
-    }    
-    
-  
-  
-  
+
     # primary data
   
     if (nrow(indata) == 0 || ncol(indata) == 0)
@@ -67,7 +34,7 @@
   
     # secondary objects
   
-    if (!all(names(GS.infos.samples) == colnames(indata)))
+    if (!all(names(spot.list.samples) == colnames(indata)))
     {      
       cat("GS.infos.samples: not the same samples as indata\n"); flush.console()        
     }  
@@ -82,11 +49,11 @@
   
     # groups
   
-    if (length(group.labels) != ncol(indata) || !all(names(group.labels) == colnames(indata)))
+    if (length(group.labels) != ncol(indata) || length(names(group.labels))!=ncol(indata) ||  !all(names(group.labels) == colnames(indata)))
     {
       cat("group.labels: does not fit to indata\n"); flush.console()
     }  
-    if (length(group.colors) != ncol(indata) || !all(names(group.colors) == colnames(indata)))
+    if (length(group.colors) != ncol(indata) || length(names(group.colors))!=ncol(indata) || !all(names(group.colors) == colnames(indata)))
     {
       cat("group.colors: does not fit to indata\n"); flush.console()
     }  
@@ -94,20 +61,20 @@
     {
       cat("group.colors: not converted into #RGB format\n"); flush.console()
     }  
-    if (!all(group.colors %in% unique.group.colors))
+    if (!all(group.colors %in% groupwise.group.colors))
     {
-      cat("unique.group.colors: does not fit to group.colors\n"); flush.console()            
+      cat("groupwise.group.colors: does not fit to group.colors\n"); flush.console()            
     }
-    if (!all(names(unique.group.colors) == unique(group.labels)))
+    if (!all(names(groupwise.group.colors) == unique(group.labels)))
     {
-      cat("unique.group.colors: does not fit to group.labels\n"); flush.console()            
+      cat("groupwise.group.colors: does not fit to group.labels\n"); flush.console()            
     }
-    if (unique(substr(unique.group.colors, 1, 1))[1] != "#")
+    if (unique(substr(groupwise.group.colors, 1, 1))[1] != "#")
     {
-      cat("unique.group.colors: not converted into #RGB format\n"); flush.console()
+      cat("groupwise.group.colors: not converted into #RGB format\n"); flush.console()
     }
   
-    if (!all(names(group.bootstrap.score) == colnames(indata)))
+    if (!all(names(group.silhouette.coef) == colnames(indata)))
     {
       cat("group.bootstrap.score: does not fit to samples\n"); flush.console()            
     }  
@@ -157,25 +124,27 @@
     {
       cat("gene.positions: does not fit to features\n"); flush.console()            
     }    
-    if (!all(names(genes.coordinates) == rownames(indata)))
+    if (!all(names(gene.coordinates) == rownames(indata)))
     {
-      cat("genes.coordinates: does not fit to features\n"); flush.console()            
+      cat("gene.coordinates: does not fit to features\n"); flush.console()            
     }  
     
   
   
     # Pipeline data structures
   
-    if (ncol(GS.infos.overexpression$spotdata) != ncol(indata))
+    if (ncol(spot.list.overexpression$spotdata) != ncol(indata))
     {
-      cat("GS.infos.*: spotdata missing\n"); flush.console()            
+      cat("spot.list.overexpression*: spotdata missing\n"); flush.console()            
     }  
-  
-    if (!"beta.statistic" %in% names(GS.infos.overexpression$spots[[1]]))
+    if (!"beta.statistic" %in% names(spot.list.overexpression$spots[[1]]))
     {
-      cat("GS.infos.*: beta scores missing\n"); flush.console()            
+      cat("spot.list.*: beta scores missing\n"); flush.console()            
     }  
-  
+    if ( !exists("spot.list.dmap") )
+    {
+      cat("spot.list.dmap missing\n"); flush.console()            
+    }  
   
   
     # basic functions sometimes overwritten
@@ -188,7 +157,14 @@
     {
       cat("basic function: t overwritten\n"); flush.console()            
     }    
-
+    if ( F != FALSE )
+    {
+      cat("basic constant: F overwritten\n"); flush.console()            
+    } 
+	if ( T != TRUE )
+    {
+      cat("basic constant: T overwritten\n"); flush.console()            
+    } 
   
 
   cat("\nThats all folks!\n\n"); flush.console()
