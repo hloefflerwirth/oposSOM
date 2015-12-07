@@ -25,16 +25,19 @@ pipeline.genesetStatisticSamples <- function()
 
       scores <- GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.null.list)
 
-      for (spot.i in seq_along(spot.list.samples[[m]]$spots))
+      if (preferences$geneset.analysis.samplespots)
       {
-        spot.genes <- spot.list.samples[[m]]$spots[[spot.i]]$genes
-        spot.gene.ids <- unique(na.omit(gene.ids[spot.genes]))
-        all.gene.statistic <- t.ensID.m[, m]
-
-        scores <-
-          c(scores, GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.null.list))
+        for (spot.i in seq_along(spot.list.samples[[m]]$spots))
+        {
+          spot.genes <- spot.list.samples[[m]]$spots[[spot.i]]$genes
+          spot.gene.ids <- unique(na.omit(gene.ids[spot.genes]))
+          all.gene.statistic <- t.ensID.m[, m]
+  
+          scores <-
+            c(scores, GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.null.list))
+        }
       }
-
+  
       return(scores)
     })
 
