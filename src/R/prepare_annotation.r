@@ -178,7 +178,7 @@ pipeline.prepareAnnotation <- function()
   if (length(gs.def.list) > 0)
   {
     gs.def.list <<- lapply(gs.def.list, function(x) { names(x$Genes) = NULL; return(x) })
-    gs.def.list.categories <<- sapply(gs.def.list, function(x) { x$Type })
+    sapply(gs.def.list, function(x) { x$Type }) <<- sapply(gs.def.list, function(x) { x$Type })
     util.info("In total", length(gs.def.list), "gene sets to be considered in analysis")
   } else
   {

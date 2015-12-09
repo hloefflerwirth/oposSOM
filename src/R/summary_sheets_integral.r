@@ -449,7 +449,7 @@ pipeline.summarySheetsIntegral <- function()
           length(x$Genes)
         })), cex=0.6, adj=0)
 
-        text(x.coords[4], y.coords, gs.def.list.categories[names(top.gs.p)], cex=0.6, adj=0)
+        text(x.coords[4], y.coords, sapply(gs.def.list, function(x) { x$Type })[names(top.gs.p)], cex=0.6, adj=0)
         rect(x.coords[5]-0.01, y.coords+0.01, 1, 0, border="white", col="white")
         text(x.coords[5], y.coords, names(top.gs.p), cex=0.6, adj=0)
 
@@ -492,13 +492,13 @@ pipeline.summarySheetsIntegral <- function()
         
         ## Splitted Genesets Sheet
         n.sets <- 20
-        n.cat <- length(table(gs.def.list.categories))
+        n.cat <- length(table(sapply(gs.def.list, function(x) { x$Type })))
         par(mfrow=c(ceiling(n.cat/3), min(n.cat, 3)))
         
-        for (i in names(table(gs.def.list.categories)))
+        for (i in names(table(sapply(gs.def.list, function(x) { x$Type }))))
         {
           top.gs.p <-
-            sort(set.list$spots[[m]]$Fisher.p[names(which(gs.def.list.categories == i))])[1:n.sets]
+            sort(set.list$spots[[m]]$Fisher.p[names(which(sapply(gs.def.list, function(x) { x$Type }) == i))])[1:n.sets]
           
           x.coords <- c(0.05, 0.15, 0.28, 0.39, 0.45)
           y.coords <- seq(0.88, 0.05, length.out=n.sets)
@@ -571,7 +571,7 @@ pipeline.summarySheetsIntegral <- function()
 
       if (any(grep("GenesetSOM",files.name)))
       {
-        out <-cbind(out, Type = gs.def.list.categories[o])
+        out <-cbind(out, Type = sapply(gs.def.list, function(x) { x$Type })[o])
       }
 
       high.low.threshold <- mean(indata.gene.mean)

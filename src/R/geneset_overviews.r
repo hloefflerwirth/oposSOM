@@ -9,9 +9,9 @@ pipeline.genesetOverviews <- function()
     sapply(spot.list.overexpression$spots, function(x) { x$Fisher.p[names(gs.def.list)] })
 
 
-  for (i in names(table(gs.def.list.categories)))
+  for (i in names(table(sapply(gs.def.list, function(x) { x$Type }))))
   {
-    category.GST.scores <- samples.GSZ.scores[which(gs.def.list.categories == i) , ,drop=FALSE]
+    category.GST.scores <- samples.GSZ.scores[which(sapply(gs.def.list, function(x) { x$Type }) == i) , ,drop=FALSE]
 
     if (nrow(category.GST.scores) > 60)
     {

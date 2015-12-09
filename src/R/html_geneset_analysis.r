@@ -99,8 +99,8 @@ pipeline.htmlGenesetAnalysis <- function()
         <dt>Number of Gene Sets</dt>
         <dd>", length(gs.def.list), "</dd>
         <dt>Categories</dt>
-        <dd>", paste(paste(names(table(gs.def.list.categories)),
-               table(gs.def.list.categories), sep=" ("), collapse=") , ") , ")</dd>
+        <dd>", paste(paste(names(table(sapply(gs.def.list, function(x) { x$Type }))),
+               table(sapply(gs.def.list, function(x) { x$Type })), sep=" ("), collapse=") , ") , ")</dd>
       </dl>
 
       <ul>
@@ -130,7 +130,7 @@ pipeline.htmlGenesetAnalysis <- function()
 
       <ul id=\"toc\">", sep="", file=outfile)
 
-    for (i in names(table(gs.def.list.categories)))
+    for (i in names(table(sapply(gs.def.list, function(x) { x$Type }))))
     {
       cat("
         <li><a href=\"#", i, "\">", i, "</a></li>", sep="", file=outfile)
@@ -149,9 +149,9 @@ pipeline.htmlGenesetAnalysis <- function()
         tables.
       </p>", sep="", file=outfile)
 
-  for (i in names(table(gs.def.list.categories)))
+  for (i in names(table(sapply(gs.def.list, function(x) { x$Type }))))
   {
-    category.gs.list <- gs.def.list[which(gs.def.list.categories == i)]
+    category.gs.list <- gs.def.list[which(sapply(gs.def.list, function(x) { x$Type }) == i)]
 
     cat("
 

@@ -197,7 +197,7 @@ pipeline.summarySheetsSamples <- function()
       text(x.coords[4], y.coords, sapply(gs.def.list[names(top.gs.score)],
                                          function(x) { length(x$Genes) }), cex=0.6, adj=0)
 
-      text(x.coords[5], y.coords, gs.def.list.categories[names(top.gs.score)], cex=0.6, adj=0)
+      text(x.coords[5], y.coords, sapply(gs.def.list, function(x) { x$Type })[names(top.gs.score)], cex=0.6, adj=0)
       text(x.coords[6], y.coords, names(top.gs.score), cex=0.6, adj=0)
 
       top.gs.score <- sort(spot.list.samples[[m]]$GSZ.score, decreasing=FALSE)[1:n.sets]
@@ -213,7 +213,7 @@ pipeline.summarySheetsSamples <- function()
       text(x.coords[4], y.coords, sapply(gs.def.list[names(top.gs.score)],
                                          function(x) { length(x$Genes) }), cex=0.6, adj=0)
 
-      text(x.coords[5], y.coords, gs.def.list.categories[names(top.gs.score)], cex=0.6, adj=0)
+      text(x.coords[5], y.coords, sapply(gs.def.list, function(x) { x$Type })[names(top.gs.score)], cex=0.6, adj=0)
       text(x.coords[6], y.coords, names(top.gs.score), cex=0.6, adj=0)
 
       if (preferences$geneset.analysis.exact)
@@ -460,7 +460,7 @@ pipeline.summarySheetsSamples <- function()
                      sapply(gs.def.list[names(top.gs.score)],
                             function(x) { length(x$Genes)  })), cex=0.6, adj=0)
 
-          text(x.coords[5], y.coords, gs.def.list.categories[names(top.gs.score)], cex=0.6, adj=0)
+          text(x.coords[5], y.coords, sapply(gs.def.list, function(x) { x$Type })[names(top.gs.score)], cex=0.6, adj=0)
           text(x.coords[6], y.coords, names(top.gs.score), cex=0.6, adj=0)
         } else
         {
@@ -489,7 +489,7 @@ pipeline.summarySheetsSamples <- function()
                      sapply(gs.def.list[names(top.gs.score)],
                             function(x) { length(x$Genes) })), cex=0.6, adj=0)
 
-          text(x.coords[5], y.coords, gs.def.list.categories[names(top.gs.score)], cex=0.6, adj=0)
+          text(x.coords[5], y.coords, sapply(gs.def.list, function(x) { x$Type })[names(top.gs.score)], cex=0.6, adj=0)
           text(x.coords[6], y.coords, names(top.gs.score), cex=0.6, adj=0)
         }
 

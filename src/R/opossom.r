@@ -20,7 +20,6 @@ opossom.new <- function(preferences=NULL)
   env$group.labels <- NULL
   env$group.metadata <- NULL
   env$gs.def.list <- NULL
-  env$gs.def.list.categories <- NULL
   env$samples.GSZ.scores <- NULL
   env$spot.list.correlation <- NULL
   env$spot.list.dmap <- NULL
