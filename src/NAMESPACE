@@ -1,4 +1,4 @@
-exportPattern("^(opossom|pipeline|util)\\..+")
+exportPattern("*")
 
 import("som")
 import("fastICA")
