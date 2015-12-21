@@ -130,6 +130,17 @@
     }  
     
   
+    # Geneset objects
+  
+    if (!is.null(gs.def.list))
+    {
+      n.bad.sets = sum(!sapply(gs.def.list,function(x)all(x$Genes%in%unique.protein.ids)))
+      if (n.bad.sets>0)
+      {
+        cat("gs.def.list: genes of",n.bad.sets,"sets not in unique.protein.ids\n"); flush.console()            
+      }  
+    }
+  
   
     # Pipeline data structures
   
@@ -143,7 +154,7 @@
     }  
     if ( !exists("spot.list.dmap") )
     {
-      cat("spot.list.dmap missing\n"); flush.console()            
+      cat("spot.list.dmap: missing\n"); flush.console()            
     }  
   
   
