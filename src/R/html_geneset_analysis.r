@@ -142,10 +142,10 @@ pipeline.htmlGenesetAnalysis <- function()
       <h1>Gene Sets</h1>
 
       <p>
-        Enrichment profiles of individual predefined gene sets are shown as
-        bar plots across all samples. Additionally the log FC-expression
-        profiles of the leading metagenes are shown.
-        Further, members of each gene set are given as population maps and
+        The report sheets show the enrichment (GSZ-) profile as
+        bar plot across all samples, the heatmap of most variant gene set members
+        and the mapping of all member genesinto the SOM space.
+        Further, all members of each individual gene set are given in the CSV spreadsheets.
         tables.
       </p>", sep="", file=outfile)
 
@@ -162,8 +162,7 @@ pipeline.htmlGenesetAnalysis <- function()
           <tr>
             <th>Geneset name</th>
             <th>Category</th>
-            <th>Profile</th>
-            <th>Population Map</th>
+            <th>Report Sheet</th>
             <th>Members</th>
           </tr>
         </thead>
@@ -176,9 +175,7 @@ pipeline.htmlGenesetAnalysis <- function()
             <td>", names(category.gs.list)[ii], "</td>
             <td>", sapply(category.gs.list,function(x){x$Type})[ii], "</td>
             <td><a href=\"", substring(make.names(names(category.gs.list)[ii]), 1, 100),
-              " profile.pdf\" target=\"_blank\">PDF</a></td>
-            <td><a href=\"", substring(make.names(names(category.gs.list)[ii]), 1, 100),
-              " map.pdf\" target=\"_blank\">PDF</a></td>
+              ".pdf\" target=\"_blank\">PDF</a></td>
             <td><a href=\"", substring(make.names(names(category.gs.list)[ii]), 1, 100),
               ".csv\" >CSV</a></td>
           </tr>", sep="", file=outfile)
