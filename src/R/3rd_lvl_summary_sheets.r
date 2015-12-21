@@ -99,7 +99,7 @@ pipeline.3rdLvlSummarySheets <- function()
     points(do.call(rbind, lapply(set.list$spots, function(x) x$position)), pch=1, cex=2.6, col="white")
     text(do.call(rbind, lapply(set.list$spots, function(x) x$position)), names(set.list$spots), col="white", cex=0.8)
 
-    ## plot single spot overview
+    ## plot spot profiles
     layout(matrix(1:18, 6, 3, byrow=TRUE), widths=c(1,4,1.5))
 
     for (i in 1:N.spots)
@@ -123,13 +123,12 @@ pipeline.3rdLvlSummarySheets <- function()
                            border=if (ncol(indata) < 80) "black" else NA,
                            ylim=range(set.list$spotdata)*c(1,1.4))
 
-      abline(h=thresh.global, lty=2, col="gray")
-      abline(h=-thresh.global, lty=2, col="gray")
-      label.string = as.character(B.spot.group.map.global[i,])
-      label.string = sub("-1", "-", label.string, fixed=TRUE)
-      label.string = sub("1", "+", label.string)
-      label.string = sub("0", ".", label.string)
-      label.x = tapply(barplot.x, group.labels, mean)[unique(group.labels)]
+      abline(h=thresh.global*c(-1,1), lty=2, col="gray")
+      label.string <- as.character(B.spot.group.map.global[i,])
+      label.string <- sub("-1", "-", label.string, fixed=TRUE)
+      label.string <- sub("1", "+", label.string)
+      label.string <- sub("0", ".", label.string)
+      label.x <- tapply(barplot.x, group.labels, mean)[unique(group.labels)]
       text(label.x, max(set.list$spotdata)*1.2, label.string, col=groupwise.group.colors,cex=2.5)
 
       par(mar=c(0.5,0,0.5,0))
@@ -160,6 +159,35 @@ pipeline.3rdLvlSummarySheets <- function()
       }
     }
 
+    ### plot profile boxplots
+    layout(matrix(1:8, 4, 2, byrow=TRUE), widths=c(1,4))
+    ylim <- range( unlist( by( t(set.list$spotdata), group.labels, range )[unique(group.labels)] ) )
+   
+    for (i in 1:N.spots)
+    {
+      par(mar=c(2,3,0.5,1))
+      
+      image(matrix(set.list$spots[[i]]$mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
+            axes=FALSE, col ="darkgreen")
+      
+      axis(2, 0.95, names(set.list$spots[i]), las=2, tick=FALSE, cex.axis=1.6)
+      box()
+      
+      par(mar=c(2,3,0.5,1))
+      
+      boxplot(  tapply( set.list$spotdata[i,], group.labels, c )[unique(group.labels)],
+                col=groupwise.group.colors, las=1, ylim=ylim )
+      
+      abline(h=thresh.global*c(-1,0,1), lty=2, col="gray")
+
+      label.string <- as.character(B.spot.group.map.global[i,])
+      label.string <- sub("-1", "-", label.string, fixed=TRUE)
+      label.string <- sub("1", "+", label.string)
+      label.string <- sub("0", ".", label.string)
+
+      text( 1:length(unique(group.labels)), par("usr")[4]-(par("usr")[4]-par("usr")[3])*0.1, label.string, col=groupwise.group.colors,cex=3)
+    }
+    
     ### Spot homogeneity map
     map <- B.spot.group.map.global*(1-H.spot.group.map)
     map <- map[nrow(map):1,,drop=FALSE]

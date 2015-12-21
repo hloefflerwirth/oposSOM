@@ -48,14 +48,10 @@ pipeline.3rdLvlNetworks <- function()
       }
       
       diag(omega) <- 0
-      omega[which(abs(omega) < 0.5)] <- 0
+      omega[which(abs(omega) < 0.25)] <- 0
       
       g <- graph.adjacency(omega, weighted=TRUE, mode="undirected")
-      E(g)$weight <- rep( 1, length( E(g)$weight ) )
-      layout <- layout_with_kk( g )     
-#      layout <- layout.fruchterman.reingold(g)
-#      layout <- layout.norm(layout, xmin=-1, xmax=1, ymin=-1, ymax=1)
-      
+
       V(g)$label <- names(set.list$spots)
       n.spot <- apply(sample.spot.matrix, 1, sum)
       
@@ -69,7 +65,7 @@ pipeline.3rdLvlNetworks <- function()
       
       if (length(E(g)) > 0)
       {
-        E(g)$color <- c("red2","green2")[1.5 + sign(E(g)$weight) / 2]
+        E(g)$color <- c("brown4","chocolate","rosybrown1","white","white","lightblue","cornflowerblue","dodgerblue4")[ cut( E(g)$weight, breaks=c(-Inf,-0.75,-0.5,-0.25,0,0.25,0.5,0.75,Inf), labels=c(1:8) ) ]
         E(g)$width <- abs(E(g)$weight)
         
         if (max(E(g)$width) == min(E(g)$width))
@@ -83,17 +79,6 @@ pipeline.3rdLvlNetworks <- function()
       }
       
       # plot wTO network
-      par(mar=c(1,1,1,1), mfrow=c(1,1))
-      
-      plot(g, layout=layout, vertex.label.color="black",
-           vertex.label.cex=1, vertex.color="grey", main="",
-           xlim=c(-1,1), ylim=c(-1.1,1.1))
-      
-      legend("bottomright", c("positive correlation", "negative correlation"),
-             lty = c(1,1), lwd = 4,col=c("green2","red2"))
-      
-      text(-1.65, 1.1, "wTO network", adj=0, cex=2)
-      
       par(mar=c(4.9,13.5,4.9,13.5))
       image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=FALSE, main="WTO network mapped to SOM space", cex.main=1.6)
       par(new=TRUE, mar=c(1,1,1,1))
@@ -104,9 +89,9 @@ pipeline.3rdLvlNetworks <- function()
       
       rect(-1.1,-1.1,1.1,1.1)
       
-      legend("bottomright", c("positive correlation", "negative correlation"),
-             lty = c(1,1), lwd = 4,col=c("green2","red2"))
-      
+      legend("bottomright", c("negative correlation",expression(paste("  ",omega," < -0.25")),expression(paste("  ",omega," < -0.50")),expression(paste("  ",omega," < -0.75")),
+                              "positive correlation",expression(paste("  ",omega," > 0.25")),expression(paste("  ",omega," > 0.50")),expression(paste("  ",omega," > 0.75"))),
+             lty = c(1,1), lwd = 4,col=c("white","rosybrown1","chocolate","brown4","white","lightblue","cornflowerblue","dodgerblue4"))
     }
   }
 
