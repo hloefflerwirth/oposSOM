@@ -102,8 +102,9 @@ pipeline.prepareAnnotation <- function()
 
     gene.positions.table <<- do.call(rbind, strsplit(gene.positions, " "))
 
-    junk.chrnames <- names(which(table(gene.positions.table[,1]) < 20))
-    junk.chrnames <- union(junk.chrnames, names(which(tapply(gene.positions.table[,2], gene.positions.table[,1], function(x) { length(unique(x)) }) == 1)))
+    junk.chrnames <- names(which(table(gene.positions.table[,1]) < 20)) # filter low abundand chromosome information
+    if( length(unique(gene.positions.table[,2]))>1 ) # filter information when band is missing
+      junk.chrnames <- union(junk.chrnames, names(which(tapply(gene.positions.table[,2], gene.positions.table[,1], function(x) { length(unique(x)) }) == 1)))
     gene.positions <<- gene.positions[which(!gene.positions.table[,1] %in% junk.chrnames)]
     gene.positions.table <<- gene.positions.table[which(!gene.positions.table[,1] %in% junk.chrnames),]
 
@@ -121,9 +122,9 @@ pipeline.prepareAnnotation <- function()
   unique.protein.ids <<- unique(gene.ids)
 
   biomart.table <- getBM(c("ensembl_gene_id", "go_id", "name_1006", "namespace_1003"), "ensembl_gene_id", unique.protein.ids, mart, checkFilters=FALSE)
+  biomart.table <- biomart.table[which( apply(biomart.table,1,function(x) sum(x=="") ) == 0 ),]  
   gs.def.list <<- tapply(biomart.table[,1], biomart.table[,2], c)
   gs.def.list <<- lapply(gs.def.list, function(x) { list(Genes=x, Type="") })
-  gs.def.list <<- gs.def.list[- which(names(gs.def.list) == "")]
 
 
   if (length(gs.def.list) > 0)
@@ -168,17 +169,12 @@ pipeline.prepareAnnotation <- function()
     return(x)
   })
 
-  small.gs <- which(sapply(sapply(gs.def.list, head, 1), length) < 2)
 
-  if (length(small.gs) > 0)
-  {
-    gs.def.list <<- gs.def.list[- small.gs]
-  }
+  gs.def.list <<- gs.def.list[ which(sapply(sapply(gs.def.list, head, 1), length) >= 2) ]
 
   if (length(gs.def.list) > 0)
   {
     gs.def.list <<- lapply(gs.def.list, function(x) { names(x$Genes) = NULL; return(x) })
-    sapply(gs.def.list, function(x) { x$Type }) <<- sapply(gs.def.list, function(x) { x$Type })
     util.info("In total", length(gs.def.list), "gene sets to be considered in analysis")
   } else
   {
