@@ -237,7 +237,7 @@ pipeline.prepare <- function()
   dir.create(paste(files.name, "- Results/CSV Sheets"), showWarnings=FALSE)
 
   if (is.null(colramp)) {
-    colramp <<- colorRampPalette(c("darkblue", "blue", "lightblue", "green",
+    colramp <<- colorRampPalette(c("darkblue", "blue", "lightblue", "green2",
                                    "yellow", "red", "darkred"))
   }
 
