@@ -956,6 +956,7 @@ pipeline.detectSpotsIntegral <- function()
   spot.list.dmap$filtered <<- FALSE
   spot.list.dmap$spots <<- list()
   
+  count.cluster <- 1
   for (i in seq_along(sort(unique(na.omit(as.vector(spot.matrix))))) )
   {
     spot.metagenes <- which(spot.matrix==i)
@@ -963,19 +964,21 @@ pipeline.detectSpotsIntegral <- function()
     
     if (length(spot.genes) > 0)
     {
-      spot.list.dmap$overview.mask[spot.metagenes] <<- i
-      spot.list.dmap$spots[[LETTERS[i]]] <<- list()
-      spot.list.dmap$spots[[LETTERS[i]]]$metagenes <<- spot.metagenes
-      spot.list.dmap$spots[[LETTERS[i]]]$genes <<- spot.genes
-      spot.list.dmap$spots[[LETTERS[i]]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
-      spot.list.dmap$spots[[LETTERS[i]]]$mask[spot.metagenes] <<- 1
+      spot.list.dmap$overview.mask[spot.metagenes] <<- count.cluster
+      spot.list.dmap$spots[[LETTERS[count.cluster]]] <<- list()
+      spot.list.dmap$spots[[LETTERS[count.cluster]]]$metagenes <<- spot.metagenes
+      spot.list.dmap$spots[[LETTERS[count.cluster]]]$genes <<- spot.genes
+      spot.list.dmap$spots[[LETTERS[count.cluster]]]$mask <<- rep(NA, preferences$dim.1stLvlSom * preferences$dim.1stLvlSom)
+      spot.list.dmap$spots[[LETTERS[count.cluster]]]$mask[spot.metagenes] <<- 1
       
-      spot.list.dmap$spots[[LETTERS[i]]]$position <<-
+      spot.list.dmap$spots[[LETTERS[count.cluster]]]$position <<-
         colMeans(apply(som.result$code.sum[spot.metagenes, 1:2]+1, 2, range))
       
-      spot.list.dmap$spots[[LETTERS[i]]]$beta.statistic <<-
-        get.beta.statistic(set.data=metadata[spot.list.dmap$spots[[LETTERS[i]]]$metagenes,,drop=FALSE],
-                           weights=som.result$code.sum[spot.list.dmap$spots[[LETTERS[i]]]$metagenes,]$nobs)
+      spot.list.dmap$spots[[LETTERS[count.cluster]]]$beta.statistic <<-
+        get.beta.statistic(set.data=metadata[spot.list.dmap$spots[[LETTERS[count.cluster]]]$metagenes,,drop=FALSE],
+                           weights=som.result$code.sum[spot.list.dmap$spots[[LETTERS[count.cluster]]]$metagenes,]$nobs)
+      
+      count.cluster <- count.cluster + 1
     }
   }
   
