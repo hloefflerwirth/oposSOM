@@ -19,8 +19,8 @@ summary HTML file.
 \tabular{ll}{
 Package: \tab oposSOM\cr
 Type: \tab Package\cr
-Version: \tab 1.7.2\cr
-Date: \tab 2015-19-11\cr
+Version: \tab 1.7.3\cr
+Date: \tab 2016-08-01\cr
 License: \tab GPL (>= 2)\cr
 }
 }
