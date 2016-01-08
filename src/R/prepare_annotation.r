@@ -33,11 +33,11 @@ pipeline.prepareAnnotation <- function()
       mart <- useDataset(preferences$database.dataset, mart=mart)
 
       query = c("hgnc_symbol","wikigene_name","uniprot_genename")[ which( c("hgnc_symbol","wikigene_name","uniprot_genename") %in% listAttributes(mart)[,1] ) ][1]
-      biomart.table <-
+      suppressWarnings({  biomart.table <-
         getBM(c(preferences$database.id.type, query),
               preferences$database.id.type,
               rownames(indata)[seq(1,nrow(indata),length.out=100)],
-              mart, checkFilters=FALSE)
+              mart, checkFilters=FALSE)  })
     }, silent=TRUE)
 
     if (is.null(biomart.table) || nrow(biomart.table) == 0)
@@ -65,14 +65,14 @@ pipeline.prepareAnnotation <- function()
   mart <- useDataset(preferences$database.dataset, mart=mart)
 
   query = c("wikigene_name","hgnc_symbol","uniprot_genename")[ which( c("wikigene_name","hgnc_symbol","uniprot_genename") %in% listAttributes(mart)[,1] ) ][1]
-  biomart.table <- getBM(c(preferences$database.id.type,
+  suppressWarnings({  biomart.table <- getBM(c(preferences$database.id.type,
                            query,
                            "description",
                            "ensembl_gene_id",
                            "chromosome_name",
                            "band"),
                          preferences$database.id.type,
-                         rownames(indata), mart, checkFilters=FALSE)
+                         rownames(indata), mart, checkFilters=FALSE)  })
 
   if (nrow(biomart.table) == 0)
   {
@@ -95,7 +95,7 @@ pipeline.prepareAnnotation <- function()
     gene.ids <<- gene.ids[which(gene.ids != "")]
     gene.ids <<- gene.ids[which(names(gene.ids) %in% rownames(indata))]
 
-    h <- paste(biomart.table[,"chromosome_name"], gsub("\\..*$","", biomart.table[,"band"]))
+    h <- paste(biomart.table[,5], gsub("\\..*$","", biomart.table[,6]))
     names(h) <- biomart.table[,1]
     gene.positions[as.character(unique(biomart.table[,1]))] <<- h[as.character(unique(biomart.table[,1]))]
     gene.positions <<- gene.positions[which(gene.positions != "")]
@@ -121,7 +121,7 @@ pipeline.prepareAnnotation <- function()
 
   unique.protein.ids <<- unique(gene.ids)
 
-  biomart.table <- getBM(c("ensembl_gene_id", "go_id", "name_1006", "namespace_1003"), "ensembl_gene_id", unique.protein.ids, mart, checkFilters=FALSE)
+  suppressWarnings({  biomart.table <- getBM(c("ensembl_gene_id", "go_id", "name_1006", "namespace_1003"), "ensembl_gene_id", unique.protein.ids, mart, checkFilters=FALSE) })
   biomart.table <- biomart.table[which( apply(biomart.table,1,function(x) sum(x=="") ) == 0 ),]  
   gs.def.list <<- tapply(biomart.table[,1], biomart.table[,2], c)
   gs.def.list <<- lapply(gs.def.list, function(x) { list(Genes=x, Type="") })

@@ -31,10 +31,9 @@ pipeline.detectEnsemblDataset <- function()
     {
       try({
         query = c("wikigene_name","hgnc_symbol","uniprot_genename")[ which( c("wikigene_name","hgnc_symbol","uniprot_genename") %in% listAttributes(mart)[,1] ) ][1]
-        biomart.table <-
-          getBM(c(id, query), id,
+        suppressWarnings({  biomart.table <- getBM(c(id, query), id,
                 rownames(indata)[seq(1,nrow(indata),length.out=100)],
-                mart, checkFilters=FALSE)
+                mart, checkFilters=FALSE)  })
 
         if (nrow(biomart.table) > 0)
         {
