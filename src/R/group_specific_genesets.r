@@ -109,7 +109,7 @@ pipeline.groupSpecificGenesets <- function()
       label.string <- sub("1", "+", label.string)
       label.string <- sub("0", ".", label.string)
       label.x <- tapply(barplot.x, group.labels, mean)[unique(group.labels)]
-      text(label.x, ylim[2]*0.95, label.string, col=groupwise.group.colors,cex=2.5)
+      text(label.x, ylim[2]*0.92, label.string, col=groupwise.group.colors,cex=2.5)
     
     n.map <- matrix(0,preferences$dim.1stLvlSom,preferences$dim.1stLvlSom)
     gs.nodes <- som.nodes[names(gene.ids)[which(gene.ids %in% gs.def.list[[top.gs[i]]]$Genes)]]
