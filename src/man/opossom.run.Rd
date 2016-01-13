@@ -28,7 +28,6 @@ Maintainer: Martin Kalcher <mkalcher@porkbox.net>
 \examples{
 # Example with artificial data
 env <- opossom.new(list(dataset.name="Example",
-                        error.model="all.samples",
                         dim.1stLvlSom=20,
                         dim.2ndLvlSom=20,
                         geneset.analysis=TRUE))

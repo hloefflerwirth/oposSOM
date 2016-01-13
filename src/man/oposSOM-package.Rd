@@ -43,7 +43,6 @@ of genome-wide expression landscapes on Bioconductor. (Bioinformatics 2015)
 \examples{
 # Example with artificial data
 env <- opossom.new(list(dataset.name="Example",
-                        error.model="all.samples",
                         dim.1stLvlSom=20,
                         dim.2ndLvlSom=20,
                         geneset.analysis=TRUE))
@@ -56,7 +55,6 @@ opossom.run(env)
 
 # Real Example - This will take several minutes
 #env <- opossom.new(list(dataset.name="Tissues",
-#                        error.model="all.samples",
 #                        dim.1stLvlSom=30,
 #                        dim.2ndLvlSom=30,
 #                        geneset.analysis=TRUE,
