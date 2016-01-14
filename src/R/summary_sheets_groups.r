@@ -1,7 +1,16 @@
 pipeline.summarySheetsGroups <- function()
 {
-  group.metadata.sd <-
-    do.call(cbind, by(t(metadata), group.labels, function(x) { apply(x,2,sd) }))[,unique(group.labels)]
+  group.metadata <- do.call(cbind, by(t(metadata), group.labels, colMeans))[,unique(group.labels)]
+  group.metadata.sd <- do.call(cbind, by(t(metadata), group.labels, function(x) { apply(x,2,sd) }))[,unique(group.labels)]
+
+  loglog.group.metadata <- apply(group.metadata, 2, function(x)
+  {
+    meta.sign <- sign(x)
+    meta <- log10(abs(x))
+    meta <- meta - min(meta, na.rm=TRUE)
+    return(meta * meta.sign)
+  })
+  WAD.group.metadata <- apply(group.metadata ,2, function(x) { x * ((x - min(x)) / (max(x) - min(x))) })
 
   bleached.group.metadata <- group.metadata
   bleached.WAD.group.metadata <- WAD.group.metadata

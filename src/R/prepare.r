@@ -341,12 +341,7 @@ pipeline.prepare <- function()
 
 
   ## SOM
-  n.sample.interval <- cut( ncol(indata), breaks=c(0,100,500,1000,5000,Inf), labels=c(1:5) )
-  n.feature.interval <- cut( nrow(indata), breaks=c(0,1000,10000,Inf), labels=c(1:3) )
-  runtime.estimation <- matrix(c("few minutes","less than 1 hour","few hours","few minutes","few hours","one day","less than 1 hour","few hours","two days","few hours","two days","less than 1 month","few hours","few days","1 month"),nrow=3)
-  
   util.info("Processing SOM. This may take several time until next notification.")
-  util.info("(estimated runtime of SOM training:",runtime.estimation[n.feature.interval,n.sample.interval],"maximum)")
   
   som.result <<- som.init(indata, xdim=preferences$dim.1stLvlSom, ydim=preferences$dim.1stLvlSom, init="linear")
 
@@ -395,31 +390,6 @@ pipeline.prepare <- function()
   colnames(metadata) <<- colnames(indata)
 
   som.result$code <<- NA
-
-  loglog.metadata <<- apply(metadata, 2, function(x)
-  {
-    meta.sign <- sign(x)
-    meta <- log10(abs(x))
-    meta <- meta - min(meta, na.rm=TRUE)
-    return(meta * meta.sign)
-  })
-
-  WAD.metadata <<- apply(metadata ,2, function(x) { x * ((x - min(x)) / (max(x) - min(x))) })
-
-
-  ##  Group SOMs
-
-  if (length(unique(group.labels)) > 1) # mean group metagenes
-  {
-    group.metadata <<-
-      do.call(cbind, by(t(metadata), group.labels, colMeans))[,unique(group.labels)]
-
-    loglog.group.metadata <<-
-      do.call(cbind, by(t(loglog.metadata), group.labels, colMeans))[,unique(group.labels)]
-
-    WAD.group.metadata <<-
-      do.call(cbind, by(t(WAD.metadata), group.labels, colMeans))[,unique(group.labels)]
-  }
 
 
   ## set up SOM dependent variables

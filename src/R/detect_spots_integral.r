@@ -631,10 +631,8 @@ pipeline.detectSpotsIntegral <- function()
   ##### Group Spots ######
   if (length(unique(group.labels)) > 1)
   {
-    group.metadata.scaled <- apply(group.metadata, 2, function(x)
-    {
-      (x-min(x)) / (max(x)-min(x))
-    })
+    group.metadata <- do.call(cbind, by(t(metadata), group.labels, colMeans))[,unique(group.labels)]
+    group.metadata.scaled <- apply(group.metadata, 2, function(x)   (x-min(x)) / (max(x)-min(x))   )
 
     ## extract sample modules ##
     sample.spot.list <- list()

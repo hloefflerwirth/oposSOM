@@ -18,7 +18,6 @@ opossom.new <- function(preferences=NULL)
   env$group.silhouette.coef <- NULL
   env$group.colors <- NULL
   env$group.labels <- NULL
-  env$group.metadata <- NULL
   env$gs.def.list <- NULL
   env$samples.GSZ.scores <- NULL
   env$spot.list.correlation <- NULL
@@ -31,8 +30,6 @@ opossom.new <- function(preferences=NULL)
   env$indata <- NULL
   env$indata.gene.mean <- NULL
   env$indata.sample.mean <- NULL
-  env$loglog.group.metadata <- NULL
-  env$loglog.metadata <- NULL
   env$metadata <- NULL
   env$metagene.filter.list <- NULL
   env$n.0.m <- NULL
@@ -49,8 +46,6 @@ opossom.new <- function(preferences=NULL)
   env$groupwise.group.colors <- NULL
   env$unique.protein.ids <- NULL
   env$WAD.g.m <- NULL
-  env$WAD.group.metadata <- NULL
-  env$WAD.metadata <- NULL
 
   # Generate some additional letters
   env$LETTERS <- c(LETTERS, as.vector(sapply(1:10, function(x) {

@@ -164,7 +164,8 @@ pipeline.sampleExpressionPortraits <- function()
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
-      image(matrix(WAD.metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
+      WAD.metadata <- metadata[,j] * ((metadata[,j] - min(metadata[,j])) / (max(metadata[,j]) - min(metadata[,j])))
+      image(matrix(WAD.metadata, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=FALSE, col=colramp(1000), cex.main=0.6)
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
@@ -205,7 +206,11 @@ pipeline.sampleExpressionPortraits <- function()
 
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
-      image(matrix(loglog.metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
+      meta.sign <- sign(metadata[,j])
+      meta <- log10(abs(metadata[,j]))
+      meta <- meta - min(meta, na.rm=TRUE)
+      loglog.metadata <- meta * meta.sign
+      image(matrix(loglog.metadata, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=FALSE, col = colramp(1000))
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)

@@ -1,7 +1,6 @@
 pipeline.topologyProfiles <- function()
 {
   metadata.scaled <- apply(metadata, 2, function(x) { (x-min(x)) / (max(x)-min(x)) })
-  metadata.scaled.loglog <- apply(loglog.metadata, 2, function(x) { (x-min(x)) / (max(x)-min(x)) })
 
   filename <- file.path(paste(files.name, "- Results"), "Supporting Maps&Profiles", "Topology Profiles.pdf")
   util.info("Writing:", filename)
