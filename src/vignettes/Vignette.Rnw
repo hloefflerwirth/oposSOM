@@ -238,10 +238,10 @@ respective analysis:
 
 \begin{itemize}
 	\item \textit{dataset.name} (character): name of the dataset. Used to name
-    results folder and environment image (default:'Unnamed').
+    results folder and environment image (default: "Unnamed").
 	\item \textit{dim.1stLvlSom} (integer): dimension of primary SOM
-    (default: 20). Given as a single value defining the size of the square
-    SOM grid.
+    (default: "auto"). Given as a single value defining the size of the square
+    SOM grid. Use "auto" to set SOM size to recommendation (see below).
 	\item \textit{feature.centralization} (boolean): enables or disables
     centralization of the features (default: TRUE).
 	\item \textit{sample.quantile.normalization} (boolean): enables quantile
@@ -313,6 +313,20 @@ env$preferences$pairwise.comparison.list <-
 @
 
 \end{itemize}
+
+\pagebreak
+\section{Recommended SOM size and runtime estimation}
+
+The size of the SOM required to resolve main expression modules depends on both the number of features (e.g. genes measured) and the number of samples. Here we give a recommendation based on previous analyses of a multitude of different data sets (see Figure ~\ref{fig:Size recommendation}). Addionally, we give a rough estimation for runtime of the SOM training algorithm.
+
+\begin{figure}[h!]
+	\begin{center}
+	\includegraphics[width=1.0\textwidth]{SizeRecommendation.pdf}
+	\end{center}
+	\caption{Recommended size of the SOM and estimated runtime of the SOM training on an Intel Core i7 system (16GB RAM).}
+	\label{fig:Size recommendation}
+\end{figure}
+
 
 
 \pagebreak

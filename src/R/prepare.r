@@ -7,10 +7,10 @@ pipeline.prepare <- function()
     preferences$dataset.name <<- "Unnamed"
   }
 
-  if (!is.numeric(preferences$dim.1stLvlSom) || preferences$dim.1stLvlSom < 1)
+  if ( preferences$dim.1stLvlSom!="auto" && !is.numeric(preferences$dim.1stLvlSom) || preferences$dim.1stLvlSom < 1)
   {
-    util.warn("Invalid value of \"dim.1stLvlSom\". Using 20")
-    preferences$dim.1stLvlSom <<- 20
+    util.warn("Invalid value of \"dim.1stLvlSom\". Using size recommendation")
+    preferences$dim.1stLvlSom <<- "auto"
   }
 
   if (!is.numeric(preferences$dim.2ndLvlSom) || preferences$dim.2ndLvlSom < 1)
@@ -218,6 +218,16 @@ pipeline.prepare <- function()
     util.warn("Removed NAs or infinite values from data set")
   }
 
+  if (preferences$dim.1stLvlSom == "auto")
+  {
+    n.sample.interval <- cut( ncol(indata), breaks=c(0,100,500,1000,5000,Inf), labels=c(1:5) )
+    n.feature.interval <- cut( nrow(indata), breaks=c(0,1000,10000,Inf), labels=c(1:3) )
+    recommendation <- matrix(c(seq(20,40,5),seq(30,50,5),seq(40,60,5)),nrow=3,byrow=TRUE)
+    
+    preferences$dim.1stLvlSom <- recommendation[n.feature.interval,n.sample.interval]
+    util.info("Recommended SOM size will be used:",preferences$dim.1stLvlSom,"x",preferences$dim.1stLvlSom) 
+  }
+  
   ## set up global variables
 
   files.name <<- preferences$dataset.name
@@ -326,13 +336,18 @@ pipeline.prepare <- function()
     indata <<- indata - indata.gene.mean
   }
 
-  util.info("Load Annotation Data")
+  util.info("Loading gene annotation data. This may take several minutes until next notification.")
   util.call(pipeline.prepareAnnotation, environment())
 
 
   ## SOM
+  n.sample.interval <- cut( ncol(indata), breaks=c(0,100,500,1000,5000,Inf), labels=c(1:5) )
+  n.feature.interval <- cut( nrow(indata), breaks=c(0,1000,10000,Inf), labels=c(1:3) )
+  runtime.estimation <- matrix(c("few minutes","less than 1 hour","few hours","few minutes","few hours","one day","less than 1 hour","few hours","two days","few hours","two days","less than 1 month","few hours","few days","1 month"),nrow=3)
+  
   util.info("Processing SOM. This may take several time until next notification.")
-
+  util.info("(estimated runtime of SOM training:",runtime.estimation[n.feature.interval,n.sample.interval],"maximum)")
+  
   som.result <<- som.init(indata, xdim=preferences$dim.1stLvlSom, ydim=preferences$dim.1stLvlSom, init="linear")
 
   # Rotate/Flip First lvl SOMs
@@ -368,7 +383,7 @@ pipeline.prepare <- function()
                              inv.alp.c=nrow(indata)*2*preferences$training.extension/100)
   })
 
-  util.info("Remaining ~", ceiling(5*t1[3]/60), "min ~", round(5*t1[3]/3600,1),"h")
+  util.info("Remaining time for SOM training: ~", ceiling(5*t1[3]/60), "min = ~", round(5*t1[3]/3600,1),"h")
 
   som.result <<- som.train(indata, som.result$code, xdim=preferences$dim.1stLvlSom,
                            ydim=preferences$dim.1stLvlSom, alpha=0.02,

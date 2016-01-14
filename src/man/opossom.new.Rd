@@ -17,7 +17,7 @@
       \item{indata}: input data matrix containing the expression values or an \code{Biobase::ExpressionSet} object (see 'Details' and 'Examples')
       \item{group.labels}: sample assignment to a distinct group, subtype or class (character; one label for each sample; may be given with \code{indata ExpressionSet})
       \item{group.colors}: colors of the samples for diverse visualizations (character; one color for each sample; may be given with \code{indata ExpressionSet})
-      \item{dim.1stLvlSom}: dimension of primary SOM (integer, >5)
+      \item{dim.1stLvlSom}: dimension of primary SOM; use "auto" to apply automatic size estimation (integer, >5)
       \item{dim.2ndLvlSom}: dimensions of second level SOM (integer, >5)
       \item{training.extension}: factor to extend the number of iterations in SOM training (numerical, >0)
       \item{rotate.SOM.portraits}: number of roations of the primary SOM in counter-clockwise fashion (integer \{0,1,2,3\})

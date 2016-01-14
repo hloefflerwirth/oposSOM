@@ -1,7 +1,5 @@
 pipeline.prepareAnnotation <- function()
 {
-  util.info("Loading gene annotations from database. This may take several minutes until next notification.")
-  
   gene.ids <<- rep("", nrow(indata))
   names(gene.ids) <<- rownames(indata)
 

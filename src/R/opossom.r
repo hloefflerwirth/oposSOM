@@ -63,7 +63,7 @@ opossom.new <- function(preferences=NULL)
 
   # Set default preferences
   env$preferences <- list(dataset.name = "Unnamed",
-                          dim.1stLvlSom = 20,
+                          dim.1stLvlSom = "auto",
                           dim.2ndLvlSom = 20,
                           training.extension = 1,
                           rotate.SOM.portraits = 0,
@@ -114,8 +114,6 @@ opossom.run <- function(env)
   # Output some info
   util.info("Started:", env$preferences$started)
   util.info("Setting:", env$preferences$dataset.name)
-  util.info("1SOM Dim:", env$preferences$dim.1stLvlSom)
-  util.info("2SOM Dim:", env$preferences$dim.2ndLvlSom)
 
   # Dump frames on error
   error.option <- getOption("error")
