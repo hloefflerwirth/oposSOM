@@ -116,20 +116,10 @@ pipeline.htmlIntegralSummary <- function()
         names(spot.list.overexpression$spots)[m],"</a>", sep="", file=outfile)
   }
 
-  cat("</td>
-          </tr>
-          <tr>
-            <td>
-              <a href=\"../3rd lvl Spot Analysis/Signature Sets.csv\" target=\"_blank\">
-                Overexpresion Signatures (CSV)
-              </a>
-            </td>
-            <td></td>
-          </tr>", sep="", file=outfile)
-
   if (length(unique(group.labels)) > 1)
   {
-    cat("
+    cat("</td>
+          </tr>
           <tr>
             <td>
               <a href=\"Group Overexpression.pdf\" target=\"_blank\">
@@ -145,11 +135,10 @@ pipeline.htmlIntegralSummary <- function()
           names(spot.list.group.overexpression$spots)[m],"</a>", sep="", file=outfile)
     }
 
-    cat("</td>
-          </tr>", sep="", file=outfile)
   }
 
-  cat("
+  cat("</td>
+          </tr>
           <tr>
             <td>
               <a href=\"Underexpression.pdf\" target=\"_blank\">

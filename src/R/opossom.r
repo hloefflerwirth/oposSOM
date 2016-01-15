@@ -34,6 +34,7 @@ opossom.new <- function(preferences=NULL)
   env$metagene.filter.list <- NULL
   env$n.0.m <- NULL
   env$output.paths <- NULL
+  env$pat.labels <- NULL
   env$p.g.m <- NULL
   env$p.m <- NULL
   env$perc.DE.m <- NULL
@@ -108,7 +109,7 @@ opossom.run <- function(env)
 
   # Output some info
   util.info("Started:", env$preferences$started)
-  util.info("Setting:", env$preferences$dataset.name)
+  util.info("Name:", env$preferences$dataset.name)
 
   # Dump frames on error
   error.option <- getOption("error")
@@ -130,6 +131,7 @@ opossom.run <- function(env)
   util.info("Detecting Spots")
   util.call(pipeline.detectSpotsSamples, env)
   util.call(pipeline.detectSpotsIntegral, env)
+  util.call(pipeline.patAssignment, env)
   util.call(pipeline.groupAssignment, env)
 
   util.info("Plotting Sample Portraits")
@@ -205,15 +207,15 @@ opossom.run <- function(env)
   }
 
   # Run additional functions. (NOTE: They alter the environment)
+  util.call(pipeline.summarySheetsPATs, env)
+  
+  load(filename) # Reload env
   util.call(pipeline.groupAnalysis, env)
   util.call(pipeline.htmlGroupSummary, env)
 
   load(filename) # Reload env
   util.call(pipeline.differenceAnalyses, env)
   util.call(pipeline.htmlDifferencesSummary, env)
-
-  load(filename) # Reload env
-  util.call(pipeline.signatureSets, env)
 
   # Restore old error behaviour
   options(error=error.option)
