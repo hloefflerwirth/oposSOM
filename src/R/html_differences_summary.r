@@ -96,7 +96,6 @@ pipeline.htmlDifferencesSummary <- function()
             <th>Comparison</th>
             <th>Summary Sheet</th>
             <th>Global Gene List</th>
-            <th>Local Gene Lists</th>
             <th>Gene Set List</th>
           </tr>
         </thead>
@@ -119,18 +118,6 @@ pipeline.htmlDifferencesSummary <- function()
               <a href=\"CSV Sheets/Gene Lists - Global/", fname, ".csv\" target=\"_blank\">
                 CSV
               </a>
-            </td>
-            <td>", sep="", file=f)
-
-    for (i in seq_along(spot.list.samples[[m]]$spots))
-    {
-      cat("
-              <a href=\"CSV Sheets/Gene Lists - Local/", fname, ".", i, ".csv\" target=\"_blank\">
-                CSV ", i, "
-              </a>", sep="", file=f)
-    }
-
-    cat("
             </td>
             <td>
               <a href=\"CSV Sheets/Gene Set Lists - Global/", fname, ".csv\" target=\"_blank\">

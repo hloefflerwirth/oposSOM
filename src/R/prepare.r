@@ -59,24 +59,10 @@ pipeline.prepare <- function()
     preferences$geneset.analysis <<- TRUE
   }
 
-  if (!is.logical(preferences$geneset.analysis.samplespots))
-  {
-    util.warn("Invalid value of \"geneset.analysis.samplespots\". Using FALSE")
-    preferences$geneset.analysis.samplespots<<- FALSE
-  }
-
   if (!is.logical(preferences$geneset.analysis.exact))
   {
     util.warn("Invalid value of \"geneset.analysis.exact\". Using FALSE")
     preferences$geneset.analysis.exact <<- FALSE
-  }
-
-  if (!is.numeric(preferences$spot.threshold.samples) ||
-      preferences$spot.threshold.samples <= 0 ||
-      preferences$spot.threshold.samples >= 1)
-  {
-    util.warn("Invalid value of \"spot.threshold.samples\". Using 0.65")
-    preferences$spot.threshold.samples <<- 0.65
   }
 
   if (!is.numeric(preferences$spot.coresize.modules) ||

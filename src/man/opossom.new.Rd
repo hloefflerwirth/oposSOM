@@ -27,7 +27,6 @@
       \item{geneset.analysis}: perform geneset analysis (boolean)
       \item{geneset.analysis.exact}: enables p-value and fdr calculation in geneset analysis; obsolete if \code{geneset.analysis=F} (boolean)
       \item{max.parallel.cores}: number of CPU cores used by parallelization (numerical, >0)
-      \item{spot.threshold.samples}: spot detection threshold in single sample portraits (numerical, between 0 and 1)
       \item{spot.coresize.modules}: spot detection in summary maps , minimum size (numerical, >0)
       \item{spot.threshold.modules}: spot detection in summary maps, expression threshold (numerical, between 0 and 1)
       \item{spot.coresize.groupmap}: spot detection in group-specific summary maps , minimum size (numerical, >0)
@@ -62,7 +61,6 @@ env <- opossom.new(list(dataset.name="Example",
                         geneset.analysis=TRUE,
                         geneset.analysis.exact=TRUE,
                         max.parallel.cores=2,
-                        spot.threshold.samples=0.9,
                         spot.coresize.modules=4,
                         spot.threshold.modules=0.9,
                         spot.coresize.groupmap=4,

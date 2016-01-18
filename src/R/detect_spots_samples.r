@@ -106,60 +106,6 @@ pipeline.detectSpotsSamples <- function()
   for (j in 1:ncol(indata))
   {
     spot.list.samples[[j]] <<- list()
-
-    mask <- matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
-    blob <- matrix(metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
-
-    if (diff(sign(range(metadata[,j]))) != 0) # values lie in + and - regions
-    {
-      mask[which(blob > max(blob) * preferences$spot.threshold.samples)] <- -1
-      mask[which(blob < min(blob) * preferences$spot.threshold.samples)] <- -2
-    } else
-    {
-      mask[which(blob > quantile(blob,0.9))] <- -1
-      mask[which(blob < quantile(blob,0.1))] <- -2
-    }
-
-    spot.list.samples[[j]]$regulated <<- mask
-
-    spot.i <- 0
-    spot.updown <- c()
-
-    while (nrow(which(mask == -1, arr.ind=TRUE)) > 0)
-    {
-      start.pix <- which(mask == -1, arr.ind=TRUE)[1,]
-      spot.i <- spot.i + 1
-      mask <- col.pix(mask, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
-      spot.updown  <- c(spot.updown, "overexpressed")
-    }
-
-    while (nrow(which(mask == -2, arr.ind=TRUE)) > 0)
-    {
-      start.pix <- which(mask == -2, arr.ind=TRUE)[1,]
-      spot.i <- spot.i + 1
-      mask <- col.pix(mask, start.pix[1], start.pix[2], spot.i, preferences$dim.1stLvlSom)
-      spot.updown <- c(spot.updown, "underexpressed")
-    }
-
-    spot.list.samples[[j]]$spots <<- list()
-
-    if (spot.i > 0)
-    {
-      for (spot.ii in 1:spot.i)
-      {
-        spot.list.samples[[j]]$spots[[spot.ii]] <<- list()
-        spot.list.samples[[j]]$spots[[spot.ii]]$type <<- spot.updown[spot.ii]
-        spot.list.samples[[j]]$spots[[spot.ii]]$metagenes <<- which(mask == spot.ii)
-
-        spot.list.samples[[j]]$spots[[spot.ii]]$genes <<-
-          names(som.nodes)[which(som.nodes %in% which(mask == spot.ii))]
-
-        spot.list.samples[[j]]$spots[[spot.ii]]$mask <<-
-          matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
-
-        spot.list.samples[[j]]$spots[[spot.ii]]$mask[which(mask == spot.ii)] <<- 1
-      }
-    }
   }
 
   names(spot.list.samples) <<- colnames(indata)

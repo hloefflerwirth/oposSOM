@@ -107,17 +107,7 @@ pipeline.genesetOverviews <- function()
   ### p Histogram + FDR
   if (preferences$geneset.analysis.exact)
   {
-    all.sets.GSZ.p <- unlist(sapply(spot.list.samples, function(x)
-    {
-      sapply(x$spots, function(x) { x$GSZ.p.value })
-    }))
-
-    all.samples.GSZ.p <- unlist(sapply(spot.list.samples, function(x)
-    {
-      x$GSZ.p.value
-    }))
-
-    p <- c(all.sets.GSZ.p, all.samples.GSZ.p)
+    p <- as.vector(sapply(spot.list.samples, function(x)  x$GSZ.p.value  ))
 
     suppressWarnings({ fdrtool.result <- fdrtool(p, statistic="pvalue", verbose=FALSE, plot=FALSE) })
     fdr.spot.list.samples <- fdrtool.result$lfdr

@@ -283,9 +283,6 @@ The parameters below are secondary and may be left unattended by the user:
     and fdr calculation in geneset analysis (default: TRUE). Obsolete if
     \textit{geneset.analysis=F}.\\
 
-	\item \textit{spot.threshold.samples} (numerical, between 0 and 1):
-    expression threshold for the spot regions in single sample portraits
-    (default: 0.65).
 	\item \textit{spot.threshold.modules} (numerical, between 0 and 1): spot
     detection in summary maps, expression threshold (default: 0.95).
 	\item \textit{spot.coresize.modules} (integer, >0): spot detection in summary

@@ -276,21 +276,8 @@ pipeline.3rdLvlSummarySheets <- function()
       spot.group.assoc <- spot.group.assoc[unique(group.labels) , ,drop=FALSE]
       colnames(spot.group.assoc) <- names(set.list$spots)
 
-      spot.goup.mean.number <- sapply(spot.list.samples, function(x)
-      {
-        sum (sapply(x$spots, function(y)
-        {
-          if (main %in% c("Sample-Underexpression"))
-          {
-            if (y$type == "underexpressed") 1 else 0
-          }  else
-          {
-            if (y$type == "overexpressed") 1 else 0
-          }
-        }))
-      })
-
-      spot.goup.mean.number <- tapply(spot.goup.mean.number, group.labels, mean)[unique(group.labels)]
+      
+      spot.goup.mean.number <- tapply(colSums(sample.spot.matrix), group.labels, mean)[unique(group.labels)]
 
       layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
       par(mar=c(5, 4, 4, 2))
