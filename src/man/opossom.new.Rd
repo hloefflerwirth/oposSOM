@@ -33,7 +33,7 @@
       \item{spot.threshold.groupmap}: spot detection in group-specific summary maps, expression threshold (numerical, between 0 and 1)
       \item{feature.centralization}: enables centralization of the features (boolean)
       \item{sample.quantile.normalization}: enables quantile normalization of the samples (boolean)
-      \item{pairwise.comparison.list}: group list for pairwise analyses (list of group lists, see 'Examples')
+      \item{pairwise.comparison.list}: group list for pairwise analyses (list of group lists, see 'Examples') or NULL otherwise
     }
   }
 }
@@ -52,7 +52,7 @@ Maintainer: Martin Kalcher <mkalcher@porkbox.net>
 }
 \examples{
 env <- opossom.new(list(dataset.name="Example",
-                        dim.1stLvlSom=10,
+                        dim.1stLvlSom="auto",
                         dim.2ndLvlSom=10,
                         training.extension=1,
                         rotate.SOM.portraits=0,

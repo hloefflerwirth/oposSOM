@@ -74,7 +74,7 @@ opossom.new <- function(preferences=NULL)
                           spot.threshold.groupmap = 0.75,
                           feature.centralization = TRUE,
                           sample.quantile.normalization = TRUE,
-                          pairwise.comparison.list = list())
+                          pairwise.comparison.list = NULL)
 
   # Merge user supplied information
   if (!is.null(preferences))

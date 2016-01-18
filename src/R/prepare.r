@@ -126,6 +126,12 @@ pipeline.prepare <- function()
       util.warn("Empty sample set found and removed from \"pairwise.comparison.list\".")
       preferences$pairwise.comparison.list <<- preferences$pairwise.comparison.list[-empty.sets] 
     }
+    
+    if (is.null(names(preferences$pairwise.comparison.list)) )
+    {
+      names(preferences$pairwise.comparison.list) <<- sapply(preferences$pairwise.comparison.list,function(x) paste(names(x), collapse=" vs ") )
+    }
+    names(preferences$pairwise.comparison.list)[which(names(preferences$pairwise.comparison.list)=="")] <<- 1:sum(names(preferences$pairwise.comparison.list)=="")   
   }
   
   

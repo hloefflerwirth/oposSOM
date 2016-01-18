@@ -294,18 +294,18 @@ The parameters below are secondary and may be left unattended by the user:
     group-specific summary maps, minimum spot size (default: 5).\\
 
 	\item \textit{pairwise.comparison.list} (list of group lists): group list
-    for pairwise analyses (default: empty list). Each element is a list of
+    for pairwise analyses (default: NULL). Each element is a list of
     two character vectors containing the sample names to be analysed in
     pairwise comparison. The sample names must be contained in the column names
     of the input data matrix. For example, the following setting will compare
     the homeostasis (liver, kidney) to the nervous system samples
-    (accumbens, cortex), and also tongue to the nervous system:
+    (accumbens, cortex), and also tongue and intestine to the nervous system:
 
 <<>>=
 env$preferences$pairwise.comparison.list <-
     list(list(c("liver","kidney cortex"),
               c("accumbens","cerebral cortex")),
-         list(c("tongue"),
+         list(c("tongue","small intestine"),
               c("accumbens","cerebral cortex")))
 @
 
