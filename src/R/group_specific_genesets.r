@@ -4,11 +4,6 @@ pipeline.groupSpecificGenesets <- function()
   
   for (gr in seq_along(unique(group.labels)))
   {
-    samples.GSZ.scores <- do.call(cbind, lapply(spot.list.samples, function(x)
-    {
-      x$GSZ.score[names(gs.def.list)]
-    }))
-
     gs.p.values <- apply(samples.GSZ.scores, 1, function(x)
     {
       wilcox.test(x[which(group.labels!=unique(group.labels)[gr])],

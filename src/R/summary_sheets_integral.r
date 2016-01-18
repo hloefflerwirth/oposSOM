@@ -187,26 +187,23 @@ pipeline.summarySheetsIntegral <- function()
     # Spot - SampleGSZ - Heatmap
     if (preferences$geneset.analysis)
     {
-      sample.spot.GSZ <- sapply(spot.list.samples, function(x)
-      {
-        return(x$GSZ.score[unlist(top.GS)])
-      })
-
+      #sample.spot.GSZ
+      sample.spot.GSZ.image <- samples.GSZ.scores[unlist(top.GS),]
       sample.spot.GSZ.image <-
-        if (nrow(sample.spot.GSZ) > 1)
+        if (nrow(sample.spot.GSZ.image) > 1)
         {
-          t(sample.spot.GSZ[nrow(sample.spot.GSZ):1,])
+          t(sample.spot.GSZ.image[nrow(sample.spot.GSZ.image):1,])
         } else
         {
-          as.matrix(sample.spot.GSZ[nrow(sample.spot.GSZ):1,])
+          as.matrix(sample.spot.GSZ.image[nrow(sample.spot.GSZ.image):1,])
         }
-
       sample.spot.GSZ.image[which(is.na(sample.spot.GSZ.image))] <- 0
+      
       layout(matrix(c(0,2,0,3,1,0,0,4,5), 3, 3), heights=c(0.8,6,2), widths=c(0.5,5,3))
       par(mar=c(0,0,0,0))
 
-      image(1:ncol(indata), 1:nrow(sample.spot.GSZ), sample.spot.GSZ.image,
-            axes=FALSE, ylim=0.5+c(0,nrow(sample.spot.GSZ)), yaxs="i", xlab="", ylab="",
+      image(1:ncol(indata), 1:ncol(sample.spot.GSZ.image), sample.spot.GSZ.image,
+            axes=FALSE, ylim=0.5+c(0,ncol(sample.spot.GSZ.image)), yaxs="i", xlab="", ylab="",
             col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
             zlim=max(max(sample.spot.GSZ.image),-min(sample.spot.GSZ.image))*c(-1,1))
 
@@ -236,14 +233,13 @@ pipeline.summarySheetsIntegral <- function()
       }
 
       par(mar=c(0,0,0,0))
-
       plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,1),
-           ylim=0.5+c(0,nrow(sample.spot.GSZ)), yaxs="i")
+           ylim=0.5+c(0,ncol(sample.spot.GSZ.image)), yaxs="i")
 
-      pos <- as.vector(sapply(c(1:nrow(sample.spot.GSZ)),
+      pos <- as.vector(sapply(c(1:ncol(sample.spot.GSZ.image)),
                               function(x) { c(x-0.26, x, x+0.26) }))
 
-      text(0.05, rev(c(1:nrow(sample.spot.GSZ)) + c(0.16,0,-0.16)),
+      text(0.05, rev(c(1:ncol(sample.spot.GSZ.image)) + c(0.16,0,-0.16)),
            unlist(lapply(set.list$spots, function(x) { names(head(x$Fisher.p , 3)) })),
            adj=0, cex=1) #0.6
 
