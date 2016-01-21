@@ -212,13 +212,26 @@ pipeline.htmlSummary <- function()
       <h2>Group Analyses</h2>
 
       <p>
+        Analyses based on PAT-wise aggregated data, including clustering dendrogram, 
+        portraits and assotiation to the sample groups.
+      </p>
+        
+        <ul>
+          <li>
+          <a href=\"Summary Sheets - PATs/PAT report.pdf\" target=\"_blank\">
+          PAT Report (PDF)
+          </a>
+        </li>
+      </ul>
+
+      <p>
         Analyses based on group-wise aggregated data, including portraits,
         clustering and functional analyses.
       </p>
 
       <ul>
         <li>
-          <a href=\"Summary Sheets - Groups/0verview.html\">
+          <a href=\"Summary Sheets - Groups/0verview.html\" target=\"_blank\">
             Group Analysis Reports (HTML)
           </a>
         </li>
@@ -238,7 +251,7 @@ pipeline.htmlSummary <- function()
 
       <ul>
         <li>
-          <a href=\"Summary Sheets - Differences/0verview.html\">
+          <a href=\"Summary Sheets - Differences/0verview.html\" target=\"_blank\">
             Differences Analysis Reports (HTML)
           </a>
         </li>

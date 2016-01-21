@@ -19,8 +19,8 @@ summary HTML file.
 \tabular{ll}{
 Package: \tab oposSOM\cr
 Type: \tab Package\cr
-Version: \tab 1.7.3\cr
-Date: \tab 2016-08-01\cr
+Version: \tab 1.8.0\cr
+Date: \tab 2016-21-01\cr
 License: \tab GPL (>= 2)\cr
 }
 }
@@ -47,7 +47,7 @@ env <- opossom.new(list(dataset.name="Example",
 
 env$indata <- matrix(runif(10000), 1000, 10)
 
-env$group.labels <- c(rep(c("ABC", "DEF", "GHI"), each=3), "JKL")
+env$group.labels <- "auto"
 
 opossom.run(env)
 

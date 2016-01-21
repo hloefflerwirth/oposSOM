@@ -165,6 +165,12 @@ pipeline.prepare <- function()
     storage.mode(indata) <<- "numeric"
   }
 
+  if( length(group.labels)==1 && group.labels=="auto" )
+  {
+    group.labels <<- rep("auto",ncol(indata)) 
+    names(group.labels) <<- colnames(indata)
+  }
+  
   const.cols <- which(apply(indata, 2, function(col) { diff(range(col)) == 0 }))
 
   if (length(const.cols) > 0)
@@ -381,7 +387,8 @@ pipeline.prepare <- function()
   metadata <<- som.result$code
   colnames(metadata) <<- colnames(indata)
 
-  som.result$code <<- NA
+  som.result$data <<- NULL
+  som.result$code <<- NULL
 
 
   ## set up SOM dependent variables

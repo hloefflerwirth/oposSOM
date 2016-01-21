@@ -9,7 +9,7 @@ pipeline.summarySheetsPATs <- function()
 
   filename <- file.path(paste(files.name, "- Results"),
                         "Summary Sheets - PATs",
-                        "Expression Portraits PATs.pdf")
+                        "PAT report.pdf")
 
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)

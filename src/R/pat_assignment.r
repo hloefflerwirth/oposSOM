@@ -13,7 +13,7 @@ pipeline.patAssignment <- function()
   
   spot.counts <- rowSums( spot.list$spotdata > thresh.global )
   skip.pats <- ""
-  while( sort(table(pat.labels[which(!pat.labels%in%skip.pats)]))[1] < max( 2, length(pat.labels)*0.01 ) )
+  while( sort(table(pat.labels[which(!pat.labels%in%skip.pats)]))[1] < length(pat.labels)*0.01 )
   {
     pat.to.merge <- names(sort(table(pat.labels[which(!pat.labels%in%skip.pats)]))[1])
     if( length(strsplit(pat.to.merge," ")[[1]] > 1) )

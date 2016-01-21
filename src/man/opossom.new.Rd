@@ -15,7 +15,7 @@
 
     \itemize{
       \item{indata}: input data matrix containing the expression values or an \code{Biobase::ExpressionSet} object (see 'Details' and 'Examples')
-      \item{group.labels}: sample assignment to a distinct group, subtype or class (character; one label for each sample; may be given with \code{indata ExpressionSet})
+      \item{group.labels}: sample assignment to a distinct group, subtype or class (character; "auto" or one label for each sample; may be given with \code{indata ExpressionSet})
       \item{group.colors}: colors of the samples for diverse visualizations (character; one color for each sample; may be given with \code{indata ExpressionSet})
       \item{dim.1stLvlSom}: dimension of primary SOM; use "auto" to apply automatic size estimation (integer, >5)
       \item{dim.2ndLvlSom}: dimensions of second level SOM (integer, >5)

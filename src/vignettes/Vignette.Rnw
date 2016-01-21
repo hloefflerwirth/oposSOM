@@ -96,9 +96,9 @@ env$indata <- opossom.tissues.eset
 
 
 \ \\
-Each sample may be assigned to a distinct group and a respective color to
-improve data visualization and result presentations. If not defined by the
-user, the samples will be collected within one group and colored using a
+Each sample may be assigned to a distinct group and a corresponding color to
+improve data visualization and result presentations. \textit{group.labels} can also be set to \textit{"auto"} to apply unsupervised grouping of samples according to their expression module activation patterns.
+Otherwise, samples will be collected within one group and colored using a
 standard scheme.
 
 <<>>=
