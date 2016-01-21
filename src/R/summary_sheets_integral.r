@@ -100,27 +100,13 @@ pipeline.summarySheetsIntegral <- function()
     }
 
     # Spot - Sample - Heatmap
-    sample.spot.expression <- matrix(NA, 0, ncol(indata))
-
-    for (m in seq_along(set.list$spots))
-    {
-      mean.FC <- apply(metadata, 2, function(x)
-      {
-        max(x[set.list$spots[[m]]$metagenes])
-      })
-
-      sample.spot.expression <- rbind(sample.spot.expression, mean.FC)
-    }
-
-    rownames(sample.spot.expression) <- names(set.list$spots)
-
     sample.spot.expression.image <-
-      if (nrow(sample.spot.expression) > 1)
+      if (nrow(set.list$spotdata) > 1)
       {
-        t(sample.spot.expression[nrow(sample.spot.expression):1,])
+        t(set.list$spotdata[nrow(set.list$spotdata):1,])
       } else
       {
-        as.matrix(sample.spot.expression[nrow(sample.spot.expression):1,])
+        as.matrix(set.list$spotdata[nrow(set.list$spotdata):1,])
       }
 
     layout(matrix(c(0,2,0,3,1,0,0,4,5), 3, 3), heights=c(0.8,6,2), widths=c(0.5,5,3))
@@ -128,10 +114,10 @@ pipeline.summarySheetsIntegral <- function()
     par(mar=c(0,0,0,0))
 
     image(1:ncol(indata),
-          1:nrow(sample.spot.expression),
+          1:nrow(set.list$spotdata),
           sample.spot.expression.image,
           col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
-          axes=FALSE, ylim=0.5+c(0,nrow(sample.spot.expression)), yaxs="i", xlab="", ylab="",
+          axes=FALSE, ylim=0.5+c(0,nrow(set.list$spotdata)), yaxs="i", xlab="", ylab="",
           zlim=max(max(sample.spot.expression.image),-min(sample.spot.expression.image))*c(-1,1))
 
     box()
@@ -142,9 +128,9 @@ pipeline.summarySheetsIntegral <- function()
     }
 
     plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,1),
-         ylim=0.5+c(0,nrow(sample.spot.expression)), yaxs="i")
+         ylim=0.5+c(0,nrow(set.list$spotdata)), yaxs="i")
 
-    text(0.7, nrow(sample.spot.expression):1, rownames(sample.spot.expression),
+    text(0.7, nrow(set.list$spotdata):1, rownames(set.list$spotdata),
          adj=1, cex=1.8)
 
     par(mar=c(1,0,2,0))
@@ -161,9 +147,9 @@ pipeline.summarySheetsIntegral <- function()
     par(mar=c(0,0,0,0))
 
     plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,1),
-         ylim=0.5+c(0,nrow(sample.spot.expression)), yaxs="i")
+         ylim=0.5+c(0,nrow(set.list$spotdata)), yaxs="i")
 
-    pos <- as.vector(sapply(c(1:nrow(sample.spot.expression)),
+    pos <- as.vector(sapply(c(1:nrow(set.list$spotdata)),
                             function(x) { c(x-0.26, x, x+0.26) }))
 
     text(0.05,
@@ -216,9 +202,9 @@ pipeline.summarySheetsIntegral <- function()
       }
 
       plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,1),
-           ylim=0.5+c(0,nrow(sample.spot.expression)), yaxs="i")
+           ylim=0.5+c(0,nrow(set.list$spotdata)), yaxs="i")
 
-      text(0.7, nrow(sample.spot.expression):1, names(set.list$spots),
+      text(0.7, nrow(set.list$spotdata):1, names(set.list$spots),
            adj=1, cex=1.8)
 
       par(mar=c(1,0,2,0))
