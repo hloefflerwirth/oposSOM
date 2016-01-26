@@ -176,8 +176,8 @@ pipeline.prepare <- function()
   if (length(const.cols) > 0)
   {
     indata <<- indata[,-const.cols]
-    group.labels <<- group.labels[,-const.cols]
-    group.colors <<- group.colors[,-const.cols]
+    group.labels <<- group.labels[-const.cols]
+    group.colors <<- group.colors[-const.cols]
     util.warn("Removed constant columns from data set.")
   }
 
