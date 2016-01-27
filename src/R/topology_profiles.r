@@ -19,7 +19,7 @@ pipeline.topologyProfiles <- function()
   n.spots <- colSums( spot.list.overexpression$spotdata>sd(spot.list.overexpression$spotdata) )
 
   barplot(n.spots, col=group.colors, main="Number of overexpressed spot modules",
-          names.arg=colnames(indata), las=2, cex.main=2, 
+          names.arg="", las=2, cex.main=2, 
           border=if (ncol(indata) < 80) "black" else NA)
   box()
 
@@ -63,7 +63,7 @@ pipeline.topologyProfiles <- function()
   K.red <- apply(metadata.scaled, 2, function(x) { length(which(x > 0.9)) }) / preferences$dim.1stLvlSom^2
 
   barplot(K.red, col=group.colors, main="Fraction of overexpressed metagenes", cex.main=2,
-          names.arg=colnames(indata), las=2, border=if (ncol(indata) < 80) "black" else NA)
+          names.arg="", las=2, border=if (ncol(indata) < 80) "black" else NA)
 
   box()
 
@@ -107,7 +107,7 @@ pipeline.topologyProfiles <- function()
   })
 
   barplot(K.border, col=group.colors, main="Length of borderline along overexpressed metagenes",
-          names.arg=colnames(indata), las=2, cex.main=1.8, 
+          names.arg="", las=2, cex.main=1.8, 
           border=if (ncol(indata) < 80) "black" else NA)
 
   box()
@@ -125,7 +125,7 @@ pipeline.topologyProfiles <- function()
   C <- K.red / K.border
 
   barplot(C, col=group.colors, main="Compactness of spots",
-          names.arg=colnames(indata), las=2, cex.main=2, 
+          names.arg="", las=2, cex.main=2, 
           border=if (ncol(indata) < 80) "black" else NA)
 
   box()
@@ -143,7 +143,7 @@ pipeline.topologyProfiles <- function()
   C <- (K.red * preferences$dim.1stLvlSom^2) / K.border^2
 
   barplot(C, col=group.colors, main="Shape of spots",
-          names.arg=colnames(indata), las=2, cex.main=2, 
+          names.arg="", las=2, cex.main=2, 
           border=if (ncol(indata) < 80) "black" else NA)
 
   box()

@@ -8,7 +8,7 @@ pipeline.entropyProfiles <- function()
   par(mar=c(10, 6, 4, 5))
 
   barplot(apply(metadata, 2, mean), col=group.colors,
-          main=bquote("Mean metagene expression: <e"[m]^meta~">"), names.arg=colnames(indata), las=2,
+          main=bquote("Mean metagene expression: <e"[m]^meta~">"), names.arg="", las=2,
           cex.main=2.5,border=if (ncol(indata) < 80) "black" else NA)
   box()
 
@@ -23,7 +23,7 @@ pipeline.entropyProfiles <- function()
   }
 
   barplot(apply(metadata, 2, var), col=group.colors, main=bquote("Metagene variance: var(e"[m]^meta~")"),
-          names.arg=colnames(indata), las=2, cex.main=2.5, border=if (ncol(indata) < 80) "black" else NA)
+          names.arg="", las=2, cex.main=2.5, border=if (ncol(indata) < 80) "black" else NA)
   box()
 
   if (length(unique(group.labels)) > 1)
@@ -63,7 +63,7 @@ pipeline.entropyProfiles <- function()
   ylim <- c(min(H)-0.1*(max(H)-min(H)),max(H)+0.1*(max(H)-min(H)))
 
   barplot(H, col=group.colors, main=bquote("Standard metagene entropy: h"[m]),
-          names.arg=colnames(indata), las=2, cex.main=2.5,
+          names.arg="", las=2, cex.main=2.5,
           ylim=ylim, xpd=FALSE, border=if (ncol(indata) < 80) "black" else NA)
 
   box()
@@ -88,7 +88,7 @@ pipeline.entropyProfiles <- function()
   ylim <- c(min(H)-0.1*(max(H)-min(H)),max(H)+0.1*(max(H)-min(H)))
 
   barplot(H, col=group.colors, main=bquote("Metagene entropy weighted for metagene population: h"[m]^weighted),
-          names.arg=colnames(indata), las=2, cex.main=2.5, ylim=ylim, 
+          names.arg="", las=2, cex.main=2.5, ylim=ylim, 
           xpd=FALSE, border=if (ncol(indata) < 80) "black" else NA)
 
   box()
@@ -114,7 +114,7 @@ pipeline.entropyProfiles <- function()
   ylim <- c(min(H)-0.1*(max(H)-min(H)),max(H)+0.1*(max(H)-min(H)))
 
   barplot(H, col=group.colors, main=bquote("Tsallis metagene entropy: h"[m]^Tsallis~""),
-          names.arg=colnames(indata), las=2, cex.main=2.5, ylim=ylim, 
+          names.arg="", las=2, cex.main=2.5, ylim=ylim, 
           xpd=FALSE, border=if (ncol(indata) < 80) "black" else NA)
 
   box()
