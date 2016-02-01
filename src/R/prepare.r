@@ -222,7 +222,7 @@ pipeline.prepare <- function()
     n.feature.interval <- cut( nrow(indata), breaks=c(0,1000,10000,Inf), labels=c(1:3) )
     recommendation <- matrix(c(seq(20,40,5),seq(30,50,5),seq(40,60,5)),nrow=3,byrow=TRUE)
     
-    preferences$dim.1stLvlSom <- recommendation[n.feature.interval,n.sample.interval]
+    preferences$dim.1stLvlSom <<- recommendation[n.feature.interval,n.sample.interval]
     util.info("Recommended SOM size will be used:",preferences$dim.1stLvlSom,"x",preferences$dim.1stLvlSom) 
   }
   
