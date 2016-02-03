@@ -20,11 +20,6 @@ opossom.run(env)
     the opossom environment created with \code{opossom.new} according to the users' preferences
   }
 }
-\author{
-Author: Henry Loeffler-Wirth <wirth@izbi.uni-leipzig.de>
-
-Maintainer: Martin Kalcher <mkalcher@porkbox.net>
-}
 \examples{
 # Example with artificial data
 env <- opossom.new(list(dataset.name="Example",
