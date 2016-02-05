@@ -49,7 +49,7 @@ pipeline.groupSpecificGenesets <- function()
       plot(which(!is.na(n.map), arr.ind=TRUE), xlim=lim, ylim=lim, pch=16,
             axes=FALSE, xlab="",ylab="", xaxs="i", yaxs="i",
             cex=0.5 + na.omit(as.vector(n.map)) / max(n.map,na.rm=TRUE) * 2.8,
-            col=colramp(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=TRUE)) /
+            col=color.palette.heatmaps(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=TRUE)) /
                               max(1, (max(n.map,na.rm=TRUE) - min(n.map,na.rm=TRUE))) *
                               999 + 1])
 
@@ -119,7 +119,7 @@ pipeline.groupSpecificGenesets <- function()
     plot(which(!is.na(n.map), arr.ind=TRUE), xlim=lim, ylim=lim, pch=16,
          axes=FALSE, xlab="",ylab="", xaxs="i", yaxs="i",
          cex=0.5 + na.omit(as.vector(n.map)) / max(n.map,na.rm=TRUE) * 2.8,
-         col=colramp(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=TRUE)) /
+         col=color.palette.heatmaps(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=TRUE)) /
                              max(1, (max(n.map,na.rm=TRUE) - min(n.map,na.rm=TRUE))) *
                              999 + 1])
     

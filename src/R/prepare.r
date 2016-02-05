@@ -244,11 +244,33 @@ pipeline.prepare <- function()
   dir.create(paste(files.name, "- Results"), showWarnings=FALSE)
   dir.create(paste(files.name, "- Results/CSV Sheets"), showWarnings=FALSE)
 
-  if (is.null(colramp)) {
-    colramp <<- colorRampPalette(c("darkblue", "blue", "lightblue", "green2",
-                                   "yellow", "red", "darkred"))
+
+  # set color schemes
+  if (!is.null(color.palette.portraits)) # check if given color palette is a valid function
+  {
+    if( length(environment(color.palette.portraits))!=3 || !all( c("colors","ramp") %in% ls(environment(color.palette.portraits)) ) )
+    {
+      util.warn("Invalid value of \"color.palette.portraits\". Using standard scheme")
+      color.palette.portraits <<- colorRampPalette(c("darkblue","blue","lightblue","green2","yellow","red","darkred"))
+    }
+  } else
+  {
+    color.palette.portraits <<- colorRampPalette(c("darkblue","blue","lightblue","green2","yellow","red","darkred"))
+  }
+  
+  if (!is.null(color.palette.heatmaps)) # check if given color palette is a valid function
+  {
+    if( length(environment(color.palette.heatmaps))!=3 || !all( c("colors","ramp") %in% ls(environment(color.palette.heatmaps)) ) )
+    {
+      util.warn("Invalid value of \"color.palette.heatmaps\". Using standard scheme")
+      color.palette.heatmaps <<- colorRampPalette(c("blue4","blue","gray90","orange","red4"))
+    }
+  } else
+  {
+    color.palette.heatmaps <<- colorRampPalette(c("blue4","blue","gray90","orange","red4"))
   }
 
+  # check group.labels and group.colors
   if ((!is.null(group.labels) && length(group.labels) != ncol(indata)) ||
       (!is.null(group.colors) && length(group.colors) != ncol(indata)))
   {
@@ -290,7 +312,7 @@ pipeline.prepare <- function()
       for (i in seq_along(unique(group.labels)))
       {
         group.colors[which(group.labels == unique(group.labels)[i])] <<-
-          colorRampPalette(c("blue3", "blue", "lightblue", "green", "gold", "red", "red3"))(length(unique(group.labels)))[i]
+          colorRampPalette(c("blue3", "blue", "lightblue", "green2", "gold", "red", "red3"))(length(unique(group.labels)))[i]
       }
     }
 
@@ -305,7 +327,7 @@ pipeline.prepare <- function()
     group.labels <<- rep("sample", ncol(indata))
     names(group.labels) <<- colnames(indata)
 
-    group.colors <<- colramp(ncol(indata))
+    group.colors <<- colorRampPalette(c("blue3", "blue", "lightblue", "green2", "gold", "red", "red3"))(ncol(indata))
     names(group.colors) <<- colnames(indata)
   }
 

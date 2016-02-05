@@ -160,7 +160,7 @@ pipeline.2ndLvlSom <- function()
       }
 
       m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
-      x <- pixmapIndexed(m , col=colramp(1000), cellres=10)
+      x <- pixmapIndexed(m , col=color.palette.portraits(1000), cellres=10)
 
       addlogo(x,
               secLvlSom.20.20$visual[which.samples[1], "x"]+c(-0.45,0.455),

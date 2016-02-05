@@ -168,7 +168,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
     heatmap.wrap(x=cor.s, zlim=c(-1,1), Rowv=as.dendrogram(hcl), Colv=as.dendrogram(hcl),
                  labRow=if(nrow(cor.s)<100) rownames(cor.s) else rep("",nrow(cor.s)), 
                  labCol=if(ncol(cor.s)<100) colnames(cor.s) else rep("",ncol(cor.s)),
-                 col=colorRampPalette(c("blue4","blue","gray90","gray90","orange","red4"))(1000), 
+                 col=color.palette.heatmaps(1000), 
                  scale="n", main=paste("Pairwise correlation map,",metagene.filter.list[[i]]$n),
                  mar=c(8,8), ColSideColors=group.colors, RowSideColors=group.colors)
 
@@ -178,7 +178,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
            text.col=groupwise.group.colors, bg="white")
     
     par(new=TRUE, mar = c(25, 55, 10.8, 2))
-    image(matrix(1:100, 1, 100), col = colorRampPalette(c("blue4","blue","gray90","gray90","orange","red4"))(1000), axes=FALSE)
+    image(matrix(1:100, 1, 100), col=color.palette.heatmaps(1000), axes=FALSE)
       axis(2, c(-1,-0.5,0.5,1,"r"), at=c(0, 0.25, 0.75, 1, 0.5), las=2, tick=FALSE, pos=0, cex.axis=1)
 
 
@@ -195,7 +195,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
     if (ncol(metadata) < 1000)
     {
       par(mar=c(1, 1, 1, 1))
-      heatmap.wrap(x=cor.s, zlim=c(-1,1), Rowv=NA, Colv=NA, col=colorRampPalette(c("blue4","blue","gray90","gray90","orange","red4"))(1000), 
+      heatmap.wrap(x=cor.s, zlim=c(-1,1), Rowv=NA, Colv=NA, col=color.palette.heatmaps(1000), 
                    labRow=if(nrow(cor.s)<100) rownames(cor.s) else rep("",nrow(cor.s)), 
                    labCol=if(ncol(cor.s)<100) colnames(cor.s) else rep("",ncol(cor.s)),
                    scale="n", main=paste("Pairwise correlation map,",metagene.filter.list[[i]]$n), 
@@ -207,7 +207,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
              text.col=groupwise.group.colors, bg="white")
   
       par(new=TRUE, mar = c(31.6, 55, 4.2, 2))
-      image(matrix(1:100, 1, 100), col = colorRampPalette(c("blue4","blue","gray90","gray90","orange","red4"))(1000), axes=FALSE)
+      image(matrix(1:100, 1, 100), col=color.palette.heatmaps(1000), axes=FALSE)
         axis(2, c(-1,-0.5,0.5,1,"r"), at=c(0, 0.25, 0.75, 1, 0.5), las=2, tick=FALSE, pos=0, cex.axis=1)
       
       
@@ -224,7 +224,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
       }))
   
       par(mar=c(1, 1, 1, 1))
-      heatmap.wrap(x=cor.s[o,o], zlim=c(-1,1), Rowv=NA, Colv=NA, col=colorRampPalette(c("blue4","blue","gray90","gray90","orange","red4"))(1000), 
+      heatmap.wrap(x=cor.s[o,o], zlim=c(-1,1), Rowv=NA, Colv=NA, col=color.palette.heatmaps(1000), 
                    labRow=if(nrow(cor.s)<100) rownames(cor.s) else rep("",nrow(cor.s)), 
                    labCol=if(ncol(cor.s)<100) colnames(cor.s) else rep("",ncol(cor.s)),
                    scale="n", main=paste("Pairwise correlation map,",metagene.filter.list[[i]]$n), 
@@ -236,7 +236,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
              text.col=groupwise.group.colors, bg="white")
       
       par(new=TRUE, mar = c(31.6, 55, 4.2, 2))
-      image(matrix(1:100, 1, 100), col = colorRampPalette(c("blue4","blue","gray90","gray90","orange","red4"))(1000), axes=FALSE)
+      image(matrix(1:100, 1, 100), col=color.palette.heatmaps(1000), axes=FALSE)
         axis(2, c(-1,-0.5,0.5,1,"r"), at=c(0, 0.25, 0.75, 1, 0.5), las=2, tick=FALSE, pos=0, cex.axis=1)
     }
   }

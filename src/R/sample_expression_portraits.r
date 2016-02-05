@@ -24,7 +24,7 @@ pipeline.sampleExpressionPortraits <- function()
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
       image(matrix(metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=FALSE, col=colramp(1000))
+            axes=FALSE, col=color.palette.portraits(1000))
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
 
@@ -71,7 +71,7 @@ pipeline.sampleExpressionPortraits <- function()
       zfacet <- md[-1, -1] + md[-1, -nrz] + md[-nrz, -1] + md[-nrz, -nrz]
       facetcol <- cut(zfacet, 1000)
 
-      persp(md, axes=FALSE, border=NA, expand=0.5, col=colramp(1000)[facetcol],
+      persp(md, axes=FALSE, border=NA, expand=0.5, col=color.palette.portraits(1000)[facetcol],
             phi=45, theta=-5, xlab="", ylab="", zlab="", box=TRUE)
 
       title(paste(j, ":", colnames(indata)[j]), line=1, cex.main=0.8)
@@ -123,7 +123,7 @@ pipeline.sampleExpressionPortraits <- function()
     for (j in which(group.labels == unique(group.labels)[gl]))
     {
       image(matrix(metadata[,j], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=FALSE, col = colramp(1000), zlim=c(min(metadata),max(metadata)))
+            axes=FALSE, col = color.palette.portraits(1000), zlim=c(min(metadata),max(metadata)))
 
       title(paste(j,":", colnames(indata)[j]), line=1, cex.main=0.8)
       box()
@@ -166,7 +166,7 @@ pipeline.sampleExpressionPortraits <- function()
     {
       WAD.metadata <- metadata[,j] * ((metadata[,j] - min(metadata[,j])) / (max(metadata[,j]) - min(metadata[,j])))
       image(matrix(WAD.metadata, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=FALSE, col=colramp(1000), cex.main=0.6)
+            axes=FALSE, col=color.palette.portraits(1000), cex.main=0.6)
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
       box()
@@ -211,7 +211,7 @@ pipeline.sampleExpressionPortraits <- function()
       meta <- meta - min(meta, na.rm=TRUE)
       loglog.metadata <- meta * meta.sign
       image(matrix(loglog.metadata, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=FALSE, col = colramp(1000))
+            axes=FALSE, col = color.palette.portraits(1000))
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
       box()

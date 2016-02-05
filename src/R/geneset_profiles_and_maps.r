@@ -52,12 +52,12 @@ pipeline.genesetProfilesAndMaps <- function()
       box()
     
     par(mar=c(10,10,0,16))
-    image(x=1:ncol(gs.indata), y=1:nrow(gs.indata),z=t(gs.indata[o.genes,o.samples,drop=FALSE]),col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000), axes=FALSE,zlim=max(max(gs.indata),-min(gs.indata))*c(-1,1),xlab="", ylab="")
+    image(x=1:ncol(gs.indata), y=1:nrow(gs.indata),z=t(gs.indata[o.genes,o.samples,drop=FALSE]),col=color.palette.heatmaps(1000), axes=FALSE,zlim=max(max(gs.indata),-min(gs.indata))*c(-1,1),xlab="", ylab="")
       box()
       axis(2, 1:nrow(gs.indata), labels=rownames(gs.indata)[o.genes], las=2, line=-0.5, tick=0, cex.axis=min( 1.5, max( 0.5, 2-nrow(gs.indata) /67 ) ) )
     
     par(new=T,mar=c(40,74,0,1))
-    image(matrix(c(1:1000), 1000, 1), axes=FALSE, col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000))
+    image(matrix(c(1:1000), 1000, 1), axes=FALSE, col=color.palette.heatmaps(1000))
       box()
       axis( 1, at=c(0,1), labels=round(range(gs.indata),1), cex.axis=1.4 )
       mtext( bquote(Delta ~ "e"), side=1, cex=1.25, line=1 )  
@@ -102,7 +102,7 @@ pipeline.genesetProfilesAndMaps <- function()
     n.map <- matrix(n.map, preferences$dim.1stLvlSom)
     
     lim <- c(1,preferences$dim.1stLvlSom) + preferences$dim.1stLvlSom * 0.01 * c(-1, 1)
-    colr <- colramp(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=TRUE)) /
+    colr <- color.palette.heatmaps(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=TRUE)) /
                            max(1, (max(n.map,na.rm=TRUE) - min(n.map,na.rm=TRUE))) *
                            999 + 1]
     
@@ -114,7 +114,7 @@ pipeline.genesetProfilesAndMaps <- function()
       box()
     
     par(new=TRUE, mar=c(32,21.5,6,0.5))
-    image(matrix(1:100, 1, 100), col = colramp(1000), axes=FALSE)
+    image(matrix(1:100, 1, 100), col = color.palette.heatmaps(1000), axes=FALSE)
       axis(2, at=c(0,1), c(min(n.map,na.rm=TRUE), max(n.map,na.rm=TRUE)), las=2, tick=FALSE, pos=-0.36)
       box()
 

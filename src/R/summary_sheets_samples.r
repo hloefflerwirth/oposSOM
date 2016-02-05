@@ -84,7 +84,7 @@ pipeline.summarySheetsSamples <- function()
     par(mar=c(2,3,3,1))
 
     image(matrix(metadata[,m], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-          axes=FALSE, col = colramp(1000), main="Profile", cex.main=1.5)
+          axes=FALSE, col = color.palette.portraits(1000), main="Profile", cex.main=1.5)
 
     axis(1,
          seq(0, 1, length.out=preferences$dim.1stLvlSom/10+1),
@@ -99,7 +99,7 @@ pipeline.summarySheetsSamples <- function()
     box()
 
     image(matrix(metadata[,m], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-          axes=FALSE, col=colramp(1000), main="Regulated Metagenes", cex.main=1.5)
+          axes=FALSE, col=color.palette.portraits(1000), main="Regulated Metagenes", cex.main=1.5)
 
     par(new=TRUE)
 

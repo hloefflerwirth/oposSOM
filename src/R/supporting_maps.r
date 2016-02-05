@@ -15,14 +15,14 @@ pipeline.supportingMaps <- function()
   m[which(is.infinite(m))] <- NA
 
   image(matrix(m, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-        axes=FALSE, col=colramp(1000), main="Population Map", cex.main=2.5)
+        axes=FALSE, col=color.palette.heatmaps(1000), main="Population Map", cex.main=2.5)
 
   mtext("log ( # genes in metagene )", side=1, line=1, cex=1.4)
   box()
 
   par(new=TRUE, mar=c(1, 0, 0, 0))
   layout(matrix(c(0, 0, 0, 0, 1, 0, 0, 0, 0), 3, 3), c(1, 0.05, 0.02), c(0.14, 0.3, 1))
-  image(matrix(1:100, 1, 100), col = colramp(1000), axes=FALSE)
+  image(matrix(1:100, 1, 100), col = color.palette.heatmaps(1000), axes=FALSE)
 
   axis(2, c(1, max(som.result$code.sum[,"nobs"])),
        at=c(0, 1), las=2, tick=FALSE, pos=-0.5, cex.axis=1.4)
@@ -34,14 +34,14 @@ pipeline.supportingMaps <- function()
   par(mar=c(5, 6, 4, 5))
 
   image(matrix(log10(apply(metadata, 1, var)), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-        axes=FALSE, col=colramp(1000), main="Metagene Variance Map", cex.main=2.5)
+        axes=FALSE, col=color.palette.heatmaps(1000), main="Metagene Variance Map", cex.main=2.5)
 
   mtext("log ( metagene variance )", side=1, line=1, cex=1.4)
   box()
 
   par(new=TRUE, mar=c(1, 0, 0, 0))
   layout(matrix(c(0, 0, 0, 0, 1, 0, 0, 0, 0), 3, 3), c(1, 0.05, 0.02), c(0.14, 0.3, 1))
-  image(matrix(1:100, 1, 100), col=colramp(1000), axes=FALSE)
+  image(matrix(1:100, 1, 100), col=color.palette.heatmaps(1000), axes=FALSE)
 
   axis(2, c(round(min(apply(metadata, 1, var), na.rm=TRUE),2),
             round(max(apply(metadata, 1, var),na.rm=TRUE),2)),
@@ -82,17 +82,14 @@ pipeline.supportingMaps <- function()
 
   image(matrix(-log(p), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
         axes=FALSE, main="Metagene Significance Map", cex.main=2.5,
-        col=colorRampPalette(c("blue4", "blue4", "blue3", "blue3", "blue2",
-                               "blue2", "blue1", "lightblue", "darkgreen",
-                               "#008B00", "green3", "green", "yellow", "gold",
-                               "orange", "red", "darkred"))(1000))
+        col=color.palette.heatmaps(1000))
 
   mtext(expression(paste(min[m],"( log ",p["k,m"]," )")), side=1, line=1, cex=1.4)
   box()
 
   par(new=TRUE, mar=c(1, 0, 0, 0))
   layout(matrix(c(0, 0, 0, 0, 1, 0, 0, 0, 0), 3, 3), c(1, 0.05, 0.02), c(0.14, 0.3, 1))
-  image(matrix(1:100, 1, 100), col=rev(colramp(1000)), axes=FALSE)
+  image(matrix(1:100, 1, 100), col=rev(color.palette.heatmaps(1000)), axes=FALSE)
   axis(2, at=c(0,1), c(round(min(log(p),na.rm=TRUE)), 0), las=2, tick=FALSE, pos=-0.5, cex.axis=1.4)
   box()
 
@@ -116,14 +113,14 @@ pipeline.supportingMaps <- function()
   par(mar=c(5, 6, 4, 5))
 
   image(matrix(H, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-        axes=FALSE, col=colramp(1000), main="Standard Metagene Entropy Map", cex.main=2.5)
+        axes=FALSE, col=color.palette.heatmaps(1000), main="Standard Metagene Entropy Map", cex.main=2.5)
 
   mtext(expression(h[k]), side=1, line=1, cex=1.4)
   box()
 
   par(new=TRUE, mar=c(1, 0, 0, 0))
   layout(matrix(c(0, 0, 0, 0, 1, 0, 0, 0, 0), 3, 3), c(1, 0.05, 0.02), c(0.14, 0.3, 1))
-  image(matrix(1:100, 1, 100), col = colramp(1000), axes=FALSE)
+  image(matrix(1:100, 1, 100), col=color.palette.heatmaps(1000), axes=FALSE)
 
   axis(2, c(round(min(H,na.rm=TRUE),2),round(max(H,na.rm=TRUE),2)),
        at=c(0, 1), las=2, tick=FALSE, pos=-0.5, cex.axis=1.4)
@@ -152,14 +149,14 @@ pipeline.supportingMaps <- function()
   par(mar=c(5, 6, 4, 5))
 
   image(matrix(errors, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom), axes=FALSE,
-        col=colramp(1000), main="Gene-Metagene Covariance Map", cex.main=2.5)
+        col=color.palette.heatmaps(1000), main="Gene-Metagene Covariance Map", cex.main=2.5)
 
   mtext("correlation genes - metagene", side=1, line=1, cex=1.4)
   box()
 
   par(new=TRUE, mar=c(1, 0, 0, 0))
   layout(matrix(c(0, 0, 0, 0, 1, 0, 0, 0, 0), 3, 3), c(1, 0.05, 0.02), c(0.14, 0.3, 1))
-  image(matrix(1:100, 1, 100), col = colramp(1000), axes=FALSE)
+  image(matrix(1:100, 1, 100), col=color.palette.heatmaps(1000), axes=FALSE)
 
   axis(2, c(round(min(errors,na.rm=TRUE),2),round(max(errors,na.rm=TRUE),2)),
        at=c(0, 1), las=2, tick=FALSE, pos=-0.5, cex.axis=1.4)
@@ -185,14 +182,14 @@ pipeline.supportingMaps <- function()
   par(mar=c(5, 6, 4, 5))
 
   image(matrix(errors, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-        axes=FALSE, col=colramp(1000), main="Deviation Map", cex.main=2.5)
+        axes=FALSE, col=color.palette.heatmaps(1000), main="Deviation Map", cex.main=2.5)
 
   mtext("deviation genes - metagene", side=1, line=1, cex=1.4)
   box()
 
   par(new=TRUE, mar=c(1, 0, 0, 0))
   layout(matrix(c(0, 0, 0, 0, 1, 0, 0, 0, 0), 3, 3), c(1, 0.05, 0.02), c(0.14, 0.3, 1))
-  image(matrix(1:100, 1, 100), col=colramp(1000), axes=FALSE)
+  image(matrix(1:100, 1, 100), col=color.palette.heatmaps(1000), axes=FALSE)
 
   axis(2, c(round(min(errors,na.rm=TRUE),2), round(max(errors,na.rm=TRUE),2)),
        at=c(0,1), las=2, tick=FALSE, pos=-0.5, cex.axis=1.4)

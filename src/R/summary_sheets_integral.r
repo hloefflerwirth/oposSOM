@@ -10,7 +10,7 @@ pipeline.summarySheetsIntegral <- function()
       layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
       par(mar=c(5, 4, 4, 1))
 
-      col <- if(main!="D-Clusters") colramp(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
+      col <- if(main!="D-Clusters") color.palette.portraits(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
       image(matrix(set.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=FALSE, col=col, main=main, cex.main=1.5)
 
@@ -31,7 +31,7 @@ pipeline.summarySheetsIntegral <- function()
     beta.scores <- sapply(set.list$spots, function(x) { x$beta.statistic$beta.score })
 
     image(matrix(set.list$overview.mask, preferences$dim.1stLvlSom), axes=FALSE,
-          col=colramp(1000)[1 + 999 * beta.scores / max(beta.scores)],
+          col=color.palette.heatmaps(1000)[1 + 999 * beta.scores / max(beta.scores)],
           main=main, cex.main=1.5)
 
     mtext("beta-scores", 3)
@@ -44,7 +44,7 @@ pipeline.summarySheetsIntegral <- function()
     box()
     par(new=TRUE)
     par(mar=c(12, 9, 12, 9))
-    image(matrix(1:100, 1, 100), col = colramp(1000), axes=FALSE)
+    image(matrix(1:100, 1, 100), col = color.palette.heatmaps(1000), axes=FALSE)
     axis(2, c(0,1), c(0, round(max(beta.scores),1)), las=2)
     box()
 
@@ -55,7 +55,7 @@ pipeline.summarySheetsIntegral <- function()
     image(x=c(1:preferences$dim.1stLvlSom),
           y=c(1:preferences$dim.1stLvlSom),
           z=matrix(set.list$overview.mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-          col=colramp(max(set.list$overview.mask, na.rm=TRUE)),
+          col=colorRampPalette(c("darkblue","blue","lightblue","green2","yellow","red","darkred"))(max(set.list$overview.mask, na.rm=TRUE)),
           axes=TRUE, main=main, cex.main=1.5, xlab="", ylab="", las=1)
 
     mtext("annotation", 3)
@@ -85,7 +85,7 @@ pipeline.summarySheetsIntegral <- function()
     {
       top.GS <- lapply(set.list$spots, function(x) names(head(x$Fisher.p , 3)))
 
-      leg.col <- colramp(length(set.list$spots))
+      leg.col <- colorRampPalette(c("darkblue","blue","lightblue","green2","yellow","red","darkred"))(length(set.list$spots))
       leg.col <- as.vector(sapply(leg.col, c, NA, NA))
       leg.num <- names(set.list$spots)
       leg.num <- as.vector(sapply(leg.num, c, NA, NA))
@@ -116,7 +116,7 @@ pipeline.summarySheetsIntegral <- function()
     image(1:ncol(indata),
           1:nrow(set.list$spotdata),
           sample.spot.expression.image,
-          col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
+          col=color.palette.heatmaps(1000),
           axes=FALSE, ylim=0.5+c(0,nrow(set.list$spotdata)), yaxs="i", xlab="", ylab="",
           zlim=max(max(sample.spot.expression.image),-min(sample.spot.expression.image))*c(-1,1))
 
@@ -159,9 +159,7 @@ pipeline.summarySheetsIntegral <- function()
 
     par(mar=c(5,2,4,2))
 
-    image(matrix(1:100, 100, 1),
-          col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
-          axes=FALSE, xlab="")
+    image(matrix(1:100, 100, 1),col=color.palette.heatmaps(1000),axes=FALSE, xlab="")
 
     axis(1, round(max(max(sample.spot.expression.image),
                       -min(sample.spot.expression.image)) * c(-1,1), 1),
@@ -190,7 +188,7 @@ pipeline.summarySheetsIntegral <- function()
 
       image(1:ncol(indata), 1:ncol(sample.spot.GSZ.image), sample.spot.GSZ.image,
             axes=FALSE, ylim=0.5+c(0,ncol(sample.spot.GSZ.image)), yaxs="i", xlab="", ylab="",
-            col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
+            col=color.palette.heatmaps(1000),
             zlim=max(max(sample.spot.GSZ.image),-min(sample.spot.GSZ.image))*c(-1,1))
 
       box()
@@ -232,7 +230,7 @@ pipeline.summarySheetsIntegral <- function()
       par(mar=c(5,2,4,2))
 
       image(matrix(1:100, 100, 1),
-            col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
+            col=color.palette.heatmaps(1000),
             axes=FALSE, xlab="")
 
       axis(1,
@@ -307,7 +305,7 @@ pipeline.summarySheetsIntegral <- function()
 
       par(mar=c(2,3,3,1))
 
-      col <- if(main!="D-Clusters") colramp(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
+      col <- if(main!="D-Clusters") color.palette.portraits(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
       image(matrix(set.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
             axes=FALSE, col=col, main="Overview Map", cex.main=1.5)
 

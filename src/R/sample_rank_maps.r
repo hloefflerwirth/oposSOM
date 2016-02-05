@@ -34,7 +34,7 @@ pipeline.sampleRankMaps <- function()
       mean.rank.full[names(mean.rank)] <- mean.rank
 
       image(matrix(mean.rank.full, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=FALSE, col = colramp(1000))
+            axes=FALSE, col = color.palette.portraits(1000))
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
       box()
@@ -81,7 +81,7 @@ pipeline.sampleRankMaps <- function()
       mean.rank.full[names(mean.rank)] <- mean.rank
 
       image(matrix(mean.rank.full, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-            axes=FALSE, col = colramp(1000))
+            axes=FALSE, col = color.palette.portraits(1000))
 
       title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
       box()
@@ -129,7 +129,7 @@ pipeline.sampleRankMaps <- function()
         mean.rank.full[names(mean.rank)] <- mean.rank
 
         image(matrix(mean.rank.full, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-              axes=FALSE, col = colramp(1000))
+              axes=FALSE, col = color.palette.portraits(1000))
 
         title(paste(j,":",colnames(indata)[j]), line=1, cex.main=0.8)
         box()

@@ -79,7 +79,7 @@ pipeline.summarySheetsGroups <- function()
     par(new=TRUE)
 
     image(matrix(group.metadata[,i], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-          axes=FALSE, col = colramp(1000))
+          axes=FALSE, col = color.palette.portraits(1000))
 
     title(main="logFC", cex.main=1.5, line=0.5)
     box()
@@ -87,7 +87,7 @@ pipeline.summarySheetsGroups <- function()
     image(matrix(bleached.group.metadata[,i],
                  preferences$dim.1stLvlSom,
                  preferences$dim.1stLvlSom),
-          axes=FALSE, col = colramp(1000), zlim=range(bleached.group.metadata))
+          axes=FALSE, col = color.palette.portraits(1000), zlim=range(bleached.group.metadata))
 
     title(main="group specific logFC", cex.main=1.3, line=0.5)
     box()
@@ -95,7 +95,7 @@ pipeline.summarySheetsGroups <- function()
     image(matrix(WAD.group.metadata[,i],
                  preferences$dim.1stLvlSom,
                  preferences$dim.1stLvlSom),
-          axes=FALSE, col = colramp(1000))
+          axes=FALSE, col = color.palette.portraits(1000))
 
     title(main="WAD", cex.main=1.5, line=0.5)
     box()
@@ -103,7 +103,7 @@ pipeline.summarySheetsGroups <- function()
     image(matrix(bleached.WAD.group.metadata[,i],
                  preferences$dim.1stLvlSom,
                  preferences$dim.1stLvlSom),
-          axes=FALSE, col = colramp(1000), zlim=range(bleached.WAD.group.metadata))
+          axes=FALSE, col = color.palette.portraits(1000), zlim=range(bleached.WAD.group.metadata))
 
     title(main="group specific WAD", cex.main=1.3, line=0.5)
     box()
@@ -111,14 +111,14 @@ pipeline.summarySheetsGroups <- function()
     image(matrix(loglog.group.metadata[,i],
                  preferences$dim.1stLvlSom,
                  preferences$dim.1stLvlSom),
-          axes=FALSE, col = colramp(1000))
+          axes=FALSE, col = color.palette.portraits(1000))
     title(main="loglogFC", cex.main=1.5, line=0.5)
     box()
 
     image(matrix(bleached.loglog.group.metadata[,i],
                  preferences$dim.1stLvlSom,
                  preferences$dim.1stLvlSom),
-          axes=FALSE, col = colramp(1000), zlim=range(bleached.loglog.group.metadata))
+          axes=FALSE, col = color.palette.portraits(1000), zlim=range(bleached.loglog.group.metadata))
 
     title(main="group specific loglogFC", cex.main=1.3, line=0.5)
     box()
@@ -157,7 +157,7 @@ pipeline.summarySheetsGroups <- function()
           image(matrix(diff.metadata,
                        preferences$dim.1stLvlSom,
                        preferences$dim.1stLvlSom),
-                axes=FALSE, col = colramp(1000), ylab=unique(group.labels)[g1])
+                axes=FALSE, col = color.palette.portraits(1000), ylab=unique(group.labels)[g1])
 
           par("col.lab"="black", "mgp"=c(3,1,0))
         } else
@@ -165,7 +165,7 @@ pipeline.summarySheetsGroups <- function()
           image(matrix(diff.metadata,
                        preferences$dim.1stLvlSom,
                        preferences$dim.1stLvlSom),
-                axes=FALSE, col = colramp(1000))
+                axes=FALSE, col = color.palette.portraits(1000))
         }
 
         box()
@@ -209,7 +209,7 @@ pipeline.summarySheetsGroups <- function()
           image(matrix(diff.metadata,
                        preferences$dim.1stLvlSom,
                        preferences$dim.1stLvlSom),
-                axes=FALSE, col=colramp(1000), zlim=zlim, ylab=unique(group.labels)[g1])
+                axes=FALSE, col=color.palette.portraits(1000), zlim=zlim, ylab=unique(group.labels)[g1])
 
           par("col.lab"="black", "mgp"=c(3,1,0))
         } else
@@ -217,7 +217,7 @@ pipeline.summarySheetsGroups <- function()
           image(matrix(diff.metadata,
                        preferences$dim.1stLvlSom,
                        preferences$dim.1stLvlSom),
-                axes=FALSE, col = colramp(1000), zlim=zlim)
+                axes=FALSE, col = color.palette.portraits(1000), zlim=zlim)
         }
 
         box()
@@ -556,7 +556,7 @@ pipeline.summarySheetsGroups <- function()
         }
 
         m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
-        x <- pixmapIndexed(m , col = colramp(1000), cellres=10)
+        x <- pixmapIndexed(m , col = color.palette.portraits(1000), cellres=10)
 
         addlogo(x,
                 coords.x[ii]+cex.branch.portraits[1]*c(-1,1),
@@ -581,7 +581,7 @@ pipeline.summarySheetsGroups <- function()
           }
 
           m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
-          x <- pixmapIndexed(m , col = colramp(1000), cellres=10)
+          x <- pixmapIndexed(m , col = color.palette.portraits(1000), cellres=10)
 
           addlogo(x,
                   ii+cex.sample.portraits[1]*c(-1,1),
@@ -604,7 +604,7 @@ pipeline.summarySheetsGroups <- function()
 
         m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
         m[which(is.na(m))] <- 0
-        x <- pixmapIndexed(m , col = c("gray90", colramp(1000)), cellres=10)
+        x <- pixmapIndexed(m , col = c("gray90", color.palette.portraits(1000)), cellres=10)
 
         addlogo(x,
                 coords.x[ii]+cex.branch.portraits[1]*c(-1,1),
@@ -629,7 +629,7 @@ pipeline.summarySheetsGroups <- function()
           }
 
           m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
-          x <- pixmapIndexed(m , col = colramp(1000), cellres=10)
+          x <- pixmapIndexed(m , col = color.palette.portraits(1000), cellres=10)
 
           addlogo(x,
                   ii+cex.sample.portraits[1]*c(-1,1),

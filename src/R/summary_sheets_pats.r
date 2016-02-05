@@ -37,7 +37,7 @@ pipeline.summarySheetsPATs <- function()
     if (max(m) - min(m) != 0)  m <- 1 + (m - min(m)) / (max(m) - min(m)) * 999
 
     m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
-    pix <- pixmapIndexed(m , col = colramp(1000), cellres=10)
+    pix <- pixmapIndexed(m , col = color.palette.portraits(1000), cellres=10)
 
     addlogo(pix, (i-1)/(ncol(pat.metadata)-1)+cex.sample.portraits*c(-1,1), 0.05+0.08*(i%%2)+cex.sample.portraits*c(-1.2,1.2))
   }
@@ -56,7 +56,7 @@ pipeline.summarySheetsPATs <- function()
   
     par(new=TRUE,mar=c(2,6,3,2))
     image(matrix(pat.metadata[,pat], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-        axes=FALSE, col=colramp(1000) )
+        axes=FALSE, col=color.palette.portraits(1000) )
         box()
          
     par(mar=c(0.5,0,4.5,2))  

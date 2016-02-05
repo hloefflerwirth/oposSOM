@@ -106,7 +106,7 @@ pipeline.chromosomeExpressionReports <- function()
   pdf(filename, 21/2.54, 21/2.54)
 
   heatmap.wrap(x=sample.chr.GSZ, cex.main=2,
-               col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
+               col=color.palette.heatmaps(1000),
                mar=c(10,20), scale="n",
                zlim=max(max(sample.chr.GSZ),-min(sample.chr.GSZ))*c(-1,1),
                ColSideColors=group.colors, cexDend=0.6)
@@ -114,7 +114,7 @@ pipeline.chromosomeExpressionReports <- function()
   par(new=TRUE, mar=c(3.5,29,35.5,2))
 
   image(matrix(c(1:1000), 1000, 1), axes=FALSE,
-        col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000))
+        col=color.palette.heatmaps(1000))
 
   box()
 
@@ -124,14 +124,14 @@ pipeline.chromosomeExpressionReports <- function()
   title(main="GSZ score", line=0.5, cex.main=0.8)
 
   heatmap.wrap(x=sample.chr.GSZ, cex.main=2,
-               col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
+               col=color.palette.heatmaps(1000),
                mar=c(10,20), scale="n", zlim=max(max(sample.chr.GSZ),-min(sample.chr.GSZ))*c(-1,1),
                ColSideColors=group.colors, cexDend=0.6, Colv=NA)
 
   par(new=TRUE, mar=c(3.5,29,35.5,2))
 
   image(matrix(c(1:1000), 1000, 1), axes=FALSE,
-        col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000))
+        col=color.palette.heatmaps(1000))
 
   box()
 
@@ -141,14 +141,14 @@ pipeline.chromosomeExpressionReports <- function()
   title(main="GSZ score", line=0.5, cex.main=0.8)
 
   heatmap.wrap(x=sample.chr.GSZ[rev(sort.label(rownames(sample.chr.GSZ))),], cex.main=2,
-               col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
+               col=color.palette.heatmaps(1000),
                mar=c(10,20), scale="n", zlim=max(max(sample.chr.GSZ),-min(sample.chr.GSZ))*c(-1,1),
                ColSideColors=group.colors, cexDend=0.6, Colv=NA, Rowv=NA)
 
   par(new=TRUE, mar=c(3.5,29,35.5,2))
 
   image(matrix(c(1:1000), 1000, 1), axes=FALSE,
-        col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000))
+        col=color.palette.heatmaps(1000))
 
   box()
 
@@ -158,14 +158,14 @@ pipeline.chromosomeExpressionReports <- function()
   title(main="GSZ score", line=0.5, cex.main=0.8)
 
   heatmap.wrap(x=sample.chr.pq.GSZ, cex.main=2,
-               col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
+               col=color.palette.heatmaps(1000),
                mar=c(10,20), scale="n", zlim=max(max(sample.chr.pq.GSZ),-min(sample.chr.pq.GSZ))*c(-1,1),
                ColSideColors=group.colors, cexDend=0.6)
 
   par(new=TRUE, mar=c(3.5,29,35.5,2))
 
   image(matrix(c(1:1000), 1000, 1), axes=FALSE,
-        col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000))
+        col=color.palette.heatmaps(1000))
 
   box()
 
@@ -175,14 +175,14 @@ pipeline.chromosomeExpressionReports <- function()
   title(main="GSZ score", line=0.5, cex.main=0.8)
 
   heatmap.wrap(x=sample.chr.pq.GSZ, cex.main=2,
-               col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
+               col=color.palette.heatmaps(1000),
                mar=c(10,20), scale="n", zlim=max(max(sample.chr.pq.GSZ),-min(sample.chr.pq.GSZ))*c(-1,1),
                ColSideColors=group.colors, cexDend=0.6, Colv=NA)
 
   par(new=TRUE, mar=c(3.5,29,35.5,2))
 
   image(matrix(c(1:1000), 1000, 1), axes=FALSE,
-        col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000))
+        col=color.palette.heatmaps(1000))
 
   box()
 
@@ -193,14 +193,14 @@ pipeline.chromosomeExpressionReports <- function()
 
 
   heatmap.wrap(x=sample.chr.pq.GSZ[rev(sort.label(rownames(sample.chr.pq.GSZ))),],
-               cex.main=2, col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000),
+               cex.main=2, col=color.palette.heatmaps(1000),
                mar=c(10,20), scale="n", zlim=max(max(sample.chr.pq.GSZ),-min(sample.chr.pq.GSZ))*c(-1,1),
                ColSideColors=group.colors, cexDend=0.6, Colv=NA, Rowv=NA)
 
   par(new=TRUE, mar=c(3.5,29,35.5,2))
 
   image(matrix(c(1:1000), 1000, 1), axes=FALSE,
-        col=colorRampPalette(c("blue4","blue","gray90","orange","red4"))(1000))
+        col=color.palette.heatmaps(1000))
 
   box()
   axis(1, c(0,0.5,1),

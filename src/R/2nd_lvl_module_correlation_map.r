@@ -144,7 +144,7 @@ pipeline.2ndLvlModuleCorrelation <- function(s, hcl)
 
     par(mar = c(8, 0, 0, 8))
 
-    image(x=c(0:ncol(indata)), y=c(0:ncol(indata)), z=pcm,col=colorRampPalette(c("blue4","blue","gray90","gray90","orange","red4"))(1000),
+    image(x=c(0:ncol(indata)), y=c(0:ncol(indata)), z=pcm,col=color.palette.heatmaps(1000),
           axes=FALSE, xlab="", ylab="")
 
     box()

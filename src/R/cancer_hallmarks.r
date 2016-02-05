@@ -114,7 +114,7 @@ pipeline.cancerHallmarks <- function()
       par(mar=c(5,1,4,1))
   
       lim <- c(1,preferences$dim.1stLvlSom) + preferences$dim.1stLvlSom*0.01*c(-1,1)
-      colr <- colramp(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=TRUE)) /
+      colr <- color.palette.heatmaps(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=TRUE)) /
                             max(1, (max(n.map,na.rm=TRUE) - min(n.map,na.rm=TRUE))) *
                             999 + 1]
   

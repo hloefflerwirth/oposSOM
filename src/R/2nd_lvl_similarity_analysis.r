@@ -73,7 +73,7 @@ pipeline.2ndLvlSimilarityAnalysis <- function()
 
     r <- range(s)
     s <- apply(s,2,function(x) (x-min(x))/(max(x)-min(x)) )
-    heatmap.wrap(x=s, col=colramp(1000), main=paste("Clustering heatmap,",metagene.filter.list[[i]]$n),
+    heatmap.wrap(x=s, col=color.palette.heatmaps(1000), main=paste("Clustering heatmap,",metagene.filter.list[[i]]$n),
                  labCol=if(ncol(s)<100) colnames(s) else rep("",ncol(s)),
                  margins=c(10, 5), scale="n", labRow=NA, ColSideColors=group.colors)
 
@@ -84,11 +84,11 @@ pipeline.2ndLvlSimilarityAnalysis <- function()
            text.col=groupwise.group.colors, bg="white")
     
     par(new=TRUE, mar = c(25, 55, 10.8, 2))
-    image(matrix(1:100, 1, 100), col = colramp(1000), axes=FALSE)
+    image(matrix(1:100, 1, 100), col = color.palette.heatmaps(1000), axes=FALSE)
     axis(2, round(r,1), at=c(0, 1), las=2, tick=FALSE, pos=0, cex.axis=1)
     
 
-    heatmap.wrap(x=s, col=colramp(1000), main=paste("Clustering heatmap,",metagene.filter.list[[i]]$n),
+    heatmap.wrap(x=s, col=color.palette.heatmaps(1000), main=paste("Clustering heatmap,",metagene.filter.list[[i]]$n),
                  labCol=if(ncol(s)<100) colnames(s) else rep("",ncol(s)),
                  margins=c(10, 6), scale="n", labRow=NA, ColSideColors=group.colors, Colv=NA)
 
@@ -99,7 +99,7 @@ pipeline.2ndLvlSimilarityAnalysis <- function()
            text.col=groupwise.group.colors, bg="white")
     
     par(new=TRUE, mar = c(31.6, 55, 4.2, 2))
-    image(matrix(1:100, 1, 100), col = colramp(1000), axes=FALSE)
+    image(matrix(1:100, 1, 100), col = color.palette.heatmaps(1000), axes=FALSE)
     axis(2, round(r,1), at=c(0, 1), las=2, tick=FALSE, pos=0, cex.axis=1)
     
   }

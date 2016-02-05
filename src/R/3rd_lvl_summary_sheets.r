@@ -79,7 +79,7 @@ pipeline.3rdLvlSummarySheets <- function()
     par(mfrow=c(1,2))
     par(mar=c(8, 3, 6, 3))
 
-    col <- if(main!="D-Clusters") colramp(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
+    col <- if(main!="D-Clusters") color.palette.portraits(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
     image(matrix(set.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
           axes=FALSE, col=col, main=paste("Overview map,",main), cex.main=1.5)
 

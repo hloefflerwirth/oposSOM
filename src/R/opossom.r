@@ -3,8 +3,9 @@ opossom.new <- function(preferences=NULL)
 {
   # Init the environment
   env <- new.env()
+  env$color.palette.portraits <- NULL
+  env$color.palette.heatmaps <- NULL
   env$t.ensID.m <- NULL
-  env$colramp <- NULL
   env$Fdr.g.m <- NULL
   env$fdr.g.m <- NULL
   env$files.name <- NULL
