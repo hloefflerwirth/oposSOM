@@ -69,55 +69,59 @@ pipeline.summarySheetsPATs <- function()
   }
 
   
-  ### Group to PAT relation barplots
-  ##
-  
-  pat.group.assoc <- tapply(group.labels, pat.labels, function(x)
-  {
-    ret <- table(x)[unique(group.labels)]
-    names(ret) <- unique(group.labels)
-    return(ret)
-  })
-  pat.group.assoc <- do.call(cbind,pat.group.assoc)
-  pat.group.assoc[which(is.na(pat.group.assoc))] <- 0
-  
-  layout(matrix(c(1, 2), 1, 2), c(4, 1), 1)
-  par(mar=c(5, 5, 4, 2))
-  barplot( pat.group.assoc[,ncol(pat.group.assoc):1],
-          main="Association of PATs and groups", cex.main=1.5, cex.axis=1.4, cex.names=1,
-          col=groupwise.group.colors, horiz=TRUE, las=1)
-  
-  par(mar=c(5, 1, 4, 2))
-  plot(0, main="", cex.main=1, type="n", axes=FALSE, xlab="",
-       ylab="", xlim=c(0,1), ylim=c(0,1), xaxs="i", yaxs="i")
-
-  legend("topleft",legend=unique(group.labels),
-       col=groupwise.group.colors, pch=15, pt.cex=1.4, title="groups")
-
-  ##
-  
-  pat.group.assoc <- tapply(pat.labels, group.labels, function(x)
-  {
-    ret <- table(x)[sort(unique(pat.labels))]
-    names(ret) <- sort(unique(pat.labels))
-    return(ret)
-  })[unique(group.labels)] 
-  pat.group.assoc <- do.call(cbind,pat.group.assoc)
-  pat.group.assoc[which(is.na(pat.group.assoc))] <- 0
-
-  par(mfrow=c(1,1), mar=c(5, 8, 4, 2)) 
-  y.coords <- barplot( pat.group.assoc[,ncol(pat.group.assoc):1],
-           main="Association of PATs and groups", cex.main=1.5, cex.axis=1.4, cex.names=1,
-           horiz=TRUE, las=1) 
-  for( i in seq_along(unique(group.labels)) )
-  {
-    print.labels <- which( pat.group.assoc[,i] > max(colSums(pat.group.assoc,na.rm=T))*0.05 )
-    for( ii in seq_along(print.labels) )
+  if( length(unique(group.labels)) > 1 )
+  {  
+    ### Group to PAT relation barplots
+    ##
+    
+    pat.group.assoc <- tapply(group.labels, pat.labels, function(x)
     {
-      text( x=sum( pat.group.assoc[1:(print.labels[ii]),i] ) - pat.group.assoc[print.labels[ii],i]/2,
-            y=rev(y.coords)[i],
-            names(print.labels)[ii] )
+      ret <- table(x)[unique(group.labels)]
+      names(ret) <- unique(group.labels)
+      return(ret)
+    })
+    pat.group.assoc <- do.call(cbind,pat.group.assoc)
+    pat.group.assoc[which(is.na(pat.group.assoc))] <- 0
+    
+    layout(matrix(c(1, 2), 1, 2), c(4, 1), 1)
+    par(mar=c(5, 5, 4, 2))
+    barplot( pat.group.assoc[,ncol(pat.group.assoc):1],
+            main="Association of PATs and groups", cex.main=1.5, cex.axis=1.4, cex.names=1,
+            col=groupwise.group.colors, horiz=TRUE, las=1)
+    
+    par(mar=c(5, 1, 4, 2))
+    plot(0, main="", cex.main=1, type="n", axes=FALSE, xlab="",
+         ylab="", xlim=c(0,1), ylim=c(0,1), xaxs="i", yaxs="i")
+  
+    legend("topleft",legend=unique(group.labels),
+         col=groupwise.group.colors, pch=15, pt.cex=1.4, title="groups")
+  
+    ##
+    
+    pat.group.assoc <- tapply(pat.labels, group.labels, function(x)
+    {
+      ret <- table(x)[sort(unique(pat.labels))]
+      names(ret) <- sort(unique(pat.labels))
+      return(ret)
+    })[unique(group.labels)] 
+    pat.group.assoc <- do.call(cbind,pat.group.assoc)
+    pat.group.assoc[which(is.na(pat.group.assoc))] <- 0
+  
+    par(mfrow=c(1,1), mar=c(5, 8, 4, 2)) 
+    y.coords <- barplot( pat.group.assoc[,ncol(pat.group.assoc):1],
+             main="Association of PATs and groups", cex.main=1.5, cex.axis=1.4, cex.names=1,
+             horiz=TRUE, las=1) 
+    for( i in seq_along(unique(group.labels)) )
+    {
+      print.labels <- which( pat.group.assoc[,i] > max(colSums(pat.group.assoc,na.rm=T))*0.05 )
+      for( ii in seq_along(print.labels) )
+      {
+        text( x=sum( pat.group.assoc[1:(print.labels[ii]),i] ) - pat.group.assoc[print.labels[ii],i]/2,
+              y=rev(y.coords)[i],
+              names(print.labels)[ii] )
+      }
     }
+    
   }
   
   dev.off()
