@@ -85,27 +85,31 @@ pipeline.htmlSummary <- function()
         These reports comprise the SOM portraits in standard and alternative
         color scales, as well as supporting maps and profiles which provide
         supplementary information about the 1st level SOM.
-      </p>
+      </p>", sep="", file=outfile)
 
-      <ul>
-        <li>
-          <a href=\"Expression Portraits.pdf\" target=\"_blank\">
-            1st Level SOM Expression Portraits (PDF)
-          </a>
-        </li>
-        <li>
-          <a href=\"Expression Portraits - alternative scales.pdf\" target=\"_blank\">
-            Alternative Color Scales: absolute expression, WAD, loglogFC (PDF)
-          </a>
-        </li>
-        <li>
-          <a href=\"Rank Maps.pdf\" target=\"_blank\">
-            Rank Portraits: FC, WAD, t-score (PDF)
-          </a>
-        </li>
-      </ul>
+  if(ncol(indata) < 1000)
+  {
+      cat("
+        <ul>
+          <li>
+            <a href=\"Expression Portraits.pdf\" target=\"_blank\">
+              1st Level SOM Expression Portraits (PDF)
+            </a>
+          </li>
+          <li>
+            <a href=\"Expression Portraits - alternative scales.pdf\" target=\"_blank\">
+              Alternative Color Scales: absolute expression, WAD, loglogFC (PDF)
+            </a>
+          </li>
+          <li>
+            <a href=\"Rank Maps.pdf\" target=\"_blank\">
+              Rank Portraits: FC, WAD, t-score (PDF)
+            </a>
+          </li>
+        </ul>", sep="", file=outfile)
+  }
 
-      <ul>
+      cat("<ul>
         <li>
           <a href=\"Supporting Maps&amp;Profiles/Supporting Maps.pdf\" target=\"_blank\">
             Supporting Maps (PDF)
@@ -124,22 +128,25 @@ pipeline.htmlSummary <- function()
             Topology Profiles (PDF)
           </a>
         </li>
-      </ul>
-
-      <h2>Sample Summaries</h2>
-
-      <p>
-        Summary page for the individual samples.
-      </p>
-
-      <ul>
-        <li>
-          <a href=\"Summary Sheets - Samples/0verview.html\" target=\"_blank\">
-            Sample Reports (HTML)
-          </a>
-        </li>
       </ul>", sep="", file=outfile)
 
+  if(ncol(indata) < 1000)
+  {
+    cat("<h2>Sample Summaries</h2>
+  
+        <p>
+          Summary page for the individual samples.
+        </p>
+  
+        <ul>
+          <li>
+            <a href=\"Summary Sheets - Samples/0verview.html\" target=\"_blank\">
+              Sample Reports (HTML)
+            </a>
+          </li>
+        </ul>", sep="", file=outfile)
+  }
+  
   if (preferences$geneset.analysis)
   {
     cat("

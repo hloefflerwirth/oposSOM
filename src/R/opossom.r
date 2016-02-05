@@ -132,10 +132,13 @@ opossom.run <- function(env)
   util.call(pipeline.patAssignment, env)
   util.call(pipeline.groupAssignment, env)
 
-  util.info("Plotting Sample Portraits")
-  util.call(pipeline.sampleExpressionPortraits, env)
-  util.call(pipeline.sampleRankMaps, env)
-
+  if(ncol(env$indata) < 1000)
+  {
+    util.info("Plotting Sample Portraits")
+    util.call(pipeline.sampleExpressionPortraits, env)
+    util.call(pipeline.sampleRankMaps, env)
+  }
+  
   util.info("Processing Supporting Information")
   util.call(pipeline.supportingMaps, env)
   util.call(pipeline.entropyProfiles, env)
@@ -171,12 +174,15 @@ opossom.run <- function(env)
     util.call(pipeline.chromosomeExpressionReports, env)
   }
 
-  util.info("Processing Gene Lists")
-  util.call(pipeline.geneLists, env)
+  if(ncol(env$indata) < 1000)
+  {
+    util.info("Processing Gene Lists")
+    util.call(pipeline.geneLists, env)
 
-  util.info("Processing Summary Sheets (Samples)")
-  util.call(pipeline.summarySheetsSamples, env)
-
+    util.info("Processing Summary Sheets (Samples)")
+    util.call(pipeline.summarySheetsSamples, env)
+  }
+  
   util.info("Processing Summary Sheets (Spots)")
   util.call(pipeline.summarySheetsIntegral, env)
 
@@ -190,7 +196,8 @@ opossom.run <- function(env)
 
   util.info("Generating HTML Report")
   util.call(pipeline.htmlSummary, env)
-  util.call(pipeline.htmlSampleSummary, env)
+  if(ncol(env$indata) < 1000)
+    util.call(pipeline.htmlSampleSummary, env)
   util.call(pipeline.htmlIntegralSummary, env)
   util.call(pipeline.htmlGenesetAnalysis, env)
 
