@@ -63,10 +63,14 @@ pipeline.htmlSummary <- function()
         <dd>", nrow(indata), "</dd>
         <dt>ID type of genes</dt>
         <dd>", preferences$database.id.type , "</dd>
-        <dt>Dimension 1st level SOM</dt>
+        <dt>Dimension of the SOM</dt>
         <dd>", preferences$dim.1stLvlSom, " x ", preferences$dim.1stLvlSom, "</dd>
-        <dt>Analysis finished</dt>
+        <dt>Date</dt>
         <dd>", format(Sys.time(), "%a %b %d %X %Y %Z"), "</dd>
+        <dt>Analyst</dt>
+        <dd>", preferences$system.info["user"], "</dd>
+        <dt>oposSOM version</dt>
+        <dd>", preferences$session.info$otherPkgs$oposSOM$Version, "</dd>
       </dl>
 
       <h1>Results</h1>
@@ -126,6 +130,13 @@ pipeline.htmlSummary <- function()
         <li>
           <a href=\"Supporting Maps&amp;Profiles/Topology Profiles.pdf\" target=\"_blank\">
             Topology Profiles (PDF)
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <a href=\"CSV Sheets/Gene localization.csv\" target=\"_blank\">
+          Localization of the genes within the SOM (CSV)
           </a>
         </li>
       </ul>", sep="", file=outfile)
