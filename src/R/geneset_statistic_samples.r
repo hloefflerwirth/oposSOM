@@ -52,7 +52,8 @@ pipeline.genesetStatisticSamples <- function()
 
     return(x)
   })
-
+  names(spot.list.samples) <<- colnames(indata)
+  
   progress.current <- progress.max * 0.9
   util.progress(progress.current, progress.max)
 
