@@ -16,9 +16,10 @@ pipeline.topologyProfiles <- function()
   }
 
   ### Number of overexpression spots ###
-  n.spots <- colSums( spot.list.overexpression$spotdata>sd(spot.list.overexpression$spotdata) )
+  spotdata <- get(paste("spot.list.",preferences$standard.spot.modules,sep=""))$spotdata
+  n.spots <- colSums( spotdata>sd(spotdata) )
 
-  barplot(n.spots, col=group.colors, main="Number of overexpressed spot modules",
+  barplot(n.spots, col=group.colors, main="Number of activated spot modules",
           names.arg="", las=2, cex.main=2, 
           border=if (ncol(indata) < 80) "black" else NA)
   box()

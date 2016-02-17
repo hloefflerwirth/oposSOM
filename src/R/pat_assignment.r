@@ -1,6 +1,6 @@
 pipeline.patAssignment <- function()
 {
-  spot.list <- spot.list.dmap
+  spot.list <- get(paste("spot.list.",preferences$standard.spot.modules,sep=""))
 
   thresh.global <- sd(as.vector(spot.list$spotdata))
   

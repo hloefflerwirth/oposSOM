@@ -165,6 +165,7 @@ pipeline.2ndLvlModuleCorrelation <- function(s, hcl)
       })
     }
 
+    spotdata <- get(paste("spot.list.",preferences$standard.spot.modules,sep=""))$spotdata
     spotdata.sd.scale <- 1
 
     if (length(boxes.pos) > 0)
@@ -174,20 +175,20 @@ pipeline.2ndLvlModuleCorrelation <- function(s, hcl)
         samples.x <- colnames(pcm)[c(x['x']:(x['x']+x['dim.x']-1))]
         samples.y <- colnames(pcm)[c(x['y']:(x['y']+x['dim.y']-1))]
 
-        spots.x <- names(which(rowMeans(spot.list.dmap$spotdata[,samples.x, drop=FALSE]) >
-                               sd(as.vector(spot.list.dmap$spotdata)) * spotdata.sd.scale))
+        spots.x <- names(which(rowMeans(spotdata[,samples.x, drop=FALSE]) >
+                               sd(as.vector(spotdata)) * spotdata.sd.scale))
 
         if (length(spots.x)==0)
         {
-          spots.x <- names(which.max(rowMeans(spot.list.dmap$spotdata[,samples.x, drop=FALSE])))
+          spots.x <- names(which.max(rowMeans(spotdata[,samples.x, drop=FALSE])))
         }
 
-        spots.y <- names(which(rowMeans(spot.list.dmap$spotdata[,samples.y, drop=FALSE]) >
-                               sd(as.vector(spot.list.dmap$spotdata)) * spotdata.sd.scale))
+        spots.y <- names(which(rowMeans(spotdata[,samples.y, drop=FALSE]) >
+                               sd(as.vector(spotdata)) * spotdata.sd.scale))
 
         if (length(spots.y)==0)
         {
-          spots.y <- names(which.max(rowMeans(spot.list.dmap$spotdata[,samples.y, drop=FALSE])))
+          spots.y <- names(which.max(rowMeans(spotdata[,samples.y, drop=FALSE])))
         }
 
         text(mean(c(x['x']:(x['x']+x['dim.x'])))-1, mean(c(x['y']:(x['y']+x['dim.y'])))-1,
@@ -202,36 +203,36 @@ pipeline.2ndLvlModuleCorrelation <- function(s, hcl)
         samples.x <- colnames(pcm)[c(x['x']:(x['x']+x['dim.x']-1))]
         samples.y <- colnames(pcm)[c(x['y']:(x['y']+x['dim.y']-1))]
 
-        spots.x1 <- names(which(rowMeans(spot.list.dmap$spotdata[,samples.x, drop=FALSE]) >
-                                sd(as.vector(spot.list.dmap$spotdata)) * spotdata.sd.scale))
+        spots.x1 <- names(which(rowMeans(spotdata[,samples.x, drop=FALSE]) >
+                                sd(as.vector(spotdata)) * spotdata.sd.scale))
 
         if (length(spots.x1) == 0)
         {
-          spots.x1 <- names(which.max(rowMeans(spot.list.dmap$spotdata[,samples.x, drop=FALSE])))
+          spots.x1 <- names(which.max(rowMeans(spotdata[,samples.x, drop=FALSE])))
         }
 
-        spots.y1 <- names(which(rowMeans(spot.list.dmap$spotdata[,samples.y, drop=FALSE]) <
-                                sd(as.vector(spot.list.dmap$spotdata)) * spotdata.sd.scale))
+        spots.y1 <- names(which(rowMeans(spotdata[,samples.y, drop=FALSE]) <
+                                sd(as.vector(spotdata)) * spotdata.sd.scale))
 
         if (length(spots.y1) == 0)
         {
-          spots.y1 <- names(which.min(rowMeans(spot.list.dmap$spotdata[,samples.y, drop=FALSE])))
+          spots.y1 <- names(which.min(rowMeans(spotdata[,samples.y, drop=FALSE])))
         }
 
-        spots.x2 <- names(which(rowMeans(spot.list.dmap$spotdata[,samples.x, drop=FALSE]) <
-                                sd(as.vector(spot.list.dmap$spotdata)) * spotdata.sd.scale))
+        spots.x2 <- names(which(rowMeans(spotdata[,samples.x, drop=FALSE]) <
+                                sd(as.vector(spotdata)) * spotdata.sd.scale))
 
         if (length(spots.x2) == 0)
         {
-          spots.x2 <- names(which.min(rowMeans(spot.list.dmap$spotdata[,samples.x, drop=FALSE])))
+          spots.x2 <- names(which.min(rowMeans(spotdata[,samples.x, drop=FALSE])))
         }
 
-        spots.y2 <- names(which(rowMeans(spot.list.dmap$spotdata[,samples.y, drop=FALSE]) >
-                                sd(as.vector(spot.list.dmap$spotdata)) * spotdata.sd.scale))
+        spots.y2 <- names(which(rowMeans(spotdata[,samples.y, drop=FALSE]) >
+                                sd(as.vector(spotdata)) * spotdata.sd.scale))
 
         if (length(spots.y2) == 0)
         {
-          spots.y2 <- names(which.max(rowMeans(spot.list.dmap$spotdata[,samples.y, drop=FALSE])))
+          spots.y2 <- names(which.max(rowMeans(spotdata[,samples.y, drop=FALSE])))
         }
 
         text(mean(c(x['x']:(x['x']+x['dim.x'])))-1, mean(c(x['y']:(x['y']+x['dim.y'])))-1,
@@ -246,6 +247,6 @@ pipeline.2ndLvlModuleCorrelation <- function(s, hcl)
     plot(ddr, horiz=TRUE, axes=FALSE, yaxs="i", leaflab="none")
     par(mar=c(0, 0, 1, 8))
     plot(ddr, axes=FALSE, xaxs="i", leaflab="none")
-    title(paste("Expression module correlation map (D-clusters),",metagene.filter.list[[i]]$n), cex.main = 1.5)
+    title(paste("Module correlation map (",preferences$standard.spot.modules,")",sep=""), cex.main = 1.5)
   }
 }

@@ -6,7 +6,7 @@ pipeline.genesetOverviews <- function()
 
   ### GSZ heatmaps
   summary.spots.fisher.p <-
-    sapply(spot.list.overexpression$spots, function(x) { x$Fisher.p[names(gs.def.list)] })
+    sapply(get(paste("spot.list.",preferences$standard.spot.modules,sep=""))$spots, function(x) { x$Fisher.p[names(gs.def.list)] })
 
 
   for (i in names(table(sapply(gs.def.list, function(x) { x$Type }))))

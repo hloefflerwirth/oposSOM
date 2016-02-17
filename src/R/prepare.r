@@ -64,7 +64,14 @@ pipeline.prepare <- function()
     util.warn("Invalid value of \"geneset.analysis.exact\". Using FALSE")
     preferences$geneset.analysis.exact <<- FALSE
   }
-
+  
+  if (!is.character(preferences$standard.spot.modules) || length(preferences$standard.spot.modules)!=1 ||
+      !preferences$standard.spot.modules %in% c("overexpression","underexpression","kmeans","correlation","group.overexpression","dmap") )
+  {
+    util.warn("Invalid value of \"standard.spot.modules\". Using \"dmap\"")
+    preferences$standard.spot.modules <<- "dmap"
+  }
+  
   if (!is.numeric(preferences$spot.coresize.modules) ||
       preferences$spot.coresize.modules < 1 ||
       preferences$spot.coresize.modules > 20)

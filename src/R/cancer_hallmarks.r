@@ -79,7 +79,7 @@ pipeline.cancerHallmarks <- function()
       return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[,m], hallmark.sets.list, sort=FALSE))
     }))
   
-    hallmark.spot.enrichment <- unlist(sapply( spot.list.overexpression$spots, function(x)
+    hallmark.spot.enrichment <- unlist(sapply( get(paste("spot.list.",preferences$standard.spot.modules,sep=""))$spots, function(x)
     {
       spot.ens.ids <- unique(na.omit(gene.ids[x$genes]))
       return(GeneSet.Fisher(spot.ens.ids, unique.protein.ids, hallmark.sets.list, sort=FALSE))
@@ -128,7 +128,7 @@ pipeline.cancerHallmarks <- function()
       box()
     }
   
-    if (length(spot.list.overexpression$spots) > 1)
+    if (length(hallmark.spot.enrichment) > 1)
     {
       par(mfrow=c(1,1))
   

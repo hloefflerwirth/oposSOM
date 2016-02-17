@@ -283,6 +283,7 @@ The parameters below are secondary and may be left unattended by the user:
     and fdr calculation in geneset analysis (default: TRUE). Obsolete if
     \textit{geneset.analysis=F}.\\
 
+	\item \textit{standard.spot.modules} (character, one of \{"overexpression", "underexpression", "kmeans", "correlation", "group.overexpression", "dmap"\}): spot modules utilized in diverse downstream analyses and visualizations, e.g. PAT detection and module correlation map (default: "dmap").
 	\item \textit{spot.threshold.modules} (numerical, between 0 and 1): spot
     detection in summary maps, expression threshold (default: 0.95).
 	\item \textit{spot.coresize.modules} (integer, >0): spot detection in summary

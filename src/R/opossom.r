@@ -69,6 +69,7 @@ opossom.new <- function(preferences=NULL)
                           database.id.type = "",
                           geneset.analysis = TRUE,
                           geneset.analysis.exact = FALSE,
+                          standard.spot.modules = "dmap",
                           spot.coresize.modules = 3,
                           spot.threshold.modules = 0.95,
                           spot.coresize.groupmap = 5,
