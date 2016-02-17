@@ -195,7 +195,6 @@ pipeline.detectSpotsIntegral <- function()
     apply(apply(metadata, 2, function(x) { (x - min(x)) / (max(x) - min(x)) }), 1, max)
 
   spot.list.overexpression$overview.mask <<- rep(NA, preferences$dim.1stLvlSom ^ 2)
-  spot.list.overexpression$filtered <<- FALSE
   spot.list.overexpression$spots <<- list()
 
   for (i in seq_along(sample.spot.list))
@@ -436,7 +435,6 @@ pipeline.detectSpotsIntegral <- function()
     apply(apply(metadata, 2, function(x) { (x - min(x)) / (max(x) - min(x)) }), 1, min)
 
   spot.list.underexpression$overview.mask <<- rep(NA, preferences$dim.1stLvlSom ^ 2)
-  spot.list.underexpression$filtered <<- FALSE
   spot.list.underexpression$spots <<- list()
 
   for (i in seq_along(sample.spot.list))
@@ -492,7 +490,6 @@ pipeline.detectSpotsIntegral <- function()
   spot.list.correlation <<- list()
   spot.list.correlation$overview.map <<- NA
   spot.list.correlation$overview.mask <<- rep(NA, preferences$dim.1stLvlSom ^ 2)
-  spot.list.correlation$filtered <<- FALSE
   spot.list.correlation$spots <<- list()
 
   c.map <- cor(t(metadata))
@@ -576,7 +573,6 @@ pipeline.detectSpotsIntegral <- function()
   spot.list.kmeans <<- list()
   spot.list.kmeans$overview.map <<- matrix(res$cluster, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
   spot.list.kmeans$overview.mask <<- rep(NA, preferences$dim.1stLvlSom ^ 2)
-  spot.list.kmeans$filtered <<- FALSE
   spot.list.kmeans$spots <<- list()
 
   for (i in 1:n.cluster)
@@ -820,7 +816,6 @@ pipeline.detectSpotsIntegral <- function()
       apply(apply(group.metadata, 2, function(x){ (x - min(x)) / (max(x) - min(x)) }), 1, max)
 
     spot.list.group.overexpression$overview.mask <<- rep(NA, preferences$dim.1stLvlSom ^ 2)
-    spot.list.group.overexpression$filtered <<- FALSE
     spot.list.group.overexpression$spots <<- list()
 
     for (i in seq_along(sample.spot.list))
@@ -951,7 +946,6 @@ pipeline.detectSpotsIntegral <- function()
   spot.list.dmap <<- list()
   spot.list.dmap$overview.map <<- uh
   spot.list.dmap$overview.mask <<- rep(NA, preferences$dim.1stLvlSom ^ 2)
-  spot.list.dmap$filtered <<- FALSE
   spot.list.dmap$spots <<- list()
   
   count.cluster <- 1

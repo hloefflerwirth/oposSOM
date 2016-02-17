@@ -331,30 +331,14 @@ pipeline.3rdLvlSummarySheets <- function()
   }
 
   dirname <- file.path(paste(files.name, "- Results"), "3rd lvl Spot Analysis")
-
-  filename <-
-    if (spot.list.overexpression$filtered)
-    {
-      file.path(dirname, "Spot Report - Overexpression Spots filtered.pdf")
-    } else
-    {
-      file.path(dirname, "Spot Report - Overexpression Spots.pdf")
-    }
-
+  
+  filename <- file.path(dirname, "Spot Report - Overexpression Spots.pdf")
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
   plot.set.list.reports(set.list=spot.list.overexpression, main="Overexpression Spots")
   dev.off()
 
-  filename <-
-    if (spot.list.underexpression$filtered)
-    {
-      file.path(dirname, "Spot Report - Underexpression Spots filtered.pdf")
-    } else
-    {
-      file.path(dirname, "Spot Report - Underexpression Spots.pdf")
-    }
-
+  filename <- file.path(dirname, "Spot Report - Underexpression Spots.pdf")
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
   plot.set.list.reports(set.list=spot.list.underexpression, main="Underexpression Spots")

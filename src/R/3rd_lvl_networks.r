@@ -97,29 +97,13 @@ pipeline.3rdLvlNetworks <- function()
 
   dirname <- file.path(paste(files.name, "- Results"), "3rd lvl Spot Analysis")
 
-  filename <-
-    if (spot.list.overexpression$filtered)
-    {
-      file.path(dirname, "wTO Networks - Overexpression Spots filtered.pdf")
-    } else
-    {
-      file.path(dirname, "wTO Networks - Overexpression Spots.pdf")
-    }
-
+  filename <- file.path(dirname, "wTO Networks - Overexpression Spots.pdf")
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
   plot.set.list.networks(set.list=spot.list.overexpression, main="Overexpression Spots")
   dev.off()
 
-  filename <-
-    if (spot.list.underexpression$filtered)
-    {
-      file.path(dirname, "wTO Networks - Underexpression Spots filtered.pdf")
-    } else
-    {
-      file.path(dirname, "wTO Networks - Underexpression Spots.pdf")
-    }
-
+  filename <- file.path(dirname, "wTO Networks - Underexpression Spots.pdf")
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)
   plot.set.list.networks(set.list=spot.list.underexpression, main="Underexpression Spots")
