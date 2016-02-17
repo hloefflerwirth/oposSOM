@@ -573,16 +573,6 @@ pipeline.summarySheetsIntegral <- function()
     }
   }
 
-  # directories to store the results
-  dirnames <- c("pdf"=as.character(output.paths["Summary Sheets Integral"]),
-                "csv"=file.path(output.paths["CSV"], "Spot Lists"))
-
-  for (dirname in dirnames)
-  {
-    dir.create(dirname, showWarnings=FALSE, recursive=TRUE)
-  }
-  
-  
   # pdf sheets to generate
   pdf.sheets <- list(
     list("Overexpression.pdf", "Overexpression Spots", spot.list.overexpression),
@@ -609,38 +599,39 @@ pipeline.summarySheetsIntegral <- function()
       list("Group Overexpression Spots", spot.list.group.overexpression)
   }
 
+  dirname <- as.character(output.paths["Summary Sheets Integral"])
   pdf.sheets <- lapply(pdf.sheets, function(x)
   {
     list(fn=plot.set.list,
-         args=list(path=file.path(dirnames[["pdf"]], x[[1]]), main=x[[2]], set.list=x[[3]]))
+         args=list(path=file.path(dirname, x[[1]]), main=x[[2]], set.list=x[[3]]))
   })
-
-  csv.sheets <- lapply(csv.sheets, function(x)
-  {
-    list(fn=csv.set.list,
-         args=list(path=dirnames[["csv"]], main=x[[1]], set.list=x[[2]]))
-  })
-
-
-
-
-  util.info("Writing:", file.path(dirnames[["pdf"]], "*.pdf"))
-
+  
+  util.info("Writing:", file.path(dirname, "*.pdf"))
+  
+  dir.create(dirname, showWarnings=FALSE, recursive=TRUE)
   dummy = sapply( seq_along(pdf.sheets), function(i, pdf.sheets)
   {
     do.call(pdf.sheets[[i]]$fn, pdf.sheets[[i]]$args)
   }, pdf.sheets)
-
-
-
-
-  util.info("Writing:", file.path(dirnames[["csv"]], "*.csv"))
   
-  dummy = sapply( seq_along(csv.sheets), function(i, csv.sheets)
+  
+  if(output.paths["CSV"]!="")
   {
-    do.call(csv.sheets[[i]]$fn, csv.sheets[[i]]$args)
-  }, csv.sheets)
-
+    dirname <- file.path(output.paths["CSV"], "Spot Lists")
+    csv.sheets <- lapply(csv.sheets, function(x)
+    {
+      list(fn=csv.set.list,
+           args=list(path=dirname, main=x[[1]], set.list=x[[2]]))
+    })
+  
+    util.info("Writing:", file.path(dirname, "*.csv"))
+    
+    dir.create(dirname, showWarnings=FALSE, recursive=TRUE)
+    dummy = sapply( seq_along(csv.sheets), function(i, csv.sheets)
+    {
+      do.call(csv.sheets[[i]]$fn, csv.sheets[[i]]$args)
+    }, csv.sheets)
+  }
 
 
 }
