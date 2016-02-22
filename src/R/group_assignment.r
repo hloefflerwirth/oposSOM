@@ -7,18 +7,20 @@ pipeline.groupAssignment <- function()
     util.info("Auto-assign sample groups (PAT-groups)")
     dir.create(paste(files.name, "- Results/Summary Sheets - Groups"), showWarnings=FALSE)
     
+    spot.list <- get(paste("spot.list.",preferences$standard.spot.modules,sep=""))
+    
     pat.labels.sorted <- names( sort(table(pat.labels),decreasing=TRUE) )
     pat.labels.sorted <- pat.labels.sorted[which(pat.labels.sorted!="none")]
     
     prototypes <- list()
-    prototypes[[1]] <- rowMeans( spot.list.dmap$spotdata[,which(pat.labels==pat.labels.sorted[1]),drop=FALSE] )
+    prototypes[[1]] <- rowMeans( spot.list$spotdata[,which(pat.labels==pat.labels.sorted[1]),drop=FALSE] )
     
     withinss <- c()
     for( i in 2:min(100,length(pat.labels.sorted)) )
     {
-      prototypes[[i]] <- rowMeans( spot.list.dmap$spotdata[,which(pat.labels==pat.labels.sorted[i]),drop=FALSE] )
+      prototypes[[i]] <- rowMeans( spot.list$spotdata[,which(pat.labels==pat.labels.sorted[i]),drop=FALSE] )
       
-      suppressWarnings({  km <- kmeans( t(spot.list.dmap$spotdata), do.call(rbind,prototypes) )  })
+      suppressWarnings({  km <- kmeans( t(spot.list$spotdata), do.call(rbind,prototypes) )  })
       withinss[as.character(i)] <- sum( km$withinss )
     }  
     
@@ -46,6 +48,8 @@ pipeline.groupAssignment <- function()
       opt.cluster.number <- length(pat.labels.sorted)
     }
     
+    opt.cluster.number <<- max( min( opt.cluster.number + preferences$adjust.autogroup.number, ncol(indata) ), 1 )
+    
     group.labels <<- rep("",length(pat.labels))
     names(group.labels) <<- names(pat.labels)
     
@@ -53,12 +57,24 @@ pipeline.groupAssignment <- function()
       pat.labels[ which( pat.labels %in% pat.labels.sorted[1:opt.cluster.number] ) ]
     
     proto.pat.labels <- group.labels[ which(group.labels!="") ]
-    proto.pat.data <- do.call( cbind, by( t(spot.list.dmap$spotdata[,names(proto.pat.labels)]), proto.pat.labels, colMeans ) )
+#    proto.pat.data <- do.call( cbind, by( t(spot.list$spotdata[,names(proto.pat.labels)]), proto.pat.labels, colMeans ) )
     
     for( i in names(which(group.labels=="")) )
     {
-      silhouette <- apply( proto.pat.data, 2, function(j)  cor(spot.list.dmap$spotdata[,i], j) )
-      group.labels[i] <<- if( max(silhouette)>0 ) names(which.max(silhouette)) else "no class"
+#       silhouette <- apply( proto.pat.data, 2, function(j)  cor(spot.list$spotdata[,i], j) )
+#       group.labels[i] <<- if( max(silhouette)>0 ) names(which.max(silhouette)) else "no class"      
+      pat.lab.extended <- names(which( spot.list$spotdata[,i]>0 ))
+      pat.overlap <- sapply(unique(proto.pat.labels), function(x) sum( pat.lab.extended %in% strsplit(x," ")[[1]] )  )
+        
+      if(max(pat.overlap)>0)
+      {
+        proto.pat.expression <- sapply( names(which(pat.overlap==max(pat.overlap))), function(x)
+                                   mean( spot.list$spotdata[strsplit(x," ")[[1]],i] )  )
+        group.labels[i] <<- names(which.max(proto.pat.expression))
+      } else
+      {
+        group.labels[i] <<- "unclassified"
+      }
     }
     
     
