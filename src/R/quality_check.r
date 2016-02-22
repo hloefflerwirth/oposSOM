@@ -41,20 +41,24 @@ pipeline.qualityCheck <- function()
 	indata.sample.sd <- apply(indata, 2, sd)
 
 	Q13 <- quantile( indata.sample.mean, c(0.25,0.75) )
-	IQR.mean <- c( Q13[1] - 3*diff( Q13 ), Q13[2] + 3*diff( Q13 ) )
+	IQR1.mean <- c( Q13[1] - 1*diff( Q13 ), Q13[2] + 1*diff( Q13 ) )
+	IQR3.mean <- c( Q13[1] - 3*diff( Q13 ), Q13[2] + 3*diff( Q13 ) )
 	Q13 <- quantile( indata.sample.sd, c(0.25,0.75) )
-	IQR.sd <- c( Q13[1] - 3*diff( Q13 ), Q13[2] + 3*diff( Q13 ) )
+	IQR1.sd <- c( Q13[1] - 1*diff( Q13 ), Q13[2] + 1*diff( Q13 ) )
+	IQR3.sd <- c( Q13[1] - 3*diff( Q13 ), Q13[2] + 3*diff( Q13 ) )
 
-	outlier <- names( which( indata.sample.mean < IQR.mean[1] |
-														 indata.sample.mean > IQR.mean[2] |
-														 indata.sample.sd < IQR.sd[1] |
-														 indata.sample.sd > IQR.sd[2] ) )
+	outlier <- names( which( indata.sample.mean < IQR1.mean[1] |
+														 indata.sample.mean > IQR1.mean[2] |
+														 indata.sample.sd < IQR1.sd[1] |
+														 indata.sample.sd > IQR1.sd[2] ) )
 
 	par(mfrow=c(1,1), mar=c(5,4,3,2))
 	plot( indata.sample.mean, indata.sample.sd, pch=16, col=group.colors, xlab="mean expression level", ylab="standard deviation of expression" )
-		abline( v=IQR.mean, col="gray20", lty=2 )
-		abline( h=IQR.sd, col="gray20", lty=2 )
-		legend("topright","3IQR",lty=2,col="gray20")
+		abline( v=IQR1.mean, col="gray20", lty=2 )
+		abline( v=IQR3.mean, col="gray20", lty=3 )
+		abline( h=IQR1.sd, col="gray20", lty=2 )
+		abline( h=IQR3.sd, col="gray20", lty=3 )
+		legend("topright",c("1x IQR","3x IQR"),lty=c(2,3),col="gray20")
 	if(length(outlier)>0) text(indata.sample.mean[outlier],indata.sample.sd[outlier]+diff(range(indata.sample.sd))*0.01,outlier)
 		
 		
