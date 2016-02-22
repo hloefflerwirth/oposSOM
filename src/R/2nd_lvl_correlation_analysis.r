@@ -124,8 +124,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
     {
       g <- graph.adjacency(adj.matrix, weighted=TRUE,  mode="undirected")
       E(g)$weight <- (2 + E(g)$weight)/2
-      layout <- layout_with_kk( g )
-      #layout <- layout.fruchterman.reingold(g, start=matrix(1:(2*ncol(indata)),ncol=2), niter=1000)
+      layout <- layout_with_mds( g )
 
       plot(g, layout=layout, vertex.size=ifelse(ncol(indata)<250, 5, 3),
            vertex.label = rep("",ncol(indata)),
