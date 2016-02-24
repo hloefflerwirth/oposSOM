@@ -1,6 +1,12 @@
 pipeline.groupAssignment <- function()
 {
   ### auto-assign PAT groups
+ 
+  proto.pat.classification <- function(spotdata,proto.pat.data)
+  {
+    proto.pat.dist <- apply( proto.pat.data, 2, function(x) sum((x-spotdata)^2) )
+    return( names(which.min(proto.pat.dist)) )
+  }  
   
   if( length(unique(group.labels)==1) && unique(group.labels)[1] == "auto" )
   {
@@ -12,41 +18,48 @@ pipeline.groupAssignment <- function()
     pat.labels.sorted <- names( sort(table(pat.labels),decreasing=TRUE) )
     pat.labels.sorted <- pat.labels.sorted[which(pat.labels.sorted!="none")]
     
-    prototypes <- list()
-    prototypes[[1]] <- rowMeans( spot.list$spotdata[,which(pat.labels==pat.labels.sorted[1]),drop=FALSE] )
-    
     withinss <- c()
-    for( i in 2:min(100,length(pat.labels.sorted)) )
+    for( k in 2:min(100,length(pat.labels.sorted)) )
     {
-      prototypes[[i]] <- rowMeans( spot.list$spotdata[,which(pat.labels==pat.labels.sorted[i]),drop=FALSE] )
+      groups <- rep("",length(pat.labels))
+      names(groups) <- names(pat.labels)
       
-      suppressWarnings({  km <- kmeans( t(spot.list$spotdata), do.call(rbind,prototypes) )  })
-      withinss[as.character(i)] <- sum( km$withinss )
+      groups[ which( pat.labels %in% pat.labels.sorted[1:k] ) ] <-
+        pat.labels[ which( pat.labels %in% pat.labels.sorted[1:k] ) ]
+      
+      proto.pat.labels <- groups[ which(groups!="") ]
+      proto.pat.data <- do.call( cbind, by( t(spot.list$spotdata[,names(proto.pat.labels)]), proto.pat.labels, colMeans ) )
+      
+      for( i in names(which(groups=="")) )
+      {
+        groups[i] <- proto.pat.classification(spot.list$spotdata[,i],proto.pat.data)
+      }
+      
+      centroids <- sapply( unique(groups), function(x) rowMeans( spot.list$spotdata[,which(groups==x),drop=FALSE] )    )  
+      withinss[as.character(k)] <- sum( sapply( 1:length(groups), function(i) sum((spot.list$spotdata[,i] - centroids[,groups[i]])^2) ) )
     }  
+   
     
     x <- as.numeric(names(withinss))
     y <- withinss
     
-    # fit a non-linear regression
-    nls_fit <- NULL
-    try({  nls_fit <- nls(y ~ a + b * x^(-c), start = list(a = 100, b = max(withinss), c = 0.4))  },silent=TRUE)
-    
-    if( !is.null(nls_fit) )
-    { 
-      delta.wss <- predict(nls_fit)
-      delta.wss <- delta.wss[-1] - delta.wss[-length(delta.wss)]
-      
-      m <- (y[length(y)]-y[1]) / (x[length(x)]-x[1])
-      opt.cluster.number <- x[ which.max( delta.wss > m ) ]
-      n.opt <- y[as.character(opt.cluster.number)] - m * x[opt.cluster.number-1]
-      n.ref <- y[1] - m * x[1]
-    
-    }else
+    m <- (y[length(y)]-y[1]) / (x[length(x)]-x[1])
+    n.ref <- y[1] - m * x[1]  
+
+    # find optimal cluster number    
+    opt.cluster.number <<- length(withinss)
+    for( k in 2:length(withinss) )
     {
-      util.warn("Could not find optimal PAT cluster number (all PATs will be used)")
-      
-      opt.cluster.number <- length(pat.labels.sorted)
-    }
+      n.k <- y[as.character(k)] - m * x[k-1]
+      if( all( n.k+m*x <= withinss ) )
+      {
+        opt.cluster.number <<- k
+        break        
+      }
+    } 
+    n.opt <- y[as.character(opt.cluster.number)] - m * x[opt.cluster.number-1]
+    
+    
     
     opt.cluster.number <<- max( min( opt.cluster.number + preferences$adjust.autogroup.number, ncol(indata) ), 1 )
     
@@ -57,25 +70,13 @@ pipeline.groupAssignment <- function()
       pat.labels[ which( pat.labels %in% pat.labels.sorted[1:opt.cluster.number] ) ]
     
     proto.pat.labels <- group.labels[ which(group.labels!="") ]
-#    proto.pat.data <- do.call( cbind, by( t(spot.list$spotdata[,names(proto.pat.labels)]), proto.pat.labels, colMeans ) )
+    proto.pat.data <- do.call( cbind, by( t(spot.list$spotdata[,names(proto.pat.labels)]), proto.pat.labels, colMeans ) )
     
     for( i in names(which(group.labels=="")) )
     {
-#       silhouette <- apply( proto.pat.data, 2, function(j)  cor(spot.list$spotdata[,i], j) )
-#       group.labels[i] <<- if( max(silhouette)>0 ) names(which.max(silhouette)) else "no class"      
-      pat.lab.extended <- names(which( spot.list$spotdata[,i]>0 ))
-      pat.overlap <- sapply(unique(proto.pat.labels), function(x) sum( pat.lab.extended %in% strsplit(x," ")[[1]] )  )
-        
-      if(max(pat.overlap)>0)
-      {
-        proto.pat.expression <- sapply( names(which(pat.overlap==max(pat.overlap))), function(x)
-                                   mean( spot.list$spotdata[strsplit(x," ")[[1]],i] )  )
-        group.labels[i] <<- names(which.max(proto.pat.expression))
-      } else
-      {
-        group.labels[i] <<- "unclassified"
-      }
+      group.labels[i] <<- proto.pat.classification(spot.list$spotdata[,i],proto.pat.data)
     }
+    
     
     
     filename <- file.path(paste(files.name, "- Results"),
@@ -86,15 +87,11 @@ pipeline.groupAssignment <- function()
     pdf(filename, 29.7/2.54, 21/2.54)
     
     x.coords <- barplot( withinss, col="gray90",ylim=range(y)*c(0.9,1.1), main="SSE",xlab="k",ylab="SSE", xpd=FALSE )
-    box()
-    if(!is.null(nls_fit))
-    {
-      lines(x.coords, predict(nls_fit), col = "red", lwd=2)
+      box()
       lines( c(x.coords[1],x.coords[length(x)]), n.opt+m*c(x[1],x[length(x)]), col="red", xpd=FALSE )
       lines( c(x.coords[1],x.coords[length(x)]), n.ref+m*c(x[1],x[length(x)]), col="red", xpd=FALSE )
       abline(v=x.coords[opt.cluster.number-1],col="blue3",xpd=FALSE)
       abline(h=withinss[opt.cluster.number-1],col="blue3",xpd=FALSE)
-    }  
     
     barplot( table(group.labels), main="PAT group frequency" )
     
