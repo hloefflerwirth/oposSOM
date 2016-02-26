@@ -31,7 +31,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
     adj.matrix <- cor.s * -1
     g <- graph.adjacency(adj.matrix, weighted=TRUE, mode="undirected")
     stg <- minimum.spanning.tree(g)
-    E(stg)$weight <- (2 + E(stg)$weight)/2
+    E(stg)$weight <- 1
     layout <- layout_with_kk(stg)
 
     plot(stg, layout=layout, vertex.size=5, vertex.label = rep("",ncol(indata)),
@@ -82,7 +82,6 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
     g <- graph.adjacency(adj.matrix, weighted=TRUE,  mode="undirected")
     E(g)$weight <- (2 + E(g)$weight)/2
     layout <- layout_with_kk(g)
-#    layout <- layout.fruchterman.reingold(g)
 
     plot(g, layout=layout, vertex.size=5, vertex.label = rep("",ncol(indata)),
          vertex.label.cex=if (ncol(indata)<100) 1.2 else 0.6,
@@ -124,7 +123,7 @@ pipeline.2ndLvlCorrelationAnalysis <- function()
     {
       g <- graph.adjacency(adj.matrix, weighted=TRUE,  mode="undirected")
       E(g)$weight <- (2 + E(g)$weight)/2
-      layout <- layout_with_mds( g )
+      layout <- layout_with_kk( g )
 
       plot(g, layout=layout, vertex.size=ifelse(ncol(indata)<250, 5, 3),
            vertex.label = rep("",ncol(indata)),
