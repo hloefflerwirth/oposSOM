@@ -64,7 +64,7 @@ pipeline.genesetStatisticSamples <- function()
   }))
 
   ### CSV output ###
-  filename <- file.path(paste(files.name, "- Results"), "CSV Sheets", "Sample GSZ scores.csv")
+  filename <- file.path( output.paths["CSV"], "Sample GSZ scores.csv")
   util.info("Writing:", filename)
   write.csv2(samples.GSZ.scores, filename)
 }
