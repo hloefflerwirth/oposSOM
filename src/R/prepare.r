@@ -41,6 +41,18 @@ pipeline.prepare <- function()
     preferences$flip.SOM.portraits <<- FALSE
   }
 
+  if (!is.character(preferences$database.biomart))
+  {
+    util.warn("Invalid value of \"database.biomart\". Using \"\"")
+    preferences$database.biomart <<- ""
+  }
+
+  if (!is.character(preferences$database.host))
+  {
+    util.warn("Invalid value of \"database.host\". Using \"\"")
+    preferences$database.host <<- ""
+  }
+  
   if (!is.character(preferences$database.dataset))
   {
     util.warn("Invalid value of \"database.dataset\". Using \"\"")
