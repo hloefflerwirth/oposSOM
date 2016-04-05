@@ -12,6 +12,12 @@ pipeline.geneLists <- function()
   #### Global Gene Lists ####
   util.info("Writing:", file.path(dirnames["global"], "*.csv"))
 
+  genes.spot.assoc <- rep("", nrow(indata) )
+  names(genes.spot.assoc) <- rownames(indata)
+  
+  spot.list <- get(paste("spot.list.",preferences$standard.spot.modules,sep=""))
+  for( i in seq_along(spot.list$spots) ) genes.spot.assoc[ spot.list$spots[[i]]$genes ] <- names(spot.list$spots)[i]
+  
   for (m in 1:ncol(indata))
   {
     o <- order(p.g.m[,m])
@@ -19,12 +25,6 @@ pipeline.geneLists <- function()
     out <- data.frame(Rank=c(1:nrow(indata)),
                       ID=rownames(indata)[o],
                       Symbol=gene.names[o])
-
-    if (any(grep("GenesetSOM", files.name)))
-    {
-      out <- cbind(out, Type=sapply(gs.def.list[rownames(indata)[o]],
-                                    function(x) { x$Type }))
-    }
 
     out <- cbind(out,
                  logFC=indata[o, m],
@@ -34,6 +34,7 @@ pipeline.geneLists <- function()
                  fdr=fdr.g.m[o, m],
                  Fdr=Fdr.g.m[o, m],
                  Metagene=gene.coordinates[o],
+                 Spot=genes.spot.assoc[o],
                  Chromosome=gene.positions[rownames(indata)[o]],
                  Description=gene.descriptions[o])
 
