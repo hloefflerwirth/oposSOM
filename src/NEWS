@@ -2,6 +2,7 @@ oposSOM 1.5.4: A bug was fixed, which was caused by an altered function from igr
 oposSOM 1.7.1: Bumped version number by Bioconductor + a series of bugs were fixed.
 oposSOM 1.7.2: Fixed few bugs & changed host for database access due to biomart downtime.
 oposSOM 1.7.3: Fixed another critical biomart bug. Presentation of correlation based similarity analyses and gene set reports improved.
-oposSOM 1.8.0: Implemented analysis of expression module activation patterns (PATa). Enable automatic estimation of SOM size and automatic grouping of samples according to PATs. Performance improved.
-oposSOM 1.8.1: Minor fixes and code improvements.
-oposSOM 1.8.2: Bug fixes and presentation improvements.
+oposSOM 1.9.0: Implemented analysis of expression module activation patterns (PATa). Enable automatic estimation of SOM size and automatic grouping of samples according to PATs. Performance improved.
+oposSOM 1.9.1: Minor fixes and code improvements.
+oposSOM 1.9.2: Bug fixes and presentation improvements.
+oposSOM 1.9.3: Mart and host for annotation query can nnow be given as parameter within preferences.
