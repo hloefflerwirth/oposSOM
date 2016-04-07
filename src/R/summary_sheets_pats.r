@@ -17,7 +17,7 @@ pipeline.summarySheetsPATs <- function()
   
   ### PAT clustering
 
-  if( ncol(pat.metadata) > 1 )
+  if( ncol(pat.metadata) > 2 )
   {
     hc <- hclust(dist(t(pat.metadata)))
   
