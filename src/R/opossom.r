@@ -32,7 +32,6 @@ opossom.new <- function(preferences=NULL)
   env$indata.gene.mean <- NULL
   env$indata.sample.mean <- NULL
   env$metadata <- NULL
-  env$metagene.filter.list <- NULL
   env$n.0.m <- NULL
   env$output.paths <- NULL
   env$pat.labels <- NULL
@@ -41,8 +40,6 @@ opossom.new <- function(preferences=NULL)
   env$perc.DE.m <- NULL
   env$som.nodes <- NULL
   env$som.result <- NULL
-  env$secLvlSom.20.20 <- NULL
-  env$secLvlSom.custom <- NULL
   env$t.g.m <- NULL
   env$t.m <- NULL
   env$groupwise.group.colors <- NULL
@@ -149,15 +146,18 @@ opossom.run <- function(env)
   util.call(pipeline.entropyProfiles, env)
   util.call(pipeline.topologyProfiles, env)
 
-  util.info("Processing 2nd level Metagene Analysis")
-  dir.create(file.path(paste(env$files.name, "- Results"),
-                       "2nd lvl Metagene Analysis"), showWarnings=FALSE)
-
-  util.call(pipeline.2ndLvlSimilarityAnalysis, env)
-  util.call(pipeline.2ndLvlCorrelationAnalysis, env)
-  util.call(pipeline.2ndLvlComponentAnalysis, env)
-  util.call(pipeline.2ndLvlSom, env)
-
+  
+  if (ncol(env$indata) > 2)
+  {    
+    util.info("Processing Sample Similarity Analysis")
+    dir.create(file.path(paste(env$files.name, "- Results"),
+                         "Sample Similarity Analysis"), showWarnings=FALSE)
+  
+    util.call(pipeline.sampleSimilarityAnalysisED, env)
+    util.call(pipeline.sampleSimilarityAnalysisCor, env)
+    util.call(pipeline.sampleSimilarityAnalysisICA, env)
+    util.call(pipeline.sampleSimilarityAnalysisSOM, env)
+  }
 
   if (env$preferences$geneset.analysis)
   {

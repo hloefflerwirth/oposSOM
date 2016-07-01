@@ -178,32 +178,68 @@ pipeline.htmlSummary <- function()
   }
 
   cat("
-      <h2>2nd Level Analysis</h2>
+      <h2>Sample Similarity Analyses</h2>
 
       <p>
-        Sample similarity analyses based on different metrics applied, using
-        the metadata as input.
+        Sample similarity analyses based on expression module data and metagene data using different metrics and algorithms.<br>
+        <br>
+        Euclidean Distance base approaches:
       </p>
 
       <ul>
         <li>
-          <a href=\"2nd lvl Metagene Analysis/2nd lvl SOM.pdf\" target=\"_blank\">
-            2nd Level SOM (PDF)
+          <a href=\"Sample Similarity Analysis/Sample SOM.pdf\" target=\"_blank\">
+            Sample SOM (PDF)
           </a>
         </li>
         <li>
-          <a href=\"2nd lvl Metagene Analysis/Similarity Analysis.pdf\" target=\"_blank\">
-            Similarity Based Methods: Neighbor Joining, Hierarchical Clustering (PDF)
+          <a href=\"Sample Similarity Analysis/t-SNE.pdf\" target=\"_blank\">
+            t-SNE dimension reduction (PDF)
           </a>
         </li>
         <li>
-          <a href=\"2nd lvl Metagene Analysis/Correlation Analysis.pdf\" target=\"_blank\">
-            Correlation Based Methods: Spanning Tree, Networks, Maps (PDF)
+          <a href=\"Sample Similarity Analysis/Neighbor Joining.pdf\" target=\"_blank\">
+            Phylogenetic clustering using neighbor joining algorithm (PDF)
           </a>
         </li>
         <li>
-          <a href=\"2nd lvl Metagene Analysis/Component Analysis.pdf\" target=\"_blank\">
-            Component Based Methods: 2d-ICA, 3d-ICA (PDF)
+          <a href=\"Sample Similarity Analysis/Hierarchical Clustering.pdf\" target=\"_blank\">
+            Expression heatmaps and hierarchical clustering dendrograms (PDF)
+          </a>
+        </li>
+      </ul>
+
+      Correlation base approaches:
+
+      <ul>
+        <li>
+          <a href=\"Sample Similarity Analysis/Correlation Spanning Tree.pdf\" target=\"_blank\">
+            Correlation spanning tree connecting all samples (PDF)
+          </a>
+        </li>
+        <li>
+          <a href=\"Sample Similarity Analysis/Correlation Backbone.pdf\" target=\"_blank\">
+            Correlation backbone, a 2-nearest-neighbor graph (PDF)
+          </a>
+        </li>
+        <li>
+          <a href=\"Sample Similarity Analysis/Correlation Network.pdf\" target=\"_blank\">
+            Correlation network connecting samples with r > 0.5 (PDF)
+          </a>
+        </li>
+        <li>
+          <a href=\"Sample Similarity Analysis/Correlation Maps.pdf\" target=\"_blank\">
+            Pairwise correlation maps (supervised & clustered orderings) (PDF)
+          </a>
+        </li>
+      </ul>
+
+      Component Analysis:
+  
+      <ul>
+        <li>
+          <a href=\"Sample Similarity Analysis/Component Analysis.pdf\" target=\"_blank\">
+            Independent Component Analysis: 2d-ICA, 3d-ICA (PDF)
           </a>
         </li>
       </ul>
