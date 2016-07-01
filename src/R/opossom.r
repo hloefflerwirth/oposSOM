@@ -138,7 +138,6 @@ opossom.run <- function(env)
   {
     util.info("Plotting Sample Portraits")
     util.call(pipeline.sampleExpressionPortraits, env)
-    util.call(pipeline.sampleRankMaps, env)
   }
   
   util.info("Processing Supporting Information")
