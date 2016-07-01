@@ -1,6 +1,6 @@
 pipeline.qualityCheck <- function()
 {
-  dir.create(output.paths["LPE"], showWarnings=FALSE)
+  dir.create(paste(files.name, "- Results/Data Overview"), showWarnings=FALSE)
 
   plot.poly.density = function(subset=1:ncol(indata), col="#BEBEBE", main="", add=FALSE)
   {
@@ -23,10 +23,11 @@ pipeline.qualityCheck <- function()
   densities.y = t(sapply(densities, function(x) x$y))
   densities.x = densities[[1]]$x
 
-  pdf(paste(output.paths["LPE"],"/data distribution.pdf", sep=""), 29.7/2.54, 21/2.54)
+  filename <- file.path(paste(files.name, "- Results"), "Data Overview", "Data Distribution.pdf")
+  util.info("Writing:", filename)
+  pdf(filename, 29.7/2.54, 21/2.54)
 
   par(mfrow=c(1,2))
-
   plot(densities.x, densities.y[1,], main="Input data distribution", xlim=range(indata), ylim=range(densities.y), type="l", xlab="log Expression", ylab="Density")
     dummy=sapply(densities, lines)
 

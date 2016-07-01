@@ -1,9 +1,5 @@
 pipeline.calcStatistics <- function()
 {
-  verbose = (output.paths["LPE"] != "")
-
-
-  
   util.info("Calculating Single Gene Statistic")
   util.progress(0, 48)
  
@@ -99,33 +95,7 @@ pipeline.calcStatistics <- function()
   }
 
   util.progress.terminate()
-
-
-  ### error plots ###
-
-  if (verbose)
-  {
-    filename <- file.path(output.paths["LPE"], "all_sample_LPE.bmp")
-    util.info("Writing:", filename)
-
-    bmp(filename, 600, 600)
-    par(mar=c(5, 6, 4, 5))
-
-    plot(apply(indata, 1, sd) ~ indata.gene.mean,
-         xlab=expression(e[g]),
-         ylab="",
-         main="Locally pooled error estimate (LPE)",
-         las=1,
-         cex.main=1.5,
-         cex.lab=2,
-         cex.axis=2)      
-    
-    mtext(expression(sigma[g]), side=2, line=4, las=2, cex=2)
-    points(sd.g.m[,1] ~ indata.gene.mean, col="green", pch=16)
-    legend("topright","LPE",lwd=4,col="green")
-    dev.off()
-  }
-
+  
 
   ### Metagenes ###
 

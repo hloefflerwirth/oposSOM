@@ -254,8 +254,7 @@ pipeline.prepare <- function()
   }
 
   output.paths <<-
-    c("LPE"=paste(files.name, "- Results/LPE"),
-      "CSV"=paste(files.name, "- Results/CSV Sheets"),
+    c("CSV"=paste(files.name, "- Results/CSV Sheets"),
       "Summary Sheets Samples"=paste(files.name, "- Results/Summary Sheets - Samples"),
       "Summary Sheets Integral"=paste(files.name, "- Results/Summary Sheets - Integral"))
 

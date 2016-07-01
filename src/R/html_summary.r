@@ -77,8 +77,8 @@ pipeline.htmlSummary <- function()
 
       <ul>
         <li>
-          <a href=\"LPE/data distribution.pdf\" target=\"_blank\">
-            Raw Data (PDF)
+          <a href=\"Data Overview/Data Distribution.pdf\" target=\"_blank\">
+            Data Distribution (PDF)
           </a>
         </li>
       </ul>
