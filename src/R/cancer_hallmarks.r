@@ -61,7 +61,7 @@ pipeline.cancerHallmarks <- function()
 
   hallmark.sets.ids <- lapply(hallmark.sets.genes, function(x)
   {
-    unique(names(gene.ids)[which(gene.ids %in% x)])
+    unique(names(gene.info$ids)[which(gene.info$ids %in% x)])
   })
 
   hallmark.sets.names <- hallmark.sets.names[which(sapply(hallmark.sets.ids, length) > 0)]
@@ -81,7 +81,7 @@ pipeline.cancerHallmarks <- function()
   
     hallmark.spot.enrichment <- unlist(sapply( get(paste("spot.list.",preferences$standard.spot.modules,sep=""))$spots, function(x)
     {
-      spot.ens.ids <- unique(na.omit(gene.ids[x$genes]))
+      spot.ens.ids <- unique(na.omit(gene.info$ids[x$genes]))
       return(GeneSet.Fisher(spot.ens.ids, unique.protein.ids, hallmark.sets.list, sort=FALSE))
     }))
   
@@ -106,7 +106,7 @@ pipeline.cancerHallmarks <- function()
       abline(h=0, lty=2)
   
       n.map <- matrix(0,preferences$dim.1stLvlSom,preferences$dim.1stLvlSom)
-      gs.nodes <- som.nodes[hallmark.sets.ids[[i]]]
+      gs.nodes <- som.result$nodes[hallmark.sets.ids[[i]]]
       n.map[as.numeric(names(table(gs.nodes)))] <- table(gs.nodes)
       n.map[which(n.map==0)] <- NA
       n.map <- matrix(n.map, preferences$dim.1stLvlSom)

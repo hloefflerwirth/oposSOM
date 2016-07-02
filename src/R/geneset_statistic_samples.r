@@ -5,8 +5,8 @@ pipeline.genesetStatisticSamples <- function()
   util.progress(progress.current, progress.max)
 
   ### perform GS analysis ###
-  t.ensID.m <<- t.g.m[which(rownames(indata) %in% names(gene.ids)),]
-  t.ensID.m <<- do.call(rbind, by(t.ensID.m, gene.ids, colMeans))
+  t.ensID.m <<- t.g.m[which(rownames(indata) %in% names(gene.info$ids)),]
+  t.ensID.m <<- do.call(rbind, by(t.ensID.m, gene.info$ids, colMeans))
 
   if (preferences$geneset.analysis.exact)
   {

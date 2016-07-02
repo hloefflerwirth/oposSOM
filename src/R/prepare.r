@@ -432,21 +432,21 @@ pipeline.prepare <- function()
 
 
   ## set up SOM dependent variables
-  gene.coordinates <<- apply(som.result$visual[,c(1,2)]+1, 1, paste, collapse=" x ")
-  names(gene.coordinates) <<- rownames(indata)
+  gene.info$coordinates <<- apply(som.result$visual[,c(1,2)]+1, 1, paste, collapse=" x ")
+  names(gene.info$coordinates) <<- rownames(indata)
 
-  som.nodes <<- (som.result$visual[,"x"] + 1) + som.result$visual[,"y"] * preferences$dim.1stLvlSom
-  names(som.nodes) <<- rownames(indata)
+  som.result$nodes <<- (som.result$visual[,"x"] + 1) + som.result$visual[,"y"] * preferences$dim.1stLvlSom
+  names(som.result$nodes) <<- rownames(indata)
 
   
   ## gene localization table
-  o <- order(som.nodes)
+  o <- order(som.result$nodes)
   out <- data.frame(ID=rownames(indata)[o],
-                    Symbol=gene.names[o],
+                    Symbol=gene.info$names[o],
                     MeanExpression=indata.gene.mean[o],
-                    Metagene=gene.coordinates[o],
-                    Chromosome=gene.positions[rownames(indata)[o]],
-                    Description=gene.descriptions[o])
+                    Metagene=gene.info$coordinates[o],
+                    Chromosome=paste( gene.info$chr.name[rownames(indata)[o]], gene.info$chr.band[rownames(indata)[o]]),
+                    Description=gene.info$descriptions[o])
   
   filename <- file.path(paste(files.name, "- Results"), "CSV Sheets", "Gene localization.csv")
   util.info("Writing:", filename)

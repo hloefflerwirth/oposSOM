@@ -44,169 +44,59 @@ sort.label <- function(x)
   return(x)
 }
 
+
 pipeline.chromosomeExpressionReports <- function()
 {
-  if(ncol(metadata) > 1000 || length(gene.positions.list) == 0 ) return()
   
-  # prepare chromosome geneset lists
-  chr.gs.list <- lapply(gene.positions.list, function(x)
+  chr.gene.list <- lapply( chromosome.list, unlist )
+  chr.gene.list <- chr.gene.list[  oposSOM:::sort.label( names(chr.gene.list) )  ]
+  chr.gene.list <- lapply( chr.gene.list, function(x)
   {
-    list(Genes=gene.ids[unlist(x)], Type="Chr")
+    x[ order( as.numeric(gene.info$chr.start[x]) ) ]
   })
-
-  names(chr.gs.list) <- paste("Chr", names(gene.positions.list))
-  chr.pq.gs.list <- list()
-
-  for (i in seq_along(gene.positions.list))
-  {
-    genes <- unlist(gene.positions.list[[i]])
-    names(genes) <- substr(names(genes),1,1)
-
-    pq.list <- tapply(genes, names(genes), c)
-    names(pq.list) <- paste("Chr", names(gene.positions.list)[i], names(pq.list))
-
-    chr.pq.gs.list <- c(chr.pq.gs.list, pq.list)
-  }
-
-  chr.pq.gs.list <- lapply(chr.pq.gs.list, function(x)
-  {
-    list(Genes=gene.ids[x], Type="Chr")
-  })
-
+  chr.gene.list <- chr.gene.list[ which( sapply( chr.gene.list, length ) > 100 ) ]
   
-  # Calculate GSZ
-  util.progress(0, 10)
-
-  sample.chr.GSZ <- do.call(cbind, lapply( 1:ncol(indata), function(m)
+  chr.exp.list <- lapply( chr.gene.list, function(x)
   {
-    return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[,m], chr.gs.list, sort=FALSE))
-  }))
-
-  dimnames(sample.chr.GSZ) <- list(names(chr.gs.list), colnames(indata))
-
-  util.progress(5, 10)
-
-  sample.chr.pq.GSZ <- do.call(cbind, lapply( 1:ncol(indata), function(m)
+    Smooth.Matrix( indata[x,], 100 )
+  })
+  chr.exp.list <- lapply( chr.exp.list, function(x)
   {
-    return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[,m], chr.pq.gs.list, sort=FALSE))
-  }))
-
-  dimnames(sample.chr.pq.GSZ) <- list(names(chr.pq.gs.list), colnames(indata))
-
-  util.progress.terminate()
-
-
+    x[ seq(1,nrow(x),10), ,drop=FALSE]
+  })
+  chr.exp.matrix <- do.call( rbind, chr.exp.list )
+  
   
   # Heatmap Outputs
-  filename <- file.path(paste(files.name, "- Results"),
-                        "Geneset Analysis",
-                        "0verview Chromosome Expression.pdf")
-
+  filename <- file.path(paste(files.name, "- Results"), "Data Overview", "Chromosome Expression.pdf")
   util.info("Writing:", filename)
-  pdf(filename, 21/2.54, 21/2.54)
+  pdf(filename, 29.7/2.54, 21/2.54)
 
-  heatmap.wrap(x=sample.chr.GSZ, cex.main=2,
-               col=color.palette.heatmaps(1000),
-               mar=c(10,20), scale="n",
-               zlim=max(max(sample.chr.GSZ),-min(sample.chr.GSZ))*c(-1,1),
-               ColSideColors=group.colors, cexDend=0.6)
+  layout( matrix(1:2,1), widths = c(20,1) )
+  
+  par( mar=c(4,4,2,0.5) )
+  image( x=1:nrow(chr.exp.matrix), y=1:ncol(chr.exp.matrix), z=chr.exp.matrix[,ncol(chr.exp.matrix):1], zlim=max(abs(chr.exp.matrix))*c(-1,1), col=color.palette.heatmaps(1000), axes=FALSE, xlab="chromosome", ylab="samples" )
+    box()
+    abline(v=cumsum( sapply(chr.exp.list,nrow) ) + 0.5)
+    axis( 1, cumsum( sapply(chr.exp.list,nrow) ) - sapply(chr.exp.list,nrow) / 2, names(chr.exp.list) )
+  
+  par( mar=c(4,0,2,1) )
+  image( t(matrix(1:length(group.colors) ) ), col = rev(group.colors), axes=F )
+  
+  
+  o = hclust( dist(t(chr.exp.matrix)) )$order
+  
+  layout( matrix(1:2,1), widths = c(20,1) )
+  
+  par( mar=c(4,4,2,0.5) )
+  image( x=1:nrow(chr.exp.matrix), y=1:ncol(chr.exp.matrix), z=chr.exp.matrix[,o], zlim=max(abs(chr.exp.matrix))*c(-1,1), col=color.palette.heatmaps(1000), axes=FALSE, xlab="chromosome", ylab="samples" )
+    box()
+    abline(v=cumsum( sapply(chr.exp.list,nrow) ) + 0.5)
+    axis( 1, cumsum( sapply(chr.exp.list,nrow) ) - sapply(chr.exp.list,nrow) / 2, names(chr.exp.list) )
+  
+  par( mar=c(4,0,2,1) )
+  image( t(matrix(1:length(group.colors) ) ), col = group.colors[o], axes=F )
 
-  par(new=TRUE, mar=c(3.5,29,35.5,2))
-
-  image(matrix(c(1:1000), 1000, 1), axes=FALSE,
-        col=color.palette.heatmaps(1000))
-
-  box()
-
-  axis(1, c(0,0.5,1),
-       round(max(max(sample.chr.GSZ),-min(sample.chr.GSZ))*c(-1,0,1)), cex.axis=1)
-
-  title(main="GSZ score", line=0.5, cex.main=0.8)
-
-  heatmap.wrap(x=sample.chr.GSZ, cex.main=2,
-               col=color.palette.heatmaps(1000),
-               mar=c(10,20), scale="n", zlim=max(max(sample.chr.GSZ),-min(sample.chr.GSZ))*c(-1,1),
-               ColSideColors=group.colors, cexDend=0.6, Colv=NA)
-
-  par(new=TRUE, mar=c(3.5,29,35.5,2))
-
-  image(matrix(c(1:1000), 1000, 1), axes=FALSE,
-        col=color.palette.heatmaps(1000))
-
-  box()
-
-  axis(1, c(0,0.5,1),
-       round(max(max(sample.chr.GSZ),-min(sample.chr.GSZ))*c(-1,0,1)), cex.axis=1)
-
-  title(main="GSZ score", line=0.5, cex.main=0.8)
-
-  heatmap.wrap(x=sample.chr.GSZ[rev(sort.label(rownames(sample.chr.GSZ))),], cex.main=2,
-               col=color.palette.heatmaps(1000),
-               mar=c(10,20), scale="n", zlim=max(max(sample.chr.GSZ),-min(sample.chr.GSZ))*c(-1,1),
-               ColSideColors=group.colors, cexDend=0.6, Colv=NA, Rowv=NA)
-
-  par(new=TRUE, mar=c(3.5,29,35.5,2))
-
-  image(matrix(c(1:1000), 1000, 1), axes=FALSE,
-        col=color.palette.heatmaps(1000))
-
-  box()
-
-  axis(1, c(0,0.5,1),
-       round(max(max(sample.chr.GSZ),-min(sample.chr.GSZ))*c(-1,0,1)), cex.axis=1)
-
-  title(main="GSZ score", line=0.5, cex.main=0.8)
-
-  heatmap.wrap(x=sample.chr.pq.GSZ, cex.main=2,
-               col=color.palette.heatmaps(1000),
-               mar=c(10,20), scale="n", zlim=max(max(sample.chr.pq.GSZ),-min(sample.chr.pq.GSZ))*c(-1,1),
-               ColSideColors=group.colors, cexDend=0.6)
-
-  par(new=TRUE, mar=c(3.5,29,35.5,2))
-
-  image(matrix(c(1:1000), 1000, 1), axes=FALSE,
-        col=color.palette.heatmaps(1000))
-
-  box()
-
-  axis(1, c(0,0.5,1),
-       round(max(max(sample.chr.pq.GSZ),-min(sample.chr.pq.GSZ))*c(-1,0,1)), cex.axis=1)
-
-  title(main="GSZ score", line=0.5, cex.main=0.8)
-
-  heatmap.wrap(x=sample.chr.pq.GSZ, cex.main=2,
-               col=color.palette.heatmaps(1000),
-               mar=c(10,20), scale="n", zlim=max(max(sample.chr.pq.GSZ),-min(sample.chr.pq.GSZ))*c(-1,1),
-               ColSideColors=group.colors, cexDend=0.6, Colv=NA)
-
-  par(new=TRUE, mar=c(3.5,29,35.5,2))
-
-  image(matrix(c(1:1000), 1000, 1), axes=FALSE,
-        col=color.palette.heatmaps(1000))
-
-  box()
-
-  axis(1, c(0,0.5,1),
-       round(max(max(sample.chr.pq.GSZ),-min(sample.chr.pq.GSZ))*c(-1,0,1)), cex.axis=1)
-
-  title(main="GSZ score", line=0.5, cex.main=0.8)
-
-
-  heatmap.wrap(x=sample.chr.pq.GSZ[rev(sort.label(rownames(sample.chr.pq.GSZ))),],
-               cex.main=2, col=color.palette.heatmaps(1000),
-               mar=c(10,20), scale="n", zlim=max(max(sample.chr.pq.GSZ),-min(sample.chr.pq.GSZ))*c(-1,1),
-               ColSideColors=group.colors, cexDend=0.6, Colv=NA, Rowv=NA)
-
-  par(new=TRUE, mar=c(3.5,29,35.5,2))
-
-  image(matrix(c(1:1000), 1000, 1), axes=FALSE,
-        col=color.palette.heatmaps(1000))
-
-  box()
-  axis(1, c(0,0.5,1),
-       round(max(max(sample.chr.pq.GSZ),-min(sample.chr.pq.GSZ))*c(-1,0,1)), cex.axis=1)
-
-  title(main="GSZ score", line=0.5, cex.main=0.8)
-
+    
   dev.off()
 }

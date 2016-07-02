@@ -132,7 +132,7 @@ pipeline.supportingMaps <- function()
 
   for (i in 1:preferences$dim.1stLvlSom^2)
   {
-    genes <- names(which(som.nodes == i))
+    genes <- names(which(som.result$nodes == i))
     mean.cor <- 0
 
     for (ii in genes)
@@ -168,7 +168,7 @@ pipeline.supportingMaps <- function()
 
   for (i in 1:preferences$dim.1stLvlSom^2)
   {
-    genes <- names(which(som.nodes == i))
+    genes <- names(which(som.result$nodes == i))
 
     e <- apply(indata[genes, ,drop=FALSE], 1, function(x)
     {

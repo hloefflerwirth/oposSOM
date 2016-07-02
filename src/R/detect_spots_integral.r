@@ -200,7 +200,7 @@ pipeline.detectSpotsIntegral <- function()
   for (i in seq_along(sample.spot.list))
   {
     spot.metagenes <- which(!is.na(sample.spot.list[[i]]))
-    spot.genes <- rownames(indata)[which(som.nodes %in% spot.metagenes)]
+    spot.genes <- rownames(indata)[which(som.result$nodes %in% spot.metagenes)]
 
     if (length(spot.genes) > 0)
     {
@@ -440,7 +440,7 @@ pipeline.detectSpotsIntegral <- function()
   for (i in seq_along(sample.spot.list))
   {
     spot.metagenes <- which(!is.na(sample.spot.list[[i]]))
-    spot.genes <- rownames(indata)[which(som.nodes %in% spot.metagenes)]
+    spot.genes <- rownames(indata)[which(som.result$nodes %in% spot.metagenes)]
 
     if (length(spot.genes) > 0)
     {
@@ -512,7 +512,7 @@ pipeline.detectSpotsIntegral <- function()
     if (length(cluster) >= preferences$dim.1stLvlSom / 2)
     {
       c.cluster[cluster] <- count.cluster
-      geneset.genes <- rownames(indata)[which(som.nodes %in% as.numeric(cluster))]
+      geneset.genes <- rownames(indata)[which(som.result$nodes %in% as.numeric(cluster))]
 
       if (length(geneset.genes) > 0)
       {
@@ -578,7 +578,7 @@ pipeline.detectSpotsIntegral <- function()
   for (i in 1:n.cluster)
   {
     nodes <- which(res$cluster == i)
-    geneset.genes <- rownames(indata)[which(som.nodes %in% nodes)]
+    geneset.genes <- rownames(indata)[which(som.result$nodes %in% nodes)]
 
     if (length(geneset.genes) > 0)
     {
@@ -821,7 +821,7 @@ pipeline.detectSpotsIntegral <- function()
     for (i in seq_along(sample.spot.list))
     {
       spot.metagenes <- which(!is.na(sample.spot.list[[i]]))
-      spot.genes <- rownames(indata)[which(som.nodes %in% spot.metagenes)]
+      spot.genes <- rownames(indata)[which(som.result$nodes %in% spot.metagenes)]
 
       if (length(spot.genes) > 0)
       {
@@ -952,7 +952,7 @@ pipeline.detectSpotsIntegral <- function()
   for (i in seq_along(sort(unique(na.omit(as.vector(spot.matrix))))) )
   {
     spot.metagenes <- which(spot.matrix==i)
-    spot.genes <- rownames(indata)[which(som.nodes %in% spot.metagenes)]
+    spot.genes <- rownames(indata)[which(som.result$nodes %in% spot.metagenes)]
     
     if (length(spot.genes) > 0)
     {

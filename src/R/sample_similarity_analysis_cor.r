@@ -165,7 +165,7 @@ pipeline.sampleSimilarityAnalysisCor <- function()
     hcl <- hclust(dist(d))
     
     par(mar=c(1,1,1,1))
-    heatmap(x=cor.s, zlim=c(-1,1), Rowv=NA, Colv=NA, col=color.palette.heatmaps(1000),
+    heatmap(x=d, zlim=c(-1,1), Rowv=NA, Colv=NA, col=color.palette.heatmaps(1000),
                 labRow=if(nrow(d)<100) rownames(d) else rep("",nrow(d)),
                 labCol=if(ncol(d)<100) colnames(d) else rep("",ncol(d)),
                 scale="n", main=paste("Pairwise correlation map on",n),

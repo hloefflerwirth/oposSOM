@@ -24,3 +24,12 @@ Get.Running.Average = function(v, n=length(v)/100)
 
 }
 
+Smooth.Matrix <- function (m, window = length(v)/100) 
+{
+  bins <- ceiling(1+window/2):floor(nrow(m)-window/2)
+  
+  t( sapply( bins, function(i)
+  {
+    colMeans( m[ c( (i-window/2) : (i+window/2 )), ] )
+  } ) )
+}

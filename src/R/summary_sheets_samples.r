@@ -7,7 +7,7 @@ pipeline.summarySheetsSamples <- function()
 
   if (preferences$geneset.analysis)
   {
-    n.genes.in.genesets <- length(intersect(unique(unlist(gs.def.list)), gene.ids))
+    n.genes.in.genesets <- length(intersect(unique(unlist(gs.def.list)), gene.info$ids))
   }
 
   ylim.max <- 0
@@ -144,8 +144,8 @@ pipeline.summarySheetsSamples <- function()
     text(x.coords[3], y.coords, round(indata[o, m], 2), cex=0.6, adj=0)
     text(x.coords[4], y.coords, format(p.g.m[o, m], digits=1), cex=0.6, adj=0)
     text(x.coords[5], y.coords, format(fdr.g.m[o, m], digits=1), cex=0.6, adj=0)
-    text(x.coords[6], y.coords, gene.coordinates[o], cex=0.6, adj=0)
-    text(x.coords[7], y.coords, gene.descriptions[o], cex=0.6, adj=0)
+    text(x.coords[6], y.coords, gene.info$coordinates[o], cex=0.6, adj=0)
+    text(x.coords[7], y.coords, gene.info$descriptions[o], cex=0.6, adj=0)
 
     par(mar=c(3,6,2,6))
 

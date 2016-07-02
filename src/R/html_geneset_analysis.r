@@ -119,11 +119,6 @@ pipeline.htmlGenesetAnalysis <- function()
             Hallmarks of Cancer (PDF)
           </a>
         </li>
-        <li>
-          <a href=\"0verview Chromosome Expression.pdf\" target=\"_blank\">
-            Heatmaps of Chromosomewise Expression (PDF)
-          </a>
-        </li>
       </ul>
 
       <h2>Category Links</h2>

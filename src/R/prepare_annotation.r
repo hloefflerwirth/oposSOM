@@ -1,18 +1,19 @@
 pipeline.prepareAnnotation <- function()
 {
-  gene.ids <<- rep("", nrow(indata))
-  names(gene.ids) <<- rownames(indata)
-
-  gene.names <<- rep("", nrow(indata))
-  names(gene.names) <<- rownames(indata)
-
-  gene.descriptions <<- rep("", nrow(indata))
-  names(gene.descriptions) <<- rownames(indata)
-
-  gene.positions <<- rep("", nrow(indata))
-  names(gene.positions) <<- rownames(indata)
-  gene.positions.table <<- matrix(0,0,0)
-  gene.positions.list <<- list()
+  empty.vec.chr <- rep("", nrow(indata))
+  names(empty.vec.chr) <- rownames(indata)
+  empty.vec.num <- rep(NA, nrow(indata))
+  names(empty.vec.num) <- rownames(indata)
+  mode(empty.vec.num)  <- "numeric"
+  
+  gene.info <<- list( ids = empty.vec.chr, 
+                      names = empty.vec.chr,
+                      descriptions = empty.vec.chr,
+                      chr.name = empty.vec.chr,
+                      chr.band = empty.vec.chr,
+                      chr.start = empty.vec.num )
+  
+  chromosome.list <<- list()
 
   if (!util.call(biomart.available, environment()))
   {
@@ -64,11 +65,8 @@ pipeline.prepareAnnotation <- function()
 
   query = c("wikigene_name","hgnc_symbol","uniprot_genename")[ which( c("wikigene_name","hgnc_symbol","uniprot_genename") %in% listAttributes(mart)[,1] ) ][1]
   suppressWarnings({  biomart.table <- getBM(c(preferences$database.id.type,
-                           query,
-                           "description",
-                           "ensembl_gene_id",
-                           "chromosome_name",
-                           "band"),
+                           query,"description","ensembl_gene_id",
+                           "chromosome_name","band","start_position"),
                          preferences$database.id.type,
                          rownames(indata), mart, checkFilters=FALSE)  })
 
@@ -81,44 +79,49 @@ pipeline.prepareAnnotation <- function()
   {
     h <- biomart.table[,2]
     names(h) <- biomart.table[,1]
-    gene.names[as.character(unique(biomart.table[,1]))] <<- h[as.character(unique(biomart.table[,1]))]
+    gene.info$names[as.character(unique(biomart.table[,1]))] <<- h[as.character(unique(biomart.table[,1]))]
 
-    h <- biomart.table[,3]
+    h <- biomart.table[,"description"]
     names(h) <- biomart.table[,1]
-    gene.descriptions[as.character(unique(biomart.table[,1]))] <<- h[as.character(unique(biomart.table[,1]))]
+    gene.info$descriptions[as.character(unique(biomart.table[,1]))] <<- h[as.character(unique(biomart.table[,1]))]
 
-    h <- biomart.table[,4]
+    h <- biomart.table[,"ensembl_gene_id"]
     names(h) <- biomart.table[,1]
-    gene.ids[as.character(unique(biomart.table[,1]))] <<- h[as.character(unique(biomart.table[,1]))]
-    gene.ids <<- gene.ids[which(gene.ids != "")]
-    gene.ids <<- gene.ids[which(names(gene.ids) %in% rownames(indata))]
+    gene.info$ids[as.character(unique(biomart.table[,1]))] <<- h[as.character(unique(biomart.table[,1]))]
 
-    h <- paste(biomart.table[,5], gsub("\\..*$","", biomart.table[,6]))
+    h <- biomart.table[,"chromosome_name"]
     names(h) <- biomart.table[,1]
-    gene.positions[as.character(unique(biomart.table[,1]))] <<- h[as.character(unique(biomart.table[,1]))]
-    gene.positions <<- gene.positions[which(gene.positions != "")]
+    gene.info$chr.name[as.character(unique(biomart.table[,1]))] <<- h[as.character(unique(biomart.table[,1]))]
+    
+    h <- gsub("\\..*$","", biomart.table[,"band"])
+    names(h) <- biomart.table[,1]
+    gene.info$chr.band[as.character(unique(biomart.table[,1]))] <<- h[as.character(unique(biomart.table[,1]))]
+    
+    h <- biomart.table[,"start_position"]
+    names(h) <- biomart.table[,1]
+    gene.info$chr.start[as.character(unique(biomart.table[,1]))] <<- h[as.character(unique(biomart.table[,1]))]
+    
 
-    gene.positions.table <<- do.call(rbind, strsplit(gene.positions, " "))
-
-    junk.chrnames <- names(which(table(gene.positions.table[,1]) < 20)) # filter low abundand chromosome information
-    if( length(unique(gene.positions.table[,2]))>1 ) # filter information when band is missing
-      junk.chrnames <- union(junk.chrnames, names(which(tapply(gene.positions.table[,2], gene.positions.table[,1], function(x) { length(unique(x)) }) == 1)))
-    gene.positions <<- gene.positions[which(!gene.positions.table[,1] %in% junk.chrnames)]
-    gene.positions.table <<- gene.positions.table[which(!gene.positions.table[,1] %in% junk.chrnames),]
-
-    if(length(gene.positions)>0)
+    gene.positions.table <- cbind( gene.info$chr.name, gene.info$chr.band )
+    gene.positions.table <- gene.positions.table[ which( gene.positions.table[,1] != "" & gene.positions.table[,2] != "" ) , ]
+    skip.chrnames <- names(which(table(gene.info$chr.name) < 20)) # filter low abundand chromosome information
+    gene.positions.table <- gene.positions.table[ which( !gene.positions.table[,1] %in% skip.chrnames ) , ]
+      
+    if(nrow(gene.positions.table)>0)
     {
-      gene.positions.list <<- tapply(rownames(gene.positions.table), gene.positions.table[,1], c)
-      gene.positions.list <<- lapply(gene.positions.list, function(x) { tapply(x, gene.positions.table[x,2], c) })
+      chromosome.list <<- tapply(rownames(gene.positions.table), gene.positions.table[,1], c)
+      chromosome.list <<- lapply(chromosome.list, function(x) { tapply(x, gene.positions.table[x,2], c) })
     }
+
   }
 
   if (!preferences$geneset.analysis) {
     return()
   }
 
-  unique.protein.ids <<- unique(gene.ids)
-
+  unique.protein.ids <<- unique(gene.info$ids)
+  unique.protein.ids <<- unique.protein.ids[which(unique.protein.ids!="")]
+  
   suppressWarnings({  biomart.table <- getBM(c("ensembl_gene_id", "go_id", "name_1006", "namespace_1003"), "ensembl_gene_id", unique.protein.ids, mart, checkFilters=FALSE) })
   biomart.table <- biomart.table[which( apply(biomart.table,1,function(x) sum(x=="") ) == 0 ),]  
   gs.def.list <<- tapply(biomart.table[,1], biomart.table[,2], c)
@@ -150,10 +153,10 @@ pipeline.prepareAnnotation <- function()
     util.warn("No GO annotation found")
   }
 
-  if(length(gene.positions.list)>0)
+  if(length(chromosome.list)>0)
   {
-    chr.gs.list <- lapply(gene.positions.list, function(x) { list(Genes=gene.ids[unlist(x)], Type="Chr") })
-    names(chr.gs.list) <- paste("Chr", names(gene.positions.list))
+    chr.gs.list <- lapply(chromosome.list, function(x) { list(Genes=gene.info$ids[unlist(x)], Type="Chr") })
+    names(chr.gs.list) <- paste("Chr", names(chromosome.list))
     gs.def.list <<- c(gs.def.list, chr.gs.list)
   }
 

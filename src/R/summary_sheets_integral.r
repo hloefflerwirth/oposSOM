@@ -393,8 +393,8 @@ pipeline.summarySheetsIntegral <- function()
         text(x.coords[3], y.coords, round(e.max[o], 2), cex=0.6, adj=0)
         text(x.coords[4], y.coords, round(e.min[o], 2), cex=0.6, adj=0)
         text(x.coords[5], y.coords, round(r.genes[o], 2), cex=0.6, adj=0)
-        text(x.coords[6], y.coords, gene.names[o], cex=0.6, adj=0)
-        text(x.coords[7], y.coords, gene.descriptions[o], cex=0.6, adj=0)
+        text(x.coords[6], y.coords, gene.info$names[o], cex=0.6, adj=0)
+        text(x.coords[7], y.coords, gene.info$descriptions[o], cex=0.6, adj=0)
       } else
       {
         frame()
@@ -423,7 +423,7 @@ pipeline.summarySheetsIntegral <- function()
 
         text(x.coords[3], y.coords, paste (sapply(gs.def.list[names(top.gs.p)], function(x)
         {
-          length(intersect(x$Genes, gene.ids[set.list$spots[[m]]$genes]))
+          length(intersect(x$Genes, gene.info$ids[set.list$spots[[m]]$genes]))
         }), "/", sapply(gs.def.list[names(top.gs.p)], function(x)
         {
           length(x$Genes)
@@ -496,7 +496,7 @@ pipeline.summarySheetsIntegral <- function()
           text(x.coords[3], y.coords,
                paste(sapply(gs.def.list[names(top.gs.p)], function(x)
                {
-                 length(intersect(x$Genes, gene.ids[set.list$spots[[m]]$genes]))
+                 length(intersect(x$Genes, gene.info$ids[set.list$spots[[m]]$genes]))
                }), "/",
                sapply(gs.def.list[names(top.gs.p)], function(x)
                {
@@ -547,7 +547,7 @@ pipeline.summarySheetsIntegral <- function()
 
       out <- data.frame(Rank=c(seq_along(set.list$spots[[m]]$genes)),
                         ID=o,
-                        Symbol=gene.names[o])
+                        Symbol=gene.info$names[o])
 
       if (any(grep("GenesetSOM",files.name)))
       {
@@ -565,9 +565,9 @@ pipeline.summarySheetsIntegral <- function()
                    "correlation"=r.genes[o],
                    "->t.score"=r.t[o],
                    "->p.value"=r.p[o],
-                   "Metagene"=gene.coordinates[o],
-                   "Chromosome"=gene.positions[o],
-                   "Description"=gene.descriptions[o])
+                   "Metagene"=gene.info$coordinates[o],
+                   "Chromosome"=paste( gene.info$chr.name[o], gene.info$chr.band[o]),
+                   "Description"=gene.info$descriptions[o])
 
       write.csv2(out, file.path(path, basename))
     }

@@ -10,18 +10,19 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
 
   plot.set.list.chromosomes <- function(set.list, main)
   {
-    sorted.unique.gene.positions <- sort.label(unique(gene.positions))
-    n.all.chr.genes <- length(unlist(gene.positions.list))
+    sorted.unique.gene.positions <- unlist( sapply( 1:length(chromosome.list), function(i) paste( names(chromosome.list)[i], names(chromosome.list[[i]]), sep=" " ) ) )
+    sorted.unique.gene.positions <- sort.label( sorted.unique.gene.positions )
+    n.all.chr.genes <- length(unlist(chromosome.list))
 
     intersect.counts <- matrix(0,
-                               length(unique(gene.positions)),
+                               length(sorted.unique.gene.positions),
                                length(set.list$spots),
                                dimnames=list(sorted.unique.gene.positions,
                                              names(set.list$spots)))
 
     for (m in names(set.list$spots))
     {
-      intersect.counts.spot <- sapply(gene.positions.list, function(x)
+      intersect.counts.spot <- sapply(chromosome.list, function(x)
       {
         sapply(x, function(y)
         {
@@ -88,19 +89,18 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
 
     for (m in seq_along(set.list$spots))
     {
-      intersect.counts <- sapply(gene.positions.list, function(x)
+      intersect.counts <- sapply(chromosome.list, function(x)
       {
         sapply(x, function(y)
         {
           length(intersect(set.list$spots[[m]]$genes,  y)) / length(y)
         })
       })
+      names(intersect.counts) <- names(chromosome.list)
 
-      names(intersect.counts) <- names(gene.positions.list)
-
-      l <- c(rep(1,ceiling(length(gene.positions.list)/2)), 2:(length(gene.positions.list)+1))
-      l <- c(l, rep(0, (ceiling(length(gene.positions.list)/2)*3) - length(l)))
-      layout(matrix(l, 3, ceiling(length(gene.positions.list)/2), byrow=TRUE), heights=c(0.05,1,1))
+      l <- c(rep(1,ceiling(length(chromosome.list)/2)), 2:(length(chromosome.list)+1))
+      l <- c(l, rep(0, (ceiling(length(chromosome.list)/2)*3) - length(l)))
+      layout(matrix(l, 3, ceiling(length(chromosome.list)/2), byrow=TRUE), heights=c(0.05,1,1))
 
       par(mar=c(0,0,0,0))
       plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,1))
@@ -108,8 +108,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
       text(0.2, 0, "(% band genes found in this spot)", cex=1.2)
 
       par(mar=c(1.5,2,0.2,0.3))
-
-      for (chromosome in sort.label(names(gene.positions.list)))
+      for (chromosome in sort.label(names(chromosome.list)))
       {
         x <- intersect.counts[[chromosome]]
 
@@ -127,7 +126,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 29.7/2.54)
 
-  if (length(gene.positions.list) > 0)
+  if (length(chromosome.list) > 0)
   {
     plot.set.list.chromosomes(set.list=spot.list.overexpression,
                               main="Overexpression Spots")
@@ -139,7 +138,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 29.7/2.54)
 
-  if (length(gene.positions.list) > 0)
+  if (length(chromosome.list) > 0)
   {
     plot.set.list.chromosomes(spot.list.underexpression,
                               main="Underexpression Spots")
@@ -151,7 +150,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 29.7/2.54)
 
-  if (length(gene.positions.list) > 0)
+  if (length(chromosome.list) > 0)
   {
     plot.set.list.chromosomes(spot.list.kmeans, main="K-Means Clusters")
   }
@@ -164,7 +163,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
     util.info("Writing:", filename)
     pdf(filename, 21/2.54, 29.7/2.54)
 
-    if (length(gene.positions.list) > 0)
+    if (length(chromosome.list) > 0)
     {
       plot.set.list.chromosomes(set.list=spot.list.group.overexpression,
                                 main="Group Overexpression Spots")
@@ -177,7 +176,7 @@ pipeline.3rdLvlChromosomalEnrichment <- function()
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 29.7/2.54)
   
-  if (length(gene.positions.list) > 0)
+  if (length(chromosome.list) > 0)
   {
     plot.set.list.chromosomes(spot.list.dmap, main="D-Clusters")
   }

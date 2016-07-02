@@ -74,6 +74,7 @@ pipeline.htmlSummary <- function()
       </dl>
 
       <h1>Results</h1>
+      <h2>General</h2>
 
       <ul>
         <li>
@@ -81,9 +82,14 @@ pipeline.htmlSummary <- function()
             Data Distribution (PDF)
           </a>
         </li>
+        <li>
+          <a href=\"Data Overview/Chromosome Expression.pdf\" target=\"_blank\">
+            Chromosome-wise gene expression heatmap (PDF)
+          </a>
+        </li>
       </ul>
 
-      <h2>1st Level SOM Analysis</h2>
+      <h2>SOM Analysis</h2>
 
       <p>
         These reports comprise the SOM portraits in standard and alternative
@@ -103,11 +109,6 @@ pipeline.htmlSummary <- function()
           <li>
             <a href=\"Expression Portraits - alternative scales.pdf\" target=\"_blank\">
               Alternative Color Scales: absolute expression, WAD, loglogFC (PDF)
-            </a>
-          </li>
-          <li>
-            <a href=\"Rank Maps.pdf\" target=\"_blank\">
-              Rank Portraits: FC, WAD, t-score (PDF)
             </a>
           </li>
         </ul>", sep="", file=outfile)

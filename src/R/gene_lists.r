@@ -24,7 +24,7 @@ pipeline.geneLists <- function()
 
     out <- data.frame(Rank=c(1:nrow(indata)),
                       ID=rownames(indata)[o],
-                      Symbol=gene.names[o])
+                      Symbol=gene.info$names[o])
 
     out <- cbind(out,
                  logFC=indata[o, m],
@@ -33,10 +33,10 @@ pipeline.geneLists <- function()
                  p.value=p.g.m[o, m],
                  fdr=fdr.g.m[o, m],
                  Fdr=Fdr.g.m[o, m],
-                 Metagene=gene.coordinates[o],
+                 Metagene=gene.info$coordinates[o],
                  Spot=genes.spot.assoc[o],
-                 Chromosome=gene.positions[rownames(indata)[o]],
-                 Description=gene.descriptions[o])
+                 Chromosome=paste( gene.info$chr.name[rownames(indata)[o]], gene.info$chr.band[rownames(indata)[o]]),
+                 Description=gene.info$descriptions[o])
 
     basename <- paste(make.names(colnames(indata)[m]), ".csv", sep="")
     f <- file(file.path(dirnames["global"], basename), "w")

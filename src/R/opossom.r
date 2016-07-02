@@ -9,13 +9,8 @@ opossom.new <- function(preferences=NULL)
   env$Fdr.g.m <- NULL
   env$fdr.g.m <- NULL
   env$files.name <- NULL
-  env$gene.descriptions <- NULL
-  env$gene.ids <- NULL
-  env$gene.names <- NULL
-  env$gene.positions <- NULL
-  env$gene.positions.list <- NULL
-  env$gene.positions.table <- NULL
-  env$gene.coordinates <- NULL
+  env$gene.info <- NULL
+  env$chromosome.list <- NULL
   env$group.silhouette.coef <- NULL
   env$group.colors <- NULL
   env$group.labels <- NULL
@@ -38,7 +33,6 @@ opossom.new <- function(preferences=NULL)
   env$p.g.m <- NULL
   env$p.m <- NULL
   env$perc.DE.m <- NULL
-  env$som.nodes <- NULL
   env$som.result <- NULL
   env$t.g.m <- NULL
   env$t.m <- NULL
@@ -125,15 +119,19 @@ opossom.run <- function(env)
   save(env, file=imagename)
 
   # Execute the pipeline
+  
   util.info("Processing Differential Expression")
   util.call(pipeline.calcStatistics, env)
-
+  
   util.info("Detecting Spots")
   util.call(pipeline.detectSpotsSamples, env)
   util.call(pipeline.detectSpotsIntegral, env)
   util.call(pipeline.patAssignment, env)
   util.call(pipeline.groupAssignment, env)
 
+  util.info("Processing Chromosome Expression Reports")
+  util.call(pipeline.chromosomeExpressionReports, env)
+  
   if(ncol(env$indata) < 1000)
   {
     util.info("Plotting Sample Portraits")
@@ -173,9 +171,6 @@ opossom.run <- function(env)
 
     util.info("Processing Cancer Hallmarks")
     util.call(pipeline.cancerHallmarks, env)
-
-    util.info("Processing Chromosome Expression Reports")
-    util.call(pipeline.chromosomeExpressionReports, env)
   }
 
   if(ncol(env$indata) < 1000)
