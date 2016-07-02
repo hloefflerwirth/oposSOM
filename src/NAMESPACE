@@ -1,14 +1,13 @@
 exportPattern("*")
 
 import("som")
-import("fastICA")
-import("scatterplot3d")
-import("pixmap")
-import("KernSmooth")
 import("biomaRt")
 
 importFrom("ape", "nj", "plot.phylo")
+importFrom("fastICA", "fastICA")
+importFrom("scatterplot3d", "scatterplot3d")
 importFrom("tsne", "tsne")
+importFrom("pixmap","pixmapIndexed","addlogo")
 importFrom("Biobase", "ExpressionSet", "assayData", "pData")
 importFrom("igraph", "graph.adjacency", "minimum.spanning.tree", "layout_with_kk", "V", "V<-", "E", "E<-")
 importFrom("fdrtool", "fdrtool")
