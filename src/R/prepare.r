@@ -255,8 +255,7 @@ pipeline.prepare <- function()
 
   output.paths <<-
     c("CSV"=paste(files.name, "- Results/CSV Sheets"),
-      "Summary Sheets Samples"=paste(files.name, "- Results/Summary Sheets - Samples"),
-      "Summary Sheets Integral"=paste(files.name, "- Results/Summary Sheets - Integral"))
+      "Summary Sheets Samples"=paste(files.name, "- Results/Summary Sheets - Samples") )
 
   # create output dirs
   dir.create(paste(files.name, "- Results"), showWarnings=FALSE)

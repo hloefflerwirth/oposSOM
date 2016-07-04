@@ -182,16 +182,8 @@ opossom.run <- function(env)
     util.call(pipeline.summarySheetsSamples, env)
   }
   
-  util.info("Processing Summary Sheets (Spots)")
-  util.call(pipeline.summarySheetsIntegral, env)
-
-  util.info("Processing 3rd level Spot Analysis")
-  dir.create(paste(env$files.name, "- Results/3rd lvl Spot Analysis"),
-             showWarnings=FALSE)
-
-  util.call(pipeline.3rdLvlChromosomalEnrichment, env)
-  util.call(pipeline.3rdLvlSummarySheets, env)
-  util.call(pipeline.3rdLvlNetworks, env)
+  util.info("Processing Summary Sheets (Modules)")
+  util.call(pipeline.summarySheetsModules, env)
 
   util.info("Generating HTML Report")
   util.call(pipeline.htmlSummary, env)

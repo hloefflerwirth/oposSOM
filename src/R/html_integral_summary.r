@@ -1,7 +1,7 @@
 pipeline.htmlIntegralSummary <- function()
 {
   filename <- file.path(paste(files.name, "- Results"),
-                        "Summary Sheets - Integral",
+                        "Summary Sheets - Modules",
                         "0verview.html")
 
   util.info("Writing:", filename)
@@ -75,37 +75,184 @@ pipeline.htmlIntegralSummary <- function()
     </style>
   </head>
   <body>
-    <div id=\"wrapper\">
-      <h1>Integral Maps Summary Sheets</h1>
+    <div id=\"wrapper\">", sep="", file=outfile)
+
+
+  #### Report Sheets ####
+
+  cat("<h1>Expression Module Reports</h1>
 
       <p>
-        These analyses apply different criteria to define spot clusters of co-regulated metagenes:
+        Expression module detection applies different criteria to define spot clusters of co-regulated metagenes:
         overexpression and underexpression, mutual correlations between the metagenes,
-        k-means clustering and cluster detection in the distance map.
-        Gene set enrichment analysis provides the leading sets of each of
-        the spots considered. Spot-related heatmaps characterize the
-        expression profiles of the selected features in the series of samples.
-        Single spot summary sheets provide detailed information on each of
-        the spots such as the ranked list of samples which overexpress this
-        feature in decreasing order according to the mean t-statistics of the
-        spot and the ranked list of the overrepresented
-        gene sets together with the histogram of the respective p-value
-        distribution.
-      <p>
+        k-means clustering and cluster detection in the distance map.<br>
+
+        <ul>
+          <li>
+          General report sheets provide overview maps of the modules detected, module-related heatmaps characterizing the
+          expression profiles of the selected features in the series of samples, and individual module reports
+          providing detailed information such as ranked gene list selected with the module and functional analysis in terms of
+          gene set lists ranked for over-representation in the module.
+          </li>
+        </ul>
+        <ul>
+          <li>
+          Profile sheets provide the module expression profiles on single sample and group resolution.
+          </li>
+        </ul>
+        <ul>
+          <li>
+          Module relation reports contain the wTO correlation network and association of the groups to the modules.
+          </li>
+        </ul>
+        <ul>
+          <li>
+          Chromosome plots visualize enrichment of chromosomal postitions (chromosome/band) in the modules as overview heatmaps and individual chromosome plots. 
+          </li>
+        </ul>
+      </p>", sep="", file=outfile)
+
+  
+  cat("<h2>Overexpression Spots</h2>
+
+      <ul>
+        <li>
+          <a href=\"Overexpression Spots/Report.pdf\" target=\"_blank\">
+                General module report (PDF)
+              </a>
+        </li>
+        <li>
+          <a href=\"Overexpression Spots/Profiles.pdf\" target=\"_blank\">
+                Module Profiles (PDF)
+              </a>
+        </li>
+        <li>
+          <a href=\"Overexpression Spots/Relations.pdf\" target=\"_blank\">
+                Module Relation (PDF)
+              </a>
+        </li>
+        <li>
+          <a href=\"Overexpression Spots/Chromosomes.pdf\" target=\"_blank\">
+                Module Enrichment in Chromosomes (PDF)
+              </a>
+        </li>
+      </ul>", sep="", file=outfile)
+
+  if (length(unique(group.labels)) > 1)
+  {
+    cat("<h2>Group Overexpression Spots</h2>
+  
+        <ul>
+          <li>
+            <a href=\"Group Overexpression Spots/Report.pdf\" target=\"_blank\">
+                  General module report (PDF)
+                </a>
+          </li>
+          <li>
+            <a href=\"Group Overexpression Spots/Profiles.pdf\" target=\"_blank\">
+                  Module Profiles (PDF)
+                </a>
+          </li>
+          <li>
+            <a href=\"Group Overexpression Spots/Relations.pdf\" target=\"_blank\">
+                  Module Relation (PDF)
+                </a>
+          </li>
+          <li>
+            <a href=\"Group Overexpression Spots/Chromosomes.pdf\" target=\"_blank\">
+                  Module Enrichment in Chromosomes (PDF)
+                </a>
+          </li>
+        </ul>", sep="", file=outfile)
+  }
+
+  cat("<h2>Underexpression Spots</h2>
+
+      <ul>
+        <li>
+          <a href=\"Underexpression Spots/Report.pdf\" target=\"_blank\">
+                General module report (PDF)
+              </a>
+        </li>
+
+      </ul>", sep="", file=outfile)
+
+  cat("<h2>Correlation Cluster</h2>
+
+      <ul>
+        <li>
+          <a href=\"Correlation Cluster/Report.pdf\" target=\"_blank\">
+                General module report (PDF)
+              </a>
+        </li>
+
+      </ul>", sep="", file=outfile)
+  
+  cat("<h2>K-Means Cluster</h2>
+
+      <ul>
+        <li>
+          <a href=\"K-Means Cluster/Report.pdf\" target=\"_blank\">
+                General module report (PDF)
+              </a>
+        </li>
+        <li>
+          <a href=\"K-Means Cluster/Profiles.pdf\" target=\"_blank\">
+                Module Profiles (PDF)
+              </a>
+        </li>
+        <li>
+          <a href=\"K-Means Cluster/Relations.pdf\" target=\"_blank\">
+                Module Relation (PDF)
+              </a>
+        </li>
+        <li>
+          <a href=\"K-Means Cluster/Chromosomes.pdf\" target=\"_blank\">
+                Module Enrichment in Chromosomes (PDF)
+              </a>
+        </li>
+      </ul>", sep="", file=outfile)
+  
+  cat("<h2>D-Cluster</h2>
+
+      <ul>
+        <li>
+          <a href=\"D-Cluster/Report.pdf\" target=\"_blank\">
+                General module report (PDF)
+              </a>
+        </li>
+        <li>
+          <a href=\"D-Cluster/Profiles.pdf\" target=\"_blank\">
+                Module Profiles (PDF)
+              </a>
+        </li>
+        <li>
+          <a href=\"D-Cluster/Relations.pdf\" target=\"_blank\">
+                Module Relation (PDF)
+              </a>
+        </li>
+        <li>
+          <a href=\"D-Cluster/Chromosomes.pdf\" target=\"_blank\">
+                Module Enrichment in Chromosomes (PDF)
+              </a>
+        </li>
+      </ul>", sep="", file=outfile)  
+  
+  #### CSV Sheets ####
+
+  cat("<h1>Expression Module CSV Sheets</h1>
 
       <table>
         <thead>
           <tr>
-            <th>Summary Sheets</th>
-            <th>Spot's CSV tables</th>
+            <th></th>
+            <th>CSV Tables</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>
-              <a href=\"Overexpression.pdf\" target=\"_blank\">
-                Overexpression (PDF)
-              </a>
+              Overexpression Spots
             </td>
             <td>", sep="", file=outfile)
 
@@ -122,9 +269,7 @@ pipeline.htmlIntegralSummary <- function()
           </tr>
           <tr>
             <td>
-              <a href=\"Group Overexpression.pdf\" target=\"_blank\">
-                Group Overexpression (PDF)
-              </a>
+                Group Overexpression Spots
             </td>
             <td>", sep="", file=outfile)
 
@@ -141,43 +286,7 @@ pipeline.htmlIntegralSummary <- function()
           </tr>
           <tr>
             <td>
-              <a href=\"Underexpression.pdf\" target=\"_blank\">
-                Underexpression (PDF)
-              </a>
-            </td>
-            <td>", sep="", file=outfile)
-
-  for (m in seq_along(spot.list.underexpression$spots))
-  {
-    cat("<a href=\"../CSV Sheets/Spot Lists/Underexpression Spots ",
-        names(spot.list.underexpression$spots)[m],".csv\" target=\"_blank\">",
-        names(spot.list.underexpression$spots)[m], "</a>", sep="", file=outfile)
-  }
-
-  cat("</td>
-          </tr>
-          <tr>
-            <td>
-              <a href=\"Correlation Cluster.pdf\" target=\"_blank\">
-                Correlation Cluster (PDF)
-              </a>
-            </td>
-            <td>", sep="", file=outfile)
-
-  for (m in seq_along(spot.list.correlation$spots))
-  {
-    cat("<a href=\"../CSV Sheets/Spot Lists/Correlation Clusters ",
-        names(spot.list.correlation$spots)[m],".csv\" target=\"_blank\">",
-        names(spot.list.correlation$spots)[m],"</a>", sep="", file=outfile)
-  }
-
-  cat("</td>
-          </tr>
-          <tr>
-            <td>
-              <a href=\"K-Means Cluster.pdf\" target=\"_blank\">
-                K-Means Cluster (PDF)
-              </a>
+                K-Means Cluster
             </td>
             <td>", sep="", file = outfile)
 
@@ -193,9 +302,7 @@ pipeline.htmlIntegralSummary <- function()
           </tr>
           <tr>
             <td>
-              <a href=\"D-Clusters.pdf\" target=\"_blank\">
-                Distance Map Clusters (PDF)
-              </a>
+                Distance Map Clusters
             </td>
             <td>", sep="", file = outfile)
   
@@ -210,159 +317,6 @@ pipeline.htmlIntegralSummary <- function()
           </tr>
         </tbody>
       </table>
-
-      <h1>Spot Module Report Sheets</h1>
-
-      <p>
-        Reports contain the spot module expression profiles and assignments of
-        the spots to samples and to groups.
-      </p>
-
-      <ul>
-        <li>
-          <a href=\"../3rd lvl Spot Analysis/Spot Report - Overexpression Spots.pdf\" target=\"_blank\">
-            Overexpression Spot Report (PDF)
-          </a>
-        </li>
-        <li>
-          <a href=\"../3rd lvl Spot Analysis/Spot Report - Underexpression Spots.pdf\" target=\"_blank\">
-            Underexpression Spot Report (PDF)
-          </a>
-        </li>
-        <li>
-          <a href=\"../3rd lvl Spot Analysis/Spot Report - K-Means Clusters.pdf\" target=\"_blank\">
-            K-Means Cluster Report (PDF)
-          </a>
-        </li>
-        <li>
-          <a href=\"../3rd lvl Spot Analysis/Spot Report - D-Clusters.pdf\" target=\"_blank\">
-            D-Cluster Report (PDF)
-          </a>
-        </li>", sep="", file=outfile)
-
-  if (length(unique(group.labels)) > 1)
-  {
-    cat("
-        <li>
-          <a href=\"../3rd lvl Spot Analysis/Spot Report - Group Overexpression Spots.pdf\" target=\"_blank\">
-            Group Overexpression Report (PDF)
-          </a>
-        </li>", sep="", file=outfile)
-  }
-
-  cat("
-      </ul>
-
-      <h1>Spot Module Network Analysis</h1>
-
-      <p>
-        Networks of spot association are visualized as graphs. WTO,
-        correlation networks and correlation spanning trees, are given for
-        individual spots and spot patterns.
-      </p>
-
-      <ul>
-        <li>
-          <a href=\"../3rd lvl Spot Analysis/wTO Networks - Overexpression Spots.pdf\" target=\"_blank\">
-            Overexpression Networks (PDF)
-          </a>
-        </li>
-        <li>
-          <a href=\"../3rd lvl Spot Analysis/wTO Networks - Underexpression Spots.pdf\" target=\"_blank\">
-            Underexpression Networks (PDF)
-          </a>
-        </li>
-        <li>
-          <a href=\"../3rd lvl Spot Analysis/wTO Networks - K-Means Clusters.pdf\" target=\"_blank\">
-            K-Means Cluster Networks (PDF)
-          </a>
-        </li>
-        <li>
-          <a href=\"../3rd lvl Spot Analysis/wTO Networks - D-Clusters.pdf\" target=\"_blank\">
-            D-Cluster Networks (PDF)
-          </a>
-        </li>", sep="", file=outfile)
-
-  if (length(unique(group.labels)) > 1)
-  {
-    cat("
-        <li>
-          <a href=\"../3rd lvl Spot Analysis/wTO Networks - Group Overexpression Spots.pdf\" target=\"_blank\">
-            Group Overexpression Networks (PDF)
-          </a>
-        </li>", sep="", file=outfile)
-  }
-
-  cat("
-      </ul>
-
-      <h1>Chromosomal Enrichment</h1>
-
-      <p>
-        For each spot, enrichment of chromosomal postitions (chromosome/band)
-        is visualized as overview heatmaps and individual chromosome plots.
-      </p>
-
-      <ul>
-        <li>
-          <a href=\"../3rd lvl Spot Analysis/Chromosomal Enrichment - Overexpression Spots.pdf\" target=\"_blank\">
-            Chromosomal Enrichment of Overexpression Spots (PDF)
-          </a>
-        </li>
-        <li>
-          <a href=\"../CSV Sheets/Chromosomal Enrichment/Overexpression Spots.csv\" target=\"_blank\">
-            Chromosomal Enrichment of Overexpression Spots (CSV)
-          </a>
-        </li>", sep="", file=outfile)
-
-  if (length(unique(group.labels)) > 1)
-  {
-    cat("
-        <li>
-          <a href=\"../3rd lvl Spot Analysis/Chromosomal Enrichment - Group Overexpression Spots.pdf\" target=\"_blank\">
-            Chromosomal Enrichment of Group Overexpression Spots (PDF)
-          </a>
-        </li>
-        <li>
-          <a href=\"../CSV Sheets/Chromosomal Enrichment/Group Overexpression Spots.csv\" target=\"_blank\">
-            Chromosomal Enrichment of Group Overexpression Spots (CSV)
-          </a>
-        </li>", sep="", file=outfile)
-  }
-
-  cat("
-
-        <li>
-          <a href=\"../3rd lvl Spot Analysis/Chromosomal Enrichment - Underexpression Spots.pdf\" target=\"_blank\">
-            Chromosomal Enrichment of Underexpression Chromosomal Enrichment (PDF)
-          </a>
-        </li>
-        <li>
-          <a href=\"../CSV Sheets/Chromosomal Enrichment/Underexpression Spots.csv\" target=\"_blank\">
-            Chromosomal Enrichment of Underexpression Spot Chromosome Map (CSV)
-          </a>
-        </li>
-        <li>
-          <a href=\"../3rd lvl Spot Analysis/Chromosomal Enrichment - K-Means Clusters.pdf\" target=\"_blank\">
-            Chromosomal Enrichment of K-Means Cluster Chromosomal Enrichment (PDF)
-          </a>
-        </li>
-        <li>
-          <a href=\"../CSV Sheets/Chromosomal Enrichment/K-Means Clusters.csv\" target=\"_blank\">
-            Chromosomal Enrichment of K-Means Cluster Spot Chromosome Map (CSV)
-          </a>
-        </li>
-        <li>
-          <a href=\"../3rd lvl Spot Analysis/Chromosomal Enrichment - D-Clusters.pdf\" target=\"_blank\">
-            Chromosomal Enrichment of D-Cluster Chromosomal Enrichment (PDF)
-          </a>
-        </li>
-        <li>
-          <a href=\"../CSV Sheets/Chromosomal Enrichment/D-Clusters.csv\" target=\"_blank\">
-            Chromosomal Enrichment of D-Cluster Spot Chromosome Map (CSV)
-          </a>
-        </li>
-      </ul>
     </div>
   </body>
 </html>", sep="", file=outfile)

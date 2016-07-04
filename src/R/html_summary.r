@@ -245,7 +245,7 @@ pipeline.htmlSummary <- function()
         </li>
       </ul>
 
-      <h2>3rd Level Analysis</h2>
+      <h2>Expression Module Analysis</h2>
 
       <p>
         Different criteria of spot module definition such as overexpression or
@@ -255,7 +255,7 @@ pipeline.htmlSummary <- function()
 
       <ul>
         <li>
-          <a href=\"Summary Sheets - Integral/0verview.html\" target=\"_blank\">
+          <a href=\"Summary Sheets - Modules/0verview.html\" target=\"_blank\">
             Spot Reports (HTML)
           </a>
         </li>
