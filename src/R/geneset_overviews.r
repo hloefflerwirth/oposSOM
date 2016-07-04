@@ -45,7 +45,7 @@ pipeline.genesetOverviews <- function()
 
     colnames(top.scores) <- colnames(indata)
 
-    heatmap.wrap(x=top.scores, cex.main=2,
+    heatmap(x=top.scores, cex.main=2,
                  col=color.palette.heatmaps(1000),
                  mar=c(10,20), scale="n", zlim=max(max(top.scores),-min(top.scores))*c(-1,1),
                  ColSideColors=group.colors, cexDend=0.6)
@@ -60,7 +60,7 @@ pipeline.genesetOverviews <- function()
     mtext("GSZ score", cex=2, line=32)
     mtext(paste("Category",i), cex=1, line=30)
 
-    heatmap.wrap(x=top.scores, cex.main=2,
+    heatmap(x=top.scores, cex.main=2,
                  col=color.palette.heatmaps(1000),
                  mar=c(10,20), scale="n",  zlim=max(max(top.scores),-min(top.scores))*c(-1,1),
                  ColSideColors=group.colors, cexDend=0.6, Colv=NA)
@@ -87,7 +87,7 @@ pipeline.genesetOverviews <- function()
       return(idx)
     }))
 
-    heatmap.wrap(x=top.scores[,o], cex.main=2,
+    heatmap(x=top.scores[,o], cex.main=2,
                  col=color.palette.heatmaps(1000),
                  mar=c(10,20), scale="n",
                  zlim=max(max(top.scores),-min(top.scores))*c(-1,1),
