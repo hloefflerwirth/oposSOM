@@ -1,6 +1,6 @@
 modules.chromosomes <- function(spot.list, main, path)
 {
-	if(is.null(chromosome.list))
+	if(length(chromosome.list) == 0)
   {
 		return()
 	}

@@ -129,7 +129,7 @@ opossom.run <- function(env)
   util.call(pipeline.patAssignment, env)
   util.call(pipeline.groupAssignment, env)
 
-	if(!is.null(env$chromosome.list))
+	if(length(env$chromosome.list) > 0)
   {
     util.info("Processing Chromosome Expression Reports")
     util.call(pipeline.chromosomeExpressionReports, env)
