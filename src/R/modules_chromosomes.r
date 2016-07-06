@@ -1,5 +1,10 @@
 modules.chromosomes <- function(spot.list, main, path)
 {
+	if(is.null(chromosome.list))
+  {
+		return()
+	}
+	
   pdf(path, 21/2.54, 29.7/2.54)
  
   sorted.unique.gene.positions <- unlist( sapply( 1:length(chromosome.list), function(i) paste( names(chromosome.list)[i], names(chromosome.list[[i]]), sep=" " ) ) )
