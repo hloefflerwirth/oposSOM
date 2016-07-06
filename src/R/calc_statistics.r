@@ -1,7 +1,6 @@
 pipeline.calcStatistics <- function()
 {
   util.info("Calculating Single Gene Statistic")
-  util.progress(0, 48)
  
   WAD.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
   
@@ -15,9 +14,6 @@ pipeline.calcStatistics <- function()
 
   
   # Calculate T-score and significance
-  progress.max <- ncol(indata)
-  progress.current <- 0
-
   
   sd.g.m <- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
   
@@ -34,28 +30,23 @@ pipeline.calcStatistics <- function()
   Fdr.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
   
 
+  o <- order(indata.gene.mean)
+  sdo <- apply(indata, 1, sd)[o]
+  col <- Get.Running.Average(sdo, min(200, round(nrow(indata) * 0.02)))
+  col[which(is.nan(col))] <- 0.0000000001
+  col[which(col == 0)] <- 0.0000000001
+
+  for (i in seq(length(col)-1, 1))
   {
-    o <- order(indata.gene.mean)
-    sdo <- apply(indata, 1, sd)[o]
-    col <- Get.Running.Average(sdo, min(200, round(nrow(indata) * 0.02)))
-    col[which(is.nan(col))] <- 0.0000000001
-    col[which(col == 0)] <- 0.0000000001
+    col[i] <- max(col[i], col[i+1])
+  }
 
-    for (i in seq(length(col)-1, 1))
-    {
-      col[i] <- max(col[i], col[i+1])
-    }
+  sd.g.m[o,] <- col
 
-    sd.g.m[o,] <- col
-
-    t.g.m <<- apply(indata, 2, function(x, root)
-    {
-      return(root * x / sd.g.m[,1])
-    }, sqrt(ncol(indata)))
-
-    progress.current <- progress.current + (0.6 * ncol(indata))
-    util.progress(progress.current, progress.max)
-  } 
+  t.g.m <<- apply(indata, 2, function(x, root)
+  {
+    return(root * x / sd.g.m[,1])
+  }, sqrt(ncol(indata)))
 
 
 
@@ -89,21 +80,11 @@ pipeline.calcStatistics <- function()
       n.0.m[m] <<- 0.5
       perc.DE.m[m] <<- 1 - n.0.m[m]
     }
-
-    progress.current <- progress.current + 0.4
-    util.progress(progress.current, progress.max)
   }
-
-  util.progress.terminate()
-  
 
   ### Metagenes ###
 
-  progress.current <- 0
-  progress.max <- ncol(indata)
-
   util.info("Calculating Metagene Statistic")
-  util.progress(progress.current, progress.max)
 
   t.m <<- p.m <<-
     matrix(NA, preferences$dim.1stLvlSom ^ 2, ncol(indata),
@@ -111,9 +92,6 @@ pipeline.calcStatistics <- function()
 
   t.m.help <- do.call(rbind, by(t.g.m, som.result$nodes, colMeans))
   t.m[rownames(t.m.help),] <<- t.m.help
-
-  progress.current <- 0.4 * progress.max
-  util.progress(progress.current, progress.max)
 
   for (m in 1:ncol(indata))
   {
@@ -130,11 +108,6 @@ pipeline.calcStatistics <- function()
     {
       p.m[which(!is.na(t.m[,m])),m] <<- t.m[which(!is.na(t.m[,m])),m] / max(t.m[,m], na.rm=TRUE)
     }
-
-    progress.current <- progress.current + 0.6
-    util.progress(progress.current, progress.max)
   }
-
-  util.progress.terminate()
 
 }
