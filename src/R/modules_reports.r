@@ -71,9 +71,6 @@ modules.report.sheets <- function(spot.list, main, path)
            pt.cex=1.5, bty="n")
     
     legend(x=-0.04, y=1, legend=leg.num, cex=0.7, bty="n")
-  }  else
-  {
-    top.GS <- rep("", n.sets * length(spot.list$spots))
   }
   
   
