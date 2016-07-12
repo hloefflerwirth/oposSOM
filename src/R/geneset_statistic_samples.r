@@ -8,7 +8,7 @@ pipeline.genesetStatisticSamples <- function()
   t.ensID.m <<- t.g.m[which(rownames(indata) %in% names(gene.info$ids)),]
   t.ensID.m <<- do.call(rbind, by(t.ensID.m, gene.info$ids, colMeans))
 
-  if (preferences$geneset.analysis.exact)
+  if (preferences$activated.modules$geneset.analysis.exact)
   {
     gs.null.list <- list()
 
@@ -44,7 +44,7 @@ pipeline.genesetStatisticSamples <- function()
       GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.def.list, sort=FALSE)
 #      GeneSet.maxmean(all.gene.statistic, gs.def.list)
 
-    if (preferences$geneset.analysis.exact)
+    if (preferences$activated.modules$geneset.analysis.exact)
     {
        x$GSZ.p.value <- 1 - null.culdensity(abs(x$GSZ.score))
        names(x$GSZ.p.value) <- names(x$GSZ.score)

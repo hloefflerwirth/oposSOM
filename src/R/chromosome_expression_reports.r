@@ -47,7 +47,6 @@ sort.label <- function(x)
 
 pipeline.chromosomeExpressionReports <- function()
 {
-  
   chr.gene.list <- lapply( chromosome.list, unlist )
   chr.gene.list <- chr.gene.list[  oposSOM:::sort.label( names(chr.gene.list) )  ]
   chr.gene.list <- lapply( chr.gene.list, function(x)

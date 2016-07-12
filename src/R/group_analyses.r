@@ -1,15 +1,9 @@
 pipeline.groupAnalysis <- function()
 {
-  if (length(unique(group.labels)) < 2)
-  {
-    return()
-  }
-
-  util.info("Processing Group-centered Analyses")
   dir.create(paste(files.name, "- Results/Summary Sheets - Groups"), showWarnings=FALSE)
   dir.create(paste(files.name, "- Results/Summary Sheets - Groups/CSV Sheets"), showWarnings=FALSE)
 
-  if (preferences$geneset.analysis)
+  if (preferences$activated.modules$geneset.analysis)
   {
     dir.create(paste(files.name, "- Results/Summary Sheets - Groups/Geneset Analysis"), showWarnings=FALSE)
     util.call(pipeline.groupSpecificGenesets, environment())
@@ -111,9 +105,8 @@ pipeline.groupAnalysis <- function()
   
   util.call(pipeline.detectSpotsSamples, environment())
 
-  preferences$geneset.analysis.exact <- FALSE
-  preferences$geneset.analysis.samplespots <- FALSE  
-  if (preferences$geneset.analysis)
+  preferences$activated.modules$geneset.analysis.exact <- FALSE
+  if (preferences$activated.modules$geneset.analysis)
   {
     util.call(pipeline.genesetStatisticSamples, environment())
   }

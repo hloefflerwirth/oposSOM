@@ -1,5 +1,7 @@
 pipeline.htmlSampleSummary <- function()
 {
+  if(ncol(indata) >= 1000) return()
+	
   filename <- file.path(paste(files.name, "- Results"),
                         "Summary Sheets - Samples",
                         "0verview.html")

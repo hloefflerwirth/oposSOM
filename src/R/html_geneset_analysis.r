@@ -1,6 +1,6 @@
 pipeline.htmlGenesetAnalysis <- function()
 {
-  if (!preferences$geneset.analysis)
+  if (!preferences$activated.modules$geneset.analysis)
   {
     return()
   }

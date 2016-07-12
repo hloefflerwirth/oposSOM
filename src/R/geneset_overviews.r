@@ -105,7 +105,7 @@ pipeline.genesetOverviews <- function()
   }
 
   ### p Histogram + FDR
-  if (preferences$geneset.analysis.exact)
+  if (preferences$activated.modules$geneset.analysis.exact)
   {
     p <- as.vector(sapply(spot.list.samples, function(x)  x$GSZ.p.value  ))
 

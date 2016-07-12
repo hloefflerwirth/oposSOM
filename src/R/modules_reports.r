@@ -56,7 +56,7 @@ modules.report.sheets <- function(spot.list, main, path)
   
   box()
   
-  if (preferences$geneset.analysis)
+  if (preferences$activated.modules$geneset.analysis)
   {
     n.sets <- ifelse( length(spot.list$spots)<=15, 3, 2 ) 
     
@@ -307,7 +307,7 @@ modules.report.sheets <- function(spot.list, main, path)
     
     plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
     
-    if (preferences$geneset.analysis)
+    if (preferences$activated.modules$geneset.analysis)
     {
       n.sets <- 40
       top.gs.p <- sort(spot.list$spots[[m]]$Fisher.p)[1:n.sets]

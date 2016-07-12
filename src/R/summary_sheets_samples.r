@@ -1,11 +1,13 @@
 pipeline.summarySheetsSamples <- function()
 {
+  if(ncol(indata) >= 1000) return()
+    
   dir.create(output.paths["Summary Sheets Samples"], showWarnings=FALSE)
 
   #### Summary Sheets ####
   n.genes.in.genesets <- 0
 
-  if (preferences$geneset.analysis)
+  if (preferences$activated.modules$geneset.analysis)
   {
     n.genes.in.genesets <- length(intersect(unique(unlist(gs.def.list)), gene.info$ids))
   }
@@ -170,7 +172,7 @@ pipeline.summarySheetsSamples <- function()
            col=c("black","gray","black","black"), lty=c(1,1,2,3),
            lwd=c(1,1,1,2), cex=0.7)
 
-    if (preferences$geneset.analysis)
+    if (preferences$activated.modules$geneset.analysis)
     {
       n.sets <- 20
 
@@ -214,7 +216,7 @@ pipeline.summarySheetsSamples <- function()
       text(x.coords[5], y.coords, sapply(gs.def.list, function(x) { x$Type })[names(top.gs.score)], cex=0.6, adj=0)
       text(x.coords[6], y.coords, names(top.gs.score), cex=0.6, adj=0)
 
-      if (preferences$geneset.analysis.exact)
+      if (preferences$activated.modules$geneset.analysis.exact)
       {
         p <- spot.list.samples[[m]]$GSZ.p.value
 

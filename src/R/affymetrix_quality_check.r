@@ -1,6 +1,5 @@
 pipeline.affymetrixQualityCheck <- function()
 {
-   
   spike.in.controls = c("AFFX-LysX-3_at","AFFX-PheX-3_at","AFFX-ThrX-3_at","AFFX-DapX-3_at")
   
   if( all( spike.in.controls %in% rownames(indata) ) )
@@ -100,7 +99,5 @@ pipeline.affymetrixQualityCheck <- function()
     
   }
 
-
-  
 }
 

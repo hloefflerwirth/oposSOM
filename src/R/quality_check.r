@@ -40,6 +40,7 @@ pipeline.qualityCheck <- function()
 
 	
 	indata.sample.sd <- apply(indata, 2, sd)
+	indata.sample.mean <- colMeans(indata)
 
 	Q13 <- quantile( indata.sample.mean, c(0.25,0.75) )
 	IQR1.mean <- c( Q13[1] - 1*diff( Q13 ), Q13[2] + 1*diff( Q13 ) )
@@ -90,7 +91,6 @@ pipeline.qualityCheck <- function()
     boxplot(mean.boxes, col=groupwise.group.colors, las=2, main="", cex.main=1, cex.axis=0.8, xaxt="n")
     axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2, cex.axis=0.8)
   }
-
   
   
   environment(pipeline.affymetrixQualityCheck) <- environment()

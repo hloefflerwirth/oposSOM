@@ -19,7 +19,7 @@ pipeline.prepareAnnotation <- function()
   {
     util.warn("biomaRt seems to be down.")
     util.warn("Disabling geneset analysis.")
-    preferences$geneset.analysis <<- FALSE
+    preferences$activated.modules$geneset.analysis <<- FALSE
     return()
   }
 
@@ -55,7 +55,7 @@ pipeline.prepareAnnotation <- function()
   {
     util.warn("Could not find valid annotation parameters.")
     util.warn("Disabling geneset analysis.")
-    preferences$geneset.analysis <<- FALSE
+    preferences$activated.modules$geneset.analysis <<- FALSE
     return()
   }
   
@@ -74,7 +74,7 @@ pipeline.prepareAnnotation <- function()
   {
     util.warn("Could not resolve rownames. Possibly wrong database.id.type")
     util.warn("Disabling geneset analysis.")
-    preferences$geneset.analysis <<- FALSE
+    preferences$activated.modules$geneset.analysis <<- FALSE
   } else
   {
     h <- biomart.table[,2]
@@ -115,7 +115,7 @@ pipeline.prepareAnnotation <- function()
 
   }
 
-  if (!preferences$geneset.analysis) {
+  if (!preferences$activated.modules$geneset.analysis) {
     return()
   }
 
@@ -179,7 +179,7 @@ pipeline.prepareAnnotation <- function()
     util.info("In total", length(gs.def.list), "gene sets to be considered in analysis")
   } else
   {
-    preferences$geneset.analysis <<- FALSE
+    preferences$activated.modules$geneset.analysis <<- FALSE
     util.warn("No Geneset information -> turning off GS analysis")
   }
 }

@@ -125,7 +125,7 @@ pipeline.htmlGroupSummary <- function()
             <th>Global Gene List</th>
             <th>Gene Set List</th>", sep="", file=f)
 
-  if (preferences$geneset.analysis)
+  if (preferences$activated.modules$geneset.analysis)
   {
     cat("
             <th colspan=\"2\">Specific Gene Set</th>", sep="", file=f)
@@ -160,7 +160,7 @@ pipeline.htmlGroupSummary <- function()
               </a>
             </td>", sep="", file=f)
 
-    if (preferences$geneset.analysis)
+    if (preferences$activated.modules$geneset.analysis)
     {
       cat("
             <td>

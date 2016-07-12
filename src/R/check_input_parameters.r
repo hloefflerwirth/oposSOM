@@ -1,24 +1,24 @@
-pipeline.prepare <- function()
+pipeline.checkInputParameters <- function()
 {
-  ## check preferences
+  #### check preferences ####
   if (!is.character(preferences$dataset.name))
   {
     util.warn("Invalid value of \"dataset.name\". Using \"Unnamed\"")
     preferences$dataset.name <<- "Unnamed"
   }
-
+  
   if ( preferences$dim.1stLvlSom!="auto" && !is.numeric(preferences$dim.1stLvlSom) || preferences$dim.1stLvlSom < 1)
   {
     util.warn("Invalid value of \"dim.1stLvlSom\". Using size recommendation")
     preferences$dim.1stLvlSom <<- "auto"
   }
-
+  
   if (!is.numeric(preferences$dim.2ndLvlSom) || preferences$dim.2ndLvlSom < 1)
   {
     util.warn("Invalid value of \"dim.2ndLvlSom\". Using 20")
     preferences$dim.2ndLvlSom <<- 20
   }
-
+  
   if (!is.numeric(preferences$training.extension) ||
       preferences$training.extension < 1 ||
       preferences$training.extension > 10)
@@ -26,7 +26,7 @@ pipeline.prepare <- function()
     util.warn("Invalid value of \"training.extension\". Using 1")
     preferences$training.extension <<- 1
   }
-
+  
   if (!is.numeric(preferences$rotate.SOM.portraits) ||
       preferences$rotate.SOM.portraits < 0 ||
       preferences$rotate.SOM.portraits > 4)
@@ -34,19 +34,19 @@ pipeline.prepare <- function()
     util.warn("Invalid value of \"rotate.SOM.portraits\". Using 0")
     preferences$rotate.SOM.portraits <<- 0
   }
-
+  
   if (!is.logical(preferences$flip.SOM.portraits))
   {
     util.warn("Invalid value of \"flip.SOM.portraits\". Using FALSE")
     preferences$flip.SOM.portraits <<- FALSE
   }
-
+  
   if (!is.character(preferences$database.biomart))
   {
     util.warn("Invalid value of \"database.biomart\". Using \"\"")
     preferences$database.biomart <<- ""
   }
-
+  
   if (!is.character(preferences$database.host))
   {
     util.warn("Invalid value of \"database.host\". Using \"\"")
@@ -58,23 +58,65 @@ pipeline.prepare <- function()
     util.warn("Invalid value of \"database.dataset\". Using \"\"")
     preferences$database.dataset <<- ""
   }
-
+  
   if (!is.character(preferences$database.id.type))
   {
     util.warn("Invalid value of \"database.id.type\". Using \"\"")
     preferences$database.id.type <<- ""
   }
-
-  if (!is.logical(preferences$geneset.analysis))
+  
+  if (!is.list(preferences$activated.modules))
   {
-    util.warn("Invalid value of \"geneset.analysis\". Using TRUE")
-    preferences$geneset.analysis <<- TRUE
-  }
-
-  if (!is.logical(preferences$geneset.analysis.exact))
+    util.warn("Invalid value of \"activated.modules\". Using all analysis modules")
+    preferences$activated.modules = list( "reporting" = TRUE,
+                              "primary.analysis" = TRUE, 
+                              "sample.similarity.analysis" = TRUE,
+                              "geneset.analysis" = TRUE, 
+                              "geneset.analysis.exact" = FALSE,
+                              "group.analysis" = TRUE,
+                              "difference.analysis" = TRUE )
+  } else
   {
-    util.warn("Invalid value of \"geneset.analysis.exact\". Using FALSE")
-    preferences$geneset.analysis.exact <<- FALSE
+    if (!is.logical(preferences$activated.modules$reporting))
+    {
+      util.warn("Invalid value of \"activated.modules$reporting\". Using TRUE")
+      preferences$activated.modules$reporting <<- TRUE
+    }
+    if (!is.logical(preferences$activated.modules$primary.analysis))
+    {
+      util.warn("Invalid value of \"activated.modules$primary.analysis\". Using TRUE")
+      preferences$activated.modules$primary.analysis <<- TRUE
+    } else
+    if (!preferences$activated.modules$primary.analysis && is.null(env$som.result))
+    {
+      util.warn("No primary analysis perfomed yet. Setting \"activated.modules$primary.analysis\" to TRUE")
+      preferences$activated.modules$primary.analysis <<- TRUE
+    }
+    if (!is.logical(preferences$activated.modules$sample.similarity.analysis))
+    {
+      util.warn("Invalid value of \"activated.modules$sample.similarity.analysis\". Using TRUE")
+      preferences$activated.modules$sample.similarity.analysis <<- TRUE
+    }
+    if (!is.logical(preferences$activated.modules$geneset.analysis))
+    {
+      util.warn("Invalid value of \"activated.modules$geneset.analysis\". Using TRUE")
+      preferences$activated.modules$geneset.analysis <<- TRUE
+    }
+    if (!is.logical(preferences$activated.modules$geneset.analysis.exact))
+    {
+      util.warn("Invalid value of \"activated.modules$geneset.analysis.exact\". Using FALSE")
+      preferences$activated.modules$geneset.analysis.exact <<- FALSE
+    }    
+    if (!is.logical(preferences$activated.modules$group.analysis))
+    {
+      util.warn("Invalid value of \"activated.modules$group.analysis\". Using TRUE")
+      preferences$activated.modules$group.analysis <<- TRUE
+    }
+    if (!is.logical(preferences$activated.modules$difference.analysis))
+    {
+      util.warn("Invalid value of \"activated.modules$difference.analysis\". Using TRUE")
+      preferences$activated.modules$difference.analysis <<- TRUE
+    }
   }
   
   if (!is.character(preferences$standard.spot.modules) || length(preferences$standard.spot.modules)!=1 ||
@@ -91,7 +133,7 @@ pipeline.prepare <- function()
     util.warn("Invalid value of \"spot.coresize.modules\". Using 3")
     preferences$spot.coresize.modules <<- 3
   }
-
+  
   if (!is.numeric(preferences$spot.threshold.modules) ||
       preferences$spot.threshold.modules <= 0 ||
       preferences$spot.threshold.modules >= 1)
@@ -99,7 +141,7 @@ pipeline.prepare <- function()
     util.warn("Invalid value of \"spot.threshold.modules\". Using 0.95")
     preferences$spot.threshold.modules <<- 0.95
   }
-
+  
   if (!is.numeric(preferences$spot.coresize.groupmap) ||
       preferences$spot.coresize.groupmap < 1 ||
       preferences$spot.coresize.groupmap > 20)
@@ -107,7 +149,7 @@ pipeline.prepare <- function()
     util.warn("Invalid value of \"spot.coresize.groupmap\". Using 5")
     preferences$spot.coresize.groupmap <<- 5
   }
-
+  
   if (!is.numeric(preferences$spot.threshold.groupmap) ||
       preferences$spot.threshold.groupmap <= 0 ||
       preferences$spot.threshold.groupmap >= 1)
@@ -115,19 +157,19 @@ pipeline.prepare <- function()
     util.warn("Invalid value of \"spot.threshold.groupmap\". Using 0.75")
     preferences$spot.threshold.groupmap <<- 0.75
   }
-
+  
   if (!is.logical(preferences$feature.centralization))
   {
     util.warn("Invalid value of \"feature.centralization\". Using TRUE")
     preferences$feature.centralization <<- TRUE
   }
-
+  
   if (!is.logical(preferences$sample.quantile.normalization))
   {
     util.warn("Invalid value of \"sample.quantile.normalization\". Using TRUE")
     preferences$sample.quantile.normalization <<- TRUE
   }
-
+  
   if (!is.null(preferences$pairwise.comparison.list))
   {
     # translate sample names into indexes
@@ -154,26 +196,26 @@ pipeline.prepare <- function()
   }
   
   
-  # check input parameters/data
+  #### check input data ####
   if (is.null(indata))
   {
     util.fatal("No indata supplied!")
     return(FALSE)
   }
-
+  
   if (class(indata) == "ExpressionSet")
   {
     group.labels <<- as.character(pData(indata)$group.labels)
     group.colors <<- as.character(pData(indata)$group.colors)
     indata <<- assayData(indata)$exprs
   }
-
+  
   if (class(indata) != "matrix" && (is.null(dim(indata)) || dim(indata) < 1))
   {
     util.fatal("Invalid indata supplied!")
     return(FALSE)
   }
-
+  
   if (class(indata) != "matrix" ||
       mode(indata) != "numeric" ||
       storage.mode(indata) != "numeric")
@@ -183,7 +225,7 @@ pipeline.prepare <- function()
     rownames(indata) <<- rn
     storage.mode(indata) <<- "numeric"
   }
-
+  
   if( length(group.labels)==1 && group.labels=="auto" )
   {
     group.labels <<- rep("auto",ncol(indata)) 
@@ -191,7 +233,7 @@ pipeline.prepare <- function()
   }
   
   const.cols <- which(apply(indata, 2, function(col) { diff(range(col)) == 0 }))
-
+  
   if (length(const.cols) > 0)
   {
     indata <<- indata[,-const.cols]
@@ -199,34 +241,34 @@ pipeline.prepare <- function()
     group.colors <<- group.colors[-const.cols]
     util.warn("Removed constant columns from data set.")
   }
-
+  
   const.rows <- which(apply(indata, 1, function(row) { diff(range(row)) == 0 }))
-
+  
   if (length(const.rows) > 0)
   {
     indata <<- indata[-const.rows,]
     util.warn("Removed constant rows from data set.")
   }
-
+  
   if (length(rownames(indata)) == 0)
   {
     rownames(indata) <<- as.character(1:nrow(indata))
-    preferences$geneset.analysis <<- FALSE
+    preferences$activated.modules$geneset.analysis <<- FALSE
     util.warn("No rownames found. Set them to 1,2,3,4...")
   }
-
+  
   if (length(colnames(indata)) == 0)
   {
     colnames(indata) <<- paste("Sample", c(1:ncol(indata)))
     util.warn("No colnames found. Set them to 1,2,3,4...")
   }
-
+  
   if (any(duplicated(rownames(indata))))
   {
     indata <<- do.call(rbind, by(indata, rownames(indata), colMeans))[unique(rownames(indata)),]
     util.warn("Duplicate rownames. Averaged multiple features")
   }
-
+  
   na.rows <- which( apply(indata, 1, function(x) sum( is.na(x) | is.infinite(x) ) ) > 0 )
   
   if (length(na.rows) > 0)
@@ -234,7 +276,7 @@ pipeline.prepare <- function()
     indata <<- indata[-na.rows,]
     util.warn("Removed NAs or infinite values from data set")
   }
-
+  
   if (preferences$dim.1stLvlSom == "auto")
   {
     n.sample.interval <- cut( ncol(indata), breaks=c(0,100,500,1000,5000,Inf), labels=c(1:5) )
@@ -245,23 +287,71 @@ pipeline.prepare <- function()
     util.info("Recommended SOM size will be used:",preferences$dim.1stLvlSom,"x",preferences$dim.1stLvlSom) 
   }
   
-  ## set up global variables
-
-  files.name <<- preferences$dataset.name
-
-  while (file.exists(paste(files.name, ".RData", sep=""))) {
-    files.name <<- paste(files.name, "+", sep="")
+  # check group.labels and group.colors
+  if ((!is.null(group.labels) && length(group.labels) != ncol(indata)) ||
+      (!is.null(group.colors) && length(group.colors) != ncol(indata)))
+  {
+    group.labels <<- NULL
+    group.colors <<- NULL
+    util.warn("Group assignment doesnt fit number of samples")
   }
-
-  output.paths <<-
-    c("CSV"=paste(files.name, "- Results/CSV Sheets"),
-      "Summary Sheets Samples"=paste(files.name, "- Results/Summary Sheets - Samples") )
-
-  # create output dirs
-  dir.create(paste(files.name, "- Results"), showWarnings=FALSE)
-  dir.create(paste(files.name, "- Results/CSV Sheets"), showWarnings=FALSE)
-
-
+  
+  if (!is.null(group.labels) && max(table(group.labels)) == 1)
+  {
+    group.labels <<- NULL
+    group.colors <<- NULL
+    util.warn("Each sample has an own group")
+  }
+  
+  if (!is.null(group.labels))
+  {
+    for (sample in unique(colnames(indata)))
+    {
+      if (length(unique(group.labels[which(colnames(indata) == sample)])) > 1)
+      {
+        util.warn("Sample is in multiple groups:", sample)
+        group.labels <<- NULL
+        group.colors <<- NULL
+        break
+      }
+    }
+  }
+  
+  if (!is.null(group.labels))
+  {
+    group.labels <<- as.character(group.labels)
+    names(group.labels) <<- colnames(indata)
+    
+    if (is.null(group.colors))
+    {
+      group.colors <<- rep("", ncol(indata))
+      
+      for (i in seq_along(unique(group.labels)))
+      {
+        group.colors[which(group.labels == unique(group.labels)[i])] <<-
+          colorRampPalette(c("blue3", "blue", "lightblue", "green2", "gold", "red", "red3"))(length(unique(group.labels)))[i]
+      }
+    }
+    
+    # catch userdefined group.colors --> convert to #hex
+    if (length(unique(substr(group.colors, 1, 1)) > 1) || unique(substr(group.colors, 1, 1))[1] != "#")
+    {
+      group.colors <<- apply(col2rgb(group.colors), 2, function(x) { rgb(x[1]/255, x[2]/255, x[3]/255) })
+    }
+    names(group.colors) <<- colnames(indata)
+  } else
+  {
+    group.labels <<- rep("sample", ncol(indata))
+    names(group.labels) <<- colnames(indata)
+    
+    group.colors <<- colorRampPalette(c("blue3", "blue", "lightblue", "green2", "gold", "red", "red3"))(ncol(indata))
+    names(group.colors) <<- colnames(indata)
+  }
+  
+  groupwise.group.colors <<- group.colors[match(unique(group.labels), group.labels)]
+  names(groupwise.group.colors) <<- unique(group.labels)
+  
+  
   # set color schemes
   if (!is.null(color.palette.portraits)) # check if given color palette is a valid function
   {
@@ -286,170 +376,18 @@ pipeline.prepare <- function()
   {
     color.palette.heatmaps <<- colorRampPalette(c("blue4","blue","gray90","orange","red4"))
   }
-
-  # check group.labels and group.colors
-  if ((!is.null(group.labels) && length(group.labels) != ncol(indata)) ||
-      (!is.null(group.colors) && length(group.colors) != ncol(indata)))
-  {
-    group.labels <<- NULL
-    group.colors <<- NULL
-    util.warn("Group assignment doesnt fit number of samples")
-  }
-
-  if (!is.null(group.labels) && max(table(group.labels)) == 1)
-  {
-    group.labels <<- NULL
-    group.colors <<- NULL
-    util.warn("Each sample has an own group")
-  }
-
-  if (!is.null(group.labels))
-  {
-    for (sample in unique(colnames(indata)))
-    {
-      if (length(unique(group.labels[which(colnames(indata) == sample)])) > 1)
-      {
-        util.warn("Sample is in multiple groups:", sample)
-        group.labels <<- NULL
-        group.colors <<- NULL
-        break
-      }
-    }
-  }
-
-  if (!is.null(group.labels))
-  {
-    group.labels <<- as.character(group.labels)
-    names(group.labels) <<- colnames(indata)
-
-    if (is.null(group.colors))
-    {
-      group.colors <<- rep("", ncol(indata))
-
-      for (i in seq_along(unique(group.labels)))
-      {
-        group.colors[which(group.labels == unique(group.labels)[i])] <<-
-          colorRampPalette(c("blue3", "blue", "lightblue", "green2", "gold", "red", "red3"))(length(unique(group.labels)))[i]
-      }
-    }
-
-    # catch userdefined group.colors --> convert to #hex
-    if (length(unique(substr(group.colors, 1, 1)) > 1) || unique(substr(group.colors, 1, 1))[1] != "#")
-    {
-      group.colors <<- apply(col2rgb(group.colors), 2, function(x) { rgb(x[1]/255, x[2]/255, x[3]/255) })
-    }
-    names(group.colors) <<- colnames(indata)
-  } else
-  {
-    group.labels <<- rep("sample", ncol(indata))
-    names(group.labels) <<- colnames(indata)
-
-    group.colors <<- colorRampPalette(c("blue3", "blue", "lightblue", "green2", "gold", "red", "red3"))(ncol(indata))
-    names(group.colors) <<- colnames(indata)
-  }
-
-  groupwise.group.colors <<- group.colors[match(unique(group.labels), group.labels)]
-  names(groupwise.group.colors) <<- unique(group.labels)
-
-  # prepare data
-
-  indata.sample.mean <<- colMeans(indata)
-  util.call(pipeline.qualityCheck, environment())
-
-  if (preferences$sample.quantile.normalization)
-  {
-    indata <<- Quantile.Normalization(indata)
-  }
-
-  colnames(indata) <<- make.unique(colnames(indata))
-  names(group.labels) <<- make.unique(names(group.labels))
-  names(group.colors) <<- make.unique(names(group.colors))
-
-
-  indata.gene.mean <<- rowMeans(indata)
-
-  if (preferences$feature.centralization)
-  {
-    indata <<- indata - indata.gene.mean
-  }
-
-  util.info("Loading gene annotation data. This may take several minutes until next notification.")
-  util.call(pipeline.prepareAnnotation, environment())
-
-
-  ## SOM
-  util.info("Processing SOM. This may take several time until next notification.")
   
-  som.result <<- som.init(indata, xdim=preferences$dim.1stLvlSom, ydim=preferences$dim.1stLvlSom, init="linear")
-
-  # Rotate/Flip First lvl SOMs
-
-  if (preferences$rotate.SOM.portraits > 0)
+  if(preferences$activated.modules$primary.analysis)
   {
-    for (i in 1:preferences$rotate.SOM.portraits)
-    {
-      o <- matrix(c(1:(preferences$dim.1stLvlSom^2)), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom, byrow=TRUE)
-      o <- o[rev(1:preferences$dim.1stLvlSom),]
-      som.result <<- som.result[as.vector(o),]
+    files.name <<- preferences$dataset.name
+    while (file.exists(paste(files.name, ".RData", sep=""))) {
+      files.name <<- paste(files.name, "+", sep="")
     }
-  }
-
-  if (preferences$flip.SOM.portraits)
-  {
-    o <- matrix(c(1:(preferences$dim.1stLvlSom^2)), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom, byrow=TRUE)
-    som.result <<- som.result[as.vector(o),]
-  }
-
-
-  # Train SOM
-
-  # The following would train the SOM in one step...
-  #som.result <<- som(indata, xdim=preferences$dim.1stLvlSom, ydim=preferences$dim.1stLvlSom)
-
-  # We split training in two steps to estimate the time we need.
-  t1 <- system.time({
-    som.result <<- som.train(indata, som.result, xdim=preferences$dim.1stLvlSom,
-                             ydim=preferences$dim.1stLvlSom, alpha=0.05,
-                             radius=preferences$dim.1stLvlSom,
-                             rlen=nrow(indata)*2*preferences$training.extension,
-                             inv.alp.c=nrow(indata)*2*preferences$training.extension/100)
-  })
-
-  util.info("Remaining time for SOM training: ~", ceiling(5*t1[3]/60), "min = ~", round(5*t1[3]/3600,1),"h")
-
-  som.result <<- som.train(indata, som.result$code, xdim=preferences$dim.1stLvlSom,
-                           ydim=preferences$dim.1stLvlSom, alpha=0.02,
-                           radius=min(3, preferences$dim.1stLvlSom),
-                           rlen=nrow(indata)*10*preferences$training.extension,
-                           inv.alp.c=nrow(indata)*10*preferences$training.extension/100)
-
-  metadata <<- som.result$code
-  colnames(metadata) <<- colnames(indata)
-
-  som.result$data <<- NULL
-  som.result$code <<- NULL
-
-
-  ## set up SOM dependent variables
-  gene.info$coordinates <<- apply(som.result$visual[,c(1,2)]+1, 1, paste, collapse=" x ")
-  names(gene.info$coordinates) <<- rownames(indata)
-
-  som.result$nodes <<- (som.result$visual[,"x"] + 1) + som.result$visual[,"y"] * preferences$dim.1stLvlSom
-  names(som.result$nodes) <<- rownames(indata)
-
-  
-  ## gene localization table
-  o <- order(som.result$nodes)
-  out <- data.frame(ID=rownames(indata)[o],
-                    Symbol=gene.info$names[o],
-                    MeanExpression=indata.gene.mean[o],
-                    Metagene=gene.info$coordinates[o],
-                    Chromosome=paste( gene.info$chr.name[rownames(indata)[o]], gene.info$chr.band[rownames(indata)[o]]),
-                    Description=gene.info$descriptions[o])
-  
-  filename <- file.path(paste(files.name, "- Results"), "CSV Sheets", "Gene localization.csv")
-  util.info("Writing:", filename)
-  write.csv2(out, filename, row.names=FALSE)
+    
+    output.paths <<-
+      c("CSV"=paste(files.name, "- Results/CSV Sheets"),
+        "Summary Sheets Samples"=paste(files.name, "- Results/Summary Sheets - Samples") )
+  } 
   
   return(TRUE)
 }

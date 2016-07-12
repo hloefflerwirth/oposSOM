@@ -32,7 +32,6 @@ pipeline.differenceAnalyses = function()
   }
   
   
-  util.info("Processing Differences Analyses")
   dir.create(paste(files.name, "- Results/Summary Sheets - Differences"), showWarnings=FALSE)
   dir.create(paste(files.name, "- Results/Summary Sheets - Differences/CSV Sheets"), showWarnings=FALSE)
 
@@ -132,9 +131,8 @@ pipeline.differenceAnalyses = function()
 
   util.call(pipeline.detectSpotsSamples, environment())
 
-  preferences$geneset.analysis.exact <- FALSE
-  preferences$geneset.analysis.samplespots <- FALSE  
-  if (preferences$geneset.analysis)
+  preferences$activated.modules$geneset.analysis.exact <- FALSE
+  if (preferences$activated.modules$geneset.analysis)
   {
     if (ncol(t.g.m) == 1)
     {

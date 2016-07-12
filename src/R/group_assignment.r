@@ -11,7 +11,6 @@ pipeline.groupAssignment <- function()
   if( length(unique(group.labels)==1) && unique(group.labels)[1] == "auto" )
   {
     util.info("Auto-assign sample groups (PAT-groups)")
-    dir.create(paste(files.name, "- Results/Summary Sheets - Groups"), showWarnings=FALSE)
     
     spot.list <- get(paste("spot.list.",preferences$standard.spot.modules,sep=""))
     
@@ -47,13 +46,13 @@ pipeline.groupAssignment <- function()
     n.ref <- y[1] - m * x[1]  
 
     # find optimal cluster number    
-    opt.cluster.number <<- length(withinss)
+    opt.cluster.number <- length(withinss)
     for( k in 2:length(withinss) )
     {
       n.k <- y[as.character(k)] - m * x[k-1]
       if( all( n.k+m*x <= withinss ) )
       {
-        opt.cluster.number <<- k
+        opt.cluster.number <- k
         break        
       }
     } 
@@ -61,7 +60,7 @@ pipeline.groupAssignment <- function()
     
     
     
-    opt.cluster.number <<- max( min( opt.cluster.number + preferences$adjust.autogroup.number, ncol(indata) ), 1 )
+    opt.cluster.number <- max( min( opt.cluster.number + preferences$adjust.autogroup.number, ncol(indata) ), 1 )
     
     group.labels <<- rep("",length(pat.labels))
     names(group.labels) <<- names(pat.labels)
@@ -78,24 +77,28 @@ pipeline.groupAssignment <- function()
     }
     
     
-    
-    filename <- file.path(paste(files.name, "- Results"),
-                          "Summary Sheets - Groups",
-                          "PAT-groups assignment.pdf")
-    
-    util.info("Writing:", filename)
-    pdf(filename, 29.7/2.54, 21/2.54)
-    
-    x.coords <- barplot( withinss, col="gray90",ylim=range(y)*c(0.9,1.1), main="SSE",xlab="k",ylab="SSE", xpd=FALSE )
-      box()
-      lines( c(x.coords[1],x.coords[length(x)]), n.opt+m*c(x[1],x[length(x)]), col="red", xpd=FALSE )
-      lines( c(x.coords[1],x.coords[length(x)]), n.ref+m*c(x[1],x[length(x)]), col="red", xpd=FALSE )
-      abline(v=x.coords[opt.cluster.number-1],col="blue3",xpd=FALSE)
-      abline(h=withinss[opt.cluster.number-1],col="blue3",xpd=FALSE)
-    
-    barplot( table(group.labels), main="PAT group frequency" )
-    
-    dev.off()
+    if(preferences$activated.modules$reporting)
+    {  
+      dir.create(paste(files.name, "- Results/Summary Sheets - Groups"), showWarnings=FALSE)
+      
+      filename <- file.path(paste(files.name, "- Results"),
+                            "Summary Sheets - Groups",
+                            "PAT-groups assignment.pdf")
+      
+      util.info("Writing:", filename)
+      pdf(filename, 29.7/2.54, 21/2.54)
+      
+      x.coords <- barplot( withinss, col="gray90",ylim=range(y)*c(0.9,1.1), main="SSE",xlab="k",ylab="SSE", xpd=FALSE )
+        box()
+        lines( c(x.coords[1],x.coords[length(x)]), n.opt+m*c(x[1],x[length(x)]), col="red", xpd=FALSE )
+        lines( c(x.coords[1],x.coords[length(x)]), n.ref+m*c(x[1],x[length(x)]), col="red", xpd=FALSE )
+        abline(v=x.coords[opt.cluster.number-1],col="blue3",xpd=FALSE)
+        abline(h=withinss[opt.cluster.number-1],col="blue3",xpd=FALSE)
+      
+      barplot( table(group.labels), main="PAT group frequency" )
+      
+      dev.off()
+    }
     
     
     # sort data objects
