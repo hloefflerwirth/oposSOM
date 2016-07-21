@@ -85,8 +85,8 @@ pipeline.summarySheetsModules <- function()
   dir.create(dirname, showWarnings=FALSE, recursive=TRUE)
   
   modules.CSV.sheets(spot.list=spot.list.overexpression, main="Overexpression Spots", path=dirname )
-  modules.CSV.sheets(spot.list=spot.list.kmeans, main="K-Means Clusters", path=dirname )
-  modules.CSV.sheets(spot.list=spot.list.dmap, main="D-Clusters", path=dirname )
+  modules.CSV.sheets(spot.list=spot.list.kmeans, main="K-Means Cluster", path=dirname )
+  modules.CSV.sheets(spot.list=spot.list.dmap, main="D-Cluster", path=dirname )
   
   if (length(unique(group.labels)) > 1)
   {

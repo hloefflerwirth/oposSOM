@@ -9,7 +9,7 @@ modules.report.sheets <- function(spot.list, main, path)
     layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
     par(mar=c(5, 4, 4, 1))
     
-    col <- if(main!="D-Clusters") color.palette.portraits(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
+    col <- if(main!="D-Cluster") color.palette.portraits(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
     image(matrix(spot.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
           axes=FALSE, col=col, main=main, cex.main=1.5)
     
@@ -210,7 +210,7 @@ modules.report.sheets <- function(spot.list, main, path)
     
     par(mar=c(2,3,3,1))
     
-    col <- if(main!="D-Clusters") color.palette.portraits(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
+    col <- if(main!="D-Cluster") color.palette.portraits(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
     image(matrix(spot.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
           axes=FALSE, col=col, main="Overview Map", cex.main=1.5)
     

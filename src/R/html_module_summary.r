@@ -292,7 +292,7 @@ pipeline.htmlModuleSummary <- function()
 
   for (m in seq_along(spot.list.kmeans$spots))
   {
-    cat("<a href=\"../CSV Sheets/Spot Lists/K-Means Clusters ",
+    cat("<a href=\"../CSV Sheets/Spot Lists/K-Means Cluster ",
         names(spot.list.kmeans$spots)[m],".csv\" target=\"_blank\">",
         names(spot.list.kmeans$spots)[m],"</a>", sep="", file=outfile)
   }
@@ -308,7 +308,7 @@ pipeline.htmlModuleSummary <- function()
   
   for (m in seq_along(spot.list.dmap$spots))
   {
-    cat("<a href=\"../CSV Sheets/Spot Lists/D-Clusters ",
+    cat("<a href=\"../CSV Sheets/Spot Lists/D-Cluster ",
         names(spot.list.dmap$spots)[m],".csv\" target=\"_blank\">",
         names(spot.list.dmap$spots)[m],"</a>", sep="", file=outfile)
   }
