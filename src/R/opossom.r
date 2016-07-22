@@ -243,7 +243,7 @@ opossom.run <- function(env)
       util.call(pipeline.htmlGroupSummary, env)
 
       filename <- paste(env$files.name, ".RData", sep="")
-      load(filename,envir=globalenv()) # Reload env
+      load(filename,envir=environment()) # Reload env
     }
   
     if(env$preferences$activated.modules$difference.analysis)
@@ -253,7 +253,7 @@ opossom.run <- function(env)
       util.call(pipeline.htmlDifferencesSummary, env)
 
       filename <- paste(env$files.name, ".RData", sep="")
-      load(filename,envir=globalenv()) # Reload env
+      load(filename,envir=environment()) # Reload env
     }
 
     util.info("Generating HTML Report")
