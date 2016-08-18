@@ -62,7 +62,7 @@ pipeline.htmlSummary <- function()
         <dt>Number of genes</dt>
         <dd>", nrow(indata), "</dd>
         <dt>ID type of genes</dt>
-        <dd>", preferences$database.id.type , "</dd>
+				<dd>", ifelse( preferences$database.id.type!="", preferences$database.id.type, "not defined" ), "</dd>
         <dt>Dimension of the SOM</dt>
         <dd>", preferences$dim.1stLvlSom, " x ", preferences$dim.1stLvlSom, "</dd>
         <dt>Date</dt>

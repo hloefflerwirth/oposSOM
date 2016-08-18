@@ -48,25 +48,23 @@ sort.label <- function(x)
 pipeline.chromosomeExpressionReports <- function()
 {
   chr.gene.list <- lapply( chromosome.list, unlist )
-  chr.gene.list <- chr.gene.list[  oposSOM:::sort.label( names(chr.gene.list) )  ]
+  chr.gene.list <- chr.gene.list[  sort.label( names(chr.gene.list) )  ]
   chr.gene.list <- lapply( chr.gene.list, function(x)
   {
     x[ order( as.numeric(gene.info$chr.start[x]) ) ]
   })
-  chr.gene.list <- chr.gene.list[ which( sapply( chr.gene.list, length ) > 100 ) ]
+#  chr.gene.list <- chr.gene.list[ which( sapply( chr.gene.list, length ) > 100 ) ]
   
   chr.exp.list <- lapply( chr.gene.list, function(x)
   {
-    Smooth.Matrix( indata[x,], 100 )
-  })
-  chr.exp.list <- lapply( chr.exp.list, function(x)
-  {
-    x[ seq(1,nrow(x),10), ,drop=FALSE]
+    Smooth.Matrix( indata[x,], min(50, length(x)/10) )
   })
   chr.exp.matrix <- do.call( rbind, chr.exp.list )
   
   
   # Heatmap Outputs
+  dir.create(paste(files.name, "- Results/Data Overview"), showWarnings=FALSE)
+
   filename <- file.path(paste(files.name, "- Results"), "Data Overview", "Chromosome Expression.pdf")
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54)

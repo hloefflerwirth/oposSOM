@@ -14,6 +14,13 @@ pipeline.geneLists <- function()
   util.info("Writing:", filename)
   write.csv2(out, filename, row.names=FALSE)
   
+	
+	#### Sample GSZ Table ####
+  filename <- file.path( output.paths["CSV"], "Sample GSZ scores.csv")
+  util.info("Writing:", filename)
+  write.csv2(samples.GSZ.scores, filename)
+	
+	
   if(ncol(indata) < 1000)
   {
     dirnames <- c("global"=file.path(output.paths["CSV"], "Gene Lists - Global"),

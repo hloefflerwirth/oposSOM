@@ -302,7 +302,7 @@ pipeline.htmlModuleSummary <- function()
           </tr>
           <tr>
             <td>
-                Distance Map Clusters
+                Distance Map Cluster
             </td>
             <td>", sep="", file = outfile)
   
