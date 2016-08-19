@@ -35,26 +35,26 @@ pipeline.differenceAnalyses = function()
   dir.create(paste(files.name, "- Results/Summary Sheets - Differences"), showWarnings=FALSE)
   dir.create(paste(files.name, "- Results/Summary Sheets - Differences/CSV Sheets"), showWarnings=FALSE)
 
-  WAD.g.m <<- matrix(NA, nrow(indata), length(differences.list),
+  WAD.g.m <- matrix(NA, nrow(indata), length(differences.list),
                      dimnames=list(rownames(indata), names(differences.list)))
 
-  t.g.m <<- matrix(NA, nrow(indata), length(differences.list),
+  t.g.m <- matrix(NA, nrow(indata), length(differences.list),
                    dimnames=list(rownames(indata), names(differences.list)))
 
-  p.g.m <<- matrix(NA, nrow(indata), length(differences.list),
+  p.g.m <- matrix(NA, nrow(indata), length(differences.list),
                    dimnames=list(rownames(indata), names(differences.list)))
 
-  fdr.g.m <<- matrix(NA, nrow(indata), length(differences.list),
+  fdr.g.m <- matrix(NA, nrow(indata), length(differences.list),
                      dimnames=list(rownames(indata), names(differences.list)))
 
-  Fdr.g.m <<- matrix(NA, nrow(indata), length(differences.list),
+  Fdr.g.m <- matrix(NA, nrow(indata), length(differences.list),
                      dimnames=list(rownames(indata), names(differences.list)))
 
-  n.0.m <<- rep(NA, length(differences.list))
-  names(n.0.m) <<- names(differences.list)
+  n.0.m <- rep(NA, length(differences.list))
+  names(n.0.m) <- names(differences.list)
 
-  perc.DE.m <<- rep(NA, length(differences.list))
-  names(perc.DE.m) <<- names(differences.list)
+  perc.DE.m <- rep(NA, length(differences.list))
+  names(perc.DE.m) <- names(differences.list)
 
   indata.d <- matrix(NA, nrow(indata), length(differences.list),
                       dimnames=list(rownames(indata), names(differences.list)))
@@ -82,11 +82,11 @@ pipeline.differenceAnalyses = function()
     S2.y <- apply(indata[,samples.indata[[2]],drop=FALSE],1,var)
     S2.y[which(S2.y==0)] <- min(S2.y[which(S2.y!=0)])
     
-    t.g.m[,d] <<- indata.d[,d] / sqrt( S2.x/n + S2.y/m )
+    t.g.m[,d] <- indata.d[,d] / sqrt( S2.x/n + S2.y/m )
 
     df <- ( S2.x/n + S2.y/m )^2  / ( S2.x^2 / (n^2*(n-1)) + S2.y^2 / (m^2*(m-1)) )
     
-    p.g.m[,d] <<- 2 - 2*pt( abs(t.g.m[,d]), df )
+    p.g.m[,d] <- 2 - 2*pt( abs(t.g.m[,d]), df )
     
     
     suppressWarnings({
@@ -97,36 +97,36 @@ pipeline.differenceAnalyses = function()
 
     if (class(try.res) != "try-error")
     {
-      fdr.g.m[,d] <<- fdrtool.result$lfdr
-      Fdr.g.m[,d] <<- fdrtool.result$qval
-      n.0.m[d] <<- fdrtool.result$param[1,"eta0"]
-      perc.DE.m[d] <<- 1 - n.0.m[d]
+      fdr.g.m[,d] <- fdrtool.result$lfdr
+      Fdr.g.m[,d] <- fdrtool.result$qval
+      n.0.m[d] <- fdrtool.result$param[1,"eta0"]
+      perc.DE.m[d] <- 1 - n.0.m[d]
     } else
     {
-      fdr.g.m[,d] <<- p.g.m[,d]
-      Fdr.g.m[,d] <<- p.g.m[,d]
-      n.0.m[d] <<- 0.5
-      perc.DE.m[d] <<- 0.5
+      fdr.g.m[,d] <- p.g.m[,d]
+      Fdr.g.m[,d] <- p.g.m[,d]
+      n.0.m[d] <- 0.5
+      perc.DE.m[d] <- 0.5
     }
 
     delta.e.g.m <- indata.d[,d]
 
     w.g.m <- (delta.e.g.m - min(delta.e.g.m)) / (max(delta.e.g.m) - min(delta.e.g.m))
-    WAD.g.m[,d] <<- w.g.m * delta.e.g.m
+    WAD.g.m[,d] <- w.g.m * delta.e.g.m
   }
 
-  indata <<- indata.d
-  colnames(indata) <<- names(differences.list)
+  indata <- indata.d
+  colnames(indata) <- names(differences.list)
 
-  metadata <<- metadata.d
-  colnames(metadata) <<- names(differences.list)
+  metadata <- metadata.d
+  colnames(metadata) <- names(differences.list)
 
-  group.labels <<- names(differences.list)
-  names(group.labels) <<- names(differences.list)
-  group.colors <<- rep("gray20",length(differences.list))
-  names(group.colors) <<- names(differences.list)
+  group.labels <- names(differences.list)
+  names(group.labels) <- names(differences.list)
+  group.colors <- rep("gray20",length(differences.list))
+  names(group.colors) <- names(differences.list)
 
-  output.paths <<- c("CSV" = paste(files.name, "- Results/Summary Sheets - Differences/CSV Sheets"),
+  output.paths <- c("CSV" = paste(files.name, "- Results/Summary Sheets - Differences/CSV Sheets"),
                      "Summary Sheets Samples"= paste(files.name, "- Results/Summary Sheets - Differences/Reports"))
 
   util.call(pipeline.detectSpotsSamples, environment())
@@ -137,7 +137,7 @@ pipeline.differenceAnalyses = function()
     if (ncol(t.g.m) == 1)
     {
       # crack for by command, which requires >=2 columns
-      t.g.m <<- cbind(t.g.m, t.g.m)
+      t.g.m <- cbind(t.g.m, t.g.m)
     }
 
     util.call(pipeline.genesetStatisticSamples, environment())
@@ -145,4 +145,5 @@ pipeline.differenceAnalyses = function()
 
   util.call(pipeline.geneLists, environment())
   util.call(pipeline.summarySheetsSamples, environment())
+  util.call(pipeline.htmlDifferencesSummary, environment())
 }

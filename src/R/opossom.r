@@ -240,20 +240,12 @@ opossom.run <- function(env)
     {
       util.info("Processing Group-centered Analyses")
       util.call(pipeline.groupAnalysis, env)
-      util.call(pipeline.htmlGroupSummary, env)
-
-      filename <- paste(env$files.name, ".RData", sep="")
-      load(filename,envir=environment()) # Reload env
     }
   
     if(env$preferences$activated.modules$difference.analysis)
     {
       util.info("Processing Difference Analyses")
       util.call(pipeline.differenceAnalyses, env)
-      util.call(pipeline.htmlDifferencesSummary, env)
-
-      filename <- paste(env$files.name, ".RData", sep="")
-      load(filename,envir=environment()) # Reload env
     }
 
     util.info("Generating HTML Report")
