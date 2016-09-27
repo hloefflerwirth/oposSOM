@@ -61,7 +61,7 @@ pipeline.qualityCheck <- function()
 		abline( h=IQR1.sd, col="gray20", lty=2 )
 		abline( h=IQR3.sd, col="gray20", lty=3 )
 		legend("topright",c("1x IQR","3x IQR"),lty=c(2,3),col="gray20")
-	if(length(outlier)>0) text(indata.sample.mean[outlier],indata.sample.sd[outlier]+diff(range(indata.sample.sd))*0.01,outlier)
+	if(length(outlier)>0) text(indata.sample.mean[outlier],indata.sample.sd[outlier]+diff(range(indata.sample.sd))*0.017,outlier)
 		
 		
   par(mfrow=c(2,1),mar=c(5,3,3,2))

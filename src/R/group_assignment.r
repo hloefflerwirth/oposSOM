@@ -42,7 +42,7 @@ pipeline.groupAssignment <- function()
     x <- as.numeric(names(withinss))
     y <- withinss
     
-    m <- (y[length(y)]-y[1]) / (x[length(x)]-x[1])
+    m <- if(length(y)>1) (y[length(y)]-y[1]) / (x[length(x)]-x[1]) else 0
     n.ref <- y[1] - m * x[1]  
 
     # find optimal cluster number    

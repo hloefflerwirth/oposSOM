@@ -269,7 +269,8 @@ pipeline.htmlSummary <- function()
 
     <p>
       Analyses based on PAT-wise aggregated data, including clustering dendrogram, 
-      portraits and assotiation to the sample groups.
+      portraits and assotiation to the sample groups.<br>
+      PATs were defined using <i>",preferences$standard.spot.modules,"</i> approach.
     </p>
       
       <ul>

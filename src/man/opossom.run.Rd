@@ -6,7 +6,7 @@ Execute the oposSOM pipeline.
 \description{
 This function realizes the complete pipeline functionality: single gene
 expression values are culstered to metagenes using a self-organizing map. Based
-on these metagenes, visualizations (e.g. expression profiles), downstreaming
+on these metagenes, visualizations (e.g. expression portraits), downstreaming
 sample similarity analyses (e.g. hierarchical clustering, ICA) and functional
 enrichment analyses are performed.
 The results are given within a separate folder and can be browsed using the

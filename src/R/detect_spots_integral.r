@@ -566,7 +566,7 @@ pipeline.detectSpotsIntegral <- function()
 
 
   ##### K-Means Clustering #####
-  n.cluster <- preferences$dim.1stLvlSom / 2
+  n.cluster <- ceiling( preferences$dim.1stLvlSom / 2 )
   prototypes <- metadata[round(seq(1, preferences$dim.1stLvlSom^2, length.out=n.cluster)),]
   res <- kmeans(metadata, prototypes)
 
@@ -883,7 +883,7 @@ pipeline.detectSpotsIntegral <- function()
   
   
   
-  ### Distance Map Spots ###
+	#### Distance Map Spots ####
   uh <- rep(NA, preferences$dim.1stLvlSom^2)
   
   for (i in 1:preferences$dim.1stLvlSom^2)

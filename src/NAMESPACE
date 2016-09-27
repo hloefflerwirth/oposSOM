@@ -1,8 +1,8 @@
 exportPattern("*")
 
-import("som")
 import("biomaRt")
 
+importFrom("som","som","som.init","som.train")
 importFrom("ape", "nj", "plot.phylo")
 importFrom("fastICA", "fastICA")
 importFrom("scatterplot3d", "scatterplot3d")

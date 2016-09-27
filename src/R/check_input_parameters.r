@@ -239,7 +239,7 @@ pipeline.checkInputParameters <- function()
     indata <<- indata[,-const.cols]
     group.labels <<- group.labels[-const.cols]
     group.colors <<- group.colors[-const.cols]
-    util.warn("Removed constant columns from data set.")
+    util.warn("Removed",length(const.cols),"constant columns from data set.")
   }
   
   const.rows <- which(apply(indata, 1, function(row) { diff(range(row)) == 0 }))
@@ -247,7 +247,7 @@ pipeline.checkInputParameters <- function()
   if (length(const.rows) > 0)
   {
     indata <<- indata[-const.rows,]
-    util.warn("Removed constant rows from data set.")
+    util.warn("Removed",length(const.rows),"constant rows from data set.")
   }
   
   if (length(rownames(indata)) == 0)
@@ -341,10 +341,10 @@ pipeline.checkInputParameters <- function()
     names(group.colors) <<- colnames(indata)
   } else
   {
-    group.labels <<- rep("sample", ncol(indata))
+    group.labels <<- rep("auto",ncol(indata))
     names(group.labels) <<- colnames(indata)
     
-    group.colors <<- colorRampPalette(c("blue3", "blue", "lightblue", "green2", "gold", "red", "red3"))(ncol(indata))
+    group.colors <<- rep("black", ncol(indata))
     names(group.colors) <<- colnames(indata)
   }
   
