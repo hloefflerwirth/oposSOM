@@ -62,6 +62,26 @@ pipeline.chromosomeExpressionReports <- function()
   chr.exp.matrix <- do.call( rbind, chr.exp.list )
   
   
+  chr.pq.gene.list <- lapply( chromosome.list, function(x)
+  {
+    list( p=unlist( x[ grep( "p", names(x) ) ] ), q=unlist( x[ grep( "q", names(x) ) ] ) )
+  } )
+  chr.pq.gene.list <- do.call( c, chr.pq.gene.list )
+  chr.pq.gene.list <- chr.pq.gene.list[  sort.label( names(chr.pq.gene.list) )  ]
+  chr.pq.gene.list <- chr.pq.gene.list[ which(sapply(chr.pq.gene.list,length)>0)]
+  names(chr.pq.gene.list) <- sub("."," ",names(chr.pq.gene.list),fixed=TRUE)
+  
+  chr.pq.exp.matrix <- t( sapply( chr.pq.gene.list, function(x)
+  {
+    colMeans(indata[x,,drop=FALSE])
+  }) )
+  
+  
+  o.samples <- hclust( dist(t(chr.exp.matrix)) )$order
+  o.samples.pq <- hclust( dist(t(chr.pq.exp.matrix)) )$order
+  o.chr.pq <- hclust( dist(chr.pq.exp.matrix) )$order 
+
+  
   # Heatmap Outputs
   dir.create(paste(files.name, "- Results/Data Overview"), showWarnings=FALSE)
 
@@ -70,7 +90,6 @@ pipeline.chromosomeExpressionReports <- function()
   pdf(filename, 29.7/2.54, 21/2.54)
 
   layout( matrix(1:2,1), widths = c(20,1) )
-  
   par( mar=c(4,4,2,0.5) )
   image( x=1:nrow(chr.exp.matrix), y=1:ncol(chr.exp.matrix), z=chr.exp.matrix[,ncol(chr.exp.matrix):1], zlim=max(abs(chr.exp.matrix))*c(-1,1), col=color.palette.heatmaps(1000), axes=FALSE, xlab="chromosome", ylab="samples" )
     box()
@@ -81,19 +100,48 @@ pipeline.chromosomeExpressionReports <- function()
   image( t(matrix(1:length(group.colors) ) ), col = rev(group.colors), axes=F )
   
   
-  o = hclust( dist(t(chr.exp.matrix)) )$order
-  
   layout( matrix(1:2,1), widths = c(20,1) )
-  
   par( mar=c(4,4,2,0.5) )
-  image( x=1:nrow(chr.exp.matrix), y=1:ncol(chr.exp.matrix), z=chr.exp.matrix[,o], zlim=max(abs(chr.exp.matrix))*c(-1,1), col=color.palette.heatmaps(1000), axes=FALSE, xlab="chromosome", ylab="samples" )
+  image( x=1:nrow(chr.exp.matrix), y=1:ncol(chr.exp.matrix), z=chr.exp.matrix[,o.samples], zlim=max(abs(chr.exp.matrix))*c(-1,1), col=color.palette.heatmaps(1000), axes=FALSE, xlab="chromosome", ylab="samples (clustered)" )
     box()
     abline(v=cumsum( sapply(chr.exp.list,nrow) ) + 0.5)
     axis( 1, cumsum( sapply(chr.exp.list,nrow) ) - sapply(chr.exp.list,nrow) / 2, names(chr.exp.list) )
   
   par( mar=c(4,0,2,1) )
-  image( t(matrix(1:length(group.colors) ) ), col = group.colors[o], axes=F )
+  image( t(matrix(1:length(group.colors) ) ), col = group.colors[o.samples], axes=F )
 
     
+  layout( matrix(1:2,1), widths = c(20,1) )
+  
+  par( mar=c(4,4,2,0.5) )
+  image( x=1:nrow(chr.pq.exp.matrix), y=1:ncol(chr.pq.exp.matrix), z=chr.pq.exp.matrix[,ncol(chr.pq.exp.matrix):1], zlim=max(abs(chr.pq.exp.matrix))*c(-1,1), col=color.palette.heatmaps(1000), axes=FALSE, xlab="chromosome bands", ylab="samples" )
+    box()
+    axis(1,seq(names(chr.pq.gene.list)),names(chr.pq.gene.list),las=2)
+  
+  par( mar=c(4,0,2,1) )
+  image( t(matrix(1:length(group.colors) ) ), col = rev(group.colors), axes=F )
+  
+  
+  layout( matrix(1:2,1), widths = c(20,1) )
+  
+  par( mar=c(4,4,2,0.5) )
+  image( x=1:nrow(chr.pq.exp.matrix), y=1:ncol(chr.pq.exp.matrix), z=chr.pq.exp.matrix[,o.samples.pq], zlim=max(abs(chr.pq.exp.matrix))*c(-1,1), col=color.palette.heatmaps(1000), axes=FALSE, xlab="chromosome bands", ylab="samples (clustered)" )
+    box()
+    axis(1,seq(names(chr.pq.gene.list)),names(chr.pq.gene.list),las=2)  
+  
+  par( mar=c(4,0,2,1) )
+  image( t(matrix(1:length(group.colors) ) ), col = group.colors[o.samples.pq], axes=F )
+  
+  
+  layout( matrix(1:2,1), widths = c(20,1) )
+  
+  par( mar=c(4,4,2,0.5) )
+  image( x=1:nrow(chr.pq.exp.matrix), y=1:ncol(chr.pq.exp.matrix), z=chr.pq.exp.matrix[o.chr.pq,o.samples.pq], zlim=max(abs(chr.pq.exp.matrix))*c(-1,1), col=color.palette.heatmaps(1000), axes=FALSE, xlab="chromosome bands (clustered)", ylab="samples (clustered)" )
+    box()
+    axis(1,seq(names(chr.pq.gene.list)),names(chr.pq.gene.list)[o.chr.pq],las=2)
+  
+  par( mar=c(4,0,2,1) )
+  image( t(matrix(1:length(group.colors) ) ), col = group.colors[o.samples.pq], axes=F )
+  
   dev.off()
 }
