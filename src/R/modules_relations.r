@@ -1,7 +1,9 @@
 modules.relations <- function(spot.list, main, path)
 {
-  sd.theshold = sd(spot.list$spotdata)
-  
+  sd.theshold <- sd(spot.list$spotdata)
+  spotdata.binary <- spot.list$spotdata > sd.theshold
+  mode(spotdata.binary) <- "numeric"
+
   pdf(path, 29.7/2.54, 21/2.54)
 
   #### wTO network ####
@@ -66,18 +68,14 @@ modules.relations <- function(spot.list, main, path)
     layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
     par(mar=c(5, 4, 4, 1.8))
     
-    image(matrix(spot.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=FALSE, main="WTO network mapped to SOM space", cex.main=1.6)
+    image(matrix(spot.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=FALSE, main="Module correlations (WTO algorithm)", cex.main=1.6)
       box()
     
-    par(new=TRUE, mar=c(3.2,2.2,2,0))
+    par(new=TRUE, mar=c(3.9,2.7,2.7,0.5))
     plot(g, layout=t(sapply(spot.list$spots, function(x) { x$position })),
         vertex.label.color="black" ,vertex.label.cex=1, vertex.color="grey",
         xlim=c(-1.0,1.0), ylim=c(-1.0,1.0))
   
-    # plot(g, layout=matrix(c(1,1,20,20,1,20,20),ncol=2),
-    #      vertex.label.color="black" ,vertex.label.cex=1, vertex.color="grey",
-    #      xlim=c(-1.0,1.0), ylim=c(-1.0,1.0))
-    
     par(mar=c(5, 1, 4, 2))
     plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1), xaxs="i", yaxs="i")
     legend("center", c("negative correlation",expression(paste("  ",omega," < -0.25")),expression(paste("  ",omega," < -0.50")),expression(paste("  ",omega," < -0.75")),
@@ -86,70 +84,216 @@ modules.relations <- function(spot.list, main, path)
     box()
   }
  
-    
-  #### group association #### 
   
-  if (length(unique(group.labels)) > 1)
+  #### Baskets ####
+  
+  if ( length(spot.list$spots) > 2 )
   {
-    spot.group.assoc <- apply(spot.list$spotdata, 1, function(x) tapply(x>sd.theshold,group.labels,sum)[unique(group.labels)] / table(group.labels) )
-    spot.goup.mean.number <- tapply( apply(spot.list$spotdata>sd.theshold, 2, sum ), group.labels, mean)[unique(group.labels)]
+    trans.groups <- as(as.data.frame(group.labels), "transactions")
+    trans.modules <- as(t(spotdata.binary), "transactions")
+    trans.merge <- merge(trans.groups, trans.modules)
     
-    # barplot
-        
+    suppressWarnings({
+      rules <- apriori(trans.merge, parameter = list(supp = 0.01, minlen = 2, maxlen = 2,
+                                                   conf = 0.1, target = "rules"),
+                     control = list(verbose=FALSE))  })
+    rules <- as(rules,"data.frame")
+    rules <- rules[ order(rules$confidence,decreasing = TRUE), ]  
+    rules$lhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=T), function(x) gsub("[{}]","",x) )[1,]
+    rules$rhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=T), function(x) gsub("[{}]","",x) )[2,]
+    
+    rules.modules <- rules[ -unique( c( grep("group.labels=",rules$lhs), grep("group.labels=",rules$rhs) )),]
+    rules.modules <- rules.modules[ which( !duplicated( apply(cbind(rules.modules$lhs,rules.modules$rhs),1,function(x) paste(sort(x),collapse=" ") ) ) ),]
+    rules.groups <- rules[ grep("group.labels=",rules$rhs) ,]
+    rules.groups <- rules.groups[ !duplicated( rules.groups$lhs ) ,]
+    rules.groups$rhs <- sub( "group.labels=","",rules.groups$rhs )
+    
+    g <- graph.empty( length(spot.list$spots), directed = FALSE )
+    V(g)$name <- names(spot.list$spots)
+    g <- add_edges( g, as.vector( rbind( match( rules.modules$lhs, V(g)$name ), match( rules.modules$rhs, V(g)$name ) ) ) )
+    V(g)$label <- names(spot.list$spots)
+    V(g)$size <- 5
+    V(g)$size[ match( rules.groups$lhs, V(g)$name ) ] <- 15 * rules.groups$confidence + 3
+    V(g)$color <- "gray"
+    V(g)$color[ match( rules.groups$lhs, V(g)$name ) ] <- groupwise.group.colors[rules.groups$rhs]
+    E(g)$width <- 6 * rules.modules$confidence + 0.5
+    E(g)$color <- "gray30"
+    E(g)$arrow.size <- 4
+    
+    # plot implication network
+    
     layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
-    par(mar=c(5, 4, 4, 1 ))
+    par(mar=c(5, 4, 4, 1.8))
     
-    barplot(spot.group.assoc[,ncol(spot.group.assoc):1],
-            main="Association of the groups to the spots", cex.main=1.5, cex.axis=2, cex.names=1,
-            col=groupwise.group.colors, horiz=TRUE, las=1)
-    
-    par(mar=c(5, 1, 4, 2))
-    
-    plot(0, main="", cex.main=1, type="n", axes=FALSE, xlab="",
-         ylab="", xlim=c(0,1), ylim=c(0,1), xaxs="i", yaxs="i")
-    
-      legend("center", legend=paste(unique(group.labels), "(", round(spot.goup.mean.number,1), ")"),
-           col=groupwise.group.colors, pch=15, pt.cex=1.6, title="< #spots >", bty="n")
-      box()
-    
-    # mapping to SOM
-      
-    layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
-    par(mar=c(5, 4, 4, 1))
-    
-    image(matrix(spot.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=FALSE,
-          main="Association of the groups to the spots", cex.main=1.5)
-    par(new=TRUE)
-    plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,preferences$dim.1stLvlSom),
-         ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i")
-    
+    image(matrix(spot.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=FALSE, main="Module implications (basket algorithm)", cex.main=1.6)
+    title("all samples",line=0.2)
     box()
     
-    for (i in seq_along(spot.list$spots))
-    {
-      stars(t(spot.group.assoc[,i]), locations=spot.list$spots[[i]]$position,
-            len=2, draw.segments=TRUE,  scale=FALSE, add=TRUE, col.segments=groupwise.group.colors)
-      
-      par(fg="gray", lty=2)
-      
-      stars(t(c(0.5)), locations=spot.list$spots[[i]]$position, len=2,
-            draw.segments=TRUE,  scale=FALSE, add=TRUE, col.segments=NA)
-      stars(t(c(1)), locations=spot.list$spots[[i]]$position, len=2,
-            draw.segments=TRUE,  scale=FALSE, add=TRUE, col.segments=NA)
-      
-      par(fg="black", lty="solid")
-      
-      text(spot.list$spots[[i]]$position[1], spot.list$spots[[i]]$position[2]+preferences$dim.1stLvlSom*0.05,
-           names(spot.list$spots)[i], col="gray50")
-    }
+    par(new=TRUE, mar=c(3.9,2.7,2.7,0.5))
+    plot(g, layout=t(sapply(spot.list$spots, function(x) { x$position })),
+         vertex.label.color="black" ,vertex.label.cex=1, 
+         xlim=c(-1.0,1.0), ylim=c(-1.0,1.0))
     
     par(mar=c(5, 1, 4, 2))
     plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1), xaxs="i", yaxs="i")
-      legend("center", unique(group.labels), col = groupwise.group.colors, pch=15, pt.cex=1.6, bty="n")
-      box()
+    legend(0.08,0.95, c("Confidence","(group implication)","100%","50%","10%","","Confidence", "(module implication)","100%","50%","10%" ), 
+           pch=c(NA,NA,1,1,1,rep(NA,6)), pt.cex=c(0,0,7.5,4,1,rep(0,6)), lty=c(rep(0,8),1,1,1), lwd=c(rep(0,8),7,4,1), bty="n", cex=1.2, y.intersp=2)
+    box()
+    
+    for( gr in unique(group.labels) )
+    {
+      
+      trans.modules <- as(t(spotdata.binary[,which(group.labels==gr)]), "transactions")
+      rules <- suppressWarnings({ apriori(trans.modules, parameter = list(supp = 0.1, minlen = 2, maxlen = 2,
+                                                                          conf = 0.1, target = "rules"),
+                                          control = list(verbose=FALSE))  })
+      if( length(rules) > 0 )
+      {
+        rules <- as(rules,"data.frame")
+        rules <- rules[ order(rules$confidence,decreasing = TRUE), ]  
+        rules$lhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=T), function(x) gsub("[{}]","",x) )[1,]
+        rules$rhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=T), function(x) gsub("[{}]","",x) )[2,]
+        
+        rules.modules <- rules[ which( !duplicated( apply(cbind(rules$lhs,rules$rhs),1,function(x) paste(sort(x),collapse=" ") ) ) ),]
+        
+        
+        g <- graph.empty( length(spot.list$spots), directed = FALSE )
+        V(g)$name <- names(spot.list$spots)
+        g <- add_edges( g, as.vector( rbind( match( rules.modules$lhs, V(g)$name ), match( rules.modules$rhs, V(g)$name ) ) ) )
+        
+        V(g)$label <- names(spot.list$spots)
+        V(g)$size <- 10
+        V(g)$color <- "gray"
+        V(g)$color[ match( rules.groups$lhs[which(rules.groups$rhs==gr)], V(g)$name ) ] <- groupwise.group.colors[gr]   
+        
+        E(g)$width <- 6 * rules.modules$confidence + 0.5
+        E(g)$color <- groupwise.group.colors[gr]
+        
+        layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
+        par(mar=c(5, 4, 4, 1.8))
+        
+        image(matrix(spot.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=FALSE, main="Module implications (basket algorithm)", cex.main=1.6)
+        title(paste("Group samples:",gr),line=0.2,col.main=groupwise.group.colors[gr])
+        box()
+        
+        par(new=TRUE, mar=c(3.9,2.7,2.7,0.5))
+        plot(g, layout=t(sapply(spot.list$spots, function(x) { x$position })),
+             vertex.label.color="black" ,vertex.label.cex=1, 
+             xlim=c(-1.0,1.0), ylim=c(-1.0,1.0))
+        
+        par(mar=c(5, 1, 4, 2))
+        plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1), xaxs="i", yaxs="i")
+        legend(0.08,0.95, c("Confidence","(module implication)","100%","50%","10%" ), 
+               lty=c(rep(0,2),1,1,1), lwd=c(rep(0,2),7,4,1), bty="n", cex=1.2, y.intersp=2)
+        box()
+      }
+    }
+    
+  }  
+  
+    
+  #### Group Associations #### 
+  
+  if (length(unique(group.labels)) > 1)
+  {
+    layout( matrix(c(rep(1,4),2:13),nrow=4,byrow=TRUE), heights=c(0.15,1,1,1) )
+    par(mar=c(0,0,0,0))
+    
+    frame()
+    text(0.5,0.5,"Group associations of the modules",cex=2.6)
+    
+    par(mar=c(5,6,4,5))
+    for( i in seq(nrow(spotdata.binary)) )
+    {
+      if(i>1&&(i-1)%%12==0) frame()
+
+      count <- tapply(spotdata.binary[i,],group.labels,sum)[unique(group.labels)]
+      percent <- count/table(group.labels)[unique(group.labels)]
+      count <- count[which(count>0)]
+      percent <- percent[which(percent>0)]
+      
+      if( length(percent) > 0 )
+      {
+        barplot( 100*percent, horiz=T, main=paste(rownames(spotdata.binary)[i]," (",sum(count),")",sep=""), cex.main=1.6, xlim=c(0,100),
+                 names.arg=paste(names(percent),"\n(",count,")",sep="" ), las=1, xlab="association (%)",
+                 col=groupwise.group.colors[names(percent)] )
+        
+      } 
+    }
   }  
     
+
+  #### Group Implications ####
     
+  if ( length(spot.list$spots) > 2 )
+  {
+    trans.groups <- as(as.data.frame(group.labels), "transactions")
+    trans.modules <- as(t(spotdata.binary), "transactions")
+    trans.merge <- merge(trans.groups, trans.modules)
+    
+    suppressWarnings({
+      rules <- apriori(trans.merge, parameter = list(supp = 0.01, minlen = 2, maxlen = nrow(spotdata.binary),
+                                                   conf = 0.01, target = "rules"),
+                     control = list(verbose=FALSE))  })
+    rules <- as(rules,"data.frame")
+    rules$n <- rules$support * length(trans.merge)
+    
+    rules$lhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=T), function(x) gsub("[{}]","",x) )[1,]
+    rules$rhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=T), function(x) gsub("[{}]","",x) )[2,]
+    
+    rules <- rules[ order(rules$confidence), ]  
+    
+    
+    layout( matrix(c(rep(1,4),2:13),nrow=4,byrow=TRUE), heights=c(0.15,1,1,1) )
+    par(mar=c(0,0,0,0))
+    
+    frame()
+    text(0.5,0.5,"Module implications of the groups (basket algorithm)",cex=2.6)
+    
+    par(mar=c(5,6,4,5))
+    for( i in seq(unique(group.labels)) )
+    {
+      if(i>1&&(i-1)%%12==0) frame()
+      
+      gr <- unique(group.labels)[i]
+      r <- which( rules$lhs == paste("group.labels=",gr,sep="") )
+      
+      if( length(r) > 0 )
+      {
+        barplot( 100*rules[r,]$confidence, horiz=T, main=paste(gr," (",sum(group.labels==gr),")",sep=""), col.main=groupwise.group.colors[gr], cex.main=1.6, xlim=c(0,100),
+                 names.arg=paste(rules[r,]$rhs,"\n(",rules[r,]$n,")",sep="" ), las=1, xlab="confidence" )
+        title(main="implies",line=0,cex.main=0.8)
+      } 
+    }
+    
+    rules.help <- rules[ which(rules$rhs %in% paste("group.labels=",unique(group.labels),sep="") ),]
+    rules.help$rhs <- sub( "group.labels=","",rules.help$rhs )
+    
+    layout( matrix(c(rep(1,4),2:13),nrow=4,byrow=TRUE), heights=c(0.15,1,1,1) )  
+    par(mar=c(0,0,0,0))
+    
+    frame()
+    text(0.5,0.5,"Group implications of the modules (basket algorithm)",cex=2.6)
+    
+    for( i in seq( unique(rev(rules.help$lhs)) ) )
+    {
+      if(i>1&&(i-1)%%12==0) frame()
+      
+      lhs <- unique(rev(rules.help$lhs))[i]
+      r <- which( rules.help$lhs == lhs )
+      n <- rules.help[r[1],]$n/ rules.help[r[1],]$confidence
+      
+      if( length(r) > 0 )
+      {
+        par(mar=c(5,8,4,5))
+        barplot( 100*rules.help[r,]$confidence, horiz=T, main=paste(lhs," (",n,")",sep=""), cex.main=1.6, xlim=c(0,100),
+                 names.arg=paste(rules.help[r,]$rhs,"\n(",rules.help[r,]$n,")",sep="" ), las=1, xlab="confidence",
+                 col=groupwise.group.colors[rules.help[r,]$rhs] )
+        title(main="implies",line=0,cex.main=0.8)
+      } 
+    }
+    
+  }
     
   dev.off()
 }
