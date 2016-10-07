@@ -1,6 +1,6 @@
 Package: oposSOM
 Title: Comprehensive analysis of transciptome data
-Version: 1.11.1
+Version: 1.11.2
 Description: This package translates microarray expression data into metadata
   of reduced dimension. It provides various sample-centered and group-centered
   visualizations, sample similarity analyses and functional enrichment analyses.
