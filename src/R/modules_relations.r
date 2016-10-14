@@ -202,10 +202,9 @@ modules.relations <- function(spot.list, main, path)
     frame()
     text(0.5,0.5,"Group associations of the modules",cex=2.6)
     
-    par(mar=c(5,6,4,5))
     for( i in seq(nrow(spotdata.binary)) )
     {
-      if(i>1&&(i-1)%%12==0) frame()
+      if(i>1&&(i-1)%%12==0) { par(mar=c(0,0,0,0)); frame() }
 
       count <- tapply(spotdata.binary[i,],group.labels,sum)[unique(group.labels)]
       percent <- count/table(group.labels)[unique(group.labels)]
@@ -214,6 +213,7 @@ modules.relations <- function(spot.list, main, path)
       
       if( length(percent) > 0 )
       {
+        par(mar=c(5,6,4,5))
         barplot( 100*percent, horiz=T, main=paste(rownames(spotdata.binary)[i]," (",sum(count),")",sep=""), cex.main=1.6, xlim=c(0,100),
                  names.arg=paste(names(percent),"\n(",count,")",sep="" ), las=1, xlab="association (%)",
                  col=groupwise.group.colors[names(percent)] )
@@ -250,16 +250,16 @@ modules.relations <- function(spot.list, main, path)
     frame()
     text(0.5,0.5,"Module implications of the groups (basket algorithm)",cex=2.6)
     
-    par(mar=c(5,6,4,5))
     for( i in seq(unique(group.labels)) )
     {
-      if(i>1&&(i-1)%%12==0) frame()
+      if(i>1&&(i-1)%%12==0) { par(mar=c(0,0,0,0)); frame() }
       
       gr <- unique(group.labels)[i]
       r <- which( rules$lhs == paste("group.labels=",gr,sep="") )
       
       if( length(r) > 0 )
       {
+        par(mar=c(5,6,4,5))
         barplot( 100*rules[r,]$confidence, horiz=T, main=paste(gr," (",sum(group.labels==gr),")",sep=""), col.main=groupwise.group.colors[gr], cex.main=1.6, xlim=c(0,100),
                  names.arg=paste(rules[r,]$rhs,"\n(",rules[r,]$n,")",sep="" ), las=1, xlab="confidence" )
         title(main="implies",line=0,cex.main=0.8)
@@ -277,7 +277,7 @@ modules.relations <- function(spot.list, main, path)
     
     for( i in seq( unique(rev(rules.help$lhs)) ) )
     {
-      if(i>1&&(i-1)%%12==0) frame()
+      if(i>1&&(i-1)%%12==0) { par(mar=c(0,0,0,0)); frame() }
       
       lhs <- unique(rev(rules.help$lhs))[i]
       r <- which( rules.help$lhs == lhs )
