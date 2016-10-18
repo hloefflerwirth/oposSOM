@@ -96,6 +96,41 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
     }
     
     
+    ##### Polygone-2ndSOM #####
+    if (length(unique(group.labels)) > 1)
+    {
+      transparent.group.colors <- sapply(groupwise.group.colors, function(x)
+      {
+        paste(substr(x, 1, 7) , "50", sep="")
+      })
+      
+      names(transparent.group.colors) <- unique(group.labels)
+      
+      plot(secLvlSom$visual[,"x"], -secLvlSom$visual[,"y"],
+           type="n", axes=FALSE, xlab="", ylab="", cex=4, col=group.colors, pch=16,
+           xaxs="i", yaxs="i", xlim=xl, ylim=yl,main="Second level SOM, group outlines", cex.main=1)
+      
+      for (i in seq_along(unique(group.labels)))
+      {
+        group.member <- which(group.labels==unique(group.labels)[i])
+        group.centroid <- colMeans(secLvlSom$visual[group.member, 1:2])
+        
+        hull <- chull(secLvlSom$visual[group.member, 1],
+                      secLvlSom$visual[group.member, 2])
+        
+        polygon(secLvlSom$visual[group.member[hull], 1],
+                secLvlSom$visual[group.member[hull], 2],
+                col=transparent.group.colors[i], lty=1,
+                border=groupwise.group.colors[i])
+      }
+      
+      legend("topright", as.character(unique(group.labels)), cex=0.5,
+             text.col=groupwise.group.colors, bg="white")
+      
+      box()
+    }
+    
+    
     ##### Plot SampleSOM with expression portraits ######
     par(mar=c(1,1,1,1))
     xl <- c(0,21)
