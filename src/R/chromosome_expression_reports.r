@@ -81,6 +81,7 @@ pipeline.chromosomeExpressionReports <- function()
   o.samples.pq <- hclust( dist(t(chr.pq.exp.matrix)) )$order
   o.chr.pq <- hclust( dist(chr.pq.exp.matrix) )$order 
 
+  chr.exp.matrix <- chr.exp.matrix[seq(1,nrow(chr.exp.matrix),2),]
   
   # Heatmap Outputs
   dir.create(paste(files.name, "- Results/Data Overview"), showWarnings=FALSE)
@@ -93,24 +94,36 @@ pipeline.chromosomeExpressionReports <- function()
   par( mar=c(4,4,2,0.5) )
   image( x=1:nrow(chr.exp.matrix), y=1:ncol(chr.exp.matrix), z=chr.exp.matrix[,ncol(chr.exp.matrix):1], zlim=max(abs(chr.exp.matrix))*c(-1,1), col=color.palette.heatmaps(1000), axes=FALSE, xlab="chromosome", ylab="samples" )
     box()
-    abline(v=cumsum( sapply(chr.exp.list,nrow) ) + 0.5)
-    axis( 1, cumsum( sapply(chr.exp.list,nrow) ) - sapply(chr.exp.list,nrow) / 2, names(chr.exp.list) )
+    abline(v=cumsum( sapply(chr.exp.list,nrow) )/2 + 0.5)
+    axis( 1, cumsum( sapply(chr.exp.list,nrow) )/2 - sapply(chr.exp.list,nrow)/2 / 2, names(chr.exp.list) )
   
   par( mar=c(4,0,2,1) )
-  image( t(matrix(1:length(group.colors) ) ), col = rev(group.colors), axes=F )
+  image( t(matrix(1:length(group.colors) ) ), col = rev(group.colors), axes=FALSE )
+  
+  par( new=TRUE, mfrow=c(1,1), mar=c(4,1.3,26,55.3) )
+  image(matrix(1:1000,ncol=1000), col=color.palette.heatmaps(1000), axes=FALSE )
+    box()
+    axis(2, c(0,0.5,1), round(max(abs(chr.exp.matrix))*c(-1,0,1),1), las=2, line=-0.5, cex.axis=.6, tick=FALSE )
+    axis(3, 0,  bquote(Delta ~ e), tick=FALSE, line=-1 )
   
   
   layout( matrix(1:2,1), widths = c(20,1) )
   par( mar=c(4,4,2,0.5) )
   image( x=1:nrow(chr.exp.matrix), y=1:ncol(chr.exp.matrix), z=chr.exp.matrix[,o.samples], zlim=max(abs(chr.exp.matrix))*c(-1,1), col=color.palette.heatmaps(1000), axes=FALSE, xlab="chromosome", ylab="samples (clustered)" )
     box()
-    abline(v=cumsum( sapply(chr.exp.list,nrow) ) + 0.5)
-    axis( 1, cumsum( sapply(chr.exp.list,nrow) ) - sapply(chr.exp.list,nrow) / 2, names(chr.exp.list) )
+    abline(v=cumsum( sapply(chr.exp.list,nrow) )/2 + 0.5)
+    axis( 1, cumsum( sapply(chr.exp.list,nrow) )/2 - sapply(chr.exp.list,nrow)/2 / 2, names(chr.exp.list) )
   
   par( mar=c(4,0,2,1) )
-  image( t(matrix(1:length(group.colors) ) ), col = group.colors[o.samples], axes=F )
+  image( t(matrix(1:length(group.colors) ) ), col = group.colors[o.samples], axes=FALSE )
 
-    
+  par( new=TRUE, mfrow=c(1,1), mar=c(4,1.3,26,55.3) )
+  image(matrix(1:1000,ncol=1000), col=color.palette.heatmaps(1000), axes=FALSE )
+    box()
+    axis(2, c(0,0.5,1), round(max(abs(chr.exp.matrix))*c(-1,0,1),1), las=2, line=-0.5, cex.axis=.6, tick=FALSE )
+    axis(3, 0,  bquote(Delta ~ e), tick=FALSE, line=-1 )
+  
+
   layout( matrix(1:2,1), widths = c(20,1) )
   
   par( mar=c(4,4,2,0.5) )
@@ -119,8 +132,14 @@ pipeline.chromosomeExpressionReports <- function()
     axis(1,seq(names(chr.pq.gene.list)),names(chr.pq.gene.list),las=2)
   
   par( mar=c(4,0,2,1) )
-  image( t(matrix(1:length(group.colors) ) ), col = rev(group.colors), axes=F )
+  image( t(matrix(1:length(group.colors) ) ), col = rev(group.colors), axes=FALSE )
   
+  par( new=TRUE, mfrow=c(1,1), mar=c(4,1.3,26,55.3) )
+  image(matrix(1:1000,ncol=1000), col=color.palette.heatmaps(1000), axes=FALSE )
+    box()
+    axis(2, c(0,0.5,1), round(max(abs(chr.pq.exp.matrix))*c(-1,0,1),1), las=2, line=-0.5, cex.axis=.6, tick=FALSE )
+    axis(3, 0,  bquote(Delta ~ e), tick=FALSE, line=-1 )
+    
   
   layout( matrix(1:2,1), widths = c(20,1) )
   
@@ -130,7 +149,13 @@ pipeline.chromosomeExpressionReports <- function()
     axis(1,seq(names(chr.pq.gene.list)),names(chr.pq.gene.list),las=2)  
   
   par( mar=c(4,0,2,1) )
-  image( t(matrix(1:length(group.colors) ) ), col = group.colors[o.samples.pq], axes=F )
+  image( t(matrix(1:length(group.colors) ) ), col = group.colors[o.samples.pq], axes=FALSE )
+  
+  par( new=TRUE, mfrow=c(1,1), mar=c(4,1.3,26,55.3) )
+  image(matrix(1:1000,ncol=1000), col=color.palette.heatmaps(1000), axes=FALSE )
+    box()
+    axis(2, c(0,0.5,1), round(max(abs(chr.pq.exp.matrix))*c(-1,0,1),1), las=2, line=-0.5, cex.axis=.6, tick=FALSE )
+    axis(3, 0,  bquote(Delta ~ e), tick=FALSE, line=-1 )
   
   
   layout( matrix(1:2,1), widths = c(20,1) )
@@ -141,7 +166,13 @@ pipeline.chromosomeExpressionReports <- function()
     axis(1,seq(names(chr.pq.gene.list)),names(chr.pq.gene.list)[o.chr.pq],las=2)
   
   par( mar=c(4,0,2,1) )
-  image( t(matrix(1:length(group.colors) ) ), col = group.colors[o.samples.pq], axes=F )
+  image( t(matrix(1:length(group.colors) ) ), col = group.colors[o.samples.pq], axes=FALSE )
   
+  par( new=TRUE, mfrow=c(1,1), mar=c(4,1.3,26,55.3) )
+  image(matrix(1:1000,ncol=1000), col=color.palette.heatmaps(1000), axes=FALSE )
+    box()
+    axis(2, c(0,0.5,1), round(max(abs(chr.pq.exp.matrix))*c(-1,0,1),1), las=2, line=-0.5, cex.axis=.6, tick=FALSE )
+    axis(3, 0,  bquote(Delta ~ e), tick=FALSE, line=-1 )
+    
   dev.off()
 }
