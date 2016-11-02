@@ -142,7 +142,8 @@ modules.relations <- function(spot.list, main, path)
     
     for( gr in unique(group.labels) )
     {
-      
+      if( all( spotdata.binary[,which(group.labels==gr)] == 0 ) ) next
+            
       trans.modules <- as(t(spotdata.binary[,which(group.labels==gr)]), "transactions")
       rules <- suppressWarnings({ apriori(trans.modules, parameter = list(supp = 0.1, minlen = 2, maxlen = 2,
                                                                           conf = 0.1, target = "rules"),
@@ -202,11 +203,12 @@ modules.relations <- function(spot.list, main, path)
     frame()
     text(0.5,0.5,"Group associations of the modules",cex=2.6)
     
-    for( i in seq(nrow(spotdata.binary)) )
+    i <- 1
+    for( rowname in rownames(spotdata.binary) )
     {
       if(i>1&&(i-1)%%12==0) { par(mar=c(0,0,0,0)); frame() }
 
-      count <- tapply(spotdata.binary[i,],group.labels,sum)[unique(group.labels)]
+      count <- tapply(spotdata.binary[rowname,],group.labels,sum)[unique(group.labels)]
       percent <- count/table(group.labels)[unique(group.labels)]
       count <- count[which(count>0)]
       percent <- percent[which(percent>0)]
@@ -214,10 +216,10 @@ modules.relations <- function(spot.list, main, path)
       if( length(percent) > 0 )
       {
         par(mar=c(5,6,4,5))
-        barplot( 100*percent, horiz=T, main=paste(rownames(spotdata.binary)[i]," (",sum(count),")",sep=""), cex.main=1.6, xlim=c(0,100),
+        barplot( 100*percent, horiz=T, main=paste(rowname," (",sum(count),")",sep=""), cex.main=1.6, xlim=c(0,100),
                  names.arg=paste(names(percent),"\n(",count,")",sep="" ), las=1, xlab="association (%)",
                  col=groupwise.group.colors[names(percent)] )
-        
+        i <- i + 1 
       } 
     }
   }  
@@ -250,11 +252,11 @@ modules.relations <- function(spot.list, main, path)
     frame()
     text(0.5,0.5,"Module implications of the groups (basket algorithm)",cex=2.6)
     
-    for( i in seq(unique(group.labels)) )
+    i <- 1
+    for( gr in unique(group.labels) )
     {
       if(i>1&&(i-1)%%12==0) { par(mar=c(0,0,0,0)); frame() }
       
-      gr <- unique(group.labels)[i]
       r <- which( rules$lhs == paste("group.labels=",gr,sep="") )
       
       if( length(r) > 0 )
@@ -263,6 +265,7 @@ modules.relations <- function(spot.list, main, path)
         barplot( 100*rules[r,]$confidence, horiz=T, main=paste(gr," (",sum(group.labels==gr),")",sep=""), col.main=groupwise.group.colors[gr], cex.main=1.6, xlim=c(0,100),
                  names.arg=paste(rules[r,]$rhs,"\n(",rules[r,]$n,")",sep="" ), las=1, xlab="confidence" )
         title(main="implies",line=0,cex.main=0.8)
+        i <- i + 1
       } 
     }
     
@@ -275,11 +278,11 @@ modules.relations <- function(spot.list, main, path)
     frame()
     text(0.5,0.5,"Group implications of the modules (basket algorithm)",cex=2.6)
     
-    for( i in seq( unique(rev(rules.help$lhs)) ) )
+    i <- 1
+    for( lhs in unique(rev(rules.help$lhs) ) )
     {
       if(i>1&&(i-1)%%12==0) { par(mar=c(0,0,0,0)); frame() }
       
-      lhs <- unique(rev(rules.help$lhs))[i]
       r <- which( rules.help$lhs == lhs )
       n <- rules.help[r[1],]$n/ rules.help[r[1],]$confidence
       
@@ -290,6 +293,7 @@ modules.relations <- function(spot.list, main, path)
                  names.arg=paste(rules.help[r,]$rhs,"\n(",rules.help[r,]$n,")",sep="" ), las=1, xlab="confidence",
                  col=groupwise.group.colors[rules.help[r,]$rhs] )
         title(main="implies",line=0,cex.main=0.8)
+        i <- i + 1
       } 
     }
     
