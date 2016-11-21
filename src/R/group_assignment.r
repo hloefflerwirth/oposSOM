@@ -2,80 +2,60 @@ pipeline.groupAssignment <- function()
 {
   ### auto-assign PAT groups
  
-  proto.pat.classification <- function(spotdata,proto.pat.data)
-  {
-    proto.pat.dist <- apply( proto.pat.data, 2, function(x) sum((x-spotdata)^2) )
-    return( names(which.min(proto.pat.dist)) )
-  }  
-  
   if( length(unique(group.labels)==1) && unique(group.labels)[1] == "auto" )
   {
     util.info("Auto-assign sample groups (PAT-groups)")
     
     spot.list <- get(paste("spot.list.",preferences$standard.spot.modules,sep=""))
+    pat.spotdata <- do.call( cbind, by( t(spot.list$spotdata), pat.labels, colMeans ) )
+    sample.pat.distances <- apply( spot.list$spotdata, 2, function(x) apply( pat.spotdata, 2, function(y) sum((x-y)^2) ) )
     
     pat.labels.sorted <- names( sort(table(pat.labels),decreasing=TRUE) )
-    pat.labels.sorted <- pat.labels.sorted[which(pat.labels.sorted!="none")]
+    pat.labels.sorted <- pat.labels.sorted[which(pat.labels.sorted!="none")[1]]
+    pat.labels.test <- unique(pat.labels)[ which( !unique(pat.labels) %in% c( pat.labels.sorted, "none" ) ) ]
     
     withinss <- c()
-    for( k in 2:min(100,length(pat.labels.sorted)) )
+    for( k in 2:min(100,length(unique(pat.labels))-1) )
     {
-      groups <- rep("",length(pat.labels))
-      names(groups) <- names(pat.labels)
-      
-      groups[ which( pat.labels %in% pat.labels.sorted[1:k] ) ] <-
-        pat.labels[ which( pat.labels %in% pat.labels.sorted[1:k] ) ]
-      
-      proto.pat.labels <- groups[ which(groups!="") ]
-      proto.pat.data <- do.call( cbind, by( t(spot.list$spotdata[,names(proto.pat.labels)]), proto.pat.labels, colMeans ) )
-      
-      for( i in names(which(groups=="")) )
+      test.pat.sse <- sapply( pat.labels.test, function(test.pat)
       {
-        groups[i] <- proto.pat.classification(spot.list$spotdata[,i],proto.pat.data)
-      }
+        groups <- apply( sample.pat.distances[c(pat.labels.sorted,test.pat),], 2, function(x) names(x)[which.min(x)] )
+        centroids <- pat.spotdata[,c(pat.labels.sorted,test.pat)]
+        
+        return( sum( sapply( names(groups), function(i) sum((spot.list$spotdata[,i] - centroids[,groups[i]])^2) ) ) )
+      })
+
+      pat.labels.sorted <- c(pat.labels.sorted, names(test.pat.sse)[which.min(test.pat.sse)] )
+      pat.labels.test <- pat.labels.test[-which(pat.labels.test==names(test.pat.sse)[which.min(test.pat.sse)])]
       
-      centroids <- sapply( unique(groups), function(x) rowMeans( spot.list$spotdata[,which(groups==x),drop=FALSE] )    )  
-      withinss[as.character(k)] <- sum( sapply( 1:length(groups), function(i) sum((spot.list$spotdata[,i] - centroids[,groups[i]])^2) ) )
+      withinss[as.character(k)] <- min(test.pat.sse)
     }  
-   
     
     x <- as.numeric(names(withinss))
     y <- withinss
     
     m <- if(length(y)>1) (y[length(y)]-y[1]) / (x[length(x)]-x[1]) else 0
-    n.ref <- y[1] - m * x[1]  
-
-    # find optimal cluster number    
-    opt.cluster.number <- length(withinss)
-    for( k in 2:length(withinss) )
+    n.ref <- y[1] - m * x[1] 
+    
+    # find optimal cluster number 
+    
+    k.higher.sse <- sapply( 2:length(y), function(k) 
     {
       n.k <- y[as.character(k)] - m * x[k-1]
-      if( all( n.k+m*x <= withinss ) )
-      {
-        opt.cluster.number <- k
-        break        
-      }
-    } 
-    n.opt <- y[as.character(opt.cluster.number)] - m * x[opt.cluster.number-1]
+      sum( n.k+m*x <= y )
+    })
+    
+    opt.cluster.number <- max( min( (which.max(k.higher.sse)+1) + preferences$adjust.autogroup.number, ncol(indata) ), 1 )
+    n.opt <- y[as.character(which.max(k.higher.sse)+1)] - m * x[which.max(k.higher.sse)]
+
+    # assign new groups
+    
+    group.labels <<- apply( sample.pat.distances[pat.labels.sorted[1:opt.cluster.number],], 2, function(x) names(x)[which.min(x)] )
+    group.labels <<- paste( group.labels, "*" )
+    names(group.labels) <<- colnames(indata)
     
     
-    
-    opt.cluster.number <- max( min( opt.cluster.number + preferences$adjust.autogroup.number, ncol(indata) ), 1 )
-    
-    group.labels <<- rep("",length(pat.labels))
-    names(group.labels) <<- names(pat.labels)
-    
-    group.labels[ which( pat.labels %in% pat.labels.sorted[1:opt.cluster.number] ) ] <<-
-      pat.labels[ which( pat.labels %in% pat.labels.sorted[1:opt.cluster.number] ) ]
-    
-    proto.pat.labels <- group.labels[ which(group.labels!="") ]
-    proto.pat.data <- do.call( cbind, by( t(spot.list$spotdata[,names(proto.pat.labels)]), proto.pat.labels, colMeans ) )
-    
-    for( i in names(which(group.labels=="")) )
-    {
-      group.labels[i] <<- proto.pat.classification(spot.list$spotdata[,i],proto.pat.data)
-    }
-    
+    # plot SSE curve
     
     if(preferences$activated.modules$reporting)
     {  
@@ -93,7 +73,7 @@ pipeline.groupAssignment <- function()
         lines( c(x.coords[1],x.coords[length(x)]), n.opt+m*c(x[1],x[length(x)]), col="red", xpd=FALSE )
         lines( c(x.coords[1],x.coords[length(x)]), n.ref+m*c(x[1],x[length(x)]), col="red", xpd=FALSE )
         abline(v=x.coords[opt.cluster.number-1],col="blue3",xpd=FALSE)
-        abline(h=withinss[opt.cluster.number-1],col="blue3",xpd=FALSE)
+        abline(h=y[opt.cluster.number-1],col="blue3",xpd=FALSE)
       
       barplot( table(group.labels), main="PAT group frequency" )
       
