@@ -192,7 +192,7 @@ modules.relations <- function(spot.list, main, path)
     
   }  
   
-    
+
   #### Group Associations #### 
   
   if (length(unique(group.labels)) > 1)
@@ -205,16 +205,16 @@ modules.relations <- function(spot.list, main, path)
     
     i <- 1
     for( rowname in rownames(spotdata.binary) )
-    {
-      if(i>1&&(i-1)%%12==0) { par(mar=c(0,0,0,0)); frame() }
-
+    { 
+      if(i>1&&i%%13==0) { par(mar=c(0,0,0,0)); frame(); i <- i + 1 }
+  
       count <- tapply(spotdata.binary[rowname,],group.labels,sum)[unique(group.labels)]
       percent <- count/table(group.labels)[unique(group.labels)]
       count <- count[which(count>0)]
       percent <- percent[which(percent>0)]
       
       if( length(percent) > 0 )
-      {
+      { 
         par(mar=c(5,6,4,5))
         barplot( 100*percent, horiz=T, main=paste(rowname," (",sum(count),")",sep=""), cex.main=1.6, xlim=c(0,100),
                  names.arg=paste(names(percent),"\n(",count,")",sep="" ), las=1, xlab="association (%)",
@@ -223,7 +223,7 @@ modules.relations <- function(spot.list, main, path)
       } 
     }
   }  
-    
+
 
   #### Group Implications ####
     
@@ -255,7 +255,7 @@ modules.relations <- function(spot.list, main, path)
     i <- 1
     for( gr in unique(group.labels) )
     {
-      if(i>1&&(i-1)%%12==0) { par(mar=c(0,0,0,0)); frame() }
+      if(i>1&&i%%13==0) { par(mar=c(0,0,0,0)); frame(); i <- i + 1 }
       
       r <- which( rules$lhs == paste("group.labels=",gr,sep="") )
       
@@ -281,7 +281,7 @@ modules.relations <- function(spot.list, main, path)
     i <- 1
     for( lhs in unique(rev(rules.help$lhs) ) )
     {
-      if(i>1&&(i-1)%%12==0) { par(mar=c(0,0,0,0)); frame() }
+      if(i>1&&i%%13==0) { par(mar=c(0,0,0,0)); frame(); i <- i + 1 }
       
       r <- which( rules.help$lhs == lhs )
       n <- rules.help[r[1],]$n/ rules.help[r[1],]$confidence
