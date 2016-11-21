@@ -21,7 +21,7 @@ pipeline.checkInputParameters <- function()
   
   if (!is.numeric(preferences$training.extension) ||
       preferences$training.extension < 1 ||
-      preferences$training.extension > 10)
+      preferences$training.extension > 100)
   {
     util.warn("Invalid value of \"training.extension\". Using 1")
     preferences$training.extension <<- 1
