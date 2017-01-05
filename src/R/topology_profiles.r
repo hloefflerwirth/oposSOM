@@ -36,14 +36,16 @@ pipeline.topologyProfiles <- function()
   ### Spot number distribution ###
   n.spots.groups <- sapply(tapply(n.spots, group.labels, c), function(x)
   {
-    hist(x, breaks=c(0:max(n.spots)), plot=FALSE)$counts
+    ret <- table(x)[as.character(0:max(n.spots))]
+    ret[which(is.na(ret))] <- 0
+    names(ret) <- as.character(0:max(n.spots))
+    return(ret)
   })
 
   if (is.vector(n.spots.groups))
   {
-    n <- names(n.spots.groups)
     n.spots.groups <- matrix(n.spots.groups,nrow=1)
-    colnames(n.spots.groups) <- n
+    colnames(n.spots.groups) <- unique(group.labels)
   }
 
   n.spots.groups <- sapply(unique(group.labels), function(x)
@@ -53,8 +55,8 @@ pipeline.topologyProfiles <- function()
 
   par(mfrow=c(1, 1))
 
-  barplot(as.vector(n.spots.groups), col=rep(groupwise.group.colors,each=max(n.spots)),
-          names.arg=rep(c(1:max(n.spots)), length(unique(group.labels))), las=1,
+  barplot(as.vector(n.spots.groups), col=rep(groupwise.group.colors,each=max(n.spots)+1),
+          names.arg=rep(c(0:max(n.spots)), length(unique(group.labels))), las=1,
           main="Fraction of samples showing respective number of overexpression spots",
           cex.main=2, border=if (ncol(indata) < 80) "black" else NA, ylim=c(0, 1))
 

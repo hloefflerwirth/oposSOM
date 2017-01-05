@@ -53,9 +53,9 @@ pipeline.geneLists <- function()
                    logFC=indata[o, m],
                    WAD=WAD.g.m[o, m],
                    T.Score=t.g.m[o, m],
-                   p.value=p.g.m[o, m],
-                   fdr=fdr.g.m[o, m],
-                   Fdr=Fdr.g.m[o, m],
+                   p.value=paste(p.g.m[o, m],"     ."),
+                   fdr=paste(fdr.g.m[o, m],"     ."),
+                   Fdr=paste(Fdr.g.m[o, m],"     ."),
                    Metagene=gene.info$coordinates[o],
                    Spot=genes.spot.assoc[o],
                    Chromosome=paste( gene.info$chr.name[rownames(indata)[o]], gene.info$chr.band[rownames(indata)[o]]),
@@ -125,13 +125,13 @@ pipeline.geneLists <- function()
         gs.info <- data.frame("Rank"=c(seq_along(pos.gs.gsz)),
                               "Upregulated"=names(pos.gs.gsz),
                               "GSZ"=pos.gs.gsz,
-                              "p.value"=pos.gs.p,
-                              "fdr"=pos.gs.fdr,
+                              "p.value"=paste(pos.gs.p,"     ."),
+                              "fdr"=paste(pos.gs.fdr,"     ."),
                               "."=rep("",length(pos.gs.gsz)),
                               "Downregulated"=names(neg.gs.gsz),
                               "GSZ."=neg.gs.gsz,
-                              "p.value."=neg.gs.p,
-                              "fdr."=neg.gs.fdr)
+                              "p.value."=paste(neg.gs.p,"     ."),
+                              "fdr."=paste(neg.gs.fdr,"     ."))
   
         basename <- paste(make.names(colnames(indata)[m]), ".csv", sep="")
         write.csv2(gs.info, file.path(dirnames["set"], basename), row.names=FALSE)

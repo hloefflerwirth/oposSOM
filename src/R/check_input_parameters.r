@@ -344,7 +344,7 @@ pipeline.checkInputParameters <- function()
     group.labels <<- rep("auto",ncol(indata))
     names(group.labels) <<- colnames(indata)
     
-    group.colors <<- rep("black", ncol(indata))
+    group.colors <<- rep("#000000", ncol(indata))
     names(group.colors) <<- colnames(indata)
   }
   

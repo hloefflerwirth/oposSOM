@@ -310,7 +310,7 @@ modules.report.sheets <- function(spot.list, main, path)
     if (preferences$activated.modules$geneset.analysis)
     {
       n.sets <- 40
-      top.gs.p <- sort(spot.list$spots[[m]]$Fisher.p)[1:n.sets]
+      top.gs.p <- sort(spot.list$spots[[m]]$Fisher.p[names(which( sapply(gs.def.list, function(x)x$Type) != "Chromatin states" ))])[1:n.sets]
       par(mar=c(0,0,0,0))
       
       x.coords <- c(0, 0.1, 0.23, 0.34, 0.4)

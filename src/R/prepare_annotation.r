@@ -70,6 +70,8 @@ pipeline.prepareAnnotation <- function()
                          preferences$database.id.type,
                          rownames(indata), mart, checkFilters=FALSE)  })
 
+  biomart.table <- biomart.table[ which(biomart.table[,1]%in%rownames(indata)), ]
+  
   if (nrow(biomart.table) == 0)
   {
     util.warn("Could not resolve rownames. Possibly wrong database.id.type")

@@ -47,7 +47,7 @@ modules.CSV.sheets <- function(spot.list, main, path)
                  "min delta e"=apply(indata[o, ,drop=FALSE], 1, min),
                  "correlation"=r.genes[o],
                  "->t.score"=r.t[o],
-                 "->p.value"=r.p[o],
+                 "->p.value"=paste(r.p[o],"     ."),
                  "Metagene"=gene.info$coordinates[o],
                  "Chromosome"=paste( gene.info$chr.name[o], gene.info$chr.band[o]),
                  "Description"=gene.info$descriptions[o])

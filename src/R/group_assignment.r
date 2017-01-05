@@ -2,7 +2,7 @@ pipeline.groupAssignment <- function()
 {
   ### auto-assign PAT groups
  
-  if( length(unique(group.labels)==1) && unique(group.labels)[1] == "auto" )
+  if( length(unique(group.labels)==1) && unique(group.labels)[1] == "auto" && any(pat.labels!="none")  )
   {
     util.info("Auto-assign sample groups (PAT-groups)")
     

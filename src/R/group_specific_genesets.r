@@ -62,7 +62,7 @@ pipeline.groupSpecificGenesets <- function()
     dev.off()
 
     fdr.res <- fdrtool(gs.p.values,statistic="pvalue",plot=FALSE,verbose=FALSE)
-    out <- cbind(names(gs.p.values), gs.p.values, fdr.res$lfdr)
+    out <- cbind(names(gs.p.values), paste(gs.p.values,"     ."), paste(fdr.res$lfdr,"     ."))
     colnames(out) = c("gene set","p-value","fdr")
 
     write.csv2(out, paste(files.name,
