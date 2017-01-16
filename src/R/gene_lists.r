@@ -110,8 +110,8 @@ pipeline.geneLists <- function()
           
           if(ncol(indata)<100)
           {
-            pos.gs.fdr <- fdrtool(pos.gs.p,statistic="pvalue",verbose=F,plot=F)$lfdr          
-            neg.gs.fdr <- fdrtool(neg.gs.p,statistic="pvalue",verbose=F,plot=F)$lfdr        
+            pos.gs.fdr <- fdrtool(pos.gs.p,statistic="pvalue",verbose=FALSE,plot=FALSE)$lfdr          
+            neg.gs.fdr <- fdrtool(neg.gs.p,statistic="pvalue",verbose=FALSE,plot=FALSE)$lfdr        
           }
         }
               

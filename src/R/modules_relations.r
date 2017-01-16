@@ -99,8 +99,8 @@ modules.relations <- function(spot.list, main, path)
                      control = list(verbose=FALSE))  })
     rules <- as(rules,"data.frame")
     rules <- rules[ order(rules$confidence,decreasing = TRUE), ]  
-    rules$lhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=T), function(x) gsub("[{}]","",x) )[1,]
-    rules$rhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=T), function(x) gsub("[{}]","",x) )[2,]
+    rules$lhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=TRUE), function(x) gsub("[{}]","",x) )[1,]
+    rules$rhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=TRUE), function(x) gsub("[{}]","",x) )[2,]
     
     rules.modules <- rules[ -unique( c( grep("group.labels=",rules$lhs), grep("group.labels=",rules$rhs) )),]
     rules.modules <- rules.modules[ which( !duplicated( apply(cbind(rules.modules$lhs,rules.modules$rhs),1,function(x) paste(sort(x),collapse=" ") ) ) ),]
@@ -152,8 +152,8 @@ modules.relations <- function(spot.list, main, path)
       {
         rules <- as(rules,"data.frame")
         rules <- rules[ order(rules$confidence,decreasing = TRUE), ]  
-        rules$lhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=T), function(x) gsub("[{}]","",x) )[1,]
-        rules$rhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=T), function(x) gsub("[{}]","",x) )[2,]
+        rules$lhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=TRUE), function(x) gsub("[{}]","",x) )[1,]
+        rules$rhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=TRUE), function(x) gsub("[{}]","",x) )[2,]
         
         rules.modules <- rules[ which( !duplicated( apply(cbind(rules$lhs,rules$rhs),1,function(x) paste(sort(x),collapse=" ") ) ) ),]
         
@@ -216,7 +216,7 @@ modules.relations <- function(spot.list, main, path)
       if( length(percent) > 0 )
       { 
         par(mar=c(5,6,4,5))
-        barplot( 100*percent, horiz=T, main=paste(rowname," (",sum(count),")",sep=""), cex.main=1.6, xlim=c(0,100),
+        barplot( 100*percent, horiz=TRUE, main=paste(rowname," (",sum(count),")",sep=""), cex.main=1.6, xlim=c(0,100),
                  names.arg=paste(names(percent),"\n(",count,")",sep="" ), las=1, xlab="association (%)",
                  col=groupwise.group.colors[names(percent)] )
         i <- i + 1 
@@ -240,8 +240,8 @@ modules.relations <- function(spot.list, main, path)
     rules <- as(rules,"data.frame")
     rules$n <- rules$support * length(trans.merge)
     
-    rules$lhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=T), function(x) gsub("[{}]","",x) )[1,]
-    rules$rhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=T), function(x) gsub("[{}]","",x) )[2,]
+    rules$lhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=TRUE), function(x) gsub("[{}]","",x) )[1,]
+    rules$rhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=TRUE), function(x) gsub("[{}]","",x) )[2,]
     
     rules <- rules[ order(rules$confidence), ]  
     
@@ -262,7 +262,7 @@ modules.relations <- function(spot.list, main, path)
       if( length(r) > 0 )
       {
         par(mar=c(5,6,4,5))
-        barplot( 100*rules[r,]$confidence, horiz=T, main=paste(gr," (",sum(group.labels==gr),")",sep=""), col.main=groupwise.group.colors[gr], cex.main=1.6, xlim=c(0,100),
+        barplot( 100*rules[r,]$confidence, horiz=TRUE, main=paste(gr," (",sum(group.labels==gr),")",sep=""), col.main=groupwise.group.colors[gr], cex.main=1.6, xlim=c(0,100),
                  names.arg=paste(rules[r,]$rhs,"\n(",rules[r,]$n,")",sep="" ), las=1, xlab="confidence" )
         title(main="implies",line=0,cex.main=0.8)
         i <- i + 1
@@ -289,7 +289,7 @@ modules.relations <- function(spot.list, main, path)
       if( length(r) > 0 )
       {
         par(mar=c(5,8,4,5))
-        barplot( 100*rules.help[r,]$confidence, horiz=T, main=paste(lhs," (",n,")",sep=""), cex.main=1.6, xlim=c(0,100),
+        barplot( 100*rules.help[r,]$confidence, horiz=TRUE, main=paste(lhs," (",n,")",sep=""), cex.main=1.6, xlim=c(0,100),
                  names.arg=paste(rules.help[r,]$rhs,"\n(",rules.help[r,]$n,")",sep="" ), las=1, xlab="confidence",
                  col=groupwise.group.colors[rules.help[r,]$rhs] )
         title(main="implies",line=0,cex.main=0.8)

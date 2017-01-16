@@ -47,7 +47,7 @@ pipeline.genesetOverviews <- function()
 
     heatmap(x=top.scores, cex.main=2,
                  col=color.palette.heatmaps(1000),
-                 mar=c(10,20), scale="n", zlim=max(max(top.scores),-min(top.scores))*c(-1,1),
+                 margins=c(10,20), scale="n", zlim=max(max(top.scores),-min(top.scores))*c(-1,1),
                  ColSideColors=group.colors, cexDend=0.6)
 
     par(new=TRUE, mar=c(3.5,29,35.5,2))
@@ -62,7 +62,7 @@ pipeline.genesetOverviews <- function()
 
     heatmap(x=top.scores, cex.main=2,
                  col=color.palette.heatmaps(1000),
-                 mar=c(10,20), scale="n",  zlim=max(max(top.scores),-min(top.scores))*c(-1,1),
+                 margins=c(10,20), scale="n",  zlim=max(max(top.scores),-min(top.scores))*c(-1,1),
                  ColSideColors=group.colors, cexDend=0.6, Colv=NA)
 
     par(new=TRUE, mar=c(3.5,29,35.5,2))
@@ -89,7 +89,7 @@ pipeline.genesetOverviews <- function()
 
     heatmap(x=top.scores[,o], cex.main=2,
                  col=color.palette.heatmaps(1000),
-                 mar=c(10,20), scale="n",
+                 margins=c(10,20), scale="n",
                  zlim=max(max(top.scores),-min(top.scores))*c(-1,1),
                  ColSideColors=group.colors[o], cexDend=0.6, Colv=NA)
 

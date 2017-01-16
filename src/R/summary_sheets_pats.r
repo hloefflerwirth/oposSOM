@@ -115,7 +115,7 @@ pipeline.summarySheetsPATs <- function()
              horiz=TRUE, las=1) 
     for( i in seq_along(unique(group.labels)) )
     {
-      print.labels <- which( pat.group.assoc[,i] > max(colSums(pat.group.assoc,na.rm=T))*0.05 )
+      print.labels <- which( pat.group.assoc[,i] > max(colSums(pat.group.assoc,na.rm=TRUE))*0.05 )
       for( ii in seq_along(print.labels) )
       {
         text( x=sum( pat.group.assoc[1:(print.labels[ii]),i] ) - pat.group.assoc[print.labels[ii],i]/2,

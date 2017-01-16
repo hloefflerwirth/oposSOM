@@ -169,13 +169,13 @@ pipeline.sampleSimilarityAnalysisCor <- function()
                 labRow=if(nrow(d)<100) rownames(d) else rep("",nrow(d)),
                 labCol=if(ncol(d)<100) colnames(d) else rep("",ncol(d)),
                 scale="n", main=paste("Pairwise correlation map on",n),
-                mar=c(8,6), ColSideColors=group.colors, RowSideColors=group.colors)
+                margins=c(8,6), ColSideColors=group.colors, RowSideColors=group.colors)
     
     par(new=TRUE, mar=c(5,1,1,2))
     plot(0,type="n", axes=FALSE, xlab="", ylab="")
       legend("bottomright", as.character(unique(group.labels)), cex=0.5, text.col=groupwise.group.colors, bg="white")
       
-    par(new=TRUE, mar = c(31.6, 55, 4.2, 2))
+    par(new=TRUE, mar=c(31.6,55,4.2,2))
     image(matrix(1:100, 1, 100), col=color.palette.heatmaps(1000), axes=FALSE)
        axis(2, c(-1,-0.5,0.5,1,"r"), at=c(0, 0.25, 0.75, 1, 0.5), las=2, tick=FALSE, pos=0, cex.axis=1)
 
@@ -196,7 +196,7 @@ pipeline.sampleSimilarityAnalysisCor <- function()
                   labRow=if(nrow(d)<100) rownames(d) else rep("",nrow(d)),
                   labCol=if(ncol(d)<100) colnames(d) else rep("",ncol(d)),
                   scale="n", main=paste("Pairwise correlation map on",n),
-                  mar=c(8,6), ColSideColors=group.colors[o], RowSideColors=group.colors[o])
+                  margins=c(8,6), ColSideColors=group.colors[o], RowSideColors=group.colors[o])
 
     par(new=TRUE, mar=c(5,1,1,2))
     plot(0,type="n", axes=FALSE, xlab="", ylab="")
@@ -213,7 +213,7 @@ pipeline.sampleSimilarityAnalysisCor <- function()
                  labCol=if(ncol(d)<100) colnames(d) else rep("",ncol(d)),
                  col=color.palette.heatmaps(1000),
                  scale="n", main=paste("Pairwise correlation map on",n),
-                 mar=c(8,6), ColSideColors=group.colors, RowSideColors=group.colors)
+                 margins=c(8,6), ColSideColors=group.colors, RowSideColors=group.colors)
 
     par(new=TRUE, mar=c(5,1,1,2))
     plot(0,type="n", axes=FALSE, xlab="", ylab="")

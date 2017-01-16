@@ -20,7 +20,7 @@ pipeline.genesetProfilesAndMaps <- function()
     pdf(file.path(dirname, paste(filename.prefix, ".pdf",sep="")), 29.7/2.54, 21/2.54)
      
     #### Geneset Profile + Heatmap
-    layout(matrix(c(1,2,3),ncol=1,byrow=T),heights=c(1.5,0.5,4))
+    layout(matrix(c(1,2,3),ncol=1,byrow=TRUE),heights=c(1.5,0.5,4))
     
     gs.indata <- indata[names(gene.info$ids)[which(gene.info$ids %in% gs.def.list[[i]]$Genes)],]
     sig.genes <- which( apply(gs.indata,1,sd)>sd(gs.indata) )
@@ -43,7 +43,7 @@ pipeline.genesetProfilesAndMaps <- function()
       mtext("GSZ", side=2, line=4.5, cex=1.25)
       
 
-    par(new=T,mar=c(0,0,0,0))
+    par(new=TRUE,mar=c(0,0,0,0))
     frame()
       legend(x=0.86,y=0.7,names(groupwise.group.colors),text.col=groupwise.group.colors)
 
@@ -56,7 +56,7 @@ pipeline.genesetProfilesAndMaps <- function()
       box()
       axis(2, 1:nrow(gs.indata), labels=rownames(gs.indata)[o.genes], las=2, line=-0.5, tick=0, cex.axis=min( 1.5, max( 0.5, 2-nrow(gs.indata) /67 ) ) )
     
-    par(new=T,mar=c(40,74,0,1))
+    par(new=TRUE,mar=c(40,74,0,1))
     image(matrix(c(1:1000), 1000, 1), axes=FALSE, col=color.palette.heatmaps(1000))
       box()
       axis( 1, at=c(0,1), labels=round(range(gs.indata),1), cex.axis=1.4 )

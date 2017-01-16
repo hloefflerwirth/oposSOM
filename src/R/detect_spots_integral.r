@@ -910,7 +910,7 @@ pipeline.detectSpotsIntegral <- function()
     }
   
   spot.matrix <- matrix(0, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom )
-  for( sel.minimum in which(peak.matrix)[order( uh[ which(peak.matrix) ], decreasing=T )] )
+  for( sel.minimum in which(peak.matrix)[order( uh[ which(peak.matrix) ], decreasing=TRUE )] )
   {
     spot.members <- c( sel.minimum )
     spot.d <- c( mean( uh[spot.members] ) ) 
@@ -937,7 +937,7 @@ pipeline.detectSpotsIntegral <- function()
       
     }
 #    if( mean(uh[spot.members]) > mean(uh) ) 
-    spot.matrix[spot.members] <- max(spot.matrix,na.rm=T)+1
+    spot.matrix[spot.members] <- max(spot.matrix,na.rm=TRUE)+1
   }
   spot.matrix[which(spot.matrix==0)] <- NA
   

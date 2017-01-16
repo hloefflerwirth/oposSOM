@@ -400,7 +400,7 @@ pipeline.summarySheetsGroups <- function()
     samples <- names(which(group.labels==gr))
     samples.o <- rev( names(S[which(names(S)%in%samples)]) )
     
-    image( group.correlations[,samples.o,drop=F], col=colorRampPalette(c("gray90","orange","red4"))(1000) , zlim=c(0,1), axes=FALSE )
+    image( group.correlations[,samples.o,drop=FALSE], col=colorRampPalette(c("gray90","orange","red4"))(1000) , zlim=c(0,1), axes=FALSE )
     box()	
     
     dummy<-sapply(1:length(unique(group.labels)), function(i)
