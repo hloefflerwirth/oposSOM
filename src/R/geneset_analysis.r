@@ -16,7 +16,7 @@ GeneSet.maxmean <- function(z, gs.def.list)
 }
 
 
-GeneSet.Fisher <- function(list.ids, all.ids, gs.def.list, sort=FALSE, cluster=NULL)
+GeneSet.Fisher <- function(list.ids, all.ids, gs.def.list, sort=FALSE)
 {
   list.ids <- list.ids[!is.na(list.ids)]
 
@@ -32,14 +32,7 @@ GeneSet.Fisher <- function(list.ids, all.ids, gs.def.list, sort=FALSE, cluster=N
     return(fisher.test(matrix(c(n.list.set,n.set,n.list,n.none),2), alternative="greater")$p.value)
   }
 
-  if (is.null(cluster))
-  {
-    p.values <- sapply(gs.def.list, fn, list.ids, all.ids)
-  } else
-  {
-    p.values <- parSapply(cluster, gs.def.list, fn, list.ids, all.ids)
-  }
-
+  p.values <- sapply(gs.def.list, fn, list.ids, all.ids)
   names(p.values) <- names(gs.def.list)
   p.values[which(p.values > 1)] <- 1
   p.values[which(p.values < 1e-99)] <- 1e-99

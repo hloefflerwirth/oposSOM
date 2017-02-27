@@ -17,7 +17,7 @@ pipeline.prepareAnnotation <- function()
 
   if (!util.call(biomart.available, environment()))
   {
-    util.warn("biomaRt seems to be down.")
+    util.warn("Requested biomaRt host seems to be down.")
     util.warn("Disabling geneset analysis.")
     preferences$activated.modules$geneset.analysis <<- FALSE
     return()
