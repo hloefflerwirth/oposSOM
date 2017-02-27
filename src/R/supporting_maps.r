@@ -6,7 +6,7 @@ pipeline.supportingMaps <- function()
   filename <- file.path(dirname, "Supporting Maps.pdf")
   util.info("Writing:", filename)
 
-  pdf(filename, 21/2.54, 21/2.54)
+  pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
 
   ### Population Map ###
   par(mfrow = c(1, 1))

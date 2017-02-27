@@ -64,7 +64,7 @@ pipeline.summarySheetsGroups <- function()
                         "Expression Portraits Groups.pdf")
 
   util.info("Writing:", filename)
-  pdf(filename, 29.7/2.54, 21/2.54)
+  pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)
 
   par(mfrow=c(5,6))
   par(mar=c(0.5,2.5,4.5,1.5))
@@ -349,7 +349,7 @@ pipeline.summarySheetsGroups <- function()
                         "Group Assignment.pdf")
 
   util.info("Writing:", filename)
-  pdf(filename, 21/2.54, 29.7/2.54)
+  pdf(filename, 21/2.54, 29.7/2.54, useDingbats=FALSE)
 
 
   S <- tapply( group.silhouette.coef, group.labels, sort, decreasing=TRUE, simplify=FALSE )[unique(group.labels)]
@@ -460,7 +460,7 @@ pipeline.summarySheetsGroups <- function()
                         "Group Clustering.pdf")
 
   util.info("Writing:", filename)
-  pdf(filename , 29.7/2.54, 21/2.54)
+  pdf(filename , 29.7/2.54, 21/2.54, useDingbats=FALSE)
 
   for (i in seq_along(unique(group.labels)))
   {

@@ -20,7 +20,7 @@ pipeline.sampleSimilarityAnalysisCor <- function()
   
   filename <- file.path(paste(files.name, "- Results"), "Sample Similarity Analysis", "Correlation Spanning Tree.pdf")
   util.info("Writing:", filename)
-  pdf(filename, 21/2.54, 21/2.54)
+  pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
   
   for (i in 1:2 )
   {
@@ -60,7 +60,7 @@ pipeline.sampleSimilarityAnalysisCor <- function()
   
   filename <- file.path(paste(files.name, "- Results"), "Sample Similarity Analysis", "Correlation Backbone.pdf")
   util.info("Writing:", filename)
-  pdf(filename, 21/2.54, 21/2.54)
+  pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
   
   for (i in 1:2 )
   {
@@ -107,7 +107,7 @@ pipeline.sampleSimilarityAnalysisCor <- function()
   
   filename <- file.path(paste(files.name, "- Results"), "Sample Similarity Analysis", "Correlation Network.pdf")
   util.info("Writing:", filename)
-  pdf(filename, 21/2.54, 21/2.54)
+  pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
   
   for (i in 1:2 )
   {
@@ -155,7 +155,7 @@ pipeline.sampleSimilarityAnalysisCor <- function()
   
   filename <- file.path(paste(files.name, "- Results"), "Sample Similarity Analysis", "Correlation Maps.pdf")
   util.info("Writing:", filename)
-  pdf(filename, 29.7/2.54, 21/2.54)
+  pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)
   
   for (i in 1:2 )
   {

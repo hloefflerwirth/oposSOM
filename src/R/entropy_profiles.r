@@ -4,7 +4,7 @@ pipeline.entropyProfiles <- function()
   util.info("Writing:", filename)
 
   ### Metagene Mean Expresion + Variance ###
-  pdf(filename, 42/2.54, 21/2.54)
+  pdf(filename, 42/2.54, 21/2.54, useDingbats=FALSE)
   par(mar=c(10, 6, 4, 5))
 
   barplot(apply(metadata, 2, mean), col=group.colors,

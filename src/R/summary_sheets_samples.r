@@ -30,7 +30,7 @@ pipeline.summarySheetsSamples <- function()
   for (m in 1:ncol(indata))
   {
     basename <- paste(make.names(make.unique(colnames(indata))[m]), ".pdf", sep="")
-    pdf(file.path(output.paths["Summary Sheets Samples"], basename), 29.7/2.54, 21/2.54)
+    pdf(file.path(output.paths["Summary Sheets Samples"], basename), 29.7/2.54, 21/2.54, useDingbats=FALSE)
 
     ## Global Sheet
     layout(matrix(c(1,2,4,1,3,0,5,5,6,7,7,8), 3, 4), widths=c(1,1,2,2), heights=c(2,1,1))

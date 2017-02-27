@@ -16,7 +16,7 @@ pipeline.groupSpecificGenesets <- function()
 
     pdf(paste(files.name,
               " - Results/Summary Sheets - Groups/Geneset Analysis/Specific GS ",
-              make.names(unique(group.labels)[gr]),".pdf", sep=""), 21/2.54, 29.7/2.54)
+              make.names(unique(group.labels)[gr]),".pdf", sep=""), 21/2.54, 29.7/2.54, useDingbats=FALSE)
 
     layout(matrix(c(1:8),4, byrow=TRUE), widths=c(3,1))
 
@@ -79,7 +79,7 @@ pipeline.groupSpecificGenesets <- function()
   top.gs <- names(sort(gs.F,decreasing=TRUE)[1:20])
   
   pdf(paste(files.name,
-            " - Results/Summary Sheets - Groups/Geneset Analysis/0verall specific GS.pdf", sep=""), 21/2.54, 29.7/2.54)
+            " - Results/Summary Sheets - Groups/Geneset Analysis/0verall specific GS.pdf", sep=""), 21/2.54, 29.7/2.54, useDingbats=FALSE)
   
   layout(matrix(c(1:8),4, byrow=TRUE), widths=c(3,1))
   

@@ -12,7 +12,7 @@ pipeline.summarySheetsPATs <- function()
                         "PAT report.pdf")
 
   util.info("Writing:", filename)
-  pdf(filename, 29.7/2.54, 21/2.54)
+  pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)
 
   
   ### PAT clustering

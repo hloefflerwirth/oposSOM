@@ -5,7 +5,7 @@ modules.chromosomes <- function(spot.list, main, path)
 		return()
 	}
 	
-  pdf(path, 21/2.54, 29.7/2.54)
+  pdf(path, 21/2.54, 29.7/2.54, useDingbats=FALSE)
  
   sorted.unique.gene.positions <- unlist( sapply( 1:length(chromosome.list), function(i) paste( names(chromosome.list)[i], names(chromosome.list[[i]]), sep=" " ) ) )
   sorted.unique.gene.positions <- sort.label( sorted.unique.gene.positions )

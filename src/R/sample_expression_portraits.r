@@ -4,7 +4,7 @@ pipeline.sampleExpressionPortraits <- function()
   filename <- file.path(paste(files.name, "- Results"), "Expression Portraits.pdf")
   util.info("Writing:", filename)
 
-  pdf(filename, 29.7/2.54, 21/2.54)
+  pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)
   par(mfrow=c(7, 12))
   par(mar=c(0.3, 0.9, 4.5, 0.9))
   count.col <- 0
@@ -96,7 +96,7 @@ pipeline.sampleExpressionPortraits <- function()
   filename <- file.path(paste(files.name, "- Results"), "Expression Portraits - alternative scales.pdf")
   util.info("Writing:", filename)
   
-  pdf(filename, 29.7/2.54, 21/2.54)
+  pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE )
   
   
   # Absolute Metagene Portraits

@@ -66,7 +66,7 @@ pipeline.groupAssignment <- function()
                             "PAT-groups assignment.pdf")
       
       util.info("Writing:", filename)
-      pdf(filename, 29.7/2.54, 21/2.54)
+      pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)
       
       x.coords <- barplot( withinss, col="gray90",ylim=range(y)*c(0.9,1.1), main="SSE",xlab="k",ylab="SSE", xpd=FALSE )
         box()

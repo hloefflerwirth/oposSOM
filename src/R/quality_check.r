@@ -25,7 +25,7 @@ pipeline.qualityCheck <- function()
 
   filename <- file.path(paste(files.name, "- Results"), "Data Overview", "Data Distribution.pdf")
   util.info("Writing:", filename)
-  pdf(filename, 29.7/2.54, 21/2.54)
+  pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)
 
   par(mfrow=c(1,2))
   plot(densities.x, densities.y[1,], main="Input data distribution", xlim=range(indata), ylim=range(densities.y), type="l", xlab="log Expression", ylab="Density")

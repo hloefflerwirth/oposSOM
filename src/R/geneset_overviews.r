@@ -2,7 +2,7 @@ pipeline.genesetOverviews <- function()
 {
   filename <- file.path(paste(files.name, "- Results"), "Geneset Analysis", "0verview Heatmaps.pdf")
   util.info("Writing:", filename)
-  pdf(filename, 21/2.54, 21/2.54)
+  pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
 
   ### GSZ heatmaps
   summary.spots.fisher.p <-

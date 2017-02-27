@@ -4,7 +4,7 @@ modules.relations <- function(spot.list, main, path)
   spotdata.binary <- spot.list$spotdata > sd.theshold
   mode(spotdata.binary) <- "numeric"
 
-  pdf(path, 29.7/2.54, 21/2.54)
+  pdf(path, 29.7/2.54, 21/2.54, useDingbats=FALSE)
 
   #### wTO network ####
   

@@ -2,14 +2,14 @@ modules.profiles <- function(spot.list, main, path)
 {
   sd.theshold = sd(spot.list$spotdata)
   
-  pdf(path, 29.7/2.54, 21/2.54)
+  pdf(path, 29.7/2.54, 21/2.54, useDingbats=FALSE)
   
   #### spot profiles ####
   layout(matrix(1:15, 5, 3, byrow=TRUE), widths=c(1,4,1))
   
   for (i in 1:length(spot.list$spots))
   {
-    if (main %in% c("Sample-Underexpression"))
+    if (main %in% c("Underexpression Spots"))
     {
       samples <- which(spot.list$spotdata[i,] < -sd.theshold)
     } else

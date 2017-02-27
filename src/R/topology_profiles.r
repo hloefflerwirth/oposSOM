@@ -7,11 +7,11 @@ pipeline.topologyProfiles <- function()
 
   if (length(unique(group.labels)) > 1)
   {
-    pdf(filename, 42/2.54, 21/2.54)
+    pdf(filename, 42/2.54, 21/2.54, useDingbats=FALSE)
     par(mar=c(10, 6, 4, 5), mfrow=c(1, 2))
   } else
   {
-    pdf(filename, 21/2.54, 21/2.54)
+    pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
     par(mar=c(10, 6, 4, 5))
   }
 

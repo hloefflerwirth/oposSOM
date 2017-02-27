@@ -1,6 +1,6 @@
 modules.report.sheets <- function(spot.list, main, path)
 {
-  pdf(path, 29.7/2.54, 21/2.54)
+  pdf(path, 29.7/2.54, 21/2.54, useDingbats=FALSE)
   
   #### Spot landscape ####
   
@@ -149,7 +149,7 @@ modules.report.sheets <- function(spot.list, main, path)
   #### Individual spot sheets ####
   for (m in seq_along(spot.list$spots))
   {
-    if (main %in% c("Sample-Underexpression"))
+    if (main %in% c("Underexpression Spots"))
     {
       sample.with.spot <- spot.list$spotdata[m,] < -sd(as.vector(spot.list$spotdata))
     }  else

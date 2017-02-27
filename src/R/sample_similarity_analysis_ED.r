@@ -5,7 +5,7 @@ pipeline.sampleSimilarityAnalysisED <- function()
   
   filename <- file.path(paste(files.name, "- Results"), "Sample Similarity Analysis", "t-SNE.pdf")
   util.info("Writing:", filename)
-  pdf(filename, 21/2.54, 21/2.54)
+  pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
 
   for (i in 1:2 )
   {
@@ -25,7 +25,7 @@ pipeline.sampleSimilarityAnalysisED <- function()
   
   filename <- file.path(paste(files.name, "- Results"), "Sample Similarity Analysis", "Neighbor Joining.pdf")
   util.info("Writing:", filename)
-  pdf(filename, 21/2.54, 21/2.54)
+  pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
   
   for (i in 1:2 )
   {
@@ -50,7 +50,7 @@ pipeline.sampleSimilarityAnalysisED <- function()
 
   filename <- file.path(paste(files.name, "- Results"), "Sample Similarity Analysis", "Hierarchical Clustering.pdf")
   util.info("Writing:", filename)
-  pdf(filename, 29.7/2.54, 21/2.54)
+  pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)
   
   for (i in 1:2 )
   {

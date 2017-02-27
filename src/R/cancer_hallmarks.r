@@ -89,7 +89,7 @@ pipeline.cancerHallmarks <- function()
     ### Output
     filename <- file.path(paste(files.name, "- Results"), "Geneset Analysis", "0verview Cancer Hallmarks.pdf")
     util.info("Writing:", filename)
-    pdf(filename, 21/2.54, 29.7/2.54)
+    pdf(filename, 21/2.54, 29.7/2.54, useDingbats=FALSE)
   
     layout(matrix(c(1:8), 4, byrow=TRUE), widths=c(3, 1))
   
