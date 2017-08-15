@@ -1,6 +1,6 @@
 modules.profiles <- function(spot.list, main, path)
 {
-  sd.theshold = sd(spot.list$spotdata)
+  sd.threshold = sd(spot.list$spotdata)
   
   pdf(path, 29.7/2.54, 21/2.54, useDingbats=FALSE)
   
@@ -11,10 +11,10 @@ modules.profiles <- function(spot.list, main, path)
   {
     if (main %in% c("Underexpression Spots"))
     {
-      samples <- which(spot.list$spotdata[i,] < -sd.theshold)
+      samples <- which(spot.list$spotdata[i,] < -sd.threshold)
     } else
     {
-      samples <- which(spot.list$spotdata[i,] > sd.theshold)
+      samples <- which(spot.list$spotdata[i,] > sd.threshold)
     }
     
     par(mar=c(0.5,3,0.5,1))
@@ -32,11 +32,11 @@ modules.profiles <- function(spot.list, main, path)
                          border=if (ncol(indata) < 80) "black" else NA,
                          ylim=range(spot.list$spotdata)*c(1,1.4))
     
-    abline(h=sd.theshold*c(-1,1), lty=2, col="gray")
+    abline(h=sd.threshold*c(-1,1), lty=2, col="gray")
 
     label.string <- rep(".",length(unique(group.labels)))
-    label.string[  which( tapply( spot.list$spotdata[i,], group.labels, mean )[unique(group.labels)] > sd.theshold )  ] = "+"
-    label.string[  which( tapply( spot.list$spotdata[i,], group.labels, mean )[unique(group.labels)] < -sd.theshold )  ] = "-"
+    label.string[  which( tapply( spot.list$spotdata[i,], group.labels, mean )[unique(group.labels)] > sd.threshold )  ] = "+"
+    label.string[  which( tapply( spot.list$spotdata[i,], group.labels, mean )[unique(group.labels)] < -sd.threshold )  ] = "-"
     label.x <- tapply(barplot.x, group.labels, mean)[unique(group.labels)]
     text(label.x, max(spot.list$spotdata)*1.2, label.string, col=groupwise.group.colors,cex=2.5)
     
@@ -87,11 +87,11 @@ modules.profiles <- function(spot.list, main, path)
     boxplot(  tapply( spot.list$spotdata[i,], group.labels, c )[unique(group.labels)],
               col=groupwise.group.colors, las=1, ylim=ylim )
     
-    abline(h=sd.theshold*c(-1,0,1), lty=2, col="gray")
+    abline(h=sd.threshold*c(-1,0,1), lty=2, col="gray")
     
     label.string <- rep(".",length(unique(group.labels)))
-    label.string[  which( tapply( spot.list$spotdata[i,], group.labels, mean )[unique(group.labels)] > sd.theshold )  ] = "+"
-    label.string[  which( tapply( spot.list$spotdata[i,], group.labels, mean )[unique(group.labels)] < -sd.theshold )  ] = "-"
+    label.string[  which( tapply( spot.list$spotdata[i,], group.labels, mean )[unique(group.labels)] > sd.threshold )  ] = "+"
+    label.string[  which( tapply( spot.list$spotdata[i,], group.labels, mean )[unique(group.labels)] < -sd.threshold )  ] = "-"
     
     text( 1:length(unique(group.labels)), par("usr")[4]-(par("usr")[4]-par("usr")[3])*0.1, label.string, col=groupwise.group.colors,cex=3)
   }

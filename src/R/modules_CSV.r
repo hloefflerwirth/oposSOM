@@ -23,7 +23,7 @@ modules.CSV.sheets <- function(spot.list, main, path)
     e.max <- apply(indata[spot.list$spots[[m]]$genes, ,drop=FALSE], 1, max)
     e.min <- apply(indata[spot.list$spots[[m]]$genes, ,drop=FALSE], 1, min)
 
-    if (main %in% c("Sample-Underexpression","Metagene Minima"))
+    if (main %in% c("Sample-Underexpression"))
     {
       o <- names(sort(e.min, decreasing=FALSE))
     }  else
@@ -34,11 +34,6 @@ modules.CSV.sheets <- function(spot.list, main, path)
     out <- data.frame(Rank=c(seq_along(spot.list$spots[[m]]$genes)),
                       ID=o,
                       Symbol=gene.info$names[o])
-
-    if (any(grep("GenesetSOM",files.name)))
-    {
-      out <-cbind(out, Type = sapply(gs.def.list, function(x) { x$Type })[o])
-    }
 
     out <- cbind(out,
                  "mean expression"=indata.gene.mean[o],
