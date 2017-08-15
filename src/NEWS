@@ -9,3 +9,4 @@ oposSOM 1.9.3: Mart and host for annotation query can nnow be given as parameter
 oposSOM 1.11.1: Presentation of sample similarity and expression module analyses improved. Implementation of t-SNE analysis.
 oposSOM 1.11.2: Baskets algorithm implemented, providing relations between expression modules, and expression modules and groups.
 oposSOM 1.13.1: Bumped version number by Bioconductor + a series of bugs were fixed.
+oposSOM 1.15.1: Bumped version number by Bioconductor + few minor changes.
