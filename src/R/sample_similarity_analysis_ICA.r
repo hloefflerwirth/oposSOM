@@ -11,7 +11,7 @@ pipeline.sampleSimilarityAnalysisICA <- function()
     n <- if( i == 1 ) paste( "module data (", preferences$standard.spot.modules, ")") else "metagene data"
     
     try({
-      ICA.res <- fastICA(t(d), 3)$S
+      suppressMessages({ ICA.res <- fastICA(t(d), 3)$S })
       z <- ICA.res[,2]
 
       layout(matrix(c(0, 1, 0)),heights=c(1, 3, 1))
@@ -20,7 +20,7 @@ pipeline.sampleSimilarityAnalysisICA <- function()
       scatterplot3d(ICA.res,
                     cex.symbols=4*(1-((z-min(z))/(max(z)-min(z))))+2,
                     color=group.colors,
-                    pch=16, tick.marks=FALSE, xlab="", ylab="", zlab="",
+                    pch=16, xlab="", ylab="", zlab="",
                     main=paste("Independent Component Analysis on",n), mar=c(1,1,1,1))
 
       par(new=TRUE)
@@ -32,7 +32,7 @@ pipeline.sampleSimilarityAnalysisICA <- function()
 
       scatterplot3d(ICA.res,
                     cex.symbols=4*(1-((z-min(z))/(max(z)-min(z))))+2,
-                    color="black", pch=1, tick.marks=FALSE, xlab="", ylab="",
+                    color="black", pch=1, xlab="", ylab="",
                     zlab="", axis=FALSE, grid=FALSE, mar=c(1,1,1,1))
 
       par(new=TRUE)
@@ -43,16 +43,21 @@ pipeline.sampleSimilarityAnalysisICA <- function()
 
       
       layout(matrix(c(1,2)))
-      par(mar=c(0.1,3,1,3))
+  
+      if(ncol(ICA.res)==3)
+      {    
+        par(mar=c(0.1,3,1,3))
+        
+        plot(ICA.res[,1], ICA.res[,3], type="p", pch=16,
+             col=group.colors, cex=3, axes=FALSE, xlab="", ylab="",
+             main=paste("Independent Component Analysis on",n), cex.main=0.8)
+        
+        mtext("component 3",2,cex=0.8)
+        points(ICA.res[,1], ICA.res[,3], pch=16, col=group.colors, cex=3)
+        points(ICA.res[,1], ICA.res[,3], pch=1, col="black", cex=3)
+        box()
+      }
       
-      plot(ICA.res[,1], ICA.res[,3], type="p", pch=16,
-           col=group.colors, cex=3, axes=FALSE, xlab="", ylab="",
-           main=paste("Independent Component Analysis on",n), cex.main=0.8)
-      
-      mtext("component 3",2,cex=0.8)
-      points(ICA.res[,1], ICA.res[,3], pch=16, col=group.colors, cex=3)
-      points(ICA.res[,1], ICA.res[,3], pch=1, col="black", cex=3)
-      box()
       
       par(mar=c(1,3,0.1,3))
       
@@ -70,18 +75,22 @@ pipeline.sampleSimilarityAnalysisICA <- function()
       if( ncol(d) < 1000 )
       {
         layout(matrix(c(1,2)))
-        par(mar=c(0.1,3,1,3))
-  
-        plot(ICA.res[,1], ICA.res[,3], type="p", pch=16,
-             col=group.colors, cex=3, axes=FALSE, xlab="", ylab="",
-             main=paste("Independent Component Analysis on",n), cex.main=0.8)
-  
-        mtext("component 3",2,cex=0.8)
-        points(ICA.res[,1], ICA.res[,3], pch=16, col=group.colors, cex=3)
-        points(ICA.res[,1], ICA.res[,3], pch=1, col="black", cex=3)
-        text(ICA.res[,1], ICA.res[,3], colnames(indata), col="gray20", cex=0.6)
-        box()
-  
+        
+        if(ncol(ICA.res)==3)
+        { 
+          par(mar=c(0.1,3,1,3))
+    
+          plot(ICA.res[,1], ICA.res[,3], type="p", pch=16,
+               col=group.colors, cex=3, axes=FALSE, xlab="", ylab="",
+               main=paste("Independent Component Analysis on",n), cex.main=0.8)
+    
+          mtext("component 3",2,cex=0.8)
+          points(ICA.res[,1], ICA.res[,3], pch=16, col=group.colors, cex=3)
+          points(ICA.res[,1], ICA.res[,3], pch=1, col="black", cex=3)
+          text(ICA.res[,1], ICA.res[,3], colnames(indata), col="gray20", cex=0.6)
+          box()
+        }
+        
         par(mar=c(1,3,0.1,3))
   
         plot(ICA.res[,1], ICA.res[,2], type="p", pch=16,

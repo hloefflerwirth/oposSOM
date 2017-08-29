@@ -71,16 +71,17 @@ pipeline.chromosomeExpressionReports <- function()
   chr.pq.gene.list <- chr.pq.gene.list[  sort.label( names(chr.pq.gene.list) )  ]
   chr.pq.gene.list <- chr.pq.gene.list[ which(sapply(chr.pq.gene.list,length)>0)]
   names(chr.pq.gene.list) <- sub("."," ",names(chr.pq.gene.list),fixed=TRUE)
-  
-  chr.pq.exp.matrix <- t( sapply( chr.pq.gene.list, function(x)
-  {
-    colMeans(indata[x,,drop=FALSE])
-  }) )
-  
-  
-  o.samples.pq <- hclust( dist(t(chr.pq.exp.matrix)) )$order
-  o.chr.pq <- hclust( dist(chr.pq.exp.matrix) )$order 
 
+  if(length(chr.pq.gene.list)>0)
+  {
+    chr.pq.exp.matrix <- t( sapply( chr.pq.gene.list, function(x)
+    {
+      colMeans(indata[x,,drop=FALSE])
+    }) )
+
+    o.samples.pq <- hclust( dist(t(chr.pq.exp.matrix)) )$order
+    o.chr.pq <- hclust( dist(chr.pq.exp.matrix) )$order 
+  }
   
   # Heatmap Outputs
   dir.create(paste(files.name, "- Results/Data Overview"), showWarnings=FALSE)
@@ -127,56 +128,59 @@ pipeline.chromosomeExpressionReports <- function()
       axis(2, c(0,0.5,1), round(max(abs(chr.exp.matrix))*c(-1,0,1),1), las=2, line=-0.5, cex.axis=.6, tick=FALSE )
       axis(3, 0,  bquote(Delta ~ e), tick=FALSE, line=-1 )
   }  
-
-  layout( matrix(1:2,1), widths = c(20,1) )
   
-  par( mar=c(4,4,2,0.5) )
-  image( x=1:nrow(chr.pq.exp.matrix), y=1:ncol(chr.pq.exp.matrix), z=chr.pq.exp.matrix[,ncol(chr.pq.exp.matrix):1], zlim=max(abs(chr.pq.exp.matrix))*c(-1,1), col=color.palette.heatmaps(1000), axes=FALSE, xlab="chromosome bands", ylab="samples" )
-    box()
-    axis(1,seq(names(chr.pq.gene.list)),names(chr.pq.gene.list),las=2)
-  
-  par( mar=c(4,0,2,1) )
-  image( t(matrix(1:length(group.colors) ) ), col = rev(group.colors), axes=FALSE )
-  
-  par( new=TRUE, mfrow=c(1,1), mar=c(4,1.3,26,55.3) )
-  image(matrix(1:1000,ncol=1000), col=color.palette.heatmaps(1000), axes=FALSE )
-    box()
-    axis(2, c(0,0.5,1), round(max(abs(chr.pq.exp.matrix))*c(-1,0,1),1), las=2, line=-0.5, cex.axis=.6, tick=FALSE )
-    axis(3, 0,  bquote(Delta ~ e), tick=FALSE, line=-1 )
+  if(length(chr.pq.gene.list)>0) 
+  {
+    layout( matrix(1:2,1), widths = c(20,1) )
     
-  
-  layout( matrix(1:2,1), widths = c(20,1) )
-  
-  par( mar=c(4,4,2,0.5) )
-  image( x=1:nrow(chr.pq.exp.matrix), y=1:ncol(chr.pq.exp.matrix), z=chr.pq.exp.matrix[,o.samples.pq], zlim=max(abs(chr.pq.exp.matrix))*c(-1,1), col=color.palette.heatmaps(1000), axes=FALSE, xlab="chromosome bands", ylab="samples (clustered)" )
-    box()
-    axis(1,seq(names(chr.pq.gene.list)),names(chr.pq.gene.list),las=2)  
-  
-  par( mar=c(4,0,2,1) )
-  image( t(matrix(1:length(group.colors) ) ), col = group.colors[o.samples.pq], axes=FALSE )
-  
-  par( new=TRUE, mfrow=c(1,1), mar=c(4,1.3,26,55.3) )
-  image(matrix(1:1000,ncol=1000), col=color.palette.heatmaps(1000), axes=FALSE )
-    box()
-    axis(2, c(0,0.5,1), round(max(abs(chr.pq.exp.matrix))*c(-1,0,1),1), las=2, line=-0.5, cex.axis=.6, tick=FALSE )
-    axis(3, 0,  bquote(Delta ~ e), tick=FALSE, line=-1 )
-  
-  
-  layout( matrix(1:2,1), widths = c(20,1) )
-  
-  par( mar=c(4,4,2,0.5) )
-  image( x=1:nrow(chr.pq.exp.matrix), y=1:ncol(chr.pq.exp.matrix), z=chr.pq.exp.matrix[o.chr.pq,o.samples.pq], zlim=max(abs(chr.pq.exp.matrix))*c(-1,1), col=color.palette.heatmaps(1000), axes=FALSE, xlab="chromosome bands (clustered)", ylab="samples (clustered)" )
-    box()
-    axis(1,seq(names(chr.pq.gene.list)),names(chr.pq.gene.list)[o.chr.pq],las=2)
-  
-  par( mar=c(4,0,2,1) )
-  image( t(matrix(1:length(group.colors) ) ), col = group.colors[o.samples.pq], axes=FALSE )
-  
-  par( new=TRUE, mfrow=c(1,1), mar=c(4,1.3,26,55.3) )
-  image(matrix(1:1000,ncol=1000), col=color.palette.heatmaps(1000), axes=FALSE )
-    box()
-    axis(2, c(0,0.5,1), round(max(abs(chr.pq.exp.matrix))*c(-1,0,1),1), las=2, line=-0.5, cex.axis=.6, tick=FALSE )
-    axis(3, 0,  bquote(Delta ~ e), tick=FALSE, line=-1 )
+    par( mar=c(4,4,2,0.5) )
+    image( x=1:nrow(chr.pq.exp.matrix), y=1:ncol(chr.pq.exp.matrix), z=chr.pq.exp.matrix[,ncol(chr.pq.exp.matrix):1], zlim=max(abs(chr.pq.exp.matrix))*c(-1,1), col=color.palette.heatmaps(1000), axes=FALSE, xlab="chromosome bands", ylab="samples" )
+      box()
+      axis(1,seq(names(chr.pq.gene.list)),names(chr.pq.gene.list),las=2)
     
+    par( mar=c(4,0,2,1) )
+    image( t(matrix(1:length(group.colors) ) ), col = rev(group.colors), axes=FALSE )
+    
+    par( new=TRUE, mfrow=c(1,1), mar=c(4,1.3,26,55.3) )
+    image(matrix(1:1000,ncol=1000), col=color.palette.heatmaps(1000), axes=FALSE )
+      box()
+      axis(2, c(0,0.5,1), round(max(abs(chr.pq.exp.matrix))*c(-1,0,1),1), las=2, line=-0.5, cex.axis=.6, tick=FALSE )
+      axis(3, 0,  bquote(Delta ~ e), tick=FALSE, line=-1 )
+      
+    
+    layout( matrix(1:2,1), widths = c(20,1) )
+    
+    par( mar=c(4,4,2,0.5) )
+    image( x=1:nrow(chr.pq.exp.matrix), y=1:ncol(chr.pq.exp.matrix), z=chr.pq.exp.matrix[,o.samples.pq], zlim=max(abs(chr.pq.exp.matrix))*c(-1,1), col=color.palette.heatmaps(1000), axes=FALSE, xlab="chromosome bands", ylab="samples (clustered)" )
+      box()
+      axis(1,seq(names(chr.pq.gene.list)),names(chr.pq.gene.list),las=2)  
+    
+    par( mar=c(4,0,2,1) )
+    image( t(matrix(1:length(group.colors) ) ), col = group.colors[o.samples.pq], axes=FALSE )
+    
+    par( new=TRUE, mfrow=c(1,1), mar=c(4,1.3,26,55.3) )
+    image(matrix(1:1000,ncol=1000), col=color.palette.heatmaps(1000), axes=FALSE )
+      box()
+      axis(2, c(0,0.5,1), round(max(abs(chr.pq.exp.matrix))*c(-1,0,1),1), las=2, line=-0.5, cex.axis=.6, tick=FALSE )
+      axis(3, 0,  bquote(Delta ~ e), tick=FALSE, line=-1 )
+    
+    
+    layout( matrix(1:2,1), widths = c(20,1) )
+    
+    par( mar=c(4,4,2,0.5) )
+    image( x=1:nrow(chr.pq.exp.matrix), y=1:ncol(chr.pq.exp.matrix), z=chr.pq.exp.matrix[o.chr.pq,o.samples.pq], zlim=max(abs(chr.pq.exp.matrix))*c(-1,1), col=color.palette.heatmaps(1000), axes=FALSE, xlab="chromosome bands (clustered)", ylab="samples (clustered)" )
+      box()
+      axis(1,seq(names(chr.pq.gene.list)),names(chr.pq.gene.list)[o.chr.pq],las=2)
+    
+    par( mar=c(4,0,2,1) )
+    image( t(matrix(1:length(group.colors) ) ), col = group.colors[o.samples.pq], axes=FALSE )
+    
+    par( new=TRUE, mfrow=c(1,1), mar=c(4,1.3,26,55.3) )
+    image(matrix(1:1000,ncol=1000), col=color.palette.heatmaps(1000), axes=FALSE )
+      box()
+      axis(2, c(0,0.5,1), round(max(abs(chr.pq.exp.matrix))*c(-1,0,1),1), las=2, line=-0.5, cex.axis=.6, tick=FALSE )
+      axis(3, 0,  bquote(Delta ~ e), tick=FALSE, line=-1 )
+  }    
+      
   dev.off()
 }
