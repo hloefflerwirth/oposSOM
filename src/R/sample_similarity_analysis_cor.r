@@ -193,8 +193,8 @@ pipeline.sampleSimilarityAnalysisCor <- function()
 
     par(mar=c(1,1,1,1))
     heatmap(x=d[o,o], zlim=c(-1,1), Rowv=NA, Colv=NA, col=color.palette.heatmaps(1000),
-                  labRow=if(nrow(d)<100) rownames(d) else rep("",nrow(d)),
-                  labCol=if(ncol(d)<100) colnames(d) else rep("",ncol(d)),
+                  labRow=if(nrow(d)<100) rownames(d[o]) else rep("",nrow(d)),
+                  labCol=if(ncol(d)<100) colnames(d[o]) else rep("",ncol(d)),
                   scale="n", main=paste("Pairwise correlation map on",n),
                   margins=c(8,6), ColSideColors=group.colors[o], RowSideColors=group.colors[o])
 

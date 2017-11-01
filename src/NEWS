@@ -11,3 +11,4 @@ oposSOM 1.11.2: Baskets algorithm implemented, providing relations between expre
 oposSOM 1.13.1: Bumped version number by Bioconductor + a series of bugs were fixed.
 oposSOM 1.15.1: Bumped version number by Bioconductor + few minor changes.
 oposSOM 1.15.2: Bugfixes for Chromosome Expression Plots and ICA
+oposSOM 1.15.3: Bugfixes for Chromosome Expression Plots and PCM

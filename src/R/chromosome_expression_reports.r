@@ -72,7 +72,7 @@ pipeline.chromosomeExpressionReports <- function()
   chr.pq.gene.list <- chr.pq.gene.list[ which(sapply(chr.pq.gene.list,length)>0)]
   names(chr.pq.gene.list) <- sub("."," ",names(chr.pq.gene.list),fixed=TRUE)
 
-  if(length(chr.pq.gene.list)>0)
+  if(length(chr.pq.gene.list)>2)
   {
     chr.pq.exp.matrix <- t( sapply( chr.pq.gene.list, function(x)
     {
@@ -129,7 +129,7 @@ pipeline.chromosomeExpressionReports <- function()
       axis(3, 0,  bquote(Delta ~ e), tick=FALSE, line=-1 )
   }  
   
-  if(length(chr.pq.gene.list)>0) 
+  if(length(chr.pq.gene.list)>2) 
   {
     layout( matrix(1:2,1), widths = c(20,1) )
     

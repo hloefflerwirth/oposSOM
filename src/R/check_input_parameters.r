@@ -268,6 +268,11 @@ pipeline.checkInputParameters <- function()
     indata <<- do.call(rbind, by(indata, rownames(indata), colMeans))[unique(rownames(indata)),]
     util.warn("Duplicate rownames. Averaged multiple features")
   }
+  if( "" %in% rownames(indata) )
+  {
+    indata <<- indata[which(rownames(indata)!=""),]
+    util.warn("Removed genes with \"\" id from data")
+  }
   
   na.rows <- which( apply(indata, 1, function(x) sum( is.na(x) | is.infinite(x) ) ) > 0 )
   
