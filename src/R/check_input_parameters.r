@@ -212,18 +212,37 @@ pipeline.checkInputParameters <- function()
   
   if (class(indata) != "matrix" && (is.null(dim(indata)) || dim(indata) < 1))
   {
-    util.fatal("Invalid indata supplied!")
+    util.fatal("Invalid indata! Provide a two-dimensional numerical matrix.")
     return(FALSE)
   }
   
   if (class(indata) != "matrix" ||
-      mode(indata) != "numeric" ||
-      storage.mode(indata) != "numeric")
+      mode(indata) != "numeric" )
+      # storage.mode(indata) != "numeric")
   {
     rn <- rownames(indata)
-    indata <<- apply(indata, 2, function(x){ as.numeric(as.vector(x)) })
-    rownames(indata) <<- rn
-    storage.mode(indata) <<- "numeric"
+    num.mode <- sapply(seq(ncol(indata)), function(i){ all(grepl("^-?[0-9\\.]+$", indata[,i])) })
+    
+    if( num.mode[1]==FALSE && all(num.mode[-1]==TRUE) ) # check if IDs are contained as first row
+    {
+      rn <- indata[,1]
+      indata <<- indata[,-1]
+      num.mode <- num.mode[-1]
+      util.warn("Gene IDs adopted from first data column.")    
+    }
+    
+    if( any(num.mode!=TRUE) ) # check if all columns contain numbers or convertable characters
+    {
+      util.fatal("Invalid indata! Provide a two-dimensional numerical matrix.")
+      return(FALSE)
+      
+    } else
+    {
+      indata <<- apply(indata, 2, function(x){ as.numeric(as.vector(x)) })
+      rownames(indata) <<- rn
+      storage.mode(indata) <<- "numeric"
+      util.warn("Indata converted to two-dimensional numerical matrix.")    
+    }
   }
   
   if( length(group.labels)==1 && group.labels=="auto" )
