@@ -89,34 +89,56 @@ modules.relations <- function(spot.list, main, path)
   
   if ( length(spot.list$spots) > 2 )
   {
-    trans.groups <- as(as.data.frame(group.labels), "transactions")
-    trans.modules <- as(t(spotdata.binary), "transactions")
-    trans.merge <- merge(trans.groups, trans.modules)
+    module.group.rules <-
+      do.call( rbind, lapply( rownames(spotdata.binary), function(mod.x)
+      {
+        samples.with.module <- names( which( spotdata.binary[mod.x,] == 1 ) )
+        do.call( rbind, lapply( unique( group.labels[ samples.with.module ] ), function(gr.x)
+        {
+          count <- sum( group.labels[ samples.with.module ] == gr.x )
+          data.frame( lhs = mod.x,
+                      rhs = gr.x,
+                      count = count,
+                      support = count / ncol(indata),
+                      confidence = count / length(samples.with.module),
+                      stringsAsFactors = FALSE)
+        }) )
+      } ) )
+    module.group.rules <- module.group.rules[ which( module.group.rules$support>0.01 &
+                                                     module.group.rules$confidence>0.1 ), ]
+    module.group.rules <- module.group.rules[ order( module.group.rules$confidence, decreasing=TRUE), ]
+    module.group.rules <- module.group.rules[ !duplicated( module.group.rules$lhs ) ,] 
     
-    suppressWarnings({
-      rules <- apriori(trans.merge, parameter = list(supp = 0.01, minlen = 2, maxlen = 2,
-                                                   conf = 0.1, target = "rules"),
-                     control = list(verbose=FALSE))  })
-    rules <- as(rules,"data.frame")
-    rules <- rules[ order(rules$confidence,decreasing = TRUE), ]  
-    rules$lhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=TRUE), function(x) gsub("[{}]","",x) )[1,]
-    rules$rhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=TRUE), function(x) gsub("[{}]","",x) )[2,]
     
-    rules.modules <- rules[ -unique( c( grep("group.labels=",rules$lhs), grep("group.labels=",rules$rhs) )),]
-    rules.modules <- rules.modules[ which( !duplicated( apply(cbind(rules.modules$lhs,rules.modules$rhs),1,function(x) paste(sort(x),collapse=" ") ) ) ),]
-    rules.groups <- rules[ grep("group.labels=",rules$rhs) ,]
-    rules.groups <- rules.groups[ !duplicated( rules.groups$lhs ) ,]
-    rules.groups$rhs <- sub( "group.labels=","",rules.groups$rhs )
+    module.module.rules <-
+      do.call( rbind, lapply( rownames(spotdata.binary), function(mod.x.1)
+      {
+        do.call( rbind, lapply( setdiff( rownames(spotdata.binary), mod.x.1), function(mod.x.2)
+        {
+          count <- sum( colSums( spotdata.binary[c(mod.x.1,mod.x.2),] ) == 2 )
+          data.frame( lhs = mod.x.1,
+                      rhs = mod.x.2,
+                      count = count,
+                      support = count / ncol(indata),
+                      confidence = count / sum( spotdata.binary[mod.x.1,] == 1 ),
+                      stringsAsFactors = FALSE)
+        }) )
+      } ) )
+    module.module.rules <- module.module.rules[ which( module.module.rules$support>0.01 &
+                                                         module.module.rules$confidence>0.1 ), ]
+    module.module.rules <- module.module.rules[ order( module.module.rules$confidence, decreasing=TRUE), ]
+    module.module.rules <- module.module.rules[ which( !duplicated( apply(cbind(module.module.rules$lhs,module.module.rules$rhs),1,function(x) paste(sort(x),collapse=" ") ) ) ),]
     
+  
     g <- graph.empty( length(spot.list$spots), directed = FALSE )
     V(g)$name <- names(spot.list$spots)
-    g <- add_edges( g, as.vector( rbind( match( rules.modules$lhs, V(g)$name ), match( rules.modules$rhs, V(g)$name ) ) ) )
+    g <- add_edges( g, as.vector( rbind( match( module.module.rules$lhs, V(g)$name ), match( module.module.rules$rhs, V(g)$name ) ) ) )
     V(g)$label <- names(spot.list$spots)
     V(g)$size <- 5
-    V(g)$size[ match( rules.groups$lhs, V(g)$name ) ] <- 15 * rules.groups$confidence + 3
+    V(g)$size[ match( module.group.rules$lhs, V(g)$name ) ] <- 15 * module.group.rules$confidence + 3
     V(g)$color <- "gray"
-    V(g)$color[ match( rules.groups$lhs, V(g)$name ) ] <- groupwise.group.colors[rules.groups$rhs]
-    E(g)$width <- 6 * rules.modules$confidence + 0.5
+    V(g)$color[ match( module.group.rules$lhs, V(g)$name ) ] <- groupwise.group.colors[module.group.rules$rhs]
+    E(g)$width <- 6 * module.module.rules$confidence + 0.5
     E(g)$color <- "gray30"
     E(g)$arrow.size <- 4
     
@@ -140,34 +162,43 @@ modules.relations <- function(spot.list, main, path)
            pch=c(NA,NA,1,1,1,rep(NA,6)), pt.cex=c(0,0,7.5,4,1,rep(0,6)), lty=c(rep(0,8),1,1,1), lwd=c(rep(0,8),7,4,1), bty="n", cex=1.2, y.intersp=2)
     box()
     
+    
     for( gr in unique(group.labels) )
     {
       if( all( spotdata.binary[,which(group.labels==gr)] == 0 ) ) next
-            
-      trans.modules <- as(t(spotdata.binary[,which(group.labels==gr)]), "transactions")
-      rules <- suppressWarnings({ apriori(trans.modules, parameter = list(supp = 0.1, minlen = 2, maxlen = 2,
-                                                                          conf = 0.1, target = "rules"),
-                                          control = list(verbose=FALSE))  })
-      if( length(rules) > 0 )
+      
+      module.module.rules <-
+        do.call( rbind, lapply( rownames(spotdata.binary), function(mod.x.1)
+        {
+          do.call( rbind, lapply( setdiff( rownames(spotdata.binary), mod.x.1), function(mod.x.2)
+          {
+            count <- sum( colSums( spotdata.binary[c(mod.x.1,mod.x.2),which(group.labels==gr),drop=FALSE] ) == 2 )
+            data.frame( lhs = mod.x.1,
+                        rhs = mod.x.2,
+                        count = count,
+                        support = count / sum(group.labels==gr),
+                        confidence = count / sum( spotdata.binary[mod.x.1,which(group.labels==gr)] == 1 ),
+                        stringsAsFactors = FALSE)
+          }) )
+        } ) )
+      module.module.rules <- module.module.rules[ which( module.module.rules$support>0.1 &
+                                                           module.module.rules$confidence>0.1 ), ]
+      module.module.rules <- module.module.rules[ order( module.module.rules$confidence, decreasing=TRUE), ]
+      module.module.rules <- module.module.rules[ which( !duplicated( apply(cbind(module.module.rules$lhs,module.module.rules$rhs),1,function(x) paste(sort(x),collapse=" ") ) ) ),]
+      
+      
+      if( nrow(module.module.rules) > 0 )   
       {
-        rules <- as(rules,"data.frame")
-        rules <- rules[ order(rules$confidence,decreasing = TRUE), ]  
-        rules$lhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=TRUE), function(x) gsub("[{}]","",x) )[1,]
-        rules$rhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=TRUE), function(x) gsub("[{}]","",x) )[2,]
-        
-        rules.modules <- rules[ which( !duplicated( apply(cbind(rules$lhs,rules$rhs),1,function(x) paste(sort(x),collapse=" ") ) ) ),]
-        
-        
         g <- graph.empty( length(spot.list$spots), directed = FALSE )
         V(g)$name <- names(spot.list$spots)
-        g <- add_edges( g, as.vector( rbind( match( rules.modules$lhs, V(g)$name ), match( rules.modules$rhs, V(g)$name ) ) ) )
+        g <- add_edges( g, as.vector( rbind( match( module.module.rules$lhs, V(g)$name ), match( module.module.rules$rhs, V(g)$name ) ) ) )
         
         V(g)$label <- names(spot.list$spots)
         V(g)$size <- 10
         V(g)$color <- "gray"
-        V(g)$color[ match( rules.groups$lhs[which(rules.groups$rhs==gr)], V(g)$name ) ] <- groupwise.group.colors[gr]   
+        V(g)$color[ match( module.group.rules$lhs[which(module.group.rules$rhs==gr)], V(g)$name ) ] <- groupwise.group.colors[gr]   
         
-        E(g)$width <- 6 * rules.modules$confidence + 0.5
+        E(g)$width <- 6 * module.module.rules$confidence + 0.5
         E(g)$color <- groupwise.group.colors[gr]
         
         layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
@@ -229,21 +260,24 @@ modules.relations <- function(spot.list, main, path)
     
   if ( length(spot.list$spots) > 2 )
   {
-    trans.groups <- as(as.data.frame(group.labels), "transactions")
-    trans.modules <- as(t(spotdata.binary), "transactions")
-    trans.merge <- merge(trans.groups, trans.modules)
-    
-    suppressWarnings({
-      rules <- apriori(trans.merge, parameter = list(supp = 0.01, minlen = 2, maxlen = nrow(spotdata.binary),
-                                                   conf = 0.01, target = "rules"),
-                     control = list(verbose=FALSE))  })
-    rules <- as(rules,"data.frame")
-    rules$n <- rules$support * length(trans.merge)
-    
-    rules$lhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=TRUE), function(x) gsub("[{}]","",x) )[1,]
-    rules$rhs <- sapply( strsplit(as.character(rules$rules)," => ", fixed=TRUE), function(x) gsub("[{}]","",x) )[2,]
-    
-    rules <- rules[ order(rules$confidence), ]  
+    group.module.rules <-
+      do.call( rbind, lapply( unique( group.labels ), function(gr.x)
+      {
+        samples.with.group <- names( which( group.labels == gr.x ) )
+        do.call( rbind, lapply( rownames(spotdata.binary), function(mod.x)
+        {
+          count <- sum( spotdata.binary[mod.x,samples.with.group ] == 1 )
+          data.frame( lhs = gr.x,
+                      rhs = mod.x,
+                      count = count,
+                      support = count / ncol(indata),
+                      confidence = count / length(samples.with.group),
+                      stringsAsFactors = FALSE)
+        }) )
+      } ) )
+    group.module.rules <- group.module.rules[ which( group.module.rules$support>0.01 &
+                                                       group.module.rules$confidence>0.01 ), ]
+    group.module.rules <- group.module.rules[ order( group.module.rules$confidence), ]
     
     
     layout( matrix(c(rep(1,4),2:13),nrow=4,byrow=TRUE), heights=c(0.15,1,1,1) )
@@ -256,21 +290,39 @@ modules.relations <- function(spot.list, main, path)
     for( gr in unique(group.labels) )
     {
       if(i>1&&i%%13==0) { par(mar=c(0,0,0,0)); frame(); i <- i + 1 }
-      
-      r <- which( rules$lhs == paste("group.labels=",gr,sep="") )
+     
+      r <- which( group.module.rules$lhs == gr )
       
       if( length(r) > 0 )
       {
         par(mar=c(5,6,4,5))
-        barplot( 100*rules[r,]$confidence, horiz=TRUE, main=paste(gr," (",sum(group.labels==gr),")",sep=""), col.main=groupwise.group.colors[gr], cex.main=1.6, xlim=c(0,100),
-                 names.arg=paste(rules[r,]$rhs,"\n(",rules[r,]$n,")",sep="" ), las=1, xlab="confidence" )
+        barplot( 100*group.module.rules[r,]$confidence, horiz=TRUE, main=paste(gr," (",sum(group.labels==gr),")",sep=""), col.main=groupwise.group.colors[gr], cex.main=1.6, xlim=c(0,100),
+                 names.arg=paste(group.module.rules[r,]$rhs,"\n(",group.module.rules[r,]$count,")",sep="" ), las=1, xlab="confidence" )
         title(main="implies",line=0,cex.main=0.8)
         i <- i + 1
       } 
     }
     
-    rules.help <- rules[ which(rules$rhs %in% paste("group.labels=",unique(group.labels),sep="") ),]
-    rules.help$rhs <- sub( "group.labels=","",rules.help$rhs )
+    
+    module.group.rules <-
+      do.call( rbind, lapply( rownames(spotdata.binary), function(mod.x)
+      {
+        samples.with.module <- names( which( spotdata.binary[mod.x,] == 1 ) )
+        do.call( rbind, lapply( unique( group.labels[ samples.with.module ] ), function(gr.x)
+        {
+          count <- sum( group.labels[ samples.with.module ] == gr.x )
+          data.frame( lhs = mod.x,
+                      rhs = gr.x,
+                      count = count,
+                      support = count / ncol(indata),
+                      confidence = count / length(samples.with.module),
+                      stringsAsFactors = FALSE)
+        }) )
+      } ) )
+    module.group.rules <- module.group.rules[ which( module.group.rules$support>0.01 &
+                                                       module.group.rules$confidence>0.01 ), ]
+    module.group.rules <- module.group.rules[ order( module.group.rules$confidence ), ]
+    
     
     layout( matrix(c(rep(1,4),2:13),nrow=4,byrow=TRUE), heights=c(0.15,1,1,1) )  
     par(mar=c(0,0,0,0))
@@ -279,19 +331,19 @@ modules.relations <- function(spot.list, main, path)
     text(0.5,0.5,"Group implications of the modules (basket algorithm)",cex=2.6)
     
     i <- 1
-    for( lhs in unique(rev(rules.help$lhs) ) )
+    for( lhs in unique(rev(module.group.rules$lhs) ) )
     {
       if(i>1&&i%%13==0) { par(mar=c(0,0,0,0)); frame(); i <- i + 1 }
       
-      r <- which( rules.help$lhs == lhs )
-      n <- rules.help[r[1],]$n/ rules.help[r[1],]$confidence
+      r <- which( module.group.rules$lhs == lhs )
+      n <- module.group.rules[r[1],]$count / module.group.rules[r[1],]$confidence
       
       if( length(r) > 0 )
       {
         par(mar=c(5,8,4,5))
-        barplot( 100*rules.help[r,]$confidence, horiz=TRUE, main=paste(lhs," (",n,")",sep=""), cex.main=1.6, xlim=c(0,100),
-                 names.arg=paste(rules.help[r,]$rhs,"\n(",rules.help[r,]$n,")",sep="" ), las=1, xlab="confidence",
-                 col=groupwise.group.colors[rules.help[r,]$rhs] )
+        barplot( 100*module.group.rules[r,]$confidence, horiz=TRUE, main=paste(lhs," (",n,")",sep=""), cex.main=1.6, xlim=c(0,100),
+                 names.arg=paste(module.group.rules[r,]$rhs,"\n(",module.group.rules[r,]$count,")",sep="" ), las=1, xlab="confidence",
+                 col=groupwise.group.colors[module.group.rules[r,]$rhs] )
         title(main="implies",line=0,cex.main=0.8)
         i <- i + 1
       } 
