@@ -1,3 +1,5 @@
+oposSOM 2.0.0: Great performance boost by implementation of parallel SOM calculation. "som" package dependence removed.
+oposSOM 1.17.2: Implementation of conditional probabilities. "arules" package dependence removed.
 oposSOM 1.17.1: Crucial fix for unstable ensembl database availability.
 oposSOM 1.17.0: Bumped version number by Bioconductor + few minor changes.
 oposSOM 1.15.3: Bugfixes for Chromosome Expression Plots and PCM.

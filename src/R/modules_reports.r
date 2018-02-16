@@ -94,7 +94,7 @@ modules.report.sheets <- function(spot.list, main, path)
         sample.spot.expression.image,
         col=color.palette.heatmaps(1000),
         axes=FALSE, ylim=0.5+c(0,nrow(spot.list$spotdata)), yaxs="i", xlab="", ylab="",
-        zlim=max(max(sample.spot.expression.image),-min(sample.spot.expression.image))*c(-1,1))
+        zlim=max(abs(sample.spot.expression.image),na.rm=TRUE)*c(-1,1))
   
   box()
   
@@ -151,10 +151,10 @@ modules.report.sheets <- function(spot.list, main, path)
   {
     if (main %in% c("Underexpression Spots"))
     {
-      sample.with.spot <- spot.list$spotdata[m,] < -sd(as.vector(spot.list$spotdata))
+      sample.with.spot <- spot.list$spotdata[m,] < -sd(as.vector(spot.list$spotdata),na.rm=TRUE)
     }  else
     {
-      sample.with.spot <- spot.list$spotdata[m,] > sd(as.vector(spot.list$spotdata))
+      sample.with.spot <- spot.list$spotdata[m,] > sd(as.vector(spot.list$spotdata),na.rm=TRUE)
     }
     
     layout(matrix(c(1,2,4,1,3,4,5,5,6,7,7,8), 3, 4), widths=c(1,1,2,2), heights=c(2,1,1))
@@ -191,10 +191,10 @@ modules.report.sheets <- function(spot.list, main, path)
     
     text(0.1, 0.39,
          paste("# samples with spot =",
-               sum(sample.with.spot), "(",
-               round(100 * sum(sample.with.spot) / ncol(indata), 1), "%)"), adj=0)
+               sum(sample.with.spot,na.rm=TRUE), "(",
+               round(100 * sum(sample.with.spot,na.rm=TRUE) / ncol(indata), 1), "%)"), adj=0)
     
-    if (length(unique(group.labels)) > 1 && sum(sample.with.spot) > 0)
+    if (length(unique(group.labels)) > 1 && sum(sample.with.spot,na.rm=TRUE) > 0)
     {
       group.table <- table(group.labels[sample.with.spot])[unique(group.labels)]
       group.table <- group.table[which(!is.na(group.table))]
@@ -265,8 +265,8 @@ modules.report.sheets <- function(spot.list, main, path)
         return(suppressWarnings(cor(gene, spot.list$spotdata[m,])))
       })
       
-      e.max <- apply(indata[spot.list$spots[[m]]$genes, ,drop=FALSE], 1, max)
-      e.min <- apply(indata[spot.list$spots[[m]]$genes, ,drop=FALSE], 1, min)
+      e.max <- apply(indata[spot.list$spots[[m]]$genes, ,drop=FALSE], 1, max, na.rm=TRUE)
+      e.min <- apply(indata[spot.list$spots[[m]]$genes, ,drop=FALSE], 1, min, na.rm=TRUE)
       
       if (main %in% c("Underexpression Spots"))
       {

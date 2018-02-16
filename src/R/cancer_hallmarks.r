@@ -106,7 +106,7 @@ pipeline.cancerHallmarks <- function()
       abline(h=0, lty=2)
   
       n.map <- matrix(0,preferences$dim.1stLvlSom,preferences$dim.1stLvlSom)
-      gs.nodes <- som.result$nodes[hallmark.sets.ids[[i]]]
+      gs.nodes <- som.result$feature.BMU[hallmark.sets.ids[[i]]]
       n.map[as.numeric(names(table(gs.nodes)))] <- table(gs.nodes)
       n.map[which(n.map==0)] <- NA
       n.map <- matrix(n.map, preferences$dim.1stLvlSom)

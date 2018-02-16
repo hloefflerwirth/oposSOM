@@ -1,13 +1,8 @@
 pipeline.genesetProfilesAndMaps <- function()
 {
-  progress.current <- 0
-  progress.max <- nrow(samples.GSZ.scores)
-  util.progress(progress.current, progress.max)
-
-
   dirname <- file.path(paste(files.name, "- Results"), "Geneset Analysis")
   util.info("Writing:", file.path(dirname, "*.{csv,pdf}"))
-
+	progressbar <-newProgressBar(min = 0, max = nrow(samples.GSZ.scores)); cat("\r")
   
   ylim <- quantile(samples.GSZ.scores,c(0.01,0.99))
   off.thres <- -sd(samples.GSZ.scores)
@@ -96,7 +91,7 @@ pipeline.genesetProfilesAndMaps <- function()
     par(mar=c(16, 0, 6, 3.5))
      
     n.map <- matrix(0,preferences$dim.1stLvlSom,preferences$dim.1stLvlSom)
-    gs.nodes <- som.result$nodes[names(gene.info$ids)[which(gene.info$ids %in% gs.def.list[[i]]$Genes)]]
+    gs.nodes <- som.result$feature.BMU[names(gene.info$ids)[which(gene.info$ids %in% gs.def.list[[i]]$Genes)]]
     n.map[as.numeric(names(table(gs.nodes)))] <- table(gs.nodes)
     n.map[which(n.map==0)] <- NA
     n.map <- matrix(n.map, preferences$dim.1stLvlSom)
@@ -150,9 +145,8 @@ pipeline.genesetProfilesAndMaps <- function()
 
     write.csv2(out, file.path(dirname, paste(filename.prefix, ".csv", sep="")), row.names=FALSE)
 
-    progress.current <- progress.current + 1
-    util.progress(progress.current, progress.max)
+    setTxtProgressBar( progressbar, progressbar$getVal()+1 )
   }
 
-  util.progress.terminate()
+  progressbar$kill()
 }

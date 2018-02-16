@@ -2,7 +2,7 @@ pipeline.geneLists <- function()
 {
   
   #### Gene Localization Table ####
-  o <- order(som.result$nodes)
+  o <- order(som.result$feature.BMU)
   out <- data.frame(ID=rownames(indata)[o],
                     Symbol=gene.info$names[o],
                     MeanExpression=indata.gene.mean[o],

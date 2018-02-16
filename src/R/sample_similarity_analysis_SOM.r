@@ -10,13 +10,16 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
     d <- if( i == 1 ) get(paste("spot.list.",preferences$standard.spot.modules,sep=""))$spotdata else metadata
     n <- if( i == 1 ) paste( "module data (", preferences$standard.spot.modules, ")") else "metagene data"
     
-    secLvlSom <- som(t(d), xdim=preferences$dim.2ndLvlSom, ydim=preferences$dim.2ndLvlSom)
-    
+    secLvlSom <- som.linear.init(t(d), preferences$dim.2ndLvlSom)
+    secLvlSom <- som.training(t(d),secLvlSom)
+  
+    secLvlSom$feature.coords <- secLvlSom$node.summary[secLvlSom$feature.BMU,c("x","y")]
+
     ##### Plot SampleSOM #####
     
     par(mar=c(1, 1, 1, 1))
-    xl <- c(min(secLvlSom$visual[,"x"])-1.2, max(secLvlSom$visual[,"x"])+1.2)
-    yl <- c(min(secLvlSom$visual[,"y"])-1.2, max(secLvlSom$visual[,"y"])+1.2)
+    xl <- c(min(secLvlSom$feature.coords[,"x"])-1.2, max(secLvlSom$feature.coords[,"x"])+1.2)
+    yl <- c(min(secLvlSom$feature.coords[,"y"])-1.2, max(secLvlSom$feature.coords[,"y"])+1.2)
   
     plot( 0, type="n", axes=FALSE, xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i",main=paste("Sample SOM on",n), cex.main=1)
   
@@ -26,12 +29,12 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
              text.col=groupwise.group.colors, bg="white")
     }
   
-    for (j in 1:nrow(secLvlSom$code.sum))
+    for (j in 1:nrow(secLvlSom$node.summary))
     {
   
       which.samples <-
-        intersect(which(secLvlSom$visual[,"x"] == secLvlSom$code.sum[j,"x"]),
-                  which(secLvlSom$visual[,"y"] == secLvlSom$code.sum[j,"y"]))
+        intersect(which(secLvlSom$feature.coords[,"x"] == secLvlSom$node.summary[j,"x"]),
+                  which(secLvlSom$feature.coords[,"y"] == secLvlSom$node.summary[j,"y"]))
   
       if (!is.na(which.samples[1]))
       {
@@ -41,12 +44,12 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
         x.seq <- c(0,0.3,0,-0.3,0,-0.3,0.3,-0.3,0.3)[seq_along(which.samples)]
         y.seq <- c(0,0,0.3,0,-0.3,-0.3,-0.3,0.3,0.3)[seq_along(which.samples)]
   
-        points(secLvlSom$visual[which.samples[1], "x"]+x.seq,
-               secLvlSom$visual[which.samples[1], "y"]+y.seq,
+        points(secLvlSom$feature.coords[which.samples[1], "x"]+x.seq,
+               secLvlSom$feature.coords[which.samples[1], "y"]+y.seq,
                pch=16, col=group.colors[which.samples], cex=1.5)
   
-        points(secLvlSom$visual[which.samples[1], "x"]+x.seq,
-               secLvlSom$visual[which.samples[1], "y"]+y.seq,
+        points(secLvlSom$feature.coords[which.samples[1], "x"]+x.seq,
+               secLvlSom$feature.coords[which.samples[1], "y"]+y.seq,
                pch=1, col="gray20", cex=1.5, lwd=1)
       }
     }
@@ -63,12 +66,12 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
                text.col=groupwise.group.colors, bg="white")
       }
     
-      for (j in 1:nrow(secLvlSom$code.sum))
+      for (j in 1:nrow(secLvlSom$node.summary))
       {
     
         which.samples <-
-          intersect(which(secLvlSom$visual[,"x"] == secLvlSom$code.sum[j,"x"]),
-                    which(secLvlSom$visual[,"y"] == secLvlSom$code.sum[j,"y"]))
+          intersect(which(secLvlSom$feature.coords[,"x"] == secLvlSom$node.summary[j,"x"]),
+                    which(secLvlSom$feature.coords[,"y"] == secLvlSom$node.summary[j,"y"]))
     
         if (!is.na(which.samples[1]))
         {
@@ -78,16 +81,16 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
           x.seq <- c(0,0.3,0,-0.3,0,-0.3,0.3,-0.3,0.3)[seq_along(which.samples)]
           y.seq <- c(0,0,0.3,0,-0.3,-0.3,-0.3,0.3,0.3)[seq_along(which.samples)]
     
-          points(secLvlSom$visual[which.samples[1], "x"]+x.seq,
-                 secLvlSom$visual[which.samples[1], "y"]+y.seq,
+          points(secLvlSom$feature.coords[which.samples[1], "x"]+x.seq,
+                 secLvlSom$feature.coords[which.samples[1], "y"]+y.seq,
                  pch=16, col=group.colors[which.samples], cex=1.5)
     
-          points(secLvlSom$visual[which.samples[1], "x"]+x.seq,
-                 secLvlSom$visual[which.samples[1], "y"]+y.seq,
+          points(secLvlSom$feature.coords[which.samples[1], "x"]+x.seq,
+                 secLvlSom$feature.coords[which.samples[1], "y"]+y.seq,
                  pch=1, col="gray20", cex=1.5, lwd=1)
     
-          text(secLvlSom$visual[which.samples[1], "x"]+x.seq,
-               secLvlSom$visual[which.samples[1], "y"]+y.seq,
+          text(secLvlSom$feature.coords[which.samples[1], "x"]+x.seq,
+               secLvlSom$feature.coords[which.samples[1], "y"]+y.seq,
                colnames(indata)[which.samples], col="gray20", cex=0.6)
         }
       }
@@ -106,20 +109,20 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
       
       names(transparent.group.colors) <- unique(group.labels)
       
-      plot(secLvlSom$visual[,"x"], -secLvlSom$visual[,"y"],
+      plot(secLvlSom$feature.coords[,"x"], -secLvlSom$feature.coords[,"y"],
            type="n", axes=FALSE, xlab="", ylab="", cex=4, col=group.colors, pch=16,
            xaxs="i", yaxs="i", xlim=xl, ylim=yl,main="Second level SOM, group outlines", cex.main=1)
       
       for (i in seq_along(unique(group.labels)))
       {
         group.member <- which(group.labels==unique(group.labels)[i])
-        group.centroid <- colMeans(secLvlSom$visual[group.member, 1:2])
+        group.centroid <- colMeans(secLvlSom$feature.coords[group.member, 1:2])
         
-        hull <- chull(secLvlSom$visual[group.member, 1],
-                      secLvlSom$visual[group.member, 2])
+        hull <- chull(secLvlSom$feature.coords[group.member, 1],
+                      secLvlSom$feature.coords[group.member, 2])
         
-        polygon(secLvlSom$visual[group.member[hull], 1],
-                secLvlSom$visual[group.member[hull], 2],
+        polygon(secLvlSom$feature.coords[group.member[hull], 1],
+                secLvlSom$feature.coords[group.member[hull], 2],
                 col=transparent.group.colors[i], lty=1,
                 border=groupwise.group.colors[i])
       }
@@ -145,12 +148,12 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
     }
   
     coord.bins <- as.numeric( cut( c(1:preferences$dim.2ndLvlSom), breaks=20 ) )
-    for (j in 1:nrow(secLvlSom$code.sum))
+    for (j in 1:nrow(secLvlSom$node.summary))
     {
       
       which.samples <-
-        intersect(which(coord.bins[secLvlSom$visual[,"x"]+1] == coord.bins[secLvlSom$code.sum[j,"x"]+1]),
-                  which(coord.bins[secLvlSom$visual[,"y"]+1] == coord.bins[secLvlSom$code.sum[j,"y"]+1]))
+        intersect(which(coord.bins[secLvlSom$feature.coords[,"x"]+1] == coord.bins[secLvlSom$node.summary[j,"x"]+1]),
+                  which(coord.bins[secLvlSom$feature.coords[,"y"]+1] == coord.bins[secLvlSom$node.summary[j,"y"]+1]))
   
       if (!is.na(which.samples[1]))
       {
@@ -165,20 +168,20 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
         x <- pixmapIndexed(m , col=color.palette.portraits(1000), cellres=10)
   
         addlogo(x,
-                coord.bins[secLvlSom$visual[which.samples[1],"x"]+1]+c(-0.45,0.455),
-                coord.bins[secLvlSom$visual[which.samples[1],"y"]+1]+c(-0.45,0.45))
+                coord.bins[secLvlSom$feature.coords[which.samples[1],"x"]+1]+c(-0.45,0.455),
+                coord.bins[secLvlSom$feature.coords[which.samples[1],"y"]+1]+c(-0.45,0.45))
   
         which.samples <- which.samples[1:min(9, length(which.samples))]
   
         x.seq <- c(0,0.3,0,-0.3,0,-0.3,0.3,-0.3,0.3)[seq_along(which.samples)]
         y.seq <- c(0,0,0.3,0,-0.3,-0.3,-0.3,0.3,0.3)[seq_along(which.samples)]
   
-        points(coord.bins[secLvlSom$visual[which.samples[1],"x"]+1]+x.seq,
-               coord.bins[secLvlSom$visual[which.samples[1],"y"]+1]+y.seq,
+        points(coord.bins[secLvlSom$feature.coords[which.samples[1],"x"]+1]+x.seq,
+               coord.bins[secLvlSom$feature.coords[which.samples[1],"y"]+1]+y.seq,
                pch=16, col=group.colors[which.samples], cex=1.2)
   
-        points(coord.bins[secLvlSom$visual[which.samples[1],"x"]+1]+x.seq,
-               coord.bins[secLvlSom$visual[which.samples[1],"y"]+1]+y.seq,
+        points(coord.bins[secLvlSom$feature.coords[which.samples[1],"x"]+1]+x.seq,
+               coord.bins[secLvlSom$feature.coords[which.samples[1],"y"]+1]+y.seq,
                pch=1, col="gray20", cex=1.2, lwd=1)
       }
     }

@@ -132,7 +132,7 @@ opossom.run <- function(env)
 
   if(env$preferences$activated.modules$primary.analysis || env$preferences$activated.modules$geneset.analysis)
   {
-    util.info("Loading gene annotation data. This may take several minutes until next notification.")
+    util.info("Loading gene annotation data.")
     util.call(pipeline.prepareAnnotation, env)
   }
 

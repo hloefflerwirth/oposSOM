@@ -11,7 +11,7 @@ pipeline.supportingMaps <- function()
   ### Population Map ###
   par(mfrow = c(1, 1))
   par(mar=c(5, 6, 4, 5))
-  m <- log10(som.result$code.sum[,"nobs"])
+  m <- log10(som.result$node.summary[,"n.features"])
   m[which(is.infinite(m))] <- NA
 
   image(matrix(m, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
@@ -24,7 +24,7 @@ pipeline.supportingMaps <- function()
   layout(matrix(c(0, 0, 0, 0, 1, 0, 0, 0, 0), 3, 3), c(1, 0.05, 0.02), c(0.14, 0.3, 1))
   image(matrix(1:100, 1, 100), col = color.palette.heatmaps(1000), axes=FALSE)
 
-  axis(2, c(1, max(som.result$code.sum[,"nobs"])),
+  axis(2, c(1, max(som.result$node.summary[,"n.features"])),
        at=c(0, 1), las=2, tick=FALSE, pos=-0.5, cex.axis=1.4)
 
   box()
@@ -132,7 +132,7 @@ pipeline.supportingMaps <- function()
 
   for (i in 1:preferences$dim.1stLvlSom^2)
   {
-    genes <- names(which(som.result$nodes == i))
+    genes <- names(which(som.result$feature.BMU == i))
     mean.cor <- 0
 
     for (ii in genes)
@@ -168,7 +168,7 @@ pipeline.supportingMaps <- function()
 
   for (i in 1:preferences$dim.1stLvlSom^2)
   {
-    genes <- names(which(som.result$nodes == i))
+    genes <- names(which(som.result$feature.BMU == i))
 
     e <- apply(indata[genes, ,drop=FALSE], 1, function(x)
     {
@@ -201,8 +201,8 @@ pipeline.supportingMaps <- function()
 
   for (i in 1:preferences$dim.1stLvlSom^2)
   {
-    pos.x <- som.result$code.sum[i,1] + 1
-    pos.y <- som.result$code.sum[i,2] + 1
+    pos.x <- som.result$node.summary[i,"x"]
+    pos.y <- som.result$node.summary[i,"y"]
 
     uh[i] <- mean(sapply(get.neighbors(pos.x, pos.y, preferences$dim.1stLvlSom), function(x)
     {

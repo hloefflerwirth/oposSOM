@@ -23,8 +23,8 @@ pipeline.prepareIndata <- function()
 
 pipeline.generateSOM <- function()
 {
-  som.result <<- som.init(indata, xdim=preferences$dim.1stLvlSom, ydim=preferences$dim.1stLvlSom, init="linear")
-
+  som.result <<- som.linear.init(indata,somSize=preferences$dim.1stLvlSom)
+  
   # Rotate/Flip First lvl SOMs
 
   if (preferences$rotate.SOM.portraits > 0)
@@ -43,40 +43,17 @@ pipeline.generateSOM <- function()
     som.result <<- som.result[as.vector(o),]
   }
 
-
-  # Train SOM
-
-  # The following would train the SOM in one step...
-  #som.result <<- som(indata, xdim=preferences$dim.1stLvlSom, ydim=preferences$dim.1stLvlSom)
-
-  # We split training in two steps to estimate the time we need.
-  t1 <- system.time({
-    som.result <<- som.train(indata, som.result, xdim=preferences$dim.1stLvlSom,
-                             ydim=preferences$dim.1stLvlSom, alpha=0.05,
-                             radius=preferences$dim.1stLvlSom,
-                             rlen=nrow(indata)*2*preferences$training.extension,
-                             inv.alp.c=nrow(indata)*2*preferences$training.extension/100)
-  })
-
-  util.info("Remaining time for SOM training: ~", ceiling(5*t1[3]/60), "min = ~", round(5*t1[3]/3600,1),"h")
-
-  som.result <<- som.train(indata, som.result$code, xdim=preferences$dim.1stLvlSom,
-                           ydim=preferences$dim.1stLvlSom, alpha=0.02,
-                           radius=min(3, preferences$dim.1stLvlSom),
-                           rlen=nrow(indata)*10*preferences$training.extension,
-                           inv.alp.c=nrow(indata)*10*preferences$training.extension/100)
-
-  metadata <<- som.result$code
+  som.result <<- som.training( indata, som.result, prolongationFactor = preferences$training.extension, verbose = TRUE )
+    
+  metadata <<- som.result$weightMatrix
   colnames(metadata) <<- colnames(indata)
 
-  som.result$data <<- NULL
-  som.result$code <<- NULL
+  som.result$weightMatrix <<- NULL
 
 
   ## set up SOM dependent variables
-  gene.info$coordinates <<- apply(som.result$visual[,c(1,2)]+1, 1, paste, collapse=" x ")
+  
+  gene.info$coordinates <<- apply( som.result$node.summary[som.result$feature.BMU,c("x","y")], 1, paste, collapse=" x " )
   names(gene.info$coordinates) <<- rownames(indata)
-
-  som.result$nodes <<- (som.result$visual[,"x"] + 1) + som.result$visual[,"y"] * preferences$dim.1stLvlSom
-  names(som.result$nodes) <<- rownames(indata)
+  
 }

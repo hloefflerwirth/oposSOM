@@ -1,4 +1,6 @@
 
+#Rcpp::compileAttributes("H:/Eigene Dateien/Entwicklung/oposSOM/Package Build/src")
+
 fast <- TRUE
 install <- TRUE
 
@@ -14,7 +16,7 @@ if (file.exists(dirname)) {
 dir.create(dirname)
 
 # Copy everything we need
-for (f in c("vignettes", "man", "inst", "DESCRIPTION", "NAMESPACE","NEWS")) {
+for (f in c("vignettes", "man", "inst", "src", "DESCRIPTION", "NAMESPACE","NEWS")) {
   cat("* copy", f, "\n")
   file.copy(file.path("src", f), file.path(dirname), recursive=T)
 }

@@ -45,10 +45,10 @@ pipeline.entropyProfiles <- function()
     hist(x, breaks=c(min(x), q25, q75, max(x)), plot=FALSE)$counts / preferences$dim.1stLvlSom^2
   })
 
-  q25 <- quantile(metadata * som.result$code.sum[,"nobs"],0.25)
-  q75 <- quantile(metadata * som.result$code.sum[,"nobs"],0.75)
+  q25 <- quantile(metadata * som.result$node.summary[,"n.features"],0.25)
+  q75 <- quantile(metadata * som.result$node.summary[,"n.features"],0.75)
 
-  p.metadata.weighted <- apply(metadata * som.result$code.sum[,"nobs"], 2, function(x)
+  p.metadata.weighted <- apply(metadata * som.result$node.summary[,"n.features"], 2, function(x)
   {
     hist(x, breaks=c(min(x), q25, q75, max(x)), plot=FALSE)$counts / preferences$dim.1stLvlSom^2
   })

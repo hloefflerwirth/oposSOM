@@ -200,7 +200,7 @@ pipeline.detectSpotsIntegral <- function()
   for (i in seq_along(sample.spot.list))
   {
     spot.metagenes <- which(!is.na(sample.spot.list[[i]]))
-    spot.genes <- rownames(indata)[which(som.result$nodes %in% spot.metagenes)]
+    spot.genes <- rownames(indata)[which(som.result$feature.BMU %in% spot.metagenes)]
 
     if (length(spot.genes) > 0)
     {
@@ -212,11 +212,11 @@ pipeline.detectSpotsIntegral <- function()
       spot.list.overexpression$spots[[LETTERS[i]]]$mask[spot.metagenes] <<- 1
 
       spot.list.overexpression$spots[[LETTERS[i]]]$position <<-
-        colMeans(apply(som.result$code.sum[spot.metagenes, 1:2] + 1, 2, range))
+        colMeans(apply(som.result$node.summary[spot.metagenes, 1:2] + 1, 2, range))
 
       spot.list.overexpression$spots[[LETTERS[i]]]$beta.statistic <<-
         get.beta.statistic(set.data=metadata[spot.list.overexpression$spots[[LETTERS[i]]]$metagenes,,drop=FALSE],
-                           weights=som.result$code.sum[spot.list.overexpression$spots[[LETTERS[i]]]$metagenes,]$nobs)
+                           weights=som.result$node.summary[spot.list.overexpression$spots[[LETTERS[i]]]$metagenes,]$n.features)
     }
   }
 
@@ -236,7 +236,7 @@ pipeline.detectSpotsIntegral <- function()
     {
       if (length(x$genes > 0))
       {
-        colMeans(indata[x$genes,,drop=FALSE])
+        colMeans(indata[x$genes,,drop=FALSE],na.rm=TRUE)
       } else
       {
         rep(0, ncol(indata))
@@ -440,7 +440,7 @@ pipeline.detectSpotsIntegral <- function()
   for (i in seq_along(sample.spot.list))
   {
     spot.metagenes <- which(!is.na(sample.spot.list[[i]]))
-    spot.genes <- rownames(indata)[which(som.result$nodes %in% spot.metagenes)]
+    spot.genes <- rownames(indata)[which(som.result$feature.BMU %in% spot.metagenes)]
 
     if (length(spot.genes) > 0)
     {
@@ -452,11 +452,11 @@ pipeline.detectSpotsIntegral <- function()
       spot.list.underexpression$spots[[letters[i]]]$mask[spot.metagenes] <<- 1
 
       spot.list.underexpression$spots[[letters[i]]]$position <<-
-        colMeans(apply(som.result$code.sum[spot.metagenes, 1:2]+1, 2, range))
+        colMeans(apply(som.result$node.summary[spot.metagenes, 1:2]+1, 2, range))
 
       spot.list.underexpression$spots[[letters[i]]]$beta.statistic <<-
         get.beta.statistic(set.data=metadata[spot.list.underexpression$spots[[letters[i]]]$metagenes,,drop=FALSE],
-                           weights=som.result$code.sum[spot.list.underexpression$spots[[letters[i]]]$metagenes,]$nobs)
+                           weights=som.result$node.summary[spot.list.underexpression$spots[[letters[i]]]$metagenes,]$n.features)
     }
   }
 
@@ -476,7 +476,7 @@ pipeline.detectSpotsIntegral <- function()
     {
       if (length(x$genes > 0))
       {
-        colMeans(indata[x$genes,,drop=FALSE])
+        colMeans(indata[x$genes,,drop=FALSE],na.rm=TRUE)
       } else
       {
         rep(0, ncol(indata))
@@ -512,7 +512,7 @@ pipeline.detectSpotsIntegral <- function()
     if (length(cluster) >= preferences$dim.1stLvlSom / 2)
     {
       c.cluster[cluster] <- count.cluster
-      geneset.genes <- rownames(indata)[which(som.result$nodes %in% as.numeric(cluster))]
+      geneset.genes <- rownames(indata)[which(som.result$feature.BMU %in% as.numeric(cluster))]
 
       if (length(geneset.genes) > 0)
       {
@@ -524,11 +524,11 @@ pipeline.detectSpotsIntegral <- function()
         spot.list.correlation$spots[[LETTERS[count.cluster]]]$mask[as.numeric(cluster)] <<- 1
 
         spot.list.correlation$spots[[LETTERS[count.cluster]]]$position <<-
-          apply(apply(som.result$code.sum[cluster, 1:2], 2, range), 2, mean) + 0.5
+          apply(apply(som.result$node.summary[cluster, 1:2], 2, range), 2, mean) + 0.5
 
         spot.list.correlation$spots[[LETTERS[count.cluster]]]$beta.statistic <<-
           get.beta.statistic(set.data=metadata[spot.list.correlation$spots[[count.cluster]]$metagenes,,drop=FALSE],
-                             weights=som.result$code.sum[spot.list.correlation$spots[[count.cluster]]$metagenes,]$nobs)
+                             weights=som.result$node.summary[spot.list.correlation$spots[[count.cluster]]$metagenes,]$n.features)
 
         count.cluster <- count.cluster + 1
       }
@@ -555,7 +555,7 @@ pipeline.detectSpotsIntegral <- function()
     {
       if (length(x$genes > 0))
       {
-        colMeans(indata[x$genes,,drop=FALSE])
+        colMeans(indata[x$genes,,drop=FALSE],na.rm=TRUE)
       } else
       {
         rep(0, ncol(indata))
@@ -578,7 +578,7 @@ pipeline.detectSpotsIntegral <- function()
   for (i in 1:n.cluster)
   {
     nodes <- which(res$cluster == i)
-    geneset.genes <- rownames(indata)[which(som.result$nodes %in% nodes)]
+    geneset.genes <- rownames(indata)[which(som.result$feature.BMU %in% nodes)]
 
     if (length(geneset.genes) > 0)
     {
@@ -590,11 +590,11 @@ pipeline.detectSpotsIntegral <- function()
       spot.list.kmeans$spots[[LETTERS[i]]]$mask[as.numeric(nodes)] <<- 1
 
       spot.list.kmeans$spots[[LETTERS[i]]]$position <<-
-        apply(apply(som.result$code.sum[nodes, 1:2], 2, range), 2, mean) + 0.5
+        apply(apply(som.result$node.summary[nodes, 1:2], 2, range), 2, mean) + 0.5
 
       spot.list.kmeans$spots[[LETTERS[i]]]$beta.statistic <<-
         get.beta.statistic(set.data=metadata[spot.list.kmeans$spots[[LETTERS[i]]]$metagenes,,drop=FALSE],
-                           weights=som.result$code.sum[spot.list.kmeans$spots[[LETTERS[i]]]$metagenes,]$nobs)
+                           weights=som.result$node.summary[spot.list.kmeans$spots[[LETTERS[i]]]$metagenes,]$n.features)
     }
   }
 
@@ -614,7 +614,7 @@ pipeline.detectSpotsIntegral <- function()
     {
       if (length(x$genes > 0))
       {
-        colMeans(indata[x$genes,,drop=FALSE])
+        colMeans(indata[x$genes,,drop=FALSE],na.rm=TRUE)
       } else
       {
         rep(0, ncol(indata))
@@ -821,7 +821,7 @@ pipeline.detectSpotsIntegral <- function()
     for (i in seq_along(sample.spot.list))
     {
       spot.metagenes <- which(!is.na(sample.spot.list[[i]]))
-      spot.genes <- rownames(indata)[which(som.result$nodes %in% spot.metagenes)]
+      spot.genes <- rownames(indata)[which(som.result$feature.BMU %in% spot.metagenes)]
 
       if (length(spot.genes) > 0)
       {
@@ -833,11 +833,11 @@ pipeline.detectSpotsIntegral <- function()
         spot.list.group.overexpression$spots[[LETTERS[i]]]$mask[spot.metagenes] <<- 1
 
         spot.list.group.overexpression$spots[[LETTERS[i]]]$position <<-
-          colMeans(apply(som.result$code.sum[spot.metagenes, 1:2]+1, 2, range))
+          colMeans(apply(som.result$node.summary[spot.metagenes, 1:2]+1, 2, range))
 
         spot.list.group.overexpression$spots[[LETTERS[i]]]$beta.statistic <<-
           get.beta.statistic(set.data=metadata[spot.list.group.overexpression$spots[[LETTERS[i]]]$metagenes,,drop=FALSE],
-                             weights=som.result$code.sum[spot.list.group.overexpression$spots[[LETTERS[i]]]$metagenes,]$nobs)
+                             weights=som.result$node.summary[spot.list.group.overexpression$spots[[LETTERS[i]]]$metagenes,]$n.features)
       }
     }
 
@@ -871,7 +871,7 @@ pipeline.detectSpotsIntegral <- function()
       {
         if (length(x$genes > 0))
         {
-          colMeans(indata[x$genes,,drop=FALSE])
+          colMeans(indata[x$genes,,drop=FALSE],na.rm=TRUE)
         } else
         {
           rep(0, ncol(indata))
@@ -888,8 +888,8 @@ pipeline.detectSpotsIntegral <- function()
   
   for (i in 1:preferences$dim.1stLvlSom^2)
   {
-    pos.x <- som.result$code.sum[i,1] + 1
-    pos.y <- som.result$code.sum[i,2] + 1
+    pos.x <- som.result$node.summary[i,1]
+    pos.y <- som.result$node.summary[i,2]
     
     uh[i] <- mean(sapply(get.neighbors(pos.x, pos.y, preferences$dim.1stLvlSom), function(x)
     {
@@ -952,7 +952,7 @@ pipeline.detectSpotsIntegral <- function()
   for (i in seq_along(sort(unique(na.omit(as.vector(spot.matrix))))) )
   {
     spot.metagenes <- which(spot.matrix==i)
-    spot.genes <- rownames(indata)[which(som.result$nodes %in% spot.metagenes)]
+    spot.genes <- rownames(indata)[which(som.result$feature.BMU %in% spot.metagenes)]
     
     if (length(spot.genes) > 0)
     {
@@ -964,11 +964,11 @@ pipeline.detectSpotsIntegral <- function()
       spot.list.dmap$spots[[LETTERS[count.cluster]]]$mask[spot.metagenes] <<- 1
       
       spot.list.dmap$spots[[LETTERS[count.cluster]]]$position <<-
-        colMeans(apply(som.result$code.sum[spot.metagenes, 1:2]+1, 2, range))
+        colMeans(apply(som.result$node.summary[spot.metagenes, 1:2]+1, 2, range))
       
       spot.list.dmap$spots[[LETTERS[count.cluster]]]$beta.statistic <<-
         get.beta.statistic(set.data=metadata[spot.list.dmap$spots[[LETTERS[count.cluster]]]$metagenes,,drop=FALSE],
-                           weights=som.result$code.sum[spot.list.dmap$spots[[LETTERS[count.cluster]]]$metagenes,]$nobs)
+                           weights=som.result$node.summary[spot.list.dmap$spots[[LETTERS[count.cluster]]]$metagenes,]$n.features)
       
       count.cluster <- count.cluster + 1
     }
@@ -979,14 +979,14 @@ pipeline.detectSpotsIntegral <- function()
     {
       if (length(x$genes > 0))
       {
-        colMeans(indata[x$genes,,drop=FALSE])
+        colMeans(indata[x$genes,,drop=FALSE],na.rm=TRUE)
       } else
       {
         rep(0, ncol(indata))
       }
     }))
   
-  sig.spots <- which( apply( spot.list.dmap$spotdata, 1, function(x) sd(x) > sd(spot.list.dmap$spotdata) ) )
+  sig.spots <- which( apply( spot.list.dmap$spotdata, 1, function(x) sd(x) > sd(spot.list.dmap$spotdata,na.rm=T) ) )
   if( length(sig.spots) > 0 )
   {
     spot.list.dmap$spots <<- spot.list.dmap$spots[sig.spots]
@@ -1024,7 +1024,7 @@ pipeline.detectSpotsIntegral <- function()
     {
       if (length(x$genes > 0))
       {
-        colMeans(indata[x$genes,,drop=FALSE])
+        colMeans(indata[x$genes,,drop=FALSE],na.rm=TRUE)
       } else
       {
         rep(0, ncol(indata))
