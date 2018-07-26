@@ -18,7 +18,7 @@ GeneSet.maxmean <- function(z, gs.def.list)
 
 GeneSet.Fisher <- function(list.ids, all.ids, gs.def.list, sort=FALSE)
 {
-  list.ids <- list.ids[!is.na(list.ids)]
+  list.ids <- list.ids[!is.na(list.ids)&!list.ids==""]
 
   fn <- function(x, list.ids, all.ids)
   {
