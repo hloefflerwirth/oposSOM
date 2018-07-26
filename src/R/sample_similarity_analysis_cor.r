@@ -1,5 +1,16 @@
 pipeline.sampleSimilarityAnalysisCor <- function()
 {
+  mixColors<-function(c1, c2,alpha=122 )
+  {
+    do.call( rgb,
+             as.list( c( colMeans( sapply(c(2,4,6),function(i)
+               c( strtoi(substr(c1,i,i+1),16), strtoi(substr(c2,i,i+1),16) )
+               
+             ) ), alpha ) /255 )
+    )
+  }
+  
+  
   groupwise.group.colors.stability.1 <- apply((col2rgb(groupwise.group.colors) + 0.7 *
            (255 - col2rgb(groupwise.group.colors))) / 255,
         2, function(x) rgb(x[1],x[2],x[3]))
@@ -16,6 +27,11 @@ pipeline.sampleSimilarityAnalysisCor <- function()
   pcm.module <- cor( get(paste("spot.list.",preferences$standard.spot.modules,sep=""))$spotdata )
   pcm.metadata <- cor( metadata )
   
+  if( any(is.na(pcm.module)) )
+  {
+    util.warn("Constant sample values in module data. Correlation values of those samples cannot be calculated.")
+  }
+    
   #### Correlation Spanning Tree ####
   
   filename <- file.path(paste(files.name, "- Results"), "Sample Similarity Analysis", "Correlation Spanning Tree.pdf")
@@ -25,6 +41,7 @@ pipeline.sampleSimilarityAnalysisCor <- function()
   for (i in 1:2 )
   {
     adj.matrix <- if( i == 1 ) pcm.module else pcm.metadata
+    adj.matrix[ which(is.na(adj.matrix)) ] <- 0
     n <- if( i == 1 ) paste( "module data (", preferences$standard.spot.modules, ")") else "metagene data"
     
     g <- graph.adjacency(-adj.matrix, weighted=TRUE, mode="undirected")
@@ -33,11 +50,13 @@ pipeline.sampleSimilarityAnalysisCor <- function()
     layout <- layout_with_kk(stg)
     
     par(mar=c(1,1,1,1))
+    E(stg)$color <- apply( get.edgelist( stg ), 1, function(x) mixColors( group.colors[x[1]], group.colors[x[2]] ) )
     plot(stg, layout=layout, vertex.size=5, vertex.label = rep("",ncol(adj.matrix)),
          vertex.color=group.colors, main=paste("Correlation Spanning Tree on",n))
       legend("bottomright", as.character(unique(group.labels)), cex=0.5, text.col=groupwise.group.colors, bg="white")
       box()
  
+    E(g)$color <- "darkgrey"
     plot(stg, layout=layout, vertex.size=5, vertex.label = rep("",ncol(adj.matrix)),
              vertex.color=stability.colors, main=paste("Correlation Spanning Tree & silhouette scores on",n))
       legend("bottomright", rep(as.character(unique(group.labels)),3), cex=0.5,
@@ -65,6 +84,7 @@ pipeline.sampleSimilarityAnalysisCor <- function()
   for (i in 1:2 )
   {
     adj.matrix <- if( i == 1 ) pcm.module else pcm.metadata
+    adj.matrix[ which(is.na(adj.matrix)) ] <- 0
     n <- if( i == 1 ) paste( "module data (", preferences$standard.spot.modules, ")") else "metagene data"
     
     diag(adj.matrix) <- 0
@@ -80,11 +100,13 @@ pipeline.sampleSimilarityAnalysisCor <- function()
     layout <- layout_with_kk(g)
     
     par(mar=c(1,1,1,1))
+    E(g)$color <- apply( get.edgelist( g ), 1, function(x) mixColors( group.colors[x[1]], group.colors[x[2]] ) )
     plot(g, layout=layout, vertex.size=5, vertex.label = rep("",ncol(adj.matrix)),
         vertex.color=group.colors, main=paste("Correlation backbone (2NN-graph) on",n))
       legend("bottomright", as.character(unique(group.labels)), cex=0.5, text.col=groupwise.group.colors, bg="white")
       box()
       
+    E(g)$color <- "darkgrey"
     plot(g, layout=layout, vertex.size=5, vertex.label = rep("",ncol(adj.matrix)),
         vertex.color=stability.colors, main=paste("Correlation backbone & silhouette scores on",n))
      legend("bottomright", rep(as.character(unique(group.labels)),3), cex=0.5,
@@ -112,6 +134,7 @@ pipeline.sampleSimilarityAnalysisCor <- function()
   for (i in 1:2 )
   {
     adj.matrix <- if( i == 1 ) pcm.module else pcm.metadata
+    adj.matrix[ which(is.na(adj.matrix)) ] <- 0
     n <- if( i == 1 ) paste( "module data (", preferences$standard.spot.modules, ")") else "metagene data"
    
     diag(adj.matrix) <- 0
@@ -122,14 +145,16 @@ pipeline.sampleSimilarityAnalysisCor <- function()
       g <- graph.adjacency(adj.matrix, weighted=TRUE,  mode="undirected")
       E(g)$weight <- (2 + E(g)$weight)/2
       layout <- layout_with_kk( g )
-      
-      par(mar=c(1,1,1,1))
+
+      par(mar=c(1,1,1,1))      
+      E(g)$color <- apply( get.edgelist( g ), 1, function(x) mixColors( group.colors[x[1]], group.colors[x[2]], alpha=40 ) )
       plot(g, layout=layout, vertex.size=ifelse(ncol(adj.matrix)<250, 5, 3),
            vertex.label = rep("",ncol(adj.matrix)),
            vertex.color=group.colors, main=paste("Correlation network on",n))
         legend("bottomright", as.character(unique(group.labels)), cex=0.5, text.col=groupwise.group.colors, bg="white")
         box()
         
+      E(g)$color <- "darkgrey"
       plot(g, layout=layout, vertex.size=ifelse(ncol(adj.matrix) < 250, 5, 3),
            vertex.label = rep("",ncol(adj.matrix)),
            vertex.color=stability.colors, main=paste("Correlation network & silhouette scores on",n))
@@ -162,7 +187,9 @@ pipeline.sampleSimilarityAnalysisCor <- function()
     d <- if( i == 1 ) pcm.module else pcm.metadata
     n <- if( i == 1 ) paste( "module data (", preferences$standard.spot.modules, ")") else "metagene data"
     
-    hcl <- hclust(dist(d))
+    d.noNA <- d
+    d.noNA[ which(is.na(d.noNA)) ] <- 0
+    hcl <- hclust(dist(d.noNA))
     
     par(mar=c(1,1,1,1))
     heatmap(x=d, zlim=c(-1,1), Rowv=NA, Colv=NA, col=color.palette.heatmaps(1000),
@@ -185,7 +212,7 @@ pipeline.sampleSimilarityAnalysisCor <- function()
 
       if (length(idx) > 1)
       {
-        hc <- hclust(dist(t(d[,idx])))
+        hc <- hclust(dist(t(d.noNA[,idx])))
         return(hc$labels[hc$order])
       }
       return(idx)
@@ -229,7 +256,7 @@ pipeline.sampleSimilarityAnalysisCor <- function()
       def.par <- par(no.readonly = TRUE)
       
       environment(pipeline.moduleCorrelationMap) <- environment()
-      pipeline.moduleCorrelationMap(d, hcl)
+      pipeline.moduleCorrelationMap(d.noNA, hcl)
       
       par(def.par)
     }
