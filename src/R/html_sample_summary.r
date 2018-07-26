@@ -78,7 +78,7 @@ pipeline.htmlSampleSummary <- function()
   </head>
   <body>
     <div id=\"wrapper\">
-      <h1>Group Overview</h1>
+      <h1>Classification Overview</h1>
 
       <table>
         <thead>

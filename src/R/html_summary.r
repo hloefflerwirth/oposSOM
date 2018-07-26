@@ -188,7 +188,7 @@ pipeline.htmlSummary <- function()
         <p>
           Sample similarity analyses based on expression module data and metagene data using different metrics and algorithms.<br>
           <br>
-          Euclidean Distance base approaches:
+          Euclidean Distance based approaches:
         </p>
   
         <ul>
@@ -214,7 +214,7 @@ pipeline.htmlSummary <- function()
           </li>
         </ul>
   
-        Correlation base approaches:
+        Correlation based approaches:
   
         <ul>
           <li>
