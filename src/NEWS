@@ -1,18 +1,4 @@
-oposSOM 2.0.0: Great performance boost by implementation of parallel SOM calculation. "som" package dependence removed.
-oposSOM 1.17.2: Implementation of conditional probabilities. "arules" package dependence removed.
-oposSOM 1.17.1: Crucial fix for unstable ensembl database availability.
-oposSOM 1.17.0: Bumped version number by Bioconductor + few minor changes.
-oposSOM 1.15.3: Bugfixes for Chromosome Expression Plots and PCM.
-oposSOM 1.15.2: Bugfixes for Chromosome Expression Plots and ICA.
-oposSOM 1.15.1: Bumped version number by Bioconductor + few minor changes.
-oposSOM 1.13.1: Bumped version number by Bioconductor + a series of bugs were fixed.
-oposSOM 1.11.2: Baskets algorithm implemented, providing relations between expression modules, and expression modules and groups.
-oposSOM 1.11.1: Presentation of sample similarity and expression module analyses improved. Implementation of t-SNE analysis.
-oposSOM 1.9.3: Mart and host for annotation query can now be given as parameter within preferences.
-oposSOM 1.9.2: Bug fixes and presentation improvements.
-oposSOM 1.9.1: Minor fixes and code improvements.
-oposSOM 1.9.0: Implemented analysis of expression module activation patterns (PATa). Enable automatic estimation of SOM size and automatic grouping of samples according to PATs. Performance improved.
-oposSOM 1.7.3: Fixed another critical biomart bug. Presentation of correlation based similarity analyses and gene set reports improved.
-oposSOM 1.7.2: Fixed few bugs & changed host for database access due to biomart downtime.
-oposSOM 1.7.1: Bumped version number by Bioconductor + a series of bugs were fixed.
-oposSOM 1.5.4: A bug was fixed, which was caused by an altered function from igraph package.
+2.0.1:
++ Colored edges in sample correlation networks & minor fixes.
+2.0.0: 
++ Great performance boost by implementation of parallel SOM calculation. "som" package dependence removed.
