@@ -30,23 +30,7 @@ This view requires methods which support an integrative and reductionist
 approach to disentangle the complex gene-phenotype interactions related to
 cancer genesis and progression. With this motivation we implemented an analysis
 pipeline based on data processing by a Self-Organizing Map (SOM)
-\citep{Wirth2011}\citep{Wirth2012}. This approach simultaneously searches for
-features which are differentially expressed and correlated in their profiles in
-the set of samples studied. We include functional information about such
-co-expressed genes to extract distinct functional modules inherent in the data
-and attribute them to particular types of cellular and biological processes
-
-such as inflammation, cell division, etc. This modular view facilitates the
-understanding of the gene expression patterns characterizing different cancer
-subtypes on the molecular level. Importantly, SOMs preserve the information
-richness of the original data allowing the detailed study of the samples after
-SOM clustering.
-A central role in our analysis is played by the so-called expression portraits
-which serve as intuitive and easy-to-interpret fingerprints of the
-transcriptional activity of the samples. Their analysis provides a holistic
-view on the expression patterns activated in a particular sample. Importantly,
-they also allow identification and interpretation of outlier samples and, thus,
-improve data quality \citep{Hopp2013a}\citep{Hopp2013}.
+\citep{Wirth2011}\citep{Wirth2012}\citep{Loffler-Wirth2015}. This approach simultaneously searches for features which are differentially expressed and correlated in their profiles in the set of samples studied. We include functional information about such co-expressed genes to extract distinct functional modules inherent in the data and attribute them to particular types of cellular and biological processes such as inflammation, cell division, etc. This modular view facilitates the understanding of the gene expression patterns characterizing different cancer subtypes on the molecular level. Importantly, SOMs preserve the information richness of the original data allowing the detailed study of the samples after SOM clustering. A central role in our analysis is played by the so-called expression portraits which serve as intuitive and easy-to-interpret fingerprints of the transcriptional activity of the samples. Their analysis provides a holistic view on the expression patterns activated in a particular sample. Importantly, they also allow identification and interpretation of outlier samples and, thus, improve data quality \citep{Hopp2013a}\citep{Hopp2013}.
 
 
 \section{Example data: transctiptome of healthy human tissue samples}
@@ -71,8 +55,8 @@ env <- opossom.new(list(dataset.name="Tissues",
 @
 
 \ \\
-The oposSOM package requires input of the expression data. Usually the raw microarray intensity data is preprocessed using appropiate calibration and summarization algorithms (e.g. MAS5, VSN or RMA), and transformed into logarithmic scale prior to utilizing them in the pipeline.\\
-The package then accepts two formats: Firstly a simple two-dimensional numerical matrix, where the columns and rows represent the samples and genes, respectively:
+The oposSOM package requires input of the expression data, for example preprocessed RNA microarray or sequencing data. It is recommended to transform data into logarithmic scale prior to utilizing them in the pipeline.\\
+The workflow accepts two formats: Firstly a simple two-dimensional numerical matrix, where the columns and rows represent the samples and genes, respectively:
 
 <<>>=
 data(opossom.tissues)
@@ -265,6 +249,16 @@ Database parameters are required to enable gene annotations and functional analy
 The parameters below are secondary and may be left unattended by the user:
 
 \begin{itemize}
+  \item \textit{activated.modules} (list): activates/deactivates pipeline functionalities:
+    \begin{itemize} 
+      \item \textit{reporting} (boolean): enables or disables output of pdf and csv results and html summaries (default: TRUE). When deactivated, only R workspace will be stored after analysis.
+      \item \textit{primary.analysis} (boolean): enables or disables data preprocessing and SOM training (default: TRUE). When deactivated, prior SOM training results are required to be contained in the workspace environment.
+      \item \textit{sample.similarity.analysis} (boolean): enables or disables diversity analyses such as clustering heatmaps, correlation networks and ICA (default: TRUE).
+    	\item \textit{geneset.analysis} (boolean): enables or disables geneset analysis (default: TRUE).
+    	\item \textit{geneset.analysis.exact} (boolean): enables or disables p-value and fdr calculation in geneset analysis (default: FALSE). Obsolete if \textit{geneset.analysis=F}.
+    	\item \textit{group.analysis} (boolean): enables or disables group centered analyses such as group portraits and functional mining (default: TRUE).
+    	\item \textit{difference.analysis} (boolean): enables or disables pairwise comparisons of the grous and of pairs provided by \textit{pairwise.comparison.list} as described below (default: TRUE).
+    \end{itemize}
 	\item \textit{dim.2ndLvlSom} (integer): dimension of the second level SOM
     (default: 20). Given as a single value defining the size of the square SOM
     grid.
@@ -276,13 +270,6 @@ The parameters below are secondary and may be left unattended by the user:
 	\item \textit{flip.SOM.portraits} (boolean): mirroring the primary SOM along
     the bottom-left to top-right diagonal (default: FALSE). This solely
     influences the orientation of the portraits.\\
-
-	\item \textit{geneset.analysis} (boolean): enables or disables geneset
-    analysis (default: TRUE).
-	\item \textit{geneset.analysis.exact} (boolean): enables or disables p-value
-    and fdr calculation in geneset analysis (default: TRUE). Obsolete if
-    \textit{geneset.analysis=F}.\\
-
 	\item \textit{standard.spot.modules} (character, one of \{"overexpression", "underexpression", "kmeans", "correlation", "group.overexpression", "dmap"\}): spot modules utilized in diverse downstream analyses and visualizations, e.g. PAT detection and module correlation map (default: "dmap").
 	\item \textit{spot.threshold.modules} (numerical, between 0 and 1): spot
     detection in summary maps, expression threshold (default: 0.95).
@@ -315,7 +302,7 @@ env$preferences$pairwise.comparison.list <-
 \pagebreak
 \section{Recommended SOM size and runtime estimation}
 
-The size of the SOM required to resolve main expression modules depends on both the number of features (e.g. genes measured) and the number of samples. Here we give a recommendation based on previous analyses of a multitude of different data sets (see Figure ~\ref{fig:Size recommendation}). Addionally, we give a rough estimation for runtime of the SOM training algorithm.
+The size of the SOM required to resolve main expression modules depends on both the number of features (e.g. genes measured) and the number of samples. Here we give a recommendation based on previous analyses of a multitude of different data sets (see Figure ~\ref{fig:Size recommendation}). Addionally, we give an estimation for runtime of the SOM training algorithm (upper limits on an Intel Core i7 system with 16GB RAM).
 
 \begin{figure}[h!]
 	\begin{center}
@@ -350,36 +337,11 @@ listFilters(mart)
 
 
 \pagebreak
-\section{New functionalities introduced with oposSOM 1.0 on Bioconductor}
-The oposSOM-package release on Bioconductor is highly superior to the version released on CRAN in 2011:
-\begin{itemize}
-  \item Structure of the source code was thoroughly revised to meet the requirements of Bioconductor.
-  \item Organization and presentation of the results output was improved, accompanied with an extended HTML interface to access all results.
-  \item A package vignette was introduced.
-  \item New analysis modules were implemented:
-  \begin{itemize}
-    \item Metagene entropy and portrait topology analyses
-    \item Neighbor-joining clustering of the samples
-    \item Correlation Network analysis of the samples
-    \item GSZ-profiles for the individual gene sets
-    \item Overview heatmaps summarizing enrichment of a large number of gene sets
-    \item Cancer hallmark enrichment analyses
-    \item Enrichment analyses for genes sets relating to chromosomal positions
-    \item Spot report sheets and spot correlation (wTO) networks  
-    \item Expression portraits, differential expression analyses and functional characteristics summarized for the groups defined
-    \item Stability analyses of the groups using correlation silhouette methods
-    \item Differential expression analyses for pairs of samples or groups of samples, including differential expression portraits and functional characterization    
-  \end{itemize}    
-  \item Primary input data can be given as Bioconductor 'ExpressionSet' object.
-\end{itemize}
-
-
-
 \section{Citing oposSOM}
 
 Please cite \citep{Loffler-Wirth2015} when using the package.
 
-\pagebreak
+
 \section{Details}
 
 This document was written using:
@@ -387,7 +349,7 @@ This document was written using:
 sessionInfo()
 @
 
-
+\pagebreak
 \bibliographystyle{plainnat}
 \bibliography{opossom}
 \end{document}

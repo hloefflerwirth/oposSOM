@@ -24,8 +24,16 @@
       \item{flip.SOM.portraits}: mirroring the primary SOM along the bottom-left to top-right diagonal (boolean)
       \item{database.dataset}: type of ensemble dataset addressed with biomaRt interface; use "auto" to detect parameter automatically (character)
       \item{database.id.type}: type of rowname identifier in biomaRt database; obsolete if \code{database.dataset="auto"} (character)
-      \item{geneset.analysis}: perform geneset analysis (boolean)
-      \item{geneset.analysis.exact}: enables p-value and fdr calculation in geneset analysis; obsolete if \code{geneset.analysis=F} (boolean)
+			\item{activated.modules} (list): activates/deactivates pipeline functionalities:
+				\itemize{
+					\item{reporting} (boolean): enables or disables output of pdf and csv results and html summaries (default: TRUE). When deactivated, only R workspace will be stored after analysis.
+					\item{primary.analysis} (boolean): enables or disables data preprocessing and SOM training (default: TRUE). When deactivated, prior SOM training results are required to be contained in the workspace environment.
+					\item{sample.similarity.analysis} (boolean): enables or disables diversity analyses such as clustering heatmaps, correlation networks and ICA (default: TRUE).
+					\item{geneset.analysis} (boolean): enables or disables geneset analysis (default: TRUE).
+					\item{geneset.analysis.exact} (boolean): enables or disables p-value and fdr calculation in geneset analysis (default: FALSE). Obsolete if \code{geneset.analysis=F}.
+					\item{group.analysis} (boolean): enables or disables group centered analyses such as group portraits and functional mining (default: TRUE).
+					\item{difference.analysis} (boolean): enables or disables pairwise comparisons of the grous and of pairs provided by \code{pairwise.comparison.list} as described below (default: TRUE).
+				}
       \item{standard.spot.modules}: spot modules utilized in diverse downstream analyses (character, one of \{"overexpression", "group.overexpression", "underexpression", "kmeans", "correlation", "dmap"\})
       \item{spot.coresize.modules}: spot detection in summary maps, minimum size (numerical, >0)
       \item{spot.threshold.modules}: spot detection in summary maps, expression threshold (numerical, between 0 and 1)
@@ -53,8 +61,14 @@ env <- opossom.new(list(dataset.name="Example",
                         rotate.SOM.portraits=0,
                         flip.SOM.portraits=FALSE,
                         database.dataset="auto",
-                        geneset.analysis=TRUE,
-                        geneset.analysis.exact=TRUE,
+                        activated.modules = list( 
+													"reporting" = TRUE,
+                          "primary.analysis" = TRUE, 
+                          "sample.similarity.analysis" = TRUE,
+                          "geneset.analysis" = TRUE, 
+                          "geneset.analysis.exact" = FALSE,
+                          "group.analysis" = TRUE,
+                          "difference.analysis" = TRUE ),										
                         standard.spot.modules="dmap",
                         spot.coresize.modules=4,
                         spot.threshold.modules=0.9,
