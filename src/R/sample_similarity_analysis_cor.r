@@ -95,32 +95,35 @@ pipeline.sampleSimilarityAnalysisCor <- function()
     })
     adj.matrix[which(adj.matrix < 0.5)] <- 0
 
-    g <- graph.adjacency(adj.matrix, weighted=TRUE,  mode="undirected")
-    E(g)$weight <- (2 + E(g)$weight)/2
-    layout <- layout_with_kk(g)
-    
-    par(mar=c(1,1,1,1))
-    E(g)$color <- apply( get.edgelist( g ), 1, function(x) mixColors( group.colors[x[1]], group.colors[x[2]] ) )
-    plot(g, layout=layout, vertex.size=5, vertex.label = rep("",ncol(adj.matrix)),
-        vertex.color=group.colors, main=paste("Correlation backbone (2NN-graph) on",n))
-      legend("bottomright", as.character(unique(group.labels)), cex=0.5, text.col=groupwise.group.colors, bg="white")
-      box()
-      
-    E(g)$color <- "darkgrey"
-    plot(g, layout=layout, vertex.size=5, vertex.label = rep("",ncol(adj.matrix)),
-        vertex.color=stability.colors, main=paste("Correlation backbone & silhouette scores on",n))
-     legend("bottomright", rep(as.character(unique(group.labels)),3), cex=0.5,
-            text.col=c(groupwise.group.colors,groupwise.group.colors.stability.1,groupwise.group.colors.stability.2), bg="white",ncol=3,
-            title="0.5<S    0<S<0.5    S<0",title.col="black")
-     box()
-
-    if (ncol(adj.matrix) < 1000)
+    if (max(adj.matrix) > 0)
     {
-      plot(g, layout=layout, vertex.size=5, vertex.label = colnames(adj.matrix),
-          vertex.label.cex=if (ncol(adj.matrix)<100) 1.2 else 0.6,
-          vertex.color=group.colors, main=paste("Correlation backbone on",n))
-       legend("bottomright", as.character(unique(group.labels)), cex=0.5, text.col=groupwise.group.colors, bg="white")
+      g <- graph.adjacency(adj.matrix, weighted=TRUE,  mode="undirected")
+      E(g)$weight <- (2 + E(g)$weight)/2
+      layout <- layout_with_kk(g)
+      
+      par(mar=c(1,1,1,1))
+      E(g)$color <- apply( get.edgelist( g ), 1, function(x) mixColors( group.colors[x[1]], group.colors[x[2]] ) )
+      plot(g, layout=layout, vertex.size=5, vertex.label = rep("",ncol(adj.matrix)),
+          vertex.color=group.colors, main=paste("Correlation backbone (2NN-graph) on",n))
+        legend("bottomright", as.character(unique(group.labels)), cex=0.5, text.col=groupwise.group.colors, bg="white")
+        box()
+        
+      E(g)$color <- "darkgrey"
+      plot(g, layout=layout, vertex.size=5, vertex.label = rep("",ncol(adj.matrix)),
+          vertex.color=stability.colors, main=paste("Correlation backbone & silhouette scores on",n))
+       legend("bottomright", rep(as.character(unique(group.labels)),3), cex=0.5,
+              text.col=c(groupwise.group.colors,groupwise.group.colors.stability.1,groupwise.group.colors.stability.2), bg="white",ncol=3,
+              title="0.5<S    0<S<0.5    S<0",title.col="black")
        box()
+  
+      if (ncol(adj.matrix) < 1000)
+      {
+        plot(g, layout=layout, vertex.size=5, vertex.label = colnames(adj.matrix),
+            vertex.label.cex=if (ncol(adj.matrix)<100) 1.2 else 0.6,
+            vertex.color=group.colors, main=paste("Correlation backbone on",n))
+         legend("bottomright", as.character(unique(group.labels)), cex=0.5, text.col=groupwise.group.colors, bg="white")
+         box()
+      }
     }
   }
   dev.off()
