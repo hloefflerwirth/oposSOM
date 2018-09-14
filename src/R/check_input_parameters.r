@@ -382,11 +382,11 @@ pipeline.checkInputParameters <- function()
     if( length(environment(color.palette.portraits))!=3 || !all( c("colors","ramp") %in% ls(environment(color.palette.portraits)) ) )
     {
       util.warn("Invalid value of \"color.palette.portraits\". Using standard scheme")
-      color.palette.portraits <<- colorRampPalette(c("darkblue","blue","lightblue","green2","yellow","red","darkred"))
+      color.palette.portraits <<- colorRampPalette(c("darkblue","blue","lightblue3","green3","yellow2","red2","darkred"))
     }
   } else
   {
-    color.palette.portraits <<- colorRampPalette(c("darkblue","blue","lightblue","green2","yellow","red","darkred"))
+    color.palette.portraits <<- colorRampPalette(c("darkblue","blue","lightblue3","green3","yellow2","red2","darkred"))
   }
   
   if (!is.null(color.palette.heatmaps)) # check if given color palette is a valid function

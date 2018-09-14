@@ -153,14 +153,14 @@ pipeline.sampleSimilarityAnalysisCor <- function()
       E(g)$color <- apply( get.edgelist( g ), 1, function(x) mixColors( group.colors[x[1]], group.colors[x[2]], alpha=40 ) )
       plot(g, layout=layout, vertex.size=ifelse(ncol(adj.matrix)<250, 5, 3),
            vertex.label = rep("",ncol(adj.matrix)),
-           vertex.color=group.colors, main=paste("Correlation network on",n))
+           vertex.color=group.colors, main=paste("Correlation Network on",n))
         legend("bottomright", as.character(unique(group.labels)), cex=0.5, text.col=groupwise.group.colors, bg="white")
         box()
         
       E(g)$color <- "darkgrey"
       plot(g, layout=layout, vertex.size=ifelse(ncol(adj.matrix) < 250, 5, 3),
            vertex.label = rep("",ncol(adj.matrix)),
-           vertex.color=stability.colors, main=paste("Correlation network & silhouette scores on",n))
+           vertex.color=stability.colors, main=paste("Correlation Network & silhouette scores on",n))
         legend("bottomright", rep(as.character(unique(group.labels)),3), cex=0.5,
              text.col=c(groupwise.group.colors,groupwise.group.colors.stability.1,groupwise.group.colors.stability.2), bg="white",ncol=3,
              title="0.5<S    0<S<0.5    S<0",title.col="black")
@@ -171,7 +171,7 @@ pipeline.sampleSimilarityAnalysisCor <- function()
         plot(g, layout=layout, vertex.size=ifelse(ncol(adj.matrix) < 250, 5, 3),
              vertex.label=colnames(adj.matrix),
              vertex.label.cex=if (ncol(adj.matrix)<100) 1.2 else 0.6,
-             vertex.color=group.colors, main=paste("Correlation network on",n))
+             vertex.color=group.colors, main=paste("Correlation Network on",n))
           legend("bottomright", as.character(unique(group.labels)), cex=0.5, text.col=groupwise.group.colors, bg="white")
           box()
       }
