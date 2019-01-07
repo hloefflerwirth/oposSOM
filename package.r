@@ -107,7 +107,7 @@ file.copy(file.path("src", "data", filename), datadir) -> x
 	mart<-useMart(biomart='ENSEMBL_MART_ENSEMBL', dataset="hsapiens_gene_ensembl",host="aug2017.archive.ensembl.org")
 
 
-  filename <- file.path("src", "data", "h.all.v5.0.entrez.gmt")
+  filename <- file.path("src", "data", "h.all.v6.2.entrez.gmt")
   cat("* load", filename, "\n")
   genesets <- readLines(filename)
   genesets <- sapply( lapply( genesets, strsplit, "\t" ), head, 1 )
@@ -123,7 +123,7 @@ file.copy(file.path("src", "data", filename), datadir) -> x
   opossom.genesets <- c( opossom.genesets, genesets )
   
   
-  filename <- file.path("src", "data", "c2.all.v5.0.entrez.gmt")
+  filename <- file.path("src", "data", "c2.all.v6.2.entrez.gmt")
   cat("* load", filename, "\n")
   genesets <- readLines(filename)
   genesets <- sapply( lapply( genesets, strsplit, "\t" ), head, 1 )
