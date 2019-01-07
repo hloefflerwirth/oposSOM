@@ -353,7 +353,7 @@ pipeline.checkInputParameters <- function()
       for (i in seq_along(unique(group.labels)))
       {
         group.colors[which(group.labels == unique(group.labels)[i])] <<-
-          colorRampPalette(c("blue3", "blue", "lightblue", "green2", "gold", "red", "red3"))(length(unique(group.labels)))[i]
+          colorRampPalette(c("blue3", "blue", "green3", "gold", "red", "red3"))(length(unique(group.labels)))[i]
       }
     }
     
@@ -411,6 +411,10 @@ pipeline.checkInputParameters <- function()
     output.paths <<-
       c("CSV"=paste(files.name, "- Results/CSV Sheets"),
         "Summary Sheets Samples"=paste(files.name, "- Results/Summary Sheets - Samples") )
+    
+    if( !grepl("german",sessionInfo()$locale,ignore.case=TRUE) &&
+        !grepl("bioinf.uni-leipzig.de",Sys.info()["nodename"],ignore.case=TRUE) )
+      write.csv2 <<- write.csv
   } 
   
   return(TRUE)

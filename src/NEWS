@@ -1,3 +1,5 @@
+2.0.2:
++ csv output for international spreadsheet format.
 2.0.1:
 + Colored edges in sample correlation networks & minor fixes.
 2.0.0: 

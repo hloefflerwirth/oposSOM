@@ -39,6 +39,7 @@ opossom.new <- function(preferences=NULL)
   env$groupwise.group.colors <- NULL
   env$unique.protein.ids <- NULL
   env$WAD.g.m <- NULL
+  env$write.csv2 <- write.csv2
 
   # Generate some additional letters
   env$LETTERS <- c(LETTERS, as.vector(sapply(1:10, function(x) {
