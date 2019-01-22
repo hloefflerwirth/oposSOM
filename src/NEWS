@@ -1,3 +1,5 @@
+2.0.3:
++ Check for detected singleton spot modules implemented
 2.0.2:
 + csv output for international spreadsheet format.
 2.0.1:
