@@ -101,16 +101,17 @@ pipeline.summarySheetsSamples <- function()
     box()
 
     image(matrix(metadata[,m], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-          axes=FALSE, col=color.palette.portraits(1000), main="Regulated Metagenes", cex.main=1.5)
+          axes=FALSE, col=color.palette.portraits(1000), main="Top 100 DE genes", cex.main=1.5)
 
     par(new=TRUE)
 
-    mask <- matrix(1, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
-    mask[which( metadata[,m] > max(metadata[,m])-diff(range(metadata[,m]))/6 )] <- NA
-    mask[which( metadata[,m] < min(metadata[,m])+diff(range(metadata[,m]))/6 )] <- NA
+    n.genes <- 100
+    o <- order(p.g.m[,m])[1:n.genes]
     
-    image(matrix(mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
-          axes=FALSE, col = "white")
+    mask <- matrix(1, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
+    mask[ som.result$feature.BMU[ rownames(indata)[o] ] ] <- NA
+    
+    image(mask,axes=FALSE, col = "white")
 
     axis(1,
          seq(0, 1, length.out=preferences$dim.1stLvlSom/10+1),
@@ -123,15 +124,17 @@ pipeline.summarySheetsSamples <- function()
          cex.axis=1.0, las=1)
 
     box()
+    
+    n.genes <- 20
+    o <- o[1:n.genes]
+    
     par(mar=c(2,8,3,6))
     plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
     par(mar=c(0,0,0,0))
 
-    n.genes <- 20
     x.coords <- c(0, 0.06, 0.2, 0.28, 0.36, 0.44, 0.52)
     y.coords <- seq(0.75, 0.02, length.out=n.genes)
 
-    o <- order(p.g.m[,m])[1:n.genes]
     plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
     text(0, 0.88, "Global Genelist", cex=1.8, adj=0)

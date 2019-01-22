@@ -1034,5 +1034,13 @@ pipeline.detectSpotsIntegral <- function()
   colnames(spot.list.dmap$spotdata) <<- colnames(indata)
   
   
+  # check standard spot modules
   
+  if( length( get(paste("spot.list.",preferences$standard.spot.modules,sep=""))$spots ) < 2 )
+  {
+    preferences$standard.spot.modules <<- "kmeans"
+    util.warn("Invalid value of \"standard.spot.modules\": Too few spots detected. Using \"kmeans\"")
+  }
+
+    
 }
