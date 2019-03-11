@@ -394,11 +394,11 @@ pipeline.checkInputParameters <- function()
     if( length(environment(color.palette.heatmaps))!=3 || !all( c("colors","ramp") %in% ls(environment(color.palette.heatmaps)) ) )
     {
       util.warn("Invalid value of \"color.palette.heatmaps\". Using standard scheme")
-      color.palette.heatmaps <<- colorRampPalette(c("blue4","blue","gray90","orange","red4"))
+      color.palette.heatmaps <<- colorRampPalette(c("#2C7BB6","#64A4CC","#9CCEE3","#C6E5DB","#ECF6C8","#FEEDAA","#FDC980","#F89D59","#E75B3A","#D7191C"))
     }
   } else
   {
-    color.palette.heatmaps <<- colorRampPalette(c("blue4","blue","gray90","orange","red4"))
+    color.palette.heatmaps <<- colorRampPalette(c("#2C7BB6","#64A4CC","#9CCEE3","#C6E5DB","#ECF6C8","#FEEDAA","#FDC980","#F89D59","#E75B3A","#D7191C"))
   }
   
   if(preferences$activated.modules$primary.analysis)
