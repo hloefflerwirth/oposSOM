@@ -87,6 +87,12 @@ modules.relations <- function(spot.list, main, path)
   
   #### Baskets ####
   
+  if ( sum( rowSums(spotdata.binary) > 0 ) <=1 )
+  {
+    util.warn("Skipped basket and group association analyses due to missing module activation.")
+    return()
+  }
+  
   if ( length(spot.list$spots) > 2 )
   {
     module.group.rules <-
