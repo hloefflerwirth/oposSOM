@@ -187,6 +187,14 @@ pipeline.detectSpotsIntegral <- function()
       }
     }
   }
+  
+  ## no spot detected? ##
+  if( length(sample.spot.list)==0 )
+  {
+	  util.warn("No overexpression spot detectable.")
+    sample.spot.list = list( matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom) )
+    sample.spot.list[[1]][ which.max(rowMeans(metadata)) ] = 1
+  }
 
   ## define overexpression spots ##
   spot.list.overexpression <<- list()
@@ -428,6 +436,14 @@ pipeline.detectSpotsIntegral <- function()
     }
   }
 
+  ## no spot detected? ##
+  if( length(sample.spot.list)==0 )
+  {
+    util.warn("No underexpression spot detectable.")	
+    sample.spot.list = list( matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom) )
+    sample.spot.list[[1]][ which.min(rowMeans(metadata)) ] = 1
+  }
+  
   ## define underexpression spots ##
   spot.list.underexpression <<- list()
 
@@ -809,6 +825,14 @@ pipeline.detectSpotsIntegral <- function()
       }
     }
 
+    ## no spot detected? ##
+    if( length(sample.spot.list)==0 )
+    {
+      util.warn("No group-overexpression spot detectable.")
+      sample.spot.list = list( matrix(NA, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom) )
+      sample.spot.list[[1]][ which.max(rowMeans(metadata)) ] = 1
+    }
+    
     ## define overexpression spots ##
     spot.list.group.overexpression <<- list()
 

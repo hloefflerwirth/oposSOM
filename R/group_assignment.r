@@ -14,73 +14,86 @@ pipeline.groupAssignment <- function()
     pat.labels.sorted <- pat.labels.sorted[which(pat.labels.sorted!="none")[1]]
     pat.labels.test <- unique(pat.labels)[ which( !unique(pat.labels) %in% c( pat.labels.sorted, "none" ) ) ]
     
-    withinss <- c()
-    for( k in 2:min(100,length(unique(pat.labels))-1) )
+    if( length(pat.labels.test) <= 1 )
     {
-      test.pat.sse <- sapply( pat.labels.test, function(test.pat)
+      util.warn("Too few different PATs for clustering. Using all PATs as classes.")
+      
+      # assign new groups 
+      
+      group.labels <<- apply( sample.pat.distances[pat.labels.sorted[1:length(pat.labels.sorted)],,drop=FALSE], 2, function(x) names(x)[which.min(x)] )
+      group.labels <<- paste( group.labels, "*" )
+      names(group.labels) <<- colnames(indata)
+      
+    } else
+    {
+      withinss <- c()
+      for( k in 2:min(100,length(unique(pat.labels))-1) )
       {
-        groups <- apply( sample.pat.distances[c(pat.labels.sorted,test.pat),], 2, function(x) names(x)[which.min(x)] )
-        centroids <- pat.spotdata[,c(pat.labels.sorted,test.pat)]
+        test.pat.sse <- sapply( pat.labels.test, function(test.pat)
+        {
+          groups <- apply( sample.pat.distances[c(pat.labels.sorted,test.pat),], 2, function(x) names(x)[which.min(x)] )
+          centroids <- pat.spotdata[,c(pat.labels.sorted,test.pat)]
+          
+          return( sum( sapply( names(groups), function(i) sum((spot.list$spotdata[,i] - centroids[,groups[i]])^2) ) ) )
+        })
+  
+        pat.labels.sorted <- c(pat.labels.sorted, names(test.pat.sse)[which.min(test.pat.sse)] )
+        pat.labels.test <- pat.labels.test[-which(pat.labels.test==names(test.pat.sse)[which.min(test.pat.sse)])]
         
-        return( sum( sapply( names(groups), function(i) sum((spot.list$spotdata[,i] - centroids[,groups[i]])^2) ) ) )
+        withinss[as.character(k)] <- min(test.pat.sse)
+      }  
+      
+      x <- as.numeric(names(withinss))
+      y <- withinss
+      
+      m <- if(length(y)>1) (y[length(y)]-y[1]) / (x[length(x)]-x[1]) else 0
+      n.ref <- y[1] - m * x[1] 
+      
+      # find optimal cluster number 
+      
+      k.higher.sse <- sapply( 2:length(y), function(k) 
+      {
+        n.k <- y[as.character(k)] - m * x[k-1]
+        sum( n.k+m*x <= y )
       })
-
-      pat.labels.sorted <- c(pat.labels.sorted, names(test.pat.sse)[which.min(test.pat.sse)] )
-      pat.labels.test <- pat.labels.test[-which(pat.labels.test==names(test.pat.sse)[which.min(test.pat.sse)])]
       
-      withinss[as.character(k)] <- min(test.pat.sse)
+      opt.cluster.number <- max( min( (which.max(k.higher.sse)+1) + preferences$adjust.autogroup.number, ncol(indata) ), 1 )
+      n.opt <- y[as.character(which.max(k.higher.sse)+1)] - m * x[which.max(k.higher.sse)]
+  
+      # assign new groups
+      
+      group.labels <<- apply( sample.pat.distances[pat.labels.sorted[1:opt.cluster.number],,drop=FALSE], 2, function(x) names(x)[which.min(x)] )
+      group.labels <<- paste( group.labels, "*" )
+      names(group.labels) <<- colnames(indata)
+      
+      
+      # plot SSE curve
+      
+      if(preferences$activated.modules$reporting)
+      {  
+        dir.create(paste(files.name, "- Results/Summary Sheets - Groups"), showWarnings=FALSE)
+        
+        filename <- file.path(paste(files.name, "- Results"),
+                              "Summary Sheets - Groups",
+                              "PAT-groups assignment.pdf")
+        
+        util.info("Writing:", filename)
+        pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)
+        
+        x.coords <- barplot( withinss, col="gray90",ylim=range(y)*c(0.9,1.1), main="SSE",xlab="k",ylab="SSE", xpd=FALSE )
+          box()
+          lines( c(x.coords[1],x.coords[length(x)]), n.opt+m*c(x[1],x[length(x)]), col="red", xpd=FALSE )
+          lines( c(x.coords[1],x.coords[length(x)]), n.ref+m*c(x[1],x[length(x)]), col="red", xpd=FALSE )
+          abline(v=x.coords[opt.cluster.number-1],col="blue3",xpd=FALSE)
+          abline(h=y[opt.cluster.number-1],col="blue3",xpd=FALSE)
+        
+        barplot( table(group.labels), main="PAT group frequency" )
+        
+        dev.off()
+      }
+    
     }  
-    
-    x <- as.numeric(names(withinss))
-    y <- withinss
-    
-    m <- if(length(y)>1) (y[length(y)]-y[1]) / (x[length(x)]-x[1]) else 0
-    n.ref <- y[1] - m * x[1] 
-    
-    # find optimal cluster number 
-    
-    k.higher.sse <- sapply( 2:length(y), function(k) 
-    {
-      n.k <- y[as.character(k)] - m * x[k-1]
-      sum( n.k+m*x <= y )
-    })
-    
-    opt.cluster.number <- max( min( (which.max(k.higher.sse)+1) + preferences$adjust.autogroup.number, ncol(indata) ), 1 )
-    n.opt <- y[as.character(which.max(k.higher.sse)+1)] - m * x[which.max(k.higher.sse)]
-
-    # assign new groups
-    
-    group.labels <<- apply( sample.pat.distances[pat.labels.sorted[1:opt.cluster.number],], 2, function(x) names(x)[which.min(x)] )
-    group.labels <<- paste( group.labels, "*" )
-    names(group.labels) <<- colnames(indata)
-    
-    
-    # plot SSE curve
-    
-    if(preferences$activated.modules$reporting)
-    {  
-      dir.create(paste(files.name, "- Results/Summary Sheets - Groups"), showWarnings=FALSE)
       
-      filename <- file.path(paste(files.name, "- Results"),
-                            "Summary Sheets - Groups",
-                            "PAT-groups assignment.pdf")
-      
-      util.info("Writing:", filename)
-      pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)
-      
-      x.coords <- barplot( withinss, col="gray90",ylim=range(y)*c(0.9,1.1), main="SSE",xlab="k",ylab="SSE", xpd=FALSE )
-        box()
-        lines( c(x.coords[1],x.coords[length(x)]), n.opt+m*c(x[1],x[length(x)]), col="red", xpd=FALSE )
-        lines( c(x.coords[1],x.coords[length(x)]), n.ref+m*c(x[1],x[length(x)]), col="red", xpd=FALSE )
-        abline(v=x.coords[opt.cluster.number-1],col="blue3",xpd=FALSE)
-        abline(h=y[opt.cluster.number-1],col="blue3",xpd=FALSE)
-      
-      barplot( table(group.labels), main="PAT group frequency" )
-      
-      dev.off()
-    }
-    
-    
     # sort data objects
 
     o <- order(group.labels)    

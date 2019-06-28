@@ -1,3 +1,5 @@
+2.0.4:
++ Check implemented if over-/under-expression modules were detected. Check implemented if PAT class definition can be applied.
 2.0.3:
 + Check for detected singleton spot modules implemented
 2.0.2:
