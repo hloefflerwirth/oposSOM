@@ -17,46 +17,49 @@ pipeline.genesetProfilesAndMaps <- function()
     #### Geneset Profile + Heatmap
     layout(matrix(c(1,2,3),ncol=1,byrow=TRUE),heights=c(1.5,0.5,4))
     
-    gs.indata <- indata[names(gene.info$ids)[which(gene.info$ids %in% gs.def.list[[i]]$Genes)],]
+    gs.indata <- indata[names(gene.info$ids)[which(gene.info$ids %in% gs.def.list[[i]]$Genes)],,drop=F]
     sig.genes <- which( apply(gs.indata,1,sd)>sd(gs.indata) )
     if(length(sig.genes)==0) sig.genes <- order(apply(gs.indata,1,sd),decreasing=TRUE)[1]
-    gs.indata <- gs.indata[ sig.genes, ,drop=FALSE]
-    rownames(gs.indata) <- gene.info$names[rownames(gs.indata)]
-    
-    o.genes <- if(length(sig.genes)>1) hclust(dist(gs.indata))$order else 1
-    o.samples <- order(samples.GSZ.scores[i,])
-    
-    
-    offset <- min(samples.GSZ.scores[i,])
-    
-    par(mar=c(0,10,5,16))
-    barplot( samples.GSZ.scores[i,o.samples]-offset, ylab="", xlab="", ylim=range(samples.GSZ.scores[i,])-offset, xaxt="n", xaxs="i",
-              col=group.colors[o.samples], xpd=TRUE, space=c(0,0), offset=0, axes=FALSE, border=if (ncol(indata) < 100) "black" else NA )
-      abline( h=0-offset, lty=2, col="gray" )
-      axis( 2, at=seq(from=0,to=(max(samples.GSZ.scores[i,])-offset),length.out=4), labels=round(seq(from=offset,to=max(samples.GSZ.scores[i,]),length.out=4),2),las=2, cex.axis=1.4)
-      mtext( names(gs.def.list[i]), side=3, cex=1.5, line=1 )
-      mtext("GSZ", side=2, line=4.5, cex=1.25)
-      
 
-    par(new=TRUE,mar=c(0,0,0,0))
-    frame()
-      legend(x=0.86,y=0.7,names(groupwise.group.colors),text.col=groupwise.group.colors)
-
-    par(mar=c(0.5,10,0.5,16))
-    image( matrix(1:ncol(indata),ncol(indata),1), col=group.colors[o.samples], axes=FALSE )
-      box()
-    
-    par(mar=c(10,10,0,16))
-    image(x=1:ncol(gs.indata), y=1:nrow(gs.indata),z=t(gs.indata[o.genes,o.samples,drop=FALSE]),col=color.palette.heatmaps(1000), axes=FALSE,zlim=max(max(gs.indata),-min(gs.indata))*c(-1,1),xlab="", ylab="")
-      box()
-      axis(2, 1:nrow(gs.indata), labels=rownames(gs.indata)[o.genes], las=2, line=-0.5, tick=0, cex.axis=min( 1.5, max( 0.5, 2-nrow(gs.indata) /67 ) ) )
-    
-    par(new=TRUE,mar=c(40,74,0,1))
-    image(matrix(c(1:1000), 1000, 1), axes=FALSE, col=color.palette.heatmaps(1000))
-      box()
-      axis( 1, at=c(0,1), labels=round(range(gs.indata),1), cex.axis=1.4 )
-      mtext( bquote(Delta ~ "e"), side=1, cex=1.25, line=1 )  
+    if( ncol(indata) * length(sig.genes) < 20000 )
+    {
+      gs.indata <- gs.indata[ sig.genes, ,drop=FALSE]
+      rownames(gs.indata) <- gene.info$names[rownames(gs.indata)]
       
+      o.genes <- if(length(sig.genes)>1) hclust(dist(gs.indata))$order else 1
+      o.samples <- order(samples.GSZ.scores[i,])
+      
+      
+      offset <- min(samples.GSZ.scores[i,])
+      
+      par(mar=c(0,10,5,16))
+      barplot( samples.GSZ.scores[i,o.samples]-offset, ylab="", xlab="", ylim=range(samples.GSZ.scores[i,])-offset, xaxt="n", xaxs="i",
+                col=group.colors[o.samples], xpd=TRUE, space=c(0,0), offset=0, axes=FALSE, border=if (ncol(indata) < 100) "black" else NA )
+        abline( h=0-offset, lty=2, col="gray" )
+        axis( 2, at=seq(from=0,to=(max(samples.GSZ.scores[i,])-offset),length.out=4), labels=round(seq(from=offset,to=max(samples.GSZ.scores[i,]),length.out=4),2),las=2, cex.axis=1.4)
+        mtext( names(gs.def.list[i]), side=3, cex=1.5, line=1 )
+        mtext("GSZ", side=2, line=4.5, cex=1.25)
+        
+  
+      par(new=TRUE,mar=c(0,0,0,0))
+      frame()
+        legend(x=0.86,y=0.7,names(groupwise.group.colors),text.col=groupwise.group.colors)
+  
+      par(mar=c(0.5,10,0.5,16))
+      image( matrix(1:ncol(indata),ncol(indata),1), col=group.colors[o.samples], axes=FALSE )
+        box()
+      
+      par(mar=c(10,10,0,16))
+      image(x=1:ncol(gs.indata), y=1:nrow(gs.indata),z=t(gs.indata[o.genes,o.samples,drop=FALSE]),col=color.palette.heatmaps(1000), axes=FALSE,zlim=max(max(gs.indata),-min(gs.indata))*c(-1,1),xlab="", ylab="")
+        box()
+        axis(2, 1:nrow(gs.indata), labels=rownames(gs.indata)[o.genes], las=2, line=-0.5, tick=0, cex.axis=min( 1.5, max( 0.5, 2-nrow(gs.indata) /67 ) ) )
+      
+      par(new=TRUE,mar=c(40,74,0,1))
+      image(matrix(c(1:1000), 1000, 1), axes=FALSE, col=color.palette.heatmaps(1000))
+        box()
+        axis( 1, at=c(0,1), labels=round(range(gs.indata),1), cex.axis=1.4 )
+        mtext( bquote(Delta ~ "e"), side=1, cex=1.25, line=1 )  
+    }
       
       
     #### Geneset Profiles + Mapping
