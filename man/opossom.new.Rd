@@ -17,6 +17,8 @@
       \item{indata}: input data matrix containing the expression values or an \code{Biobase::ExpressionSet} object (see 'Details' and 'Examples')
       \item{group.labels}: sample assignment to a distinct group, subtype or class (character; "auto" or one label for each sample; may be given with \code{indata ExpressionSet})
       \item{group.colors}: colors of the samples for diverse visualizations (character; one color for each sample; may be given with \code{indata ExpressionSet})
+			\item{dataset.name}: name of the dataset; used to name results folder and environment image (character).
+			\item{note} a short note shown in html summary file to give some keywords about the data or analysis parameters (character).
       \item{dim.1stLvlSom}: dimension of primary SOM; use "auto" to apply automatic size estimation (integer, >5)
       \item{dim.2ndLvlSom}: dimensions of second level SOM (integer, >5)
       \item{training.extension}: factor to extend the number of iterations in SOM training (numerical, >0)
@@ -46,7 +48,7 @@
   }
 }
 \details{
-The package then accepts the \code{indata} parameter in two formats:<br>
+The package accepts the \code{indata} parameter in two formats:<br>
 Firstly a simple two-dimensional numerical matrix, where the columns and rows represent the samples and genes, respectively. The expression values are usually obtained by calibration and summarization algorithms (e.g. MAS5, VSN or RMA), and transformed into logarithmic scale prior to utilizing them in the pipeline. Secondly the input data can also be given as \code{Biobase::ExpressionSet} object.
 Please check the vignette for more details on the parameters.
 }
@@ -55,6 +57,7 @@ Please check the vignette for more details on the parameters.
 }
 \examples{
 env <- opossom.new(list(dataset.name="Example",
+												note="a test with 10 random samples",
                         dim.1stLvlSom="auto",
                         dim.2ndLvlSom=10,
                         training.extension=1,

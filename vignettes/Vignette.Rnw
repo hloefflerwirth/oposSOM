@@ -249,6 +249,7 @@ Database parameters are required to enable gene annotations and functional analy
 The parameters below are secondary and may be left unattended by the user:
 
 \begin{itemize}
+	\item \textit{note} (character): a short note shown in html summary file to give some keywords about the data or analysis parameters (default: "").
   \item \textit{activated.modules} (list): activates/deactivates pipeline functionalities:
     \begin{itemize} 
       \item \textit{reporting} (boolean): enables or disables output of pdf and csv results and html summaries (default: TRUE). When deactivated, only R workspace will be stored after analysis.

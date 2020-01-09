@@ -71,6 +71,8 @@ pipeline.htmlSummary <- function()
         <dd>", preferences$system.info["user"], "</dd>
         <dt>oposSOM version</dt>
         <dd>", preferences$session.info$otherPkgs$oposSOM$Version, "</dd>
+				<dt>Note</dt>
+        <dd>", preferences$note, "</dd>
       </dl>
 
       <h1>Results</h1>
