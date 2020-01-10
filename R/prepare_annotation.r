@@ -180,6 +180,7 @@ pipeline.prepareAnnotation <- function()
 
 
   gs.def.list <<- gs.def.list[ which(sapply(sapply(gs.def.list, head, 1), length) >= 2) ]
+	gs.def.list <<- gs.def.list[ which(sapply(names(gs.def.list),nchar) < 60 ) ]
 
   if (length(gs.def.list) > 0)
   {

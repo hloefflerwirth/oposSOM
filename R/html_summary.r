@@ -4,6 +4,14 @@ pipeline.htmlSummary <- function()
   util.info("Writing:", filename)
   outfile <- file(filename, "w")
 
+  oposSOM.version <- if( "otherPkgs" %in% names(preferences$session.info) )
+  {
+    preferences$session.info$otherPkgs$oposSOM$Version
+  } else
+  {
+    preferences$session.info$loadedOnly$oposSOM$Version
+  }
+  
   cat("<!DOCTYPE html>
 <html>
   <head>
@@ -70,7 +78,7 @@ pipeline.htmlSummary <- function()
         <dt>Analyst</dt>
         <dd>", preferences$system.info["user"], "</dd>
         <dt>oposSOM version</dt>
-        <dd>", preferences$session.info$otherPkgs$oposSOM$Version, "</dd>
+        <dd>", oposSOM.version, "</dd>
 				<dt>Note</dt>
         <dd>", preferences$note, "</dd>
       </dl>

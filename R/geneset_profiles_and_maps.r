@@ -11,7 +11,7 @@ pipeline.genesetProfilesAndMaps <- function()
   
   for (i in 1:nrow(samples.GSZ.scores))
   {
-    filename.prefix <- substring(make.names(names(gs.def.list)[i]), 1, 100)
+    filename.prefix <- substring(make.names(names(gs.def.list)[i]), 1, 80)
     pdf(file.path(dirname, paste(filename.prefix, ".pdf",sep="")), 29.7/2.54, 21/2.54, useDingbats=FALSE)
      
     #### Geneset Profile + Heatmap
