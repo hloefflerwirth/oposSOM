@@ -1,3 +1,5 @@
+2.0.6:
++ Bugfixes for write.csv function, very long geneset file names and package version.
 2.0.5:
 + "note"-slot introduced to oposSOM environment (preferences) and html summary table.
 2.0.4:
