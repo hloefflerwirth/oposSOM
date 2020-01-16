@@ -12,13 +12,13 @@ pipeline.geneLists <- function()
   
   filename <- file.path(paste(files.name, "- Results"), "CSV Sheets", "Gene localization.csv")
   util.info("Writing:", filename)
-  write.csv2(out, filename, row.names=FALSE)
+  csv.function(out, filename, row.names=FALSE)
   
 	
 	#### Sample GSZ Table ####
   filename <- file.path( output.paths["CSV"], "Sample GSZ scores.csv")
   util.info("Writing:", filename)
-  write.csv2(samples.GSZ.scores, filename)
+  csv.function(samples.GSZ.scores, filename)
 	
 	
   if(ncol(indata) < 1000)
@@ -79,7 +79,7 @@ pipeline.geneLists <- function()
       writeLines("", f);  writeLines("", f);  writeLines("", f)
       writeLines("Gene Statistics", f)
       writeLines("", f)
-      write.csv2(out, file=f, row.names=FALSE)
+      csv.function(out, file=f, row.names=FALSE)
   
       close(f)
     }
@@ -134,7 +134,7 @@ pipeline.geneLists <- function()
                               "fdr."=paste(neg.gs.fdr,"     ."))
   
         basename <- paste(make.names(colnames(indata)[m]), ".csv", sep="")
-        write.csv2(gs.info, file.path(dirnames["set"], basename), row.names=FALSE)
+        csv.function(gs.info, file.path(dirnames["set"], basename), row.names=FALSE)
       }
     }
     

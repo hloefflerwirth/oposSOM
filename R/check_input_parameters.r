@@ -414,7 +414,7 @@ pipeline.checkInputParameters <- function()
     
     if( !grepl("german",sessionInfo()$locale,ignore.case=TRUE) &&
         !grepl("bioinf.uni-leipzig.de",Sys.info()["nodename"],ignore.case=TRUE) )
-      write.csv2 <<- write.csv
+      csv.function <<- write.csv
   } 
   
   return(TRUE)

@@ -47,6 +47,6 @@ modules.CSV.sheets <- function(spot.list, main, path)
                  "Chromosome"=paste( gene.info$chr.name[o], gene.info$chr.band[o]),
                  "Description"=gene.info$descriptions[o])
 
-    write.csv2(out, file.path(path, basename))
+    csv.function(out, file.path(path, basename))
   }
 }

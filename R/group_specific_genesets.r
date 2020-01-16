@@ -65,7 +65,7 @@ pipeline.groupSpecificGenesets <- function()
     out <- cbind(names(gs.p.values), paste(gs.p.values,"     ."), paste(fdr.res$lfdr,"     ."))
     colnames(out) = c("gene set","p-value","fdr")
 
-    write.csv2(out, paste(files.name,
+    csv.function(out, paste(files.name,
                           " - Results/Summary Sheets - Groups/Geneset Analysis/Specific GS ",
                           make.names(unique(group.labels)[gr]),".csv", sep=""), row.names=FALSE)
   }

@@ -32,8 +32,6 @@ modules.chromosomes <- function(spot.list, main, path)
     intersect.counts[names(intersect.counts.spot), m] <- intersect.counts.spot
   }
 
-  # write.csv2(intersect.counts, file=file.path(dirnames["csv"], paste(main, ".csv", sep="")))
-
   colkey <- c(colorRampPalette(c(rep("white",2),
                                  "green",
                                  rep("yellow2",1),

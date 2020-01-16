@@ -146,7 +146,7 @@ pipeline.genesetProfilesAndMaps <- function()
                       GeneSymbol=gene.info$names[genes],
                       Description=gene.info$descriptions[genes])
 
-    write.csv2(out, file.path(dirname, paste(filename.prefix, ".csv", sep="")), row.names=FALSE)
+    csv.function(out, file.path(dirname, paste(filename.prefix, ".csv", sep="")), row.names=FALSE)
 
     setTxtProgressBar( progressbar, progressbar$getVal()+1 )
   }
