@@ -63,7 +63,7 @@ pipeline.calcStatistics <- function()
       }, silent=TRUE)
     })
 
-    if (class(try.res) != "try-error")
+    if (!is(try.res,"try-error"))
     {
       p.g.m[,m] <<- fdrtool.result$pval
       fdr.g.m[,m] <<- fdrtool.result$lfdr
@@ -101,7 +101,7 @@ pipeline.calcStatistics <- function()
       }, silent=TRUE)
     })
 
-    if (class(try.res) != "try-error")
+		if( !is(try.res,"try-error") )
     {
       p.m[which(!is.na(t.m[,m])),m] <<- fdrtool.result$pval
     } else # happens for eg phenotype data

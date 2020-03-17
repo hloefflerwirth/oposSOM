@@ -344,7 +344,7 @@ modules.report.sheets <- function(spot.list, main, path)
         })
       }, silent=TRUE)
 
-      if (class(try.res) != "try-error")
+      if (!is(try.res,"try-error"))
       {
         fdr.spot.list.samples <- fdrtool.result$lfdr
         Fdr.spot.list.samples <- fdrtool.result$qval

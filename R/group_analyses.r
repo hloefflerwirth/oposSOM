@@ -53,7 +53,7 @@ pipeline.groupAnalysis <- function()
       }, silent=TRUE)
     })
     
-    if (class(try.res) != "try-error")
+    if (!is(try.res,"try-error"))
     {
 #      p.g.m[,gr] <- fdrtool.result$pval
       fdr.g.m[,gr] <- fdrtool.result$lfdr

@@ -175,8 +175,8 @@ pipeline.checkInputParameters <- function()
     # translate sample names into indexes
     preferences$pairwise.comparison.list <<- lapply(preferences$pairwise.comparison.list,function(x)
     {
-      if( class(x[[1]]) == "character" ) x[[1]] <- match(x[[1]],colnames(indata))
-      if( class(x[[2]]) == "character" ) x[[2]] <- match(x[[2]],colnames(indata))
+      if( is(x[[1]],"character") ) x[[1]] <- match(x[[1]],colnames(indata))
+      if( is(x[[2]],"character") ) x[[2]] <- match(x[[2]],colnames(indata))
       return(x)
     })  
     
@@ -203,20 +203,20 @@ pipeline.checkInputParameters <- function()
     return(FALSE)
   }
   
-  if (class(indata) == "ExpressionSet")
+  if (is(indata,"ExpressionSet"))
   {
     group.labels <<- as.character(pData(indata)$group.labels)
     group.colors <<- as.character(pData(indata)$group.colors)
     indata <<- assayData(indata)$exprs
   }
   
-  if (class(indata) != "matrix" && (is.null(dim(indata)) || dim(indata) < 1))
+  if (!is(indata,"matrix") && (is.null(dim(indata)) || dim(indata) < 1))
   {
     util.fatal("Invalid indata! Provide a two-dimensional numerical matrix.")
     return(FALSE)
   }
   
-  if (class(indata) != "matrix" ||
+  if (!is(indata,"matrix") ||
       mode(indata) != "numeric" )
       # storage.mode(indata) != "numeric")
   {

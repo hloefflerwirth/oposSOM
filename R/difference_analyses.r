@@ -95,7 +95,7 @@ pipeline.differenceAnalyses = function()
       }, silent=TRUE)
     })
 
-    if (class(try.res) != "try-error")
+    if (!is(try.res,"try-error"))
     {
       fdr.g.m[,d] <- fdrtool.result$lfdr
       Fdr.g.m[,d] <- fdrtool.result$qval
