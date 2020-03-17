@@ -70,15 +70,17 @@ pipeline.prepareAnnotation <- function()
   mart <- useDataset(preferences$database.dataset, mart=mart)
 
   query = c("wikigene_name","hgnc_symbol","uniprot_genename")[ which( c("wikigene_name","hgnc_symbol","uniprot_genename") %in% listAttributes(mart)[,1] ) ][1]
-  suppressWarnings({  biomart.table <- getBM(c(preferences$database.id.type,
-                           query,"description","ensembl_gene_id",
-                           "chromosome_name","band","start_position"),
-                         preferences$database.id.type,
-                         rownames(indata), mart, checkFilters=FALSE)  })
-
-  biomart.table <- biomart.table[ which(biomart.table[,1]%in%rownames(indata)), ]
   
-  if (nrow(biomart.table) == 0)
+  biomart.table <- NULL
+  try({
+    biomart.table <- getBM(c(preferences$database.id.type, query,
+        "description","ensembl_gene_id","chromosome_name","band","start_position"),
+        preferences$database.id.type, rownames(indata), mart, checkFilters=FALSE)  
+
+    biomart.table <- biomart.table[ which(biomart.table[,1]%in%rownames(indata)), ]
+  }, silent=TRUE)  
+  
+  if (is.null(biomart.table) || nrow(biomart.table) == 0)
   {
     util.warn("Could not resolve rownames. Possibly wrong database.id.type")
     util.warn("Disabling geneset analysis.")
