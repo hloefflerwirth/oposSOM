@@ -96,7 +96,7 @@ som.training.phase <- function(indata, weightMatrix, metricSamples, epochs,
 
 
 
-som.training <- function( indata, weightMatrix, metricSamples, prolongationFactor = 1, verbose = F )
+som.training <- function( indata, weightMatrix, metricSamples, prolongationFactor = 1, verbose = FALSE )
 {
   if( missing(metricSamples) ) metricSamples <- seq( ncol(indata) )
 

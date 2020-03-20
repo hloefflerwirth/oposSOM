@@ -12,4 +12,11 @@ importFrom("igraph", "graph.adjacency", "minimum.spanning.tree", "layout_with_kk
 importFrom("fdrtool", "fdrtool")
 importFrom("Rcpp", "sourceCpp")
 importFrom("RcppParallel" ,"RcppParallelLibs")
+importFrom("grDevices", "chull", "col2rgb", "colorRampPalette","dev.off", "pdf", "rgb")
+importFrom("graphics", "abline", "arrows", "axis", "barplot", "box","boxplot", "frame", "hist", "image", "layout", "legend",
+           "lines", "mtext", "par", "persp", "pie", "plot", "points","polygon", "rect", "text", "title")
+importFrom("methods", "is")
+importFrom("stats", "aov", "as.dendrogram", "cor", "cutree", "density","dist", "ecdf", "fisher.test", "hclust", "kmeans",
+           "na.omit", "order.dendrogram", "pbeta", "prcomp", "pt","quantile", "reorder", "sd", "var", "wilcox.test")
+importFrom("utils", "combn", "data", "flush.console", "head","modifyList", "sessionInfo", "setTxtProgressBar","write.csv", "write.csv2")
 useDynLib(oposSOM, .registration=TRUE)

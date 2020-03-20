@@ -8,8 +8,8 @@ Description: This package translates microarray expression data into metadata
   scaling and dimension reduction, along with strong visualization capabilities.
   It enables extraction and description of functional expression modules inherent
   in the data.
-Depends: R (>= 3.0), igraph (>= 1.0.0)
-Imports: fastICA, tsne, scatterplot3d, pixmap, fdrtool, ape, biomaRt, Biobase, RcppParallel, Rcpp
+Depends: R (>= 3.5.0), igraph (>= 1.0.0)
+Imports: fastICA, tsne, scatterplot3d, pixmap, fdrtool, ape, biomaRt, Biobase, RcppParallel, Rcpp, methods
 LinkingTo: RcppParallel, Rcpp
 License: GPL (>=2)
 Author: Henry Loeffler-Wirth <wirth@izbi.uni-leipzig.de>, Hoang Thanh Le <le@izbi.uni-leipzig.de> and Martin Kalcher <mkalcher@porkbox.net>
