@@ -17,7 +17,9 @@ pipeline.genesetProfilesAndMaps <- function()
     #### Geneset Profile + Heatmap
     layout(matrix(c(1,2,3),ncol=1,byrow=TRUE),heights=c(1.5,0.5,4))
     
-    gs.indata <- indata[names(gene.info$ids)[which(gene.info$ids %in% gs.def.list[[i]]$Genes)],,drop=F]
+    set.genes <- unique( gene.info$ensembl.mapping[which(gene.info$ensembl.mapping$ensembl_gene_id %in% gs.def.list[[i]]$Genes),1] )
+    
+    gs.indata <- indata[set.genes,,drop=F]
     sig.genes <- which( apply(gs.indata,1,sd)>sd(gs.indata) )
     if(length(sig.genes)==0) sig.genes <- order(apply(gs.indata,1,sd),decreasing=TRUE)[1]
 
@@ -94,7 +96,7 @@ pipeline.genesetProfilesAndMaps <- function()
     par(mar=c(16, 0, 6, 3.5))
      
     n.map <- matrix(0,preferences$dim.1stLvlSom,preferences$dim.1stLvlSom)
-    gs.nodes <- som.result$feature.BMU[names(gene.info$ids)[which(gene.info$ids %in% gs.def.list[[i]]$Genes)]]
+    gs.nodes <- som.result$feature.BMU[set.genes]
     n.map[as.numeric(names(table(gs.nodes)))] <- table(gs.nodes)
     n.map[which(n.map==0)] <- NA
     n.map <- matrix(n.map, preferences$dim.1stLvlSom)
@@ -108,7 +110,7 @@ pipeline.genesetProfilesAndMaps <- function()
         xlab="",ylab="", xaxs="i", yaxs="i", col=colr,
         cex=0.5 + na.omit(as.vector(n.map)) / max(n.map,na.rm=TRUE) * 2.8)
     
-      title(sub=paste("# features =", sum(gene.info$ids %in% gs.def.list[[i]]$Genes)),line=0)
+      title(sub=paste("# features =", length(set.genes)),line=0)
       box()
     
     par(new=TRUE, mar=c(32,21.5,6,0.5))
@@ -137,14 +139,12 @@ pipeline.genesetProfilesAndMaps <- function()
 
     ##### CSV sheets
 
-    genes <- names(gene.info$ids)[which(gene.info$ids %in% gs.def.list[[i]]$Genes)]
-
-    out <- data.frame(AffyID=names(gene.info$ids[genes]),
-                      EnsemblID=gene.info$ids[genes],
-                      Metagene=gene.info$coordinates[genes],
-                      Max.expression.sample=colnames(indata)[apply(indata[genes, ,drop=FALSE], 1, which.max)],
-                      GeneSymbol=gene.info$names[genes],
-                      Description=gene.info$descriptions[genes])
+    out <- data.frame(AffyID=names(gene.info$ids[set.genes]),
+                      EnsemblID=gene.info$ids[set.genes],
+                      Metagene=gene.info$coordinates[set.genes],
+                      Max.expression.sample=colnames(indata)[apply(indata[set.genes, ,drop=FALSE], 1, which.max)],
+                      GeneSymbol=gene.info$names[set.genes],
+                      Description=gene.info$descriptions[set.genes])
 
     csv.function(out, file.path(dirname, paste(filename.prefix, ".csv", sep="")), row.names=FALSE)
 

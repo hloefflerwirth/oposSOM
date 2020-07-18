@@ -6,13 +6,14 @@ pipeline.prepareAnnotation <- function()
   names(empty.vec.num) <- rownames(indata)
   mode(empty.vec.num)  <- "numeric"
   
-  gene.info <<- list( ids = empty.vec.chr, 
+  gene.info <<- list( ids = empty.vec.chr,
                       names = empty.vec.chr,
                       descriptions = empty.vec.chr,
                       chr.name = empty.vec.chr,
                       chr.band = empty.vec.chr,
-                      chr.start = empty.vec.num )
-  
+                      chr.start = empty.vec.num,
+                      ensembl.mapping = data.frame( indata.id=rownames(indata), ensembl.id=rep("", nrow(indata)), stringsAsFactors=FALSE )   )
+
   if(!preferences$activated.modules$primary.analysis)
   {
     gene.info$coordinates <<- apply( som.result$node.summary[som.result$feature.BMU,c("x","y")], 1, paste, collapse=" x " )
@@ -87,30 +88,44 @@ pipeline.prepareAnnotation <- function()
     preferences$activated.modules$geneset.analysis <<- FALSE
   } else
   {
-    h <- biomart.table[,2]
-    names(h) <- biomart.table[,1]
-    gene.info$names[as.character(unique(biomart.table[,1]))] <<- h[as.character(unique(biomart.table[,1]))]
+    h <- biomart.table[,query]
+    names(h) <- biomart.table[,preferences$database.id.type]
+    h <- h[ which(h!="") ]
+    h <- h[ which(!duplicated(names(h))) ]
+    gene.info$names[names(h)] <<- h
 
     h <- biomart.table[,"description"]
-    names(h) <- biomart.table[,1]
-    gene.info$descriptions[as.character(unique(biomart.table[,1]))] <<- h[as.character(unique(biomart.table[,1]))]
+    names(h) <- biomart.table[,preferences$database.id.type]
+    h <- h[ which(h!="") ]
+    h <- h[ which(!duplicated(names(h))) ]
+    h <- sub("\\[.*\\]","",h)
+    gene.info$descriptions[names(h)] <<- h
 
     h <- biomart.table[,"ensembl_gene_id"]
-    names(h) <- biomart.table[,1]
-    gene.info$ids[as.character(unique(biomart.table[,1]))] <<- h[as.character(unique(biomart.table[,1]))]
+    names(h) <- biomart.table[,preferences$database.id.type]
+    h <- h[ which(h!="") ]
+    h <- h[ which(!duplicated(names(h))) ]
+    gene.info$ids[names(h)] <<- h
 
     h <- biomart.table[,"chromosome_name"]
-    names(h) <- biomart.table[,1]
-    gene.info$chr.name[as.character(unique(biomart.table[,1]))] <<- h[as.character(unique(biomart.table[,1]))]
+    names(h) <- biomart.table[,preferences$database.id.type]
+    h <- h[ which(h!="") ]
+    h <- h[ which(!duplicated(names(h))) ]
+    gene.info$chr.name[names(h)] <<- h
     
     h <- gsub("\\..*$","", biomart.table[,"band"])
-    names(h) <- biomart.table[,1]
-    gene.info$chr.band[as.character(unique(biomart.table[,1]))] <<- h[as.character(unique(biomart.table[,1]))]
+    names(h) <- biomart.table[,preferences$database.id.type]
+    h <- h[ which(h!="") ]
+    h <- h[ which(!duplicated(names(h))) ]
+    gene.info$chr.band[names(h)] <<- h
     
     h <- biomart.table[,"start_position"]
-    names(h) <- biomart.table[,1]
-    gene.info$chr.start[as.character(unique(biomart.table[,1]))] <<- h[as.character(unique(biomart.table[,1]))]
+    names(h) <- biomart.table[,preferences$database.id.type]
+    h <- h[ which(h!="") ]
+    h <- h[ which(!duplicated(names(h))) ]
+    gene.info$chr.start[names(h)] <<- h
     
+    gene.info$ensembl.mapping <<- unique(biomart.table[,c(preferences$database.id.type,"ensembl_gene_id")])
 
     gene.positions.table <- cbind( gene.info$chr.name, gene.info$chr.band )
     gene.positions.table <- gene.positions.table[ which( gene.positions.table[,1] != "" & gene.positions.table[,2] != "" ) , ]
@@ -128,11 +143,8 @@ pipeline.prepareAnnotation <- function()
   if (!preferences$activated.modules$geneset.analysis) {
     return()
   }
-
-  unique.protein.ids <<- unique(gene.info$ids)
-  unique.protein.ids <<- unique.protein.ids[which(unique.protein.ids!="")]
   
-  suppressWarnings({  biomart.table <- getBM(c("ensembl_gene_id", "go_id", "name_1006", "namespace_1003"), "ensembl_gene_id", unique.protein.ids, mart, checkFilters=FALSE) })
+  suppressWarnings({  biomart.table <- getBM(c("ensembl_gene_id", "go_id", "name_1006", "namespace_1003"), "ensembl_gene_id", unique(gene.info$ensembl.mapping$ensembl_gene_id), mart, checkFilters=FALSE) })
   biomart.table <- biomart.table[which( apply(biomart.table,1,function(x) sum(x=="") ) == 0 ),]  
   gs.def.list <<- tapply(biomart.table[,1], biomart.table[,2], c)
   gs.def.list <<- lapply(gs.def.list, function(x) { list(Genes=x, Type="") })
@@ -176,7 +188,7 @@ pipeline.prepareAnnotation <- function()
   gs.def.list  <<- c(gs.def.list, opossom.genesets)
 
   gs.def.list <<- lapply(gs.def.list, function(x) {
-    x$Genes <- intersect(x$Genes, unique.protein.ids)
+    x$Genes <- intersect(x$Genes, unique(gene.info$ensembl.mapping$ensembl_gene_id))
     return(x)
   })
 

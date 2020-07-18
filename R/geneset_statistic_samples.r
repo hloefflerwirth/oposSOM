@@ -2,9 +2,9 @@ pipeline.genesetStatisticSamples <- function()
 {
 
   ### perform GS analysis ###
-  t.ensID.m <<- t.g.m[which(rownames(indata) %in% names(gene.info$ids)),]
-  t.ensID.m <<- do.call(rbind, by(t.ensID.m, gene.info$ids, colMeans))
-
+  t.ensID.m <<- t.g.m[gene.info$ensembl.mapping[,1],]
+  t.ensID.m <<- do.call(rbind, by(t.ensID.m, gene.info$ensembl.mapping[,2], colMeans))
+  
   if (preferences$activated.modules$geneset.analysis.exact)
   {
     gs.null.list <- list()
@@ -12,13 +12,13 @@ pipeline.genesetStatisticSamples <- function()
     for (i in seq_along(gs.def.list))
     {
       gs.null.list[[i]] <-
-        list(Genes=sample(unique.protein.ids, length(gs.def.list[[i]]$Genes)))
+        list(Genes=sample(unique(gene.info$ensembl.mapping$ensembl_gene_id), length(gs.def.list[[i]]$Genes)))
     }
 
     null.scores <- sapply( 1:ncol(indata), function(m)
     {
       all.gene.statistic <- t.ensID.m[,m]
-      spot.gene.ids <- unique.protein.ids
+      spot.gene.ids <- unique(gene.info$ensembl.mapping$ensembl_gene_id)
 
       scores <- GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.null.list)
 
@@ -32,7 +32,7 @@ pipeline.genesetStatisticSamples <- function()
   {
     x <- spot.list.samples[[m]]
     all.gene.statistic <- t.ensID.m[,m]
-    spot.gene.ids <- unique.protein.ids
+    spot.gene.ids <- unique(gene.info$ensembl.mapping$ensembl_gene_id)
 
     x$GSZ.score <-
       GeneSet.GSZ(spot.gene.ids, all.gene.statistic, gs.def.list, sort=FALSE)

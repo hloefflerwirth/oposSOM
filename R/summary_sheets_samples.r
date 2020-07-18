@@ -5,12 +5,6 @@ pipeline.summarySheetsSamples <- function()
   dir.create(output.paths["Summary Sheets Samples"], showWarnings=FALSE)
 
   #### Summary Sheets ####
-  n.genes.in.genesets <- 0
-
-  if (preferences$activated.modules$geneset.analysis)
-  {
-    n.genes.in.genesets <- length(intersect(unique(unlist(gs.def.list)), gene.info$ids))
-  }
 
   ylim.max <- 0
 
@@ -77,7 +71,6 @@ pipeline.summarySheetsSamples <- function()
                          length(plus.fdr.genes), "+ /",
                          length(minus.fdr.genes), " -)"), adj=0)
 
-    text(0.1, 0.425, paste("# genes in genesets =", n.genes.in.genesets), adj=0)
     text(0.1, 0.35,  paste("<FC> =", round(mean(indata[,m]), 2)), adj=0)
     text(0.1, 0.3, paste("<t-score> =", round(mean(t.g.m[,m]), 2)), adj=0)
     text(0.1, 0.25,  paste("<p-value> =", round(10 ^ mean(log10(p.g.m[,m])), 2)), adj=0)

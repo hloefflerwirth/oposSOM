@@ -37,7 +37,8 @@ pipeline.groupSpecificGenesets <- function()
 
 
       n.map <- matrix(0,preferences$dim.1stLvlSom,preferences$dim.1stLvlSom)
-      gs.nodes <- som.result$feature.BMU[names(gene.info$ids)[which(gene.info$ids %in% gs.def.list[[names(top.gs)[i]]]$Genes)]]
+      gs.genes <- unique( gene.info$ensembl.mapping[which(gene.info$ensembl.mapping$ensembl_gene_id %in% gs.def.list[[names(top.gs)[i]]]$Genes),1] )
+      gs.nodes <- som.result$feature.BMU[gs.genes]
       n.map[as.numeric(names(table(gs.nodes)))] <- table(gs.nodes)
       n.map[which(n.map==0)] <- NA
       n.map <- matrix(n.map, preferences$dim.1stLvlSom)
@@ -53,7 +54,7 @@ pipeline.groupSpecificGenesets <- function()
                               max(1, (max(n.map,na.rm=TRUE) - min(n.map,na.rm=TRUE))) *
                               999 + 1])
 
-      title(sub=paste("# features =", length(gs.def.list[[names(top.gs)[i]]]$Genes),
+      title(sub=paste("# features =", length(gs.genes),
                       ", max =", max(n.map,na.rm=TRUE)),line=0.5, cex.sub=1.4)
 
       box()
@@ -107,7 +108,8 @@ pipeline.groupSpecificGenesets <- function()
       text(label.x, ylim[2]*0.92, label.string, col=groupwise.group.colors,cex=2.5)
     
     n.map <- matrix(0,preferences$dim.1stLvlSom,preferences$dim.1stLvlSom)
-    gs.nodes <- som.result$feature.BMU[names(gene.info$ids)[which(gene.info$ids %in% gs.def.list[[top.gs[i]]]$Genes)]]
+    gs.genes <- unique( gene.info$ensembl.mapping[which(gene.info$ensembl.mapping$ensembl_gene_id %in% gs.def.list[[top.gs[i]]]$Genes),1] )
+    gs.nodes <- som.result$feature.BMU[gs.genes]
     n.map[as.numeric(names(table(gs.nodes)))] <- table(gs.nodes)
     n.map[which(n.map==0)] <- NA
     n.map <- matrix(n.map, preferences$dim.1stLvlSom)
@@ -123,7 +125,7 @@ pipeline.groupSpecificGenesets <- function()
                              max(1, (max(n.map,na.rm=TRUE) - min(n.map,na.rm=TRUE))) *
                              999 + 1])
     
-    title(sub=paste("# features =", length(gs.def.list[[top.gs[i]]]$Genes),
+    title(sub=paste("# features =", length(gs.genes),
                     ", max =", max(n.map,na.rm=TRUE)),line=0.5, cex.sub=1.4)
     
     box()

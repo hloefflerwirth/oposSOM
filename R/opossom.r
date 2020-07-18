@@ -37,7 +37,6 @@ opossom.new <- function(preferences=NULL)
   env$t.g.m <- NULL
   env$t.m <- NULL
   env$groupwise.group.colors <- NULL
-  env$unique.protein.ids <- NULL
   env$WAD.g.m <- NULL
   env$csv.function <- write.csv2
 

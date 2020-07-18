@@ -61,7 +61,7 @@ pipeline.cancerHallmarks <- function()
 
   hallmark.sets.ids <- lapply(hallmark.sets.genes, function(x)
   {
-    unique(names(gene.info$ids)[which(gene.info$ids %in% x)])
+    unique( gene.info$ensembl.mapping[ which(gene.info$ensembl.mapping$ensembl_gene_id%in%x), 1] )
   })
 
   hallmark.sets.names <- hallmark.sets.names[which(sapply(hallmark.sets.ids, length) > 0)]
@@ -76,13 +76,13 @@ pipeline.cancerHallmarks <- function()
   
     hallmark.GSZ.matrix <- unlist(sapply( 1:ncol(indata), function(m)
     {
-      return(GeneSet.GSZ(unique.protein.ids, t.ensID.m[,m], hallmark.sets.list, sort=FALSE))
+      return(GeneSet.GSZ(unique(gene.info$ensembl.mapping$ensembl_gene_id), t.ensID.m[,m], hallmark.sets.list, sort=FALSE))
     }))
   
     hallmark.spot.enrichment <- unlist(sapply( get(paste("spot.list.",preferences$standard.spot.modules,sep=""))$spots, function(x)
     {
-      spot.ens.ids <- unique(na.omit(gene.info$ids[x$genes]))
-      return(GeneSet.Fisher(spot.ens.ids, unique.protein.ids, hallmark.sets.list, sort=FALSE))
+      spot.ens.ids <- unique(gene.info$ensembl.mapping$ensembl_gene_id[ which(gene.info$ensembl.mapping[,1]%in%x$genes) ])
+      return(GeneSet.Fisher(spot.ens.ids, unique(gene.info$ensembl.mapping$ensembl_gene_id), hallmark.sets.list, sort=FALSE))
     }))
   
   
