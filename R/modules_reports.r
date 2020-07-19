@@ -379,7 +379,7 @@ modules.report.sheets <- function(spot.list, main, path)
       ## Splitted Genesets Sheet
       n.sets <- 15
       n.cat <- length(unique(sapply(gs.def.list, function(x) { x$Type })))
-      ipar(mfrow=c(ceiling(n.cat/3), min(n.cat, 3)))
+      par(mfrow=c(ceiling(n.cat/3), min(n.cat, 3)))
 
       for (i in sort(unique(sapply(gs.def.list, function(x) { x$Type }))))
       {
