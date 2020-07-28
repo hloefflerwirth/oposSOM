@@ -47,7 +47,7 @@ GeneSet.Fisher <- function(list.ids, all.ids, gs.def.list, sort=FALSE)
   return(p.values[o])
 }
 
-Sample.GSZ <- function(gene.set,mean.t.all,sd.t.all)
+Sample.GSZ <- function(gene.set,t.ensID.m,mean.t.all,sd.t.all)
 {
   mean.t.set <- colMeans( t.ensID.m[gene.set$Genes,] )
   

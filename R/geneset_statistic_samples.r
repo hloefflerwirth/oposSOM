@@ -18,17 +18,17 @@ pipeline.genesetStatisticSamples <- function()
         list(Genes=sample(unique(gene.info$ensembl.mapping$ensembl_gene_id), length(gs.def.list[[i]]$Genes)))
     }
 
-    null.scores <- sapply( gs.null.list, Sample.GSZ, mean.t.all, sd.t.all )
+    null.scores <- sapply( gs.null.list, Sample.GSZ, t.ensID.m, mean.t.all, sd.t.all )
     null.culdensity <- ecdf(abs(unlist(null.scores)))
   }
 
-  samples.GSZ.scores <<- t( sapply( gs.def.list, Sample.GSZ, mean.t.all, sd.t.all ) )
+  samples.GSZ.scores <<- t( sapply( gs.def.list, Sample.GSZ, t.ensID.m, mean.t.all, sd.t.all ) )
   
   spot.list.samples <<- lapply(seq_along(spot.list.samples) , function(m)
   {
     x <- spot.list.samples[[m]]
 
-    x$GSZ.score <- samples.GSZ.scores[,i]
+    x$GSZ.score <- samples.GSZ.scores[,m]
 
     if (preferences$activated.modules$geneset.analysis.exact)
     {
