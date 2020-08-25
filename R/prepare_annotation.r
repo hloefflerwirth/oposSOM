@@ -155,7 +155,7 @@ pipeline.prepareAnnotation <- function()
     util.info("Download of", length(gs.def.list), "GO sets with", sum(sapply(sapply(gs.def.list, head, 1), length)), "entries")
 
     ## simple small-gs-filtering
-    gs.def.list <<- gs.def.list[- which(sapply(sapply(gs.def.list, head, 1), length) < 10)]
+    gs.def.list <<- gs.def.list[ which(sapply(sapply(gs.def.list, head, 1), length) >= 20)]
     util.info("Filtered to", length(gs.def.list), "GO sets with", sum(sapply(sapply(gs.def.list, head, 1), length)), "entries")
 
     biomart.table[,4] <- sub("biological_process", "BP", biomart.table[,4])
@@ -185,7 +185,7 @@ pipeline.prepareAnnotation <- function()
 
   # load custom genesets
   data(opossom.genesets)
-  gs.def.list  <<- c(gs.def.list, opossom.genesets)
+  gs.def.list <<- c(gs.def.list, opossom.genesets)
 
   gs.def.list <<- lapply(gs.def.list, function(x) {
     x$Genes <- intersect(x$Genes, unique(gene.info$ensembl.mapping$ensembl_gene_id))
@@ -193,7 +193,7 @@ pipeline.prepareAnnotation <- function()
   })
 
 
-  gs.def.list <<- gs.def.list[ which(sapply(sapply(gs.def.list, head, 1), length) >= 2) ]
+  gs.def.list <<- gs.def.list[ which(sapply(sapply(gs.def.list, head, 1), length) >= 10) ]
 	gs.def.list <<- gs.def.list[ which(sapply(names(gs.def.list),nchar) < 60 ) ]
 
   if (length(gs.def.list) > 0)
