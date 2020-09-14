@@ -5,7 +5,6 @@ opossom.new <- function(preferences=NULL)
   env <- new.env()
   env$color.palette.portraits <- NULL
   env$color.palette.heatmaps <- NULL
-  env$t.ensID.m <- NULL
   env$Fdr.g.m <- NULL
   env$fdr.g.m <- NULL
   env$files.name <- NULL
@@ -24,6 +23,7 @@ opossom.new <- function(preferences=NULL)
   env$spot.list.samples <- NULL
   env$spot.list.underexpression <- NULL
   env$indata <- NULL
+	env$indata.ensID.m <- NULL
   env$indata.gene.mean <- NULL
   env$indata.sample.mean <- NULL
   env$metadata <- NULL
@@ -33,8 +33,11 @@ opossom.new <- function(preferences=NULL)
   env$p.g.m <- NULL
   env$p.m <- NULL
   env$perc.DE.m <- NULL
+  env$psf.results.samples <- NULL
+  env$psf.results.groups <- NULL
   env$som.result <- NULL
   env$t.g.m <- NULL
+	env$t.ensID.m <- NULL
   env$t.m <- NULL
   env$groupwise.group.colors <- NULL
   env$WAD.g.m <- NULL
@@ -62,6 +65,7 @@ opossom.new <- function(preferences=NULL)
                                                     "sample.similarity.analysis" = TRUE,
                                                     "geneset.analysis" = TRUE, 
                                                     "geneset.analysis.exact" = FALSE,
+																										"psf.analysis" = TRUE,
                                                     "group.analysis" = TRUE,
                                                     "difference.analysis" = TRUE ),
                           database.biomart = "ENSEMBL_MART_ENSEMBL",
@@ -164,7 +168,12 @@ opossom.run <- function(env)
     util.call(pipeline.genesetStatisticIntegral, env)
   }
   
-    
+  if (env$preferences$activated.modules$psf.analysis)
+  {
+    util.info("Calculating Pathway Signal Flow (PSF)")
+    util.call(pipeline.PSFcalculation, env)    
+  }
+  
   if(env$preferences$activated.modules$primary.analysis || env$preferences$activated.modules$geneset.analysis)
   {    
     filename <- paste(env$files.name, ".RData", sep="")
@@ -225,6 +234,11 @@ opossom.run <- function(env)
       util.call(pipeline.cancerHallmarks, env)
     }
     
+    if (env$preferences$activated.modules$psf.analysis)
+    {
+      util.info("Plotting PSF results")
+      pipeline.PSFoutput(env)
+    }
     
     util.info("Writing Gene Lists")
     util.call(pipeline.geneLists, env)
@@ -253,6 +267,7 @@ opossom.run <- function(env)
     util.call(pipeline.htmlSampleSummary, env)
     util.call(pipeline.htmlModuleSummary, env)
     util.call(pipeline.htmlGenesetAnalysis, env)  
+    pipeline.htmlPsfAnalysis(env)
     util.call(pipeline.htmlSummary, env)
     
   }    

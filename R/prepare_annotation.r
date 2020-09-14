@@ -27,6 +27,7 @@ pipeline.prepareAnnotation <- function()
     util.warn("Requested biomaRt host seems to be down.")
     util.warn("Disabling geneset analysis.")
     preferences$activated.modules$geneset.analysis <<- FALSE
+		preferences$activated.modules$psf.analysis <<- FALSE
     return()
   }
 
@@ -61,8 +62,9 @@ pipeline.prepareAnnotation <- function()
   if (preferences$database.dataset == "" || preferences$database.id.type == "")
   {
     util.warn("Could not find valid annotation parameters.")
-    util.warn("Disabling geneset analysis.")
+    util.warn("Disabling geneset & PSF analyses.")
     preferences$activated.modules$geneset.analysis <<- FALSE
+		preferences$activated.modules$psf.analysis <<- FALSE
     return()
   }
   
@@ -84,8 +86,9 @@ pipeline.prepareAnnotation <- function()
   if (is.null(biomart.table) || nrow(biomart.table) == 0)
   {
     util.warn("Could not resolve rownames. Possibly wrong database.id.type")
-    util.warn("Disabling geneset analysis.")
+    util.warn("Disabling geneset & PSF analyses.")
     preferences$activated.modules$geneset.analysis <<- FALSE
+		preferences$activated.modules$psf.analysis <<- FALSE
   } else
   {
     h <- biomart.table[,query]
@@ -138,6 +141,12 @@ pipeline.prepareAnnotation <- function()
       chromosome.list <<- lapply(chromosome.list, function(x) { tapply(x, gene.positions.table[x,2], c) })
     }
 
+  }
+  
+  if( preferences$database.dataset!="hsapiens_gene_ensembl")
+  {
+    util.warn("Disabling PSF analysis (available for human data only).")
+    preferences$activated.modules$psf.analysis <<- FALSE 
   }
 
   if (!preferences$activated.modules$geneset.analysis) {
