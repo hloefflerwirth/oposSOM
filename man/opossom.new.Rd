@@ -32,6 +32,7 @@
 					\item{primary.analysis} (boolean): enables or disables data preprocessing and SOM training (default: TRUE). When deactivated, prior SOM training results are required to be contained in the workspace environment.
 					\item{sample.similarity.analysis} (boolean): enables or disables diversity analyses such as clustering heatmaps, correlation networks and ICA (default: TRUE).
 					\item{geneset.analysis} (boolean): enables or disables geneset analysis (default: TRUE).
+          \item{psf.analysis} (boolean): enables or disables pathway signal flow (PSF) analysis (default: TRUE). Human gene expression data is required as input data.
 					\item{group.analysis} (boolean): enables or disables group centered analyses such as group portraits and functional mining (default: TRUE).
 					\item{difference.analysis} (boolean): enables or disables pairwise comparisons of the grous and of pairs provided by \code{pairwise.comparison.list} as described below (default: TRUE).
 				}
