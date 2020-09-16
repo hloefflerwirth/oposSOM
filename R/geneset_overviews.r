@@ -104,40 +104,5 @@ pipeline.genesetOverviews <- function()
     mtext(paste("Category",i), cex=1, line=32)
   }
 
-  ### p Histogram + FDR
-  if (preferences$activated.modules$geneset.analysis.exact)
-  {
-    p <- as.vector(sapply(spot.list.samples, function(x)  x$GSZ.p.value  ))
-
-    suppressWarnings({ fdrtool.result <- fdrtool(p, statistic="pvalue", verbose=FALSE, plot=FALSE) })
-    fdr.spot.list.samples <- fdrtool.result$lfdr
-    Fdr.spot.list.samples <- fdrtool.result$qval
-    n.0.spot.list.samples <- fdrtool.result$param[1,"eta0"]
-    perc.DE.spot.list.samples <- 1 - n.0.spot.list.samples
-
-    par(mar=c(5,6,4,5))
-
-    hist(p, bre=20, freq=FALSE, main="p-values (GSZ)", ylab="", xlab="", las=1,
-         cex.main=2.5, cex.lab=2, cex.axis=2)
-
-    box()
-    mtext("Density", side=2, line=4, cex=2)
-    mtext("FDR", side=4, line=4, cex=2)
-    mtext(paste("%DE =", round(perc.DE.spot.list.samples, 2)), line=-1.3, cex=1.6)
-
-    abline(h = n.0.spot.list.samples, col="gray", lwd=2)
-
-    par(new=TRUE)
-    plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=FALSE)
-    axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=2)
-    o <- order(p)
-    o <- o[round(seq(1, length(o), length.out=1000))]
-    lines(p[o], Fdr.spot.list.samples[o], lty=2, lwd=2)
-    lines(p[o], fdr.spot.list.samples[o], lty=3, lwd=3)
-
-    legend("topright", c("p", expression(eta[0]), "Fdr", "fdr"),
-           col=c("black","gray","black","black"), lty=c(1,1,2,3), lwd=c(2,2,2,3))
-  }
-
   dev.off()
 }

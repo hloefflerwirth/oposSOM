@@ -131,7 +131,6 @@ pipeline.differenceAnalyses = function()
 
   util.call(pipeline.detectSpotsSamples, environment())
 
-  preferences$activated.modules$geneset.analysis.exact <- FALSE
   if (preferences$activated.modules$geneset.analysis)
   {
     if (ncol(t.g.m) == 1)

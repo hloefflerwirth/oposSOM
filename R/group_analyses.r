@@ -105,7 +105,6 @@ pipeline.groupAnalysis <- function()
   
   util.call(pipeline.detectSpotsSamples, environment())
 
-  preferences$activated.modules$geneset.analysis.exact <- FALSE
   if (preferences$activated.modules$geneset.analysis)
   {
     util.call(pipeline.genesetStatisticSamples, environment())

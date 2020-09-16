@@ -72,7 +72,7 @@ pipeline.checkInputParameters <- function()
                               "primary.analysis" = TRUE, 
                               "sample.similarity.analysis" = TRUE,
                               "geneset.analysis" = TRUE, 
-                              "geneset.analysis.exact" = FALSE,
+                              "psf.analysis" = TRUE,
                               "group.analysis" = TRUE,
                               "difference.analysis" = TRUE )
   } else
@@ -102,10 +102,10 @@ pipeline.checkInputParameters <- function()
       util.warn("Invalid value of \"activated.modules$geneset.analysis\". Using TRUE")
       preferences$activated.modules$geneset.analysis <<- TRUE
     }
-    if (!is.logical(preferences$activated.modules$geneset.analysis.exact))
+    if (!is.logical(preferences$activated.modules$psf.analysis))
     {
-      util.warn("Invalid value of \"activated.modules$geneset.analysis.exact\". Using FALSE")
-      preferences$activated.modules$geneset.analysis.exact <<- FALSE
+      util.warn("Invalid value of \"activated.modules$psf.analysis\". Using TRUE")
+      preferences$activated.modules$psf.analysis <<- TRUE
     }    
     if (!is.logical(preferences$activated.modules$group.analysis))
     {

@@ -97,22 +97,16 @@ pipeline.geneLists <- function()
         pos.gs.gsz <- round(sort(gs.gsz[which(gs.gsz>0)],decreasing=TRUE), 8)
         neg.gs.gsz <- round(sort(gs.gsz[which(gs.gsz<0)],decreasing=FALSE), 8)
   
-        pos.gs.p <- rep("",length(pos.gs.gsz))
-        neg.gs.p <- rep("",length(neg.gs.gsz))
+        pos.gs.p <- spot.list.samples[[m]]$GSZ.p.value[names(pos.gs.gsz)]  
+        neg.gs.p <- spot.list.samples[[m]]$GSZ.p.value[names(neg.gs.gsz)]
         
         pos.gs.fdr <- rep("",length(pos.gs.gsz))
         neg.gs.fdr <- rep("",length(neg.gs.gsz))
-        
-        if(preferences$activated.modules$geneset.analysis.exact)
+
+        if(ncol(indata)<100)
         {
-          pos.gs.p <- spot.list.samples[[m]]$GSZ.p.value[names(pos.gs.gsz)]  
-          neg.gs.p <- spot.list.samples[[m]]$GSZ.p.value[names(neg.gs.gsz)]
-          
-          if(ncol(indata)<100)
-          {
-            pos.gs.fdr <- fdrtool(pos.gs.p,statistic="pvalue",verbose=FALSE,plot=FALSE)$lfdr          
-            neg.gs.fdr <- fdrtool(neg.gs.p,statistic="pvalue",verbose=FALSE,plot=FALSE)$lfdr        
-          }
+          pos.gs.fdr <- fdrtool(pos.gs.p,statistic="pvalue",verbose=FALSE,plot=FALSE)$lfdr          
+          neg.gs.fdr <- fdrtool(neg.gs.p,statistic="pvalue",verbose=FALSE,plot=FALSE)$lfdr        
         }
               
         pos.gs.gsz <- c(pos.gs.gsz, rep(0, max(0, length(neg.gs.gsz) - length(pos.gs.gsz))))

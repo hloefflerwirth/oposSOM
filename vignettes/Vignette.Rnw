@@ -256,7 +256,6 @@ The parameters below are secondary and may be left unattended by the user:
       \item \textit{primary.analysis} (boolean): enables or disables data preprocessing and SOM training (default: TRUE). When deactivated, prior SOM training results are required to be contained in the workspace environment.
       \item \textit{sample.similarity.analysis} (boolean): enables or disables diversity analyses such as clustering heatmaps, correlation networks and ICA (default: TRUE).
     	\item \textit{geneset.analysis} (boolean): enables or disables geneset analysis (default: TRUE).
-    	\item \textit{geneset.analysis.exact} (boolean): enables or disables p-value and fdr calculation in geneset analysis (default: FALSE). Obsolete if \textit{geneset.analysis=F}.
     	\item \textit{group.analysis} (boolean): enables or disables group centered analyses such as group portraits and functional mining (default: TRUE).
     	\item \textit{difference.analysis} (boolean): enables or disables pairwise comparisons of the grous and of pairs provided by \textit{pairwise.comparison.list} as described below (default: TRUE).
     \end{itemize}

@@ -212,41 +212,39 @@ pipeline.summarySheetsSamples <- function()
       text(x.coords[5], y.coords, sapply(gs.def.list, function(x) { x$Type })[names(top.gs.score)], cex=0.6, adj=0)
       text(x.coords[6], y.coords, names(top.gs.score), cex=0.6, adj=0)
 
-      if (preferences$activated.modules$geneset.analysis.exact)
-      {
-        p <- spot.list.samples[[m]]$GSZ.p.value
+      
+      p <- spot.list.samples[[m]]$GSZ.p.value
 
-        fdrtool.result <- suppressWarnings(fdrtool(p, statistic="pvalue", verbose=FALSE, plot=FALSE))
-        fdr.spot.list.samples <- fdrtool.result$lfdr
-        Fdr.spot.list.samples <- fdrtool.result$qval
+      fdrtool.result <- suppressWarnings(fdrtool(p, statistic="pvalue", verbose=FALSE, plot=FALSE))
+      fdr.spot.list.samples <- fdrtool.result$lfdr
+      Fdr.spot.list.samples <- fdrtool.result$qval
 
-        n.0.spot.list.samples <- fdrtool.result$param[1,"eta0"]
-        perc.DE.spot.list.samples <- 1 - n.0.spot.list.samples
+      n.0.spot.list.samples <- fdrtool.result$param[1,"eta0"]
+      perc.DE.spot.list.samples <- 1 - n.0.spot.list.samples
 
-        par(mar=c(3,6,2,6))
+      par(mar=c(3,6,2,6))
 
-        hist(p, bre=20, freq=FALSE, xlab="p-value", ylab="", main="p-values",
-             las=1, cex.main=1.5, cex.lab=1, cex.axis=1)
+      hist(p, bre=20, freq=FALSE, xlab="p-value", ylab="", main="p-values",
+           las=1, cex.main=1.5, cex.lab=1, cex.axis=1)
 
-        box()
-        mtext("Density", side=2, line=3, cex=1)
-        mtext("FDR", side=4, line=3, cex=1)
-        mtext(paste("%DE =", round(perc.DE.spot.list.samples ,2)), line=-1.2, cex=0.5)
+      box()
+      mtext("Density", side=2, line=3, cex=1)
+      mtext("FDR", side=4, line=3, cex=1)
+      mtext(paste("%DE =", round(perc.DE.spot.list.samples ,2)), line=-1.2, cex=0.5)
 
-        abline(h=n.0.spot.list.samples , col="gray", lwd=2)
+      abline(h=n.0.spot.list.samples , col="gray", lwd=2)
 
-        par(new=TRUE)
-        plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=FALSE)
-        axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=1)
-        o = order(p)
-        lines(p[o], Fdr.spot.list.samples[o], lty=2, lwd=2)
-        lines(p[o], fdr.spot.list.samples[o], lty=3, lwd=3)
+      par(new=TRUE)
+      plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=FALSE)
+      axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=1)
+      o = order(p)
+      lines(p[o], Fdr.spot.list.samples[o], lty=2, lwd=2)
+      lines(p[o], fdr.spot.list.samples[o], lty=3, lwd=3)
 
-        legend("topright",
-               c("p", expression(eta[0]), "Fdr", "fdr"),
-               col=c("black","gray","black","black"),
-               lty=c(1,1,2,3), lwd=c(1,1,1,2), cex=0.7)
-      }
+      legend("topright",
+             c("p", expression(eta[0]), "Fdr", "fdr"),
+             col=c("black","gray","black","black"),
+             lty=c(1,1,2,3), lwd=c(1,1,1,2), cex=0.7)
     }
 
     dev.off()
