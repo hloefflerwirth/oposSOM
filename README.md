@@ -21,6 +21,6 @@ Alternatively, precompiled package binaries for Windows can be obtained from the
 
 ```
 install.packages(
-  "https://github.com/hloefflerwirth/oposSOM/releases/download/2.0.3/oposSOM_2.0.3.zip", 
+  "https://github.com/hloefflerwirth/oposSOM/releases/download/2.1.1/oposSOM_2.1.1.zip", 
   repos = NULL, type = "binary" )
 ```
