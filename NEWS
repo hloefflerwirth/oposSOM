@@ -7,16 +7,16 @@
 2.0.7:
 + Bugfix for class(...) error occuring in R > 4.0.0
 2.0.6:
-+ Bugfixes for write.csv function, very long geneset file names and package version.
++ Bugfixes for write.csv function, very long geneset file names and package version
 2.0.5:
-+ "note"-slot introduced to oposSOM environment (preferences) and html summary table.
++ "note"-slot introduced to oposSOM environment (preferences) and html summary table
 2.0.4:
-+ Check implemented if over-/under-expression modules were detected. Check implemented if PAT class definition can be applied.
++ Check implemented if over-/under-expression modules were detected. Check implemented if PAT class definition can be applied
 2.0.3:
 + Check for detected singleton spot modules implemented
 2.0.2:
-+ csv output for international spreadsheet format.
++ csv output for international spreadsheet format
 2.0.1:
-+ Colored edges in sample correlation networks & minor fixes.
++ Colored edges in sample correlation networks & minor fixes
 2.0.0: 
-+ Great performance boost by implementation of parallel SOM calculation. "som" package dependence removed.
++ Great performance boost by implementation of parallel SOM calculation. "som" package dependence removed
