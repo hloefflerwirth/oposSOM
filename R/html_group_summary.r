@@ -1,11 +1,11 @@
-pipeline.htmlGroupSummary <- function()
+pipeline.htmlGroupSummary <- function(env)
 {
-  if (length(unique(group.labels)) <= 1)
+  if (length(unique(env$group.labels)) <= 1)
   {
     return()
   }
 
-  filename <- file.path(paste(files.name, "- Results"),
+  filename <- file.path(paste(env$files.name, "- Results"),
                         "Summary Sheets - Groups",
                         "0verview.html")
 
@@ -15,7 +15,7 @@ pipeline.htmlGroupSummary <- function()
   cat("<!DOCTYPE html>
 <html>
   <head>
-    <title>Group Summary of ", files.name, " dataset</title>
+    <title>Group Summary of ", env$files.name, " dataset</title>
     <style>
       body {
         margin: 0;
@@ -125,7 +125,7 @@ pipeline.htmlGroupSummary <- function()
             <th>Global Gene List</th>
             <th>Gene Set List</th>", sep="", file=f)
 
-  if (preferences$activated.modules$geneset.analysis)
+  if (env$preferences$activated.modules$geneset.analysis)
   {
     cat("
             <th colspan=\"2\">Specific Gene Set</th>", sep="", file=f)
@@ -136,9 +136,9 @@ pipeline.htmlGroupSummary <- function()
         </thead>
         <tbody>", sep="", file=f)
 
-  for (m in 1:ncol(indata))
+  for (m in 1:ncol(env$indata))
   {
-    name <- colnames(indata)[m]
+    name <- colnames(env$indata)[m]
     fname <- make.names(name)
 
     cat("
@@ -160,7 +160,7 @@ pipeline.htmlGroupSummary <- function()
               </a>
             </td>", sep="", file=f)
 
-    if (preferences$activated.modules$geneset.analysis)
+    if (env$preferences$activated.modules$geneset.analysis)
     {
       cat("
             <td>

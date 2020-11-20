@@ -1,8 +1,8 @@
-pipeline.htmlSampleSummary <- function()
+pipeline.htmlSampleSummary <- function(env)
 {
-  if(ncol(indata) >= 1000) return()
+  if(ncol(env$indata) >= 1000) return()
 	
-  filename <- file.path(paste(files.name, "- Results"),
+  filename <- file.path(paste(env$files.name, "- Results"),
                         "Summary Sheets - Samples",
                         "0verview.html")
 
@@ -12,7 +12,7 @@ pipeline.htmlSampleSummary <- function()
   cat("<!DOCTYPE html>
 <html>
   <head>
-    <title>Sample Summary of ", files.name, " dataset</title>
+    <title>Sample Summary of ", env$files.name, " dataset</title>
     <style>
       body {
         margin: 0;
@@ -89,12 +89,12 @@ pipeline.htmlSampleSummary <- function()
         </head>
         <tbody>", sep="", file=outfile)
 
-  for (l in unique(group.labels))
+  for (l in unique(env$group.labels))
   {
     cat("
           <tr>
             <td>", l, "</td>
-            <td>",  length(which(group.labels == l)), "</td>
+            <td>",  length(which(env$group.labels == l)), "</td>
           </tr>", sep="", file=outfile)
   }
 
@@ -126,15 +126,15 @@ pipeline.htmlSampleSummary <- function()
         </thead>
         <tbody>", sep="", file=outfile)
 
-  for (m in 1:ncol(indata))
+  for (m in 1:ncol(env$indata))
   {
-    name <- colnames(indata)[m]
+    name <- colnames(env$indata)[m]
     fname <- make.names(name)
 
     cat("
           <tr>
             <td>", name, "</td>
-            <td> ", group.labels[m], "</td>
+            <td> ", env$group.labels[m], "</td>
             <td>
               <a href=\"", fname, ".pdf\" target=\"_blank\">
                 PDF

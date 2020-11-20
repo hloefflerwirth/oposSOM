@@ -1,4 +1,4 @@
-pipeline.cancerHallmarks <- function()
+pipeline.cancerHallmarks <- function(env)
 {
   hallmark.sets.names <- list(
     'Angiogenesis'=c(
@@ -56,12 +56,12 @@ pipeline.cancerHallmarks <- function()
 
   hallmark.sets.genes <- lapply(hallmark.sets.names, function(x)
   {
-    unique(unlist(sapply(gs.def.list[x], function(y) { y$Genes })))
+    unique(unlist(sapply(env$gs.def.list[x], function(y) { y$Genes })))
   })
 
   hallmark.sets.ids <- lapply(hallmark.sets.genes, function(x)
   {
-    unique( gene.info$ensembl.mapping[ which(gene.info$ensembl.mapping$ensembl_gene_id%in%x), 1] )
+    unique( env$gene.info$ensembl.mapping[ which(env$gene.info$ensembl.mapping$ensembl_gene_id%in%x), 1] )
   })
 
   hallmark.sets.names <- hallmark.sets.names[which(sapply(hallmark.sets.ids, length) > 0)]
@@ -74,20 +74,20 @@ pipeline.cancerHallmarks <- function()
   {  
     hallmark.sets.list <- lapply(hallmark.sets.genes, function(x) list(Genes=x,Type=""))
   
-    mean.t.all <- colMeans( t.ensID.m )
-    sd.t.all <- apply( t.ensID.m, 2, sd )
+    mean.t.all <- colMeans( env$t.ensID.m )
+    sd.t.all <- apply( env$t.ensID.m, 2, sd )
     
-    hallmark.GSZ.matrix <- t( sapply( hallmark.sets.list, Sample.GSZ, t.ensID.m, mean.t.all, sd.t.all ) )
+    hallmark.GSZ.matrix <- t( sapply( hallmark.sets.list, Sample.GSZ, env$t.ensID.m, mean.t.all, sd.t.all ) )
 
-    hallmark.spot.enrichment <- unlist(sapply( get(paste("spot.list.",preferences$standard.spot.modules,sep=""))$spots, function(x)
+    hallmark.spot.enrichment <- unlist(sapply( env[[paste("spot.list.",env$preferences$standard.spot.modules,sep="")]]$spots, function(x)
     {
-      spot.ens.ids <- unique(gene.info$ensembl.mapping$ensembl_gene_id[ which(gene.info$ensembl.mapping[,1]%in%x$genes) ])
-      return(GeneSet.Fisher(spot.ens.ids, unique(gene.info$ensembl.mapping$ensembl_gene_id), hallmark.sets.list, sort=FALSE))
+      spot.ens.ids <- unique(env$gene.info$ensembl.mapping$ensembl_gene_id[ which(env$gene.info$ensembl.mapping[,1]%in%x$genes) ])
+      return(GeneSet.Fisher(spot.ens.ids, unique(env$gene.info$ensembl.mapping$ensembl_gene_id), hallmark.sets.list, sort=FALSE))
     }))
   
   
     ### Output
-    filename <- file.path(paste(files.name, "- Results"), "Geneset Analysis", "0verview Cancer Hallmarks.pdf")
+    filename <- file.path(paste(env$files.name, "- Results"), "Geneset Analysis", "0verview Cancer Hallmarks.pdf")
     util.info("Writing:", filename)
     pdf(filename, 21/2.54, 29.7/2.54, useDingbats=FALSE)
   
@@ -96,25 +96,25 @@ pipeline.cancerHallmarks <- function()
     for (i in 1:nrow(hallmark.GSZ.matrix))
     {
       hallmark.sets.group.profiles <-
-        tapply(hallmark.GSZ.matrix[i,], group.labels, c)[unique(group.labels)]
+        tapply(hallmark.GSZ.matrix[i,], env$group.labels, c)[unique(env$group.labels)]
   
       par(mar=c(5,4,4,2))
   
-      boxplot(hallmark.sets.group.profiles, col=groupwise.group.colors, las=2, ylab="GSZ",
+      boxplot(hallmark.sets.group.profiles, col=env$groupwise.group.colors, las=2, ylab="GSZ",
               main=names(hallmark.sets.names)[i], ylim=range(hallmark.GSZ.matrix))
   
       abline(h=0, lty=2)
   
-      n.map <- matrix(0,preferences$dim.1stLvlSom,preferences$dim.1stLvlSom)
-      gs.nodes <- som.result$feature.BMU[hallmark.sets.ids[[i]]]
+      n.map <- matrix(0,env$preferences$dim.1stLvlSom,env$preferences$dim.1stLvlSom)
+      gs.nodes <- env$som.result$feature.BMU[hallmark.sets.ids[[i]]]
       n.map[as.numeric(names(table(gs.nodes)))] <- table(gs.nodes)
       n.map[which(n.map==0)] <- NA
-      n.map <- matrix(n.map, preferences$dim.1stLvlSom)
+      n.map <- matrix(n.map, env$preferences$dim.1stLvlSom)
   
       par(mar=c(5,1,4,1))
   
-      lim <- c(1,preferences$dim.1stLvlSom) + preferences$dim.1stLvlSom*0.01*c(-1,1)
-      colr <- color.palette.heatmaps(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=TRUE)) /
+      lim <- c(1,env$preferences$dim.1stLvlSom) + env$preferences$dim.1stLvlSom*0.01*c(-1,1)
+      colr <- env$color.palette.heatmaps(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=TRUE)) /
                             max(1, (max(n.map,na.rm=TRUE) - min(n.map,na.rm=TRUE))) *
                             999 + 1]
   

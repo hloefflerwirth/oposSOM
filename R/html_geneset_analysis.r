@@ -1,18 +1,18 @@
-pipeline.htmlGenesetAnalysis <- function()
+pipeline.htmlGenesetAnalysis <- function(env)
 {
-  if (!preferences$activated.modules$geneset.analysis)
+  if (!env$preferences$activated.modules$geneset.analysis)
   {
     return()
   }
 
-  filename <- file.path(paste(files.name, "- Results"), "Geneset Analysis", "0verview.html")
+  filename <- file.path(paste(env$files.name, "- Results"), "Geneset Analysis", "0verview.html")
   util.info("Writing:", filename)
   outfile <- file(filename, "w")
 
   cat("<!DOCTYPE html>
 <html>
   <head>
-    <title>Geneset Analysis Summary of ", files.name, " dataset</title>
+    <title>Geneset Analysis Summary of ", env$files.name, " dataset</title>
     <style>
       body {
         margin: 0;
@@ -97,10 +97,10 @@ pipeline.htmlGenesetAnalysis <- function()
 
       <dl>
         <dt>Number of Gene Sets</dt>
-        <dd>", length(gs.def.list), "</dd>
+        <dd>", length(env$gs.def.list), "</dd>
         <dt>Categories</dt>
-        <dd>", paste(paste(names(table(sapply(gs.def.list, function(x) { x$Type }))),
-               table(sapply(gs.def.list, function(x) { x$Type })), sep=" ("), collapse=") , ") , ")</dd>
+        <dd>", paste(paste(names(table(sapply(env$gs.def.list, function(x) { x$Type }))),
+               table(sapply(env$gs.def.list, function(x) { x$Type })), sep=" ("), collapse=") , ") , ")</dd>
       </dl>
 
       <ul>
@@ -125,7 +125,7 @@ pipeline.htmlGenesetAnalysis <- function()
 
       <ul id=\"toc\">", sep="", file=outfile)
 
-    for (i in names(table(sapply(gs.def.list, function(x) { x$Type }))))
+    for (i in names(table(sapply(env$gs.def.list, function(x) { x$Type }))))
     {
       cat("
         <li><a href=\"#", i, "\">", i, "</a></li>", sep="", file=outfile)
@@ -144,9 +144,9 @@ pipeline.htmlGenesetAnalysis <- function()
         tables.
       </p>", sep="", file=outfile)
 
-  for (i in names(table(sapply(gs.def.list, function(x) { x$Type }))))
+  for (i in names(table(sapply(env$gs.def.list, function(x) { x$Type }))))
   {
-    category.gs.list <- gs.def.list[which(sapply(gs.def.list, function(x) { x$Type }) == i)]
+    category.gs.list <- env$gs.def.list[which(sapply(env$gs.def.list, function(x) { x$Type }) == i)]
 
     cat("
 

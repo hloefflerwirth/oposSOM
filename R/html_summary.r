@@ -1,21 +1,21 @@
-pipeline.htmlSummary <- function()
+pipeline.htmlSummary <- function(env)
 {
-  filename <- file.path(paste(files.name, "- Results"), "Summary.html")
+  filename <- file.path(paste(env$files.name, "- Results"), "Summary.html")
   util.info("Writing:", filename)
   outfile <- file(filename, "w")
 
-  oposSOM.version <- if( "otherPkgs" %in% names(preferences$session.info) )
+  oposSOM.version <- if( "otherPkgs" %in% names(env$preferences$session.info) )
   {
-    preferences$session.info$otherPkgs$oposSOM$Version
+    env$preferences$session.info$otherPkgs$oposSOM$Version
   } else
   {
-    preferences$session.info$loadedOnly$oposSOM$Version
+    env$preferences$session.info$loadedOnly$oposSOM$Version
   }
   
   cat("<!DOCTYPE html>
 <html>
   <head>
-    <title>Summary of ", files.name, " dataset</title>
+    <title>Summary of ", env$files.name, " dataset</title>
     <style>
       body {
         margin: 0;
@@ -64,23 +64,23 @@ pipeline.htmlSummary <- function()
 
       <dl>
         <dt>Number of samples</dt>
-        <dd>", ncol(indata), "</dd>
+        <dd>", ncol(env$indata), "</dd>
         <dt>Number of groups</dt>
-        <dd>", length(unique(group.labels)), "</dd>
+        <dd>", length(unique(env$group.labels)), "</dd>
         <dt>Number of genes</dt>
-        <dd>", nrow(indata), "</dd>
+        <dd>", nrow(env$indata), "</dd>
         <dt>ID type of genes</dt>
-				<dd>", ifelse( preferences$database.id.type!="", preferences$database.id.type, "not defined" ), "</dd>
+				<dd>", ifelse( env$preferences$database.id.type!="", env$preferences$database.id.type, "not defined" ), "</dd>
         <dt>Dimension of the SOM</dt>
-        <dd>", preferences$dim.1stLvlSom, " x ", preferences$dim.1stLvlSom, "</dd>
+        <dd>", env$preferences$dim.1stLvlSom, " x ", env$preferences$dim.1stLvlSom, "</dd>
         <dt>Date</dt>
         <dd>", format(Sys.time(), "%a %b %d %X %Y %Z"), "</dd>
         <dt>Analyst</dt>
-        <dd>", preferences$system.info["user"], "</dd>
+        <dd>", env$preferences$system.info["user"], "</dd>
         <dt>oposSOM version</dt>
         <dd>", oposSOM.version, "</dd>
 				<dt>Note</dt>
-        <dd>", preferences$note, "</dd>
+        <dd>", env$preferences$note, "</dd>
       </dl>
 
       <h1>Results</h1>
@@ -108,7 +108,7 @@ pipeline.htmlSummary <- function()
       </p>", sep="", file=outfile)
 
   
-  if( file.exists(file.path(paste(files.name, "- Results"), "Expression Portraits.pdf")) )
+  if( file.exists(file.path(paste(env$files.name, "- Results"), "Expression Portraits.pdf")) )
   {
       cat("
         <ul>
@@ -153,7 +153,7 @@ pipeline.htmlSummary <- function()
         </li>
       </ul>", sep="", file=outfile)
       
-  if( file.exists(file.path(paste(files.name, "- Results"), "Summary Sheets - Samples", "0verview.html")) )
+  if( file.exists(file.path(paste(env$files.name, "- Results"), "Summary Sheets - Samples", "0verview.html")) )
   {
     cat("<h2>Sample Summaries</h2>
   
@@ -170,7 +170,7 @@ pipeline.htmlSummary <- function()
         </ul>", sep="", file=outfile)
   }
   
-  if( file.exists(file.path(paste(files.name, "- Results"), "Geneset Analysis", "0verview.html")) )
+  if( file.exists(file.path(paste(env$files.name, "- Results"), "Geneset Analysis", "0verview.html")) )
   {
     cat("
       <h2>Geneset Enrichment Analysis</h2>
@@ -190,7 +190,7 @@ pipeline.htmlSummary <- function()
   }
   
       
-  if( file.exists(file.path(paste(files.name, "- Results"), "Sample Similarity Analysis")) ) 
+  if( file.exists(file.path(paste(env$files.name, "- Results"), "Sample Similarity Analysis")) ) 
   {      
     cat("
         <h2>Sample Similarity Analyses</h2>
@@ -280,7 +280,7 @@ pipeline.htmlSummary <- function()
     <p>
       Analyses based on PAT-wise aggregated data, including clustering dendrogram, 
       portraits and assotiation to the sample groups.<br>
-      PATs were defined using <i>",preferences$standard.spot.modules,"</i> approach.
+      PATs were defined using <i>",env$preferences$standard.spot.modules,"</i> approach.
     </p>
       
       <ul>
@@ -292,7 +292,7 @@ pipeline.htmlSummary <- function()
     </ul>", sep="", file=outfile)    
 
 
-  if( file.exists(file.path(paste(files.name, "- Results"), "Summary Sheets - Groups/0verview.html")) ) 
+  if( file.exists(file.path(paste(env$files.name, "- Results"), "Summary Sheets - Groups/0verview.html")) ) 
   {  
     cat("
       <h2>Group Analyses</h2>
@@ -310,7 +310,7 @@ pipeline.htmlSummary <- function()
       </ul>", sep="", file=outfile)
   }
 
-  if( file.exists(file.path(paste(files.name, "- Results"), "Summary Sheets - Differences/0verview.html")) ) 
+  if( file.exists(file.path(paste(env$files.name, "- Results"), "Summary Sheets - Differences/0verview.html")) ) 
   {
     cat("
       <h2>Pairwise Differences Analyses</h2>

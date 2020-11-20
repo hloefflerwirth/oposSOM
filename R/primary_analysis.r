@@ -1,59 +1,61 @@
-pipeline.prepareIndata <- function()
+pipeline.prepareIndata <- function(env)
 {
-  indata.sample.mean <<- colMeans(indata)
+  env$indata.sample.mean <- colMeans(env$indata)
 
-  if (preferences$sample.quantile.normalization)
+  if (env$preferences$sample.quantile.normalization)
   {
-    indata <<- Quantile.Normalization(indata)
+    env$indata <- Quantile.Normalization(env$indata)
   }
 
-  colnames(indata) <<- make.unique(colnames(indata))
-  names(group.labels) <<- make.unique(names(group.labels))
-  names(group.colors) <<- make.unique(names(group.colors))
+  colnames(env$indata) <- make.unique(colnames(env$indata))
+  names(env$group.labels) <- make.unique(names(env$group.labels))
+  names(env$group.colors) <- make.unique(names(env$group.colors))
 
 
-  indata.gene.mean <<- rowMeans(indata)
+  env$indata.gene.mean <- rowMeans(env$indata)
 
-  if (preferences$feature.centralization)
+  if (env$preferences$feature.centralization)
   {
-    indata <<- indata - indata.gene.mean
+    env$indata <- env$indata - env$indata.gene.mean
   }
+  return(env)
 }
 
 
-pipeline.generateSOM <- function()
+pipeline.generateSOM <- function(env)
 {
-  som.result <<- som.linear.init(indata,somSize=preferences$dim.1stLvlSom)
+  env$som.result <- som.linear.init(env$indata,somSize=env$preferences$dim.1stLvlSom)
   
   # Rotate/Flip First lvl SOMs
 
-  if (preferences$rotate.SOM.portraits > 0)
+  if (env$preferences$rotate.SOM.portraits > 0)
   {
-    for (i in 1:preferences$rotate.SOM.portraits)
+    for (i in 1:env$preferences$rotate.SOM.portraits)
     {
-      o <- matrix(c(1:(preferences$dim.1stLvlSom^2)), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom, byrow=TRUE)
-      o <- o[rev(1:preferences$dim.1stLvlSom),]
-      som.result <<- som.result[as.vector(o),]
+      o <- matrix(c(1:(env$preferences$dim.1stLvlSom^2)), env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom, byrow=TRUE)
+      o <- o[rev(1:env$preferences$dim.1stLvlSom),]
+      env$som.result <- env$som.result[as.vector(o),]
     }
   }
 
-  if (preferences$flip.SOM.portraits)
+  if (env$preferences$flip.SOM.portraits)
   {
-    o <- matrix(c(1:(preferences$dim.1stLvlSom^2)), preferences$dim.1stLvlSom, preferences$dim.1stLvlSom, byrow=TRUE)
-    som.result <<- som.result[as.vector(o),]
+    o <- matrix(c(1:(env$preferences$dim.1stLvlSom^2)), env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom, byrow=TRUE)
+    env$som.result <- env$som.result[as.vector(o),]
   }
 
-  som.result <<- som.training( indata, som.result, prolongationFactor = preferences$training.extension, verbose = TRUE )
+  env$som.result <- som.training( env$indata, env$som.result, prolongationFactor = env$preferences$training.extension, verbose = TRUE )
     
-  metadata <<- som.result$weightMatrix
-  colnames(metadata) <<- colnames(indata)
+  env$metadata <- env$som.result$weightMatrix
+  colnames(env$metadata) <- colnames(env$indata)
 
-  som.result$weightMatrix <<- NULL
+  env$som.result$weightMatrix <- NULL
 
 
   ## set up SOM dependent variables
   
-  gene.info$coordinates <<- apply( som.result$node.summary[som.result$feature.BMU,c("x","y")], 1, paste, collapse=" x " )
-  names(gene.info$coordinates) <<- rownames(indata)
+  env$gene.info$coordinates <- apply( env$som.result$node.summary[env$som.result$feature.BMU,c("x","y")], 1, paste, collapse=" x " )
+  names(env$gene.info$coordinates) <- rownames(env$indata)
   
+  return(env)
 }

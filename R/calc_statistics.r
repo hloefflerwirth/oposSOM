@@ -1,38 +1,38 @@
-pipeline.calcStatistics <- function()
+pipeline.calcStatistics <- function(env)
 {
   util.info("Calculating Single Gene Statistic")
  
-  WAD.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
+  env$WAD.g.m <- matrix(NA, nrow(env$indata), ncol(env$indata), dimnames=list(rownames(env$indata), colnames(env$indata)))
   
-  for (m in 1:ncol(indata))
+  for (m in 1:ncol(env$indata))
   {
-    delta.e.g.m <- indata[,m]
+    delta.e.g.m <- env$indata[,m]
   
     w.g.m <- (delta.e.g.m - min(delta.e.g.m)) / (max(delta.e.g.m) - min(delta.e.g.m))
-    WAD.g.m[,m] <<- w.g.m * delta.e.g.m
+    env$WAD.g.m[,m] <- w.g.m * delta.e.g.m
   }
 
   
   # Calculate T-score and significance
   
-  sd.g.m <- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
+  sd.g.m <- matrix(NA, nrow(env$indata), ncol(env$indata), dimnames=list(rownames(env$indata), colnames(env$indata)))
   
-  t.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
-  p.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
+  env$t.g.m <- matrix(NA, nrow(env$indata), ncol(env$indata), dimnames=list(rownames(env$indata), colnames(env$indata)))
+  env$p.g.m <- matrix(NA, nrow(env$indata), ncol(env$indata), dimnames=list(rownames(env$indata), colnames(env$indata)))
   
-  n.0.m <<- rep(NA, ncol(indata))
-  names(n.0.m) <<- colnames(indata)
+  env$n.0.m <- rep(NA, ncol(env$indata))
+  names(env$n.0.m) <- colnames(env$indata)
   
-  perc.DE.m <<- rep(NA, ncol(indata))
-  names(perc.DE.m) <<- colnames(indata)
+  env$perc.DE.m <- rep(NA, ncol(env$indata))
+  names(env$perc.DE.m) <- colnames(env$indata)
   
-  fdr.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
-  Fdr.g.m <<- matrix(NA, nrow(indata), ncol(indata), dimnames=list(rownames(indata), colnames(indata)))
+  env$fdr.g.m <- matrix(NA, nrow(env$indata), ncol(env$indata), dimnames=list(rownames(env$indata), colnames(env$indata)))
+  env$Fdr.g.m <- matrix(NA, nrow(env$indata), ncol(env$indata), dimnames=list(rownames(env$indata), colnames(env$indata)))
   
 
-  o <- order(indata.gene.mean)
-  sdo <- apply(indata, 1, sd)[o]
-  col <- Get.Running.Average(sdo, min(200, round(nrow(indata) * 0.02)))
+  o <- order(env$indata.gene.mean)
+  sdo <- apply(env$indata, 1, sd)[o]
+  col <- Get.Running.Average(sdo, min(200, round(nrow(env$indata) * 0.02)))
   col[which(is.nan(col))] <- 0.0000000001
   col[which(col == 0)] <- 0.0000000001
 
@@ -43,42 +43,42 @@ pipeline.calcStatistics <- function()
 
   sd.g.m[o,] <- col
 
-  t.g.m <<- apply(indata, 2, function(x, root)
+  env$t.g.m <- apply(env$indata, 2, function(x, root)
   {
     return(root * x / sd.g.m[,1])
-  }, sqrt(ncol(indata)))
+  }, sqrt(ncol(env$indata)))
 
 
 
   ### calculate significance and fdr ###
 
-  for (m in 1:ncol(indata))
+  for (m in 1:ncol(env$indata))
   {
 #    p.g.m[,m] <<- 2 - 2*pt( abs(t.g.m[,m]), ncol(indata) - 1 )
     
     suppressWarnings({
       try.res <- try({
 #        fdrtool.result <- fdrtool(p.g.m[,m], statistic="pvalue", verbose=FALSE, plot=FALSE)
-        fdrtool.result <- fdrtool(t.g.m[,m], verbose=FALSE, plot=FALSE)
+        fdrtool.result <- fdrtool(env$t.g.m[,m], verbose=FALSE, plot=FALSE)
       }, silent=TRUE)
     })
 
     if (!is(try.res,"try-error"))
     {
-      p.g.m[,m] <<- fdrtool.result$pval
-      fdr.g.m[,m] <<- fdrtool.result$lfdr
-      Fdr.g.m[,m] <<- fdrtool.result$qval
+      env$p.g.m[,m] <- fdrtool.result$pval
+      env$fdr.g.m[,m] <- fdrtool.result$lfdr
+      env$Fdr.g.m[,m] <- fdrtool.result$qval
 
-      n.0.m[m] <<- fdrtool.result$param[1,"eta0"]
-      perc.DE.m[m] <<- 1 - n.0.m[m]
+      env$n.0.m[m] <- fdrtool.result$param[1,"eta0"]
+      env$perc.DE.m[m] <- 1 - env$n.0.m[m]
     } else # happens for eg phenotype data
     {
-      p.g.m[,m] <<- order(indata[,m]) / nrow(indata)
-      fdr.g.m[,m] <<- p.g.m[,m]
-      Fdr.g.m[,m] <<- p.g.m[,m]
+      env$p.g.m[,m] <- order(env$indata[,m]) / nrow(env$indata)
+      env$fdr.g.m[,m] <- env$p.g.m[,m]
+      env$Fdr.g.m[,m] <- env$p.g.m[,m]
 
-      n.0.m[m] <<- 0.5
-      perc.DE.m[m] <<- 1 - n.0.m[m]
+      env$n.0.m[m] <- 0.5
+      env$perc.DE.m[m] <- 1 - env$n.0.m[m]
     }
   }
 
@@ -86,28 +86,28 @@ pipeline.calcStatistics <- function()
 
   util.info("Calculating Metagene Statistic")
 
-  t.m <<- p.m <<-
-    matrix(NA, preferences$dim.1stLvlSom ^ 2, ncol(indata),
-           dimnames=list(1:(preferences$dim.1stLvlSom ^ 2), colnames(indata)))
+  env$t.m <- env$p.m <-
+    matrix(NA, env$preferences$dim.1stLvlSom ^ 2, ncol(env$indata),
+           dimnames=list(1:(env$preferences$dim.1stLvlSom ^ 2), colnames(env$indata)))
 
-  t.m.help <- do.call(rbind, by(t.g.m, som.result$feature.BMU, colMeans))
-  t.m[rownames(t.m.help),] <<- t.m.help
+  t.m.help <- do.call(rbind, by(env$t.g.m, env$som.result$feature.BMU, colMeans))
+  env$t.m[rownames(t.m.help),] <- t.m.help
 
-  for (m in 1:ncol(indata))
+  for (m in 1:ncol(env$indata))
   {
     suppressWarnings({
       try.res <- try({
-        fdrtool.result <- fdrtool(as.vector(na.omit(t.m[,m])), verbose=FALSE, plot=FALSE)
+        fdrtool.result <- fdrtool(as.vector(na.omit(env$t.m[,m])), verbose=FALSE, plot=FALSE)
       }, silent=TRUE)
     })
 
 		if( !is(try.res,"try-error") )
     {
-      p.m[which(!is.na(t.m[,m])),m] <<- fdrtool.result$pval
+		  env$p.m[which(!is.na(env$t.m[,m])),m] <- fdrtool.result$pval
     } else # happens for eg phenotype data
     {
-      p.m[which(!is.na(t.m[,m])),m] <<- t.m[which(!is.na(t.m[,m])),m] / max(t.m[,m], na.rm=TRUE)
+      env$p.m[which(!is.na(env$t.m[,m])),m] <- env$t.m[which(!is.na(env$t.m[,m])),m] / max(env$t.m[,m], na.rm=TRUE)
     }
   }
-
+  return(env)
 }

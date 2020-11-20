@@ -1,4 +1,4 @@
-modules.relations <- function(spot.list, main, path)
+modules.relations <- function(env, spot.list, main, path)
 {
   sd.theshold <- sd(spot.list$spotdata)
   spotdata.binary <- spot.list$spotdata > sd.theshold
@@ -68,7 +68,7 @@ modules.relations <- function(spot.list, main, path)
     layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
     par(mar=c(5, 4, 4, 1.8))
     
-    image(matrix(spot.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=FALSE, main="Module correlations (WTO algorithm)", cex.main=1.6)
+    image(matrix(spot.list$overview.mask, env$preferences$dim.1stLvlSom), col="gray90", axes=FALSE, main="Module correlations (WTO algorithm)", cex.main=1.6)
       box()
     
     par(new=TRUE, mar=c(3.9,2.7,2.7,0.5))
@@ -99,13 +99,13 @@ modules.relations <- function(spot.list, main, path)
       do.call( rbind, lapply( rownames(spotdata.binary), function(mod.x)
       {
         samples.with.module <- names( which( spotdata.binary[mod.x,] == 1 ) )
-        do.call( rbind, lapply( unique( group.labels[ samples.with.module ] ), function(gr.x)
+        do.call( rbind, lapply( unique( env$group.labels[ samples.with.module ] ), function(gr.x)
         {
-          count <- sum( group.labels[ samples.with.module ] == gr.x )
+          count <- sum( env$group.labels[ samples.with.module ] == gr.x )
           data.frame( lhs = mod.x,
                       rhs = gr.x,
                       count = count,
-                      support = count / ncol(indata),
+                      support = count / ncol(env$indata),
                       confidence = count / length(samples.with.module),
                       stringsAsFactors = FALSE)
         }) )
@@ -125,7 +125,7 @@ modules.relations <- function(spot.list, main, path)
           data.frame( lhs = mod.x.1,
                       rhs = mod.x.2,
                       count = count,
-                      support = count / ncol(indata),
+                      support = count / ncol(env$indata),
                       confidence = count / sum( spotdata.binary[mod.x.1,] == 1 ),
                       stringsAsFactors = FALSE)
         }) )
@@ -143,7 +143,7 @@ modules.relations <- function(spot.list, main, path)
     V(g)$size <- 5
     V(g)$size[ match( module.group.rules$lhs, V(g)$name ) ] <- 15 * module.group.rules$confidence + 3
     V(g)$color <- "gray"
-    V(g)$color[ match( module.group.rules$lhs, V(g)$name ) ] <- groupwise.group.colors[module.group.rules$rhs]
+    V(g)$color[ match( module.group.rules$lhs, V(g)$name ) ] <- env$groupwise.group.colors[module.group.rules$rhs]
     E(g)$width <- 6 * module.module.rules$confidence + 0.5
     E(g)$color <- "gray30"
     E(g)$arrow.size <- 4
@@ -153,7 +153,7 @@ modules.relations <- function(spot.list, main, path)
     layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
     par(mar=c(5, 4, 4, 1.8))
     
-    image(matrix(spot.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=FALSE, main="Module implications (basket algorithm)", cex.main=1.6)
+    image(matrix(spot.list$overview.mask, env$preferences$dim.1stLvlSom), col="gray90", axes=FALSE, main="Module implications (basket algorithm)", cex.main=1.6)
     title("all samples",line=0.2)
     box()
     
@@ -169,21 +169,21 @@ modules.relations <- function(spot.list, main, path)
     box()
     
     
-    for( gr in unique(group.labels) )
+    for( gr in unique(env$group.labels) )
     {
-      if( all( spotdata.binary[,which(group.labels==gr)] == 0 ) ) next
+      if( all( spotdata.binary[,which(env$group.labels==gr)] == 0 ) ) next
       
       module.module.rules <-
         do.call( rbind, lapply( rownames(spotdata.binary), function(mod.x.1)
         {
           do.call( rbind, lapply( setdiff( rownames(spotdata.binary), mod.x.1), function(mod.x.2)
           {
-            count <- sum( colSums( spotdata.binary[c(mod.x.1,mod.x.2),which(group.labels==gr),drop=FALSE] ) == 2 )
+            count <- sum( colSums( spotdata.binary[c(mod.x.1,mod.x.2),which(env$group.labels==gr),drop=FALSE] ) == 2 )
             data.frame( lhs = mod.x.1,
                         rhs = mod.x.2,
                         count = count,
-                        support = count / sum(group.labels==gr),
-                        confidence = count / sum( spotdata.binary[mod.x.1,which(group.labels==gr)] == 1 ),
+                        support = count / sum(env$group.labels==gr),
+                        confidence = count / sum( spotdata.binary[mod.x.1,which(env$group.labels==gr)] == 1 ),
                         stringsAsFactors = FALSE)
           }) )
         } ) )
@@ -202,16 +202,16 @@ modules.relations <- function(spot.list, main, path)
         V(g)$label <- names(spot.list$spots)
         V(g)$size <- 10
         V(g)$color <- "gray"
-        V(g)$color[ match( module.group.rules$lhs[which(module.group.rules$rhs==gr)], V(g)$name ) ] <- groupwise.group.colors[gr]   
+        V(g)$color[ match( module.group.rules$lhs[which(module.group.rules$rhs==gr)], V(g)$name ) ] <- env$groupwise.group.colors[gr]   
         
         E(g)$width <- 6 * module.module.rules$confidence + 0.5
-        E(g)$color <- groupwise.group.colors[gr]
+        E(g)$color <- env$groupwise.group.colors[gr]
         
         layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
         par(mar=c(5, 4, 4, 1.8))
         
-        image(matrix(spot.list$overview.mask, preferences$dim.1stLvlSom), col="gray90", axes=FALSE, main="Module implications (basket algorithm)", cex.main=1.6)
-        title(paste("Group samples:",gr),line=0.2,col.main=groupwise.group.colors[gr])
+        image(matrix(spot.list$overview.mask, env$preferences$dim.1stLvlSom), col="gray90", axes=FALSE, main="Module implications (basket algorithm)", cex.main=1.6)
+        title(paste("Group samples:",gr),line=0.2,col.main=env$groupwise.group.colors[gr])
         box()
         
         par(new=TRUE, mar=c(3.9,2.7,2.7,0.5))
@@ -232,7 +232,7 @@ modules.relations <- function(spot.list, main, path)
 
   #### Group Associations #### 
   
-  if (length(unique(group.labels)) > 1)
+  if (length(unique(env$group.labels)) > 1)
   {
     layout( matrix(c(rep(1,4),2:13),nrow=4,byrow=TRUE), heights=c(0.15,1,1,1) )
     par(mar=c(0,0,0,0))
@@ -245,8 +245,8 @@ modules.relations <- function(spot.list, main, path)
     { 
       if(i>1&&i%%13==0) { par(mar=c(0,0,0,0)); frame(); i <- i + 1 }
   
-      count <- tapply(spotdata.binary[rowname,],group.labels,sum)[unique(group.labels)]
-      percent <- count/table(group.labels)[unique(group.labels)]
+      count <- tapply(spotdata.binary[rowname,],env$group.labels,sum)[unique(env$group.labels)]
+      percent <- count/table(env$group.labels)[unique(env$group.labels)]
       count <- count[which(count>0)]
       percent <- percent[which(percent>0)]
       
@@ -255,7 +255,7 @@ modules.relations <- function(spot.list, main, path)
         par(mar=c(5,6,4,5))
         barplot( 100*percent, horiz=TRUE, main=paste(rowname," (",sum(count),")",sep=""), cex.main=1.6, xlim=c(0,100),
                  names.arg=paste(names(percent),"\n(",count,")",sep="" ), las=1, xlab="association (%)",
-                 col=groupwise.group.colors[names(percent)] )
+                 col=env$groupwise.group.colors[names(percent)] )
         i <- i + 1 
       } 
     }
@@ -267,16 +267,16 @@ modules.relations <- function(spot.list, main, path)
   if ( length(spot.list$spots) > 2 )
   {
     group.module.rules <-
-      do.call( rbind, lapply( unique( group.labels ), function(gr.x)
+      do.call( rbind, lapply( unique( env$group.labels ), function(gr.x)
       {
-        samples.with.group <- names( which( group.labels == gr.x ) )
+        samples.with.group <- names( which( env$group.labels == gr.x ) )
         do.call( rbind, lapply( rownames(spotdata.binary), function(mod.x)
         {
           count <- sum( spotdata.binary[mod.x,samples.with.group ] == 1 )
           data.frame( lhs = gr.x,
                       rhs = mod.x,
                       count = count,
-                      support = count / ncol(indata),
+                      support = count / ncol(env$indata),
                       confidence = count / length(samples.with.group),
                       stringsAsFactors = FALSE)
         }) )
@@ -293,7 +293,7 @@ modules.relations <- function(spot.list, main, path)
     text(0.5,0.5,"Module implications of the groups (basket algorithm)",cex=2.6)
     
     i <- 1
-    for( gr in unique(group.labels) )
+    for( gr in unique(env$group.labels) )
     {
       if(i>1&&i%%13==0) { par(mar=c(0,0,0,0)); frame(); i <- i + 1 }
      
@@ -302,7 +302,7 @@ modules.relations <- function(spot.list, main, path)
       if( length(r) > 0 )
       {
         par(mar=c(5,6,4,5))
-        barplot( 100*group.module.rules[r,]$confidence, horiz=TRUE, main=paste(gr," (",sum(group.labels==gr),")",sep=""), col.main=groupwise.group.colors[gr], cex.main=1.6, xlim=c(0,100),
+        barplot( 100*group.module.rules[r,]$confidence, horiz=TRUE, main=paste(gr," (",sum(env$group.labels==gr),")",sep=""), col.main=env$groupwise.group.colors[gr], cex.main=1.6, xlim=c(0,100),
                  names.arg=paste(group.module.rules[r,]$rhs,"\n(",group.module.rules[r,]$count,")",sep="" ), las=1, xlab="confidence" )
         title(main="implies",line=0,cex.main=0.8)
         i <- i + 1
@@ -314,13 +314,13 @@ modules.relations <- function(spot.list, main, path)
       do.call( rbind, lapply( rownames(spotdata.binary), function(mod.x)
       {
         samples.with.module <- names( which( spotdata.binary[mod.x,] == 1 ) )
-        do.call( rbind, lapply( unique( group.labels[ samples.with.module ] ), function(gr.x)
+        do.call( rbind, lapply( unique( env$group.labels[ samples.with.module ] ), function(gr.x)
         {
-          count <- sum( group.labels[ samples.with.module ] == gr.x )
+          count <- sum( env$group.labels[ samples.with.module ] == gr.x )
           data.frame( lhs = mod.x,
                       rhs = gr.x,
                       count = count,
-                      support = count / ncol(indata),
+                      support = count / ncol(env$indata),
                       confidence = count / length(samples.with.module),
                       stringsAsFactors = FALSE)
         }) )
@@ -349,7 +349,7 @@ modules.relations <- function(spot.list, main, path)
         par(mar=c(5,8,4,5))
         barplot( 100*module.group.rules[r,]$confidence, horiz=TRUE, main=paste(lhs," (",n,")",sep=""), cex.main=1.6, xlim=c(0,100),
                  names.arg=paste(module.group.rules[r,]$rhs,"\n(",module.group.rules[r,]$count,")",sep="" ), las=1, xlab="confidence",
-                 col=groupwise.group.colors[module.group.rules[r,]$rhs] )
+                 col=env$groupwise.group.colors[module.group.rules[r,]$rhs] )
         title(main="implies",line=0,cex.main=0.8)
         i <- i + 1
       } 

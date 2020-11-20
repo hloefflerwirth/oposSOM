@@ -1,16 +1,16 @@
-pipeline.sampleSimilarityAnalysisSOM <- function()
+pipeline.sampleSimilarityAnalysisSOM <- function(env)
 {
 
-  filename <- file.path(paste(files.name, "- Results"), "Sample Similarity Analysis", "Sample SOM.pdf")
+  filename <- file.path(paste(env$files.name, "- Results"), "Sample Similarity Analysis", "Sample SOM.pdf")
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
 
   for (i in 1:2 )
   {
-    d <- if( i == 1 ) get(paste("spot.list.",preferences$standard.spot.modules,sep=""))$spotdata else metadata
-    n <- if( i == 1 ) paste( "module data (", preferences$standard.spot.modules, ")") else "metagene data"
+    d <- if( i == 1 ) env[[paste("spot.list.",env$preferences$standard.spot.modules,sep="")]]$spotdata else env$metadata
+    n <- if( i == 1 ) paste( "module data (", env$preferences$standard.spot.modules, ")") else "metagene data"
     
-    secLvlSom <- som.linear.init(t(d), preferences$dim.2ndLvlSom)
+    secLvlSom <- som.linear.init(t(d), env$preferences$dim.2ndLvlSom)
     secLvlSom <- som.training(t(d),secLvlSom)
   
     secLvlSom$feature.coords <- secLvlSom$node.summary[secLvlSom$feature.BMU,c("x","y")]
@@ -23,10 +23,10 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
   
     plot( 0, type="n", axes=FALSE, xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i",main=paste("Sample SOM on",n), cex.main=1)
   
-    if (length(unique(group.labels)) > 1)
+    if (length(unique(env$group.labels)) > 1)
     {
-      legend("topright", as.character(unique(group.labels)), cex=0.5,
-             text.col=groupwise.group.colors, bg="white")
+      legend("topright", as.character(unique(env$group.labels)), cex=0.5,
+             text.col=env$groupwise.group.colors, bg="white")
     }
   
     for (j in 1:nrow(secLvlSom$node.summary))
@@ -46,7 +46,7 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
   
         points(secLvlSom$feature.coords[which.samples[1], "x"]+x.seq,
                secLvlSom$feature.coords[which.samples[1], "y"]+y.seq,
-               pch=16, col=group.colors[which.samples], cex=1.5)
+               pch=16, col=env$group.colors[which.samples], cex=1.5)
   
         points(secLvlSom$feature.coords[which.samples[1], "x"]+x.seq,
                secLvlSom$feature.coords[which.samples[1], "y"]+y.seq,
@@ -60,10 +60,10 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
     {
       plot( 0, type="n", axes=FALSE, xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i",main=paste("Sample SOM on",n), cex.main=1)
     
-      if (length(unique(group.labels)) > 1)
+      if (length(unique(env$group.labels)) > 1)
       {
-        legend("topright", as.character(unique(group.labels)), cex=0.5,
-               text.col=groupwise.group.colors, bg="white")
+        legend("topright", as.character(unique(env$group.labels)), cex=0.5,
+               text.col=env$groupwise.group.colors, bg="white")
       }
     
       for (j in 1:nrow(secLvlSom$node.summary))
@@ -83,7 +83,7 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
     
           points(secLvlSom$feature.coords[which.samples[1], "x"]+x.seq,
                  secLvlSom$feature.coords[which.samples[1], "y"]+y.seq,
-                 pch=16, col=group.colors[which.samples], cex=1.5)
+                 pch=16, col=env$group.colors[which.samples], cex=1.5)
     
           points(secLvlSom$feature.coords[which.samples[1], "x"]+x.seq,
                  secLvlSom$feature.coords[which.samples[1], "y"]+y.seq,
@@ -91,7 +91,7 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
     
           text(secLvlSom$feature.coords[which.samples[1], "x"]+x.seq,
                secLvlSom$feature.coords[which.samples[1], "y"]+y.seq,
-               colnames(indata)[which.samples], col="gray20", cex=0.6)
+               colnames(env$indata)[which.samples], col="gray20", cex=0.6)
         }
       }
     
@@ -100,22 +100,22 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
     
     
     ##### Polygone-2ndSOM #####
-    if (length(unique(group.labels)) > 1)
+    if (length(unique(env$group.labels)) > 1)
     {
-      transparent.group.colors <- sapply(groupwise.group.colors, function(x)
+      transparent.group.colors <- sapply(env$groupwise.group.colors, function(x)
       {
         paste(substr(x, 1, 7) , "50", sep="")
       })
       
-      names(transparent.group.colors) <- unique(group.labels)
+      names(transparent.group.colors) <- unique(env$group.labels)
       
       plot(secLvlSom$feature.coords[,"x"], -secLvlSom$feature.coords[,"y"],
-           type="n", axes=FALSE, xlab="", ylab="", cex=4, col=group.colors, pch=16,
+           type="n", axes=FALSE, xlab="", ylab="", cex=4, col=env$group.colors, pch=16,
            xaxs="i", yaxs="i", xlim=xl, ylim=yl,main="Second level SOM, group outlines", cex.main=1)
       
-      for (i in seq_along(unique(group.labels)))
+      for (i in seq_along(unique(env$group.labels)))
       {
-        group.member <- which(group.labels==unique(group.labels)[i])
+        group.member <- which(env$group.labels==unique(env$group.labels)[i])
         group.centroid <- colMeans(secLvlSom$feature.coords[group.member, 1:2])
         
         hull <- chull(secLvlSom$feature.coords[group.member, 1],
@@ -124,11 +124,11 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
         polygon(secLvlSom$feature.coords[group.member[hull], 1],
                 secLvlSom$feature.coords[group.member[hull], 2],
                 col=transparent.group.colors[i], lty=1,
-                border=groupwise.group.colors[i])
+                border=env$groupwise.group.colors[i])
       }
       
-      legend("topright", as.character(unique(group.labels)), cex=0.5,
-             text.col=groupwise.group.colors, bg="white")
+      legend("topright", as.character(unique(env$group.labels)), cex=0.5,
+             text.col=env$groupwise.group.colors, bg="white")
       
       box()
     }
@@ -141,13 +141,13 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
   
     plot( 0, type="n", axes=FALSE, xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i",main=paste("Sample SOM on",n), cex.main=1)  
     
-    if (length(unique(group.labels)) > 1)
+    if (length(unique(env$group.labels)) > 1)
     {
-      legend("topright", as.character(unique(group.labels)), cex=0.5,
-             text.col=groupwise.group.colors, bg="white")
+      legend("topright", as.character(unique(env$group.labels)), cex=0.5,
+             text.col=env$groupwise.group.colors, bg="white")
     }
   
-    coord.bins <- as.numeric( cut( c(1:preferences$dim.2ndLvlSom), breaks=20 ) )
+    coord.bins <- as.numeric( cut( c(1:env$preferences$dim.2ndLvlSom), breaks=20 ) )
     for (j in 1:nrow(secLvlSom$node.summary))
     {
       
@@ -157,7 +157,7 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
   
       if (!is.na(which.samples[1]))
       {
-        m <- matrix(metadata[, which.samples[1]], preferences$dim.1stLvlSom, preferences$dim.1stLvlSom)
+        m <- matrix(env$metadata[, which.samples[1]], env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom)
   
         if (max(m) - min(m) != 0)
         {
@@ -165,7 +165,7 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
         }
   
         m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
-        x <- pixmapIndexed(m , col=color.palette.portraits(1000), cellres=10)
+        x <- pixmapIndexed(m , col=env$color.palette.portraits(1000), cellres=10)
   
         addlogo(x,
                 coord.bins[secLvlSom$feature.coords[which.samples[1],"x"]+1]+c(-0.45,0.455),
@@ -178,7 +178,7 @@ pipeline.sampleSimilarityAnalysisSOM <- function()
   
         points(coord.bins[secLvlSom$feature.coords[which.samples[1],"x"]+1]+x.seq,
                coord.bins[secLvlSom$feature.coords[which.samples[1],"y"]+1]+y.seq,
-               pch=16, col=group.colors[which.samples], cex=1.2)
+               pch=16, col=env$group.colors[which.samples], cex=1.2)
   
         points(coord.bins[secLvlSom$feature.coords[which.samples[1],"x"]+1]+x.seq,
                coord.bins[secLvlSom$feature.coords[which.samples[1],"y"]+1]+y.seq,

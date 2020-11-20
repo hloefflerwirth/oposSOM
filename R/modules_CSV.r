@@ -1,4 +1,4 @@
-modules.CSV.sheets <- function(spot.list, main, path)
+modules.CSV.sheets <- function(env, spot.list, main, path)
 {
   for (m in seq_along(spot.list$spots))
   {
@@ -12,16 +12,16 @@ modules.CSV.sheets <- function(spot.list, main, path)
     ## CSV Table
     r.genes <- sapply(spot.list$spots[[m]]$genes, function(x)
     {
-      gene <- indata[x,]
+      gene <- env$indata[x,]
       return(suppressWarnings(cor(gene, spot.list$spotdata[m,])))
     })
 
-    r.t <- r.genes / sqrt((1-r.genes^2) / (ncol(indata)-2))
-    r.p <- 1 - pt(r.t, ncol(indata)-2)
+    r.t <- r.genes / sqrt((1-r.genes^2) / (ncol(env$indata)-2))
+    r.p <- 1 - pt(r.t, ncol(env$indata)-2)
 
 
-    e.max <- apply(indata[spot.list$spots[[m]]$genes, ,drop=FALSE], 1, max)
-    e.min <- apply(indata[spot.list$spots[[m]]$genes, ,drop=FALSE], 1, min)
+    e.max <- apply(env$indata[spot.list$spots[[m]]$genes, ,drop=FALSE], 1, max)
+    e.min <- apply(env$indata[spot.list$spots[[m]]$genes, ,drop=FALSE], 1, min)
 
     if (main %in% c("Underexpression Spots"))
     {
@@ -33,20 +33,20 @@ modules.CSV.sheets <- function(spot.list, main, path)
 
     out <- data.frame(Rank=c(seq_along(spot.list$spots[[m]]$genes)),
                       ID=o,
-                      Symbol=gene.info$names[o])
+                      Symbol=env$gene.info$names[o])
 
     out <- cbind(out,
-                 "mean expression"=indata.gene.mean[o],
-                 "SD"=apply(indata[o, ,drop=FALSE], 1, sd),
-                 "max delta e"=apply(indata[o, ,drop=FALSE], 1, max),
-                 "min delta e"=apply(indata[o, ,drop=FALSE], 1, min),
+                 "mean expression"=env$indata.gene.mean[o],
+                 "SD"=apply(env$indata[o, ,drop=FALSE], 1, sd),
+                 "max delta e"=apply(env$indata[o, ,drop=FALSE], 1, max),
+                 "min delta e"=apply(env$indata[o, ,drop=FALSE], 1, min),
                  "correlation"=r.genes[o],
                  "->t.score"=r.t[o],
                  "->p.value"=paste(r.p[o],"     ."),
-                 "Metagene"=gene.info$coordinates[o],
-                 "Chromosome"=paste( gene.info$chr.name[o], gene.info$chr.band[o]),
-                 "Description"=gene.info$descriptions[o])
+                 "Metagene"=env$gene.info$coordinates[o],
+                 "Chromosome"=paste( env$gene.info$chr.name[o], env$gene.info$chr.band[o]),
+                 "Description"=env$gene.info$descriptions[o])
 
-    csv.function(out, file.path(path, basename))
+    env$csv.function(out, file.path(path, basename))
   }
 }

@@ -134,34 +134,34 @@ psf.flow <- function (g, node.ordering, sink.nodes, nodeIDs, split=TRUE)
 
 
 
-pipeline.PSFcalculation <- function()
+pipeline.PSFcalculation <- function(env)
 {
   data(kegg.collection)
   
-  if( is.null(indata.ensID.m) )
+  if( is.null(env$indata.ensID.m) )
   {
-    indata.ensID.m <<- indata[gene.info$ensembl.mapping[,1],]
-    indata.ensID.m <<- do.call(rbind, by(indata.ensID.m, gene.info$ensembl.mapping[,2], colMeans))
+    env$indata.ensID.m <- env$indata[env$gene.info$ensembl.mapping[,1],]
+    env$indata.ensID.m <- do.call(rbind, by(env$indata.ensID.m, env$gene.info$ensembl.mapping[,2], colMeans))
   }
 
-  if( ncol(indata) <= 100 )
+  if( ncol(env$indata) <= 100 )
   {
     util.info("Performing PSF calculation for samples:" )
     progressbar <- newProgressBar(min = 0, max = length(kegg.collection)); cat("\r")
     
-    psf.results.samples <<- list()
+    env$psf.results.samples <- list()
 
     for (i in 1:length(kegg.collection))
     {
-      psf.results.samples[[names(kegg.collection)[i]]] <<- list()
+      env$psf.results.samples[[names(kegg.collection)[i]]] <- list()
 
-      for( m in 1:ncol(indata.ensID.m) )
+      for( m in 1:ncol(env$indata.ensID.m) )
       {
         if (!length(kegg.collection[[i]]) == 0)
         {
-          g <- pathway.expression.mapping( kegg.collection[[i]]$graph, fc.m = 10^indata.ensID.m[,m] )
+          g <- pathway.expression.mapping( kegg.collection[[i]]$graph, fc.m = 10^env$indata.ensID.m[,m] )
 
-          psf.results.samples[[names(kegg.collection)[i]]][[colnames(indata.ensID.m)[m]]] <<- psf.flow(g, node.ordering=kegg.collection[[i]]$order, sink.nodes=kegg.collection[[i]]$sink.nodes, nodeIDs=kegg.collection[[i]]$nodeIDs )
+          env$psf.results.samples[[names(kegg.collection)[i]]][[colnames(env$indata.ensID.m)[m]]] <- psf.flow(g, node.ordering=kegg.collection[[i]]$order, sink.nodes=kegg.collection[[i]]$sink.nodes, nodeIDs=kegg.collection[[i]]$nodeIDs )
         }
       }
 
@@ -172,26 +172,26 @@ pipeline.PSFcalculation <- function()
 
 
 
-  if(length(unique(group.labels))>1)
+  if(length(unique(env$group.labels))>1)
   {
     util.info("Performing PSF calculation for groups:" )
     progressbar <- newProgressBar(min = 0, max = length(kegg.collection)); cat("\r")
 
-    indata.ensID.groups <- do.call(cbind, by(t(indata.ensID.m),group.labels,colMeans)[unique(group.labels)])
+    indata.ensID.groups <- do.call(cbind, by(t(env$indata.ensID.m),env$group.labels,colMeans)[unique(env$group.labels)])
 
-    psf.results.groups <<- list()
+    env$psf.results.groups <- list()
 
     for (i in 1:length(kegg.collection))
     {
-      psf.results.groups[[names(kegg.collection)[i]]] <<- list()
+      env$psf.results.groups[[names(kegg.collection)[i]]] <- list()
 
       for( m in 1:ncol(indata.ensID.groups) )
       {
         if (!length(kegg.collection[[i]]) == 0)
         {
-          g <- pathway.expression.mapping( kegg.collection[[i]]$graph, fc.m = 10^indata.ensID.groups[,m] )
+          g <- pathway.expression.mapping( kegg.collection[[i]]$graph, fc.m = 10^env$indata.ensID.groups[,m] )
 
-          psf.results.groups[[names(kegg.collection)[i]]][[colnames(indata.ensID.groups)[m]]] <<- psf.flow(g, node.ordering=kegg.collection[[i]]$order, sink.nodes=as.character(kegg.collection[[i]]$sink.nodes), nodeIDs=kegg.collection[[i]]$nodeIDs )
+          env$psf.results.groups[[names(kegg.collection)[i]]][[colnames(indata.ensID.groups)[m]]] <- psf.flow(g, node.ordering=kegg.collection[[i]]$order, sink.nodes=as.character(kegg.collection[[i]]$sink.nodes), nodeIDs=kegg.collection[[i]]$nodeIDs )
         }
       }
 
@@ -199,7 +199,8 @@ pipeline.PSFcalculation <- function()
     }
     progressbar$kill()
   }
-
+  
+  return(env)
 }
 
 

@@ -1,18 +1,18 @@
-pipeline.groupAssignment <- function()
+pipeline.groupAssignment <- function(env)
 {
   ### auto-assign PAT groups
  
-  if( length(unique(group.labels)==1) && unique(group.labels)[1] == "auto" && any(pat.labels!="none")  )
+  if( length(unique(env$group.labels)==1) && unique(env$group.labels)[1] == "auto" && any(env$pat.labels!="none")  )
   {
     util.info("Auto-assign sample groups (PAT-groups)")
     
-    spot.list <- get(paste("spot.list.",preferences$standard.spot.modules,sep=""))
-    pat.spotdata <- do.call( cbind, by( t(spot.list$spotdata), pat.labels, colMeans ) )
+    spot.list <- env[[paste("spot.list.", env$preferences$standard.spot.modules,sep="")]]
+    pat.spotdata <- do.call( cbind, by( t(spot.list$spotdata), env$pat.labels, colMeans ) )
     sample.pat.distances <- apply( spot.list$spotdata, 2, function(x) apply( pat.spotdata, 2, function(y) sum((x-y)^2) ) )
     
-    pat.labels.sorted <- names( sort(table(pat.labels),decreasing=TRUE) )
+    pat.labels.sorted <- names( sort(table(env$pat.labels),decreasing=TRUE) )
     pat.labels.sorted <- pat.labels.sorted[which(pat.labels.sorted!="none")[1]]
-    pat.labels.test <- unique(pat.labels)[ which( !unique(pat.labels) %in% c( pat.labels.sorted, "none" ) ) ]
+    pat.labels.test <- unique(env$pat.labels)[ which( !unique(env$pat.labels) %in% c( pat.labels.sorted, "none" ) ) ]
     
     if( length(pat.labels.test) <= 1 )
     {
@@ -20,14 +20,14 @@ pipeline.groupAssignment <- function()
       
       # assign new groups 
       
-      group.labels <<- apply( sample.pat.distances[pat.labels.sorted[1:length(pat.labels.sorted)],,drop=FALSE], 2, function(x) names(x)[which.min(x)] )
-      group.labels <<- paste( group.labels, "*" )
-      names(group.labels) <<- colnames(indata)
+      env$group.labels <- apply( sample.pat.distances[pat.labels.sorted[1:length(pat.labels.sorted)],,drop=FALSE], 2, function(x) names(x)[which.min(x)] )
+      env$group.labels <- paste( env$group.labels, "*" )
+      names(env$group.labels) <- colnames(env$indata)
       
     } else
     {
       withinss <- c()
-      for( k in 2:min(100,length(unique(pat.labels))-1) )
+      for( k in 2:min(100,length(unique(env$pat.labels))-1) )
       {
         test.pat.sse <- sapply( pat.labels.test, function(test.pat)
         {
@@ -57,23 +57,23 @@ pipeline.groupAssignment <- function()
         sum( n.k+m*x <= y )
       })
       
-      opt.cluster.number <- max( min( (which.max(k.higher.sse)+1) + preferences$adjust.autogroup.number, ncol(indata) ), 1 )
+      opt.cluster.number <- max( min( (which.max(k.higher.sse)+1) + env$preferences$adjust.autogroup.number, ncol(env$indata) ), 1 )
       n.opt <- y[as.character(which.max(k.higher.sse)+1)] - m * x[which.max(k.higher.sse)]
   
       # assign new groups
       
-      group.labels <<- apply( sample.pat.distances[pat.labels.sorted[1:opt.cluster.number],,drop=FALSE], 2, function(x) names(x)[which.min(x)] )
-      group.labels <<- paste( group.labels, "*" )
-      names(group.labels) <<- colnames(indata)
+      env$group.labels <- apply( sample.pat.distances[pat.labels.sorted[1:opt.cluster.number],,drop=FALSE], 2, function(x) names(x)[which.min(x)] )
+      env$group.labels <- paste( env$group.labels, "*" )
+      names(env$group.labels) <- colnames(env$indata)
       
       
       # plot SSE curve
       
-      if(preferences$activated.modules$reporting)
+      if(env$preferences$activated.modules$reporting)
       {  
-        dir.create(paste(files.name, "- Results/Summary Sheets - Groups"), showWarnings=FALSE)
+        dir.create(paste(env$files.name, "- Results/Summary Sheets - Groups"), showWarnings=FALSE)
         
-        filename <- file.path(paste(files.name, "- Results"),
+        filename <- file.path(paste(env$files.name, "- Results"),
                               "Summary Sheets - Groups",
                               "PAT-groups assignment.pdf")
         
@@ -87,7 +87,7 @@ pipeline.groupAssignment <- function()
           abline(v=x.coords[opt.cluster.number-1],col="blue3",xpd=FALSE)
           abline(h=y[opt.cluster.number-1],col="blue3",xpd=FALSE)
         
-        barplot( table(group.labels), main="PAT group frequency" )
+        barplot( table(env$group.labels), main="PAT group frequency" )
         
         dev.off()
       }
@@ -96,62 +96,62 @@ pipeline.groupAssignment <- function()
       
     # sort data objects
 
-    o <- order(group.labels)    
+    o <- order(env$group.labels)    
    
-    pat.labels <<- pat.labels[o]
-    group.labels <<- group.labels[o]
-    group.colors <<- rep("", ncol(indata))
-    for (i in seq_along(unique(group.labels)))
+    env$pat.labels <- env$pat.labels[o]
+    env$group.labels <- env$group.labels[o]
+    env$group.colors <- rep("", ncol(env$indata))
+    for (i in seq_along(unique(env$group.labels)))
     {
-      group.colors[which(group.labels == unique(group.labels)[i])] <<-
-        colorRampPalette(c("blue3", "blue", "lightblue", "green2", "gold", "red", "red3"))(length(unique(group.labels)))[i]
+      env$group.colors[which(env$group.labels == unique(env$group.labels)[i])] <-
+        colorRampPalette(c("blue3", "blue", "lightblue", "green2", "gold", "red", "red3"))(length(unique(env$group.labels)))[i]
     }
-    names(group.colors) <<- names(group.labels)
-    groupwise.group.colors <<- group.colors[match(unique(group.labels), group.labels)]
-    names(groupwise.group.colors) <<- unique(group.labels)
+    names(env$group.colors) <- names(env$group.labels)
+    env$groupwise.group.colors <- env$group.colors[match(unique(env$group.labels), env$group.labels)]
+    names(env$groupwise.group.colors) <- unique(env$group.labels)
     
-    t.g.m <<- t.g.m[,o]
-    p.g.m <<- p.g.m[,o]
-    fdr.g.m <<- fdr.g.m[,o]
-    Fdr.g.m <<- Fdr.g.m[,o]
-    WAD.g.m <<- WAD.g.m[,o]
-    n.0.m <<- n.0.m[o]
-    perc.DE.m <<- perc.DE.m[o]    
-    t.m <<- t.m[,o]
-    p.m <<- p.m[,o]
+    env$t.g.m <- env$t.g.m[,o]
+    env$p.g.m <- env$p.g.m[,o]
+    env$fdr.g.m <- env$fdr.g.m[,o]
+    env$Fdr.g.m <- env$Fdr.g.m[,o]
+    env$WAD.g.m <- env$WAD.g.m[,o]
+    env$n.0.m <- env$n.0.m[o]
+    env$perc.DE.m <- env$perc.DE.m[o]    
+    env$t.m <- env$t.m[,o]
+    env$p.m <- env$p.m[,o]
     
-    indata <<- indata[,o]
-    metadata <<- metadata[,o]
-    indata.sample.mean <<- indata.sample.mean[o]
+    env$indata <- env$indata[,o]
+    env$metadata <- env$metadata[,o]
+    env$indata.sample.mean <- env$indata.sample.mean[o]
 
-    spot.list.samples <<- spot.list.samples[o]
-    util.call(pipeline.detectSpotsIntegral,environment())
+    env$spot.list.samples <- env$spot.list.samples[o]
+    env <- pipeline.detectSpotsIntegral(env)
   }
   
   
   ### calculate group silouette
   
-  if (length(unique(group.labels)) < 2)
+  if (length(unique(env$group.labels)) < 2)
   {
-    group.silhouette.coef <<- rep(100, ncol(indata))
+    env$group.silhouette.coef <- rep(100, ncol(env$indata))
     return()
   }
 
 
-  PCM <- cor( metadata )
+  PCM <- cor( env$metadata )
   diag(PCM) <- NA
   
-  group.silhouette.coef <<- sapply( seq(ncol(metadata)), function(i)
+  env$group.silhouette.coef <- sapply( seq(ncol(env$metadata)), function(i)
   {
-    mean.group.correlations <- tapply( PCM[,i], group.labels, mean, na.rm=TRUE )
+    mean.group.correlations <- tapply( PCM[,i], env$group.labels, mean, na.rm=TRUE )
     
-    cor.m.A <- mean.group.correlations[ group.labels[i] ]
-    cor.m.B <- max( mean.group.correlations[ which( names(mean.group.correlations) != group.labels[i] ) ] )
+    cor.m.A <- mean.group.correlations[ env$group.labels[i] ]
+    cor.m.B <- max( mean.group.correlations[ which( names(mean.group.correlations) != env$group.labels[i] ) ] )
     
     return( cor.m.A - cor.m.B )
   } )
-  names(group.silhouette.coef) <<- colnames(metadata)
+  names(env$group.silhouette.coef) <- colnames(env$metadata)
 
-  group.silhouette.coef[which(is.nan(group.silhouette.coef))] <<- 0
-
+  env$group.silhouette.coef[which(is.nan(env$group.silhouette.coef))] <- 0
+  return(env)
 }

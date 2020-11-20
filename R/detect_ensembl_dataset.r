@@ -1,6 +1,6 @@
-pipeline.detectEnsemblDataset <- function()
+pipeline.detectEnsemblDataset <- function(env)
 {
-  preferences$database.dataset <<- ""
+  env$preferences$database.dataset <- ""
   util.info("Autodetecting annotation parameters")
 
   auto.datasets <-
@@ -21,7 +21,7 @@ pipeline.detectEnsemblDataset <- function()
 
   auto.rowname.ids <- c("ensembl_gene_id", "entrezgene", "hgnc_symbol")
 
-  mart <- useMart(biomart=preferences$database.biomart, host=preferences$database.host)
+  mart <- useMart(biomart=env$preferences$database.biomart, host=env$preferences$database.host)
 
   for (ds in names(auto.datasets))
   {
@@ -32,18 +32,19 @@ pipeline.detectEnsemblDataset <- function()
       try({
         query = c("wikigene_name","hgnc_symbol","uniprot_genename")[ which( c("wikigene_name","hgnc_symbol","uniprot_genename") %in% listAttributes(mart)[,1] ) ][1]
         suppressWarnings({  biomart.table <- getBM(c(id, query), id,
-                rownames(indata)[seq(1,nrow(indata),length.out=100)],
+                rownames(env$indata)[seq(1,nrow(env$indata),length.out=100)],
                 mart, checkFilters=FALSE)  })
 
         if (nrow(biomart.table) > 0)
         {
           util.info("Detected annotation dataset:", ds)
           util.info("Detected annotation filter:", id)
-          preferences$database.dataset <<- ds
-          preferences$database.id.type <<- id
-          return()
+          env$preferences$database.dataset <- ds
+          env$preferences$database.id.type <- id
+          return(env)
         }
       }, silent=TRUE)
     }
   }
+  return(env)
 }

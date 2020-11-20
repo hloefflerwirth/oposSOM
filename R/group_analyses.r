@@ -1,42 +1,42 @@
-pipeline.groupAnalysis <- function()
+pipeline.groupAnalysis <- function(env)
 {
-  dir.create(paste(files.name, "- Results/Summary Sheets - Groups"), showWarnings=FALSE)
-  dir.create(paste(files.name, "- Results/Summary Sheets - Groups/CSV Sheets"), showWarnings=FALSE)
+  dir.create(paste(env$files.name, "- Results/Summary Sheets - Groups"), showWarnings=FALSE)
+  dir.create(paste(env$files.name, "- Results/Summary Sheets - Groups/CSV Sheets"), showWarnings=FALSE)
 
-  if (preferences$activated.modules$geneset.analysis)
+  if (env$preferences$activated.modules$geneset.analysis)
   {
-    dir.create(paste(files.name, "- Results/Summary Sheets - Groups/Geneset Analysis"), showWarnings=FALSE)
-    util.call(pipeline.groupSpecificGenesets, environment())
+    dir.create(paste(env$files.name, "- Results/Summary Sheets - Groups/Geneset Analysis"), showWarnings=FALSE)
+    pipeline.groupSpecificGenesets(env)
   }
 
-  util.call(pipeline.summarySheetsGroups, environment())
+  pipeline.summarySheetsGroups(env)
 
   
   
   # calculate differential expression statistics
 
-  WAD.g.m <- matrix(NA, nrow(indata), length(unique(group.labels)),
-                     dimnames=list(rownames(indata), unique(group.labels)))
-  t.g.m <- matrix(NA, nrow(indata), length(unique(group.labels)),
-                   dimnames=list(rownames(indata), unique(group.labels)))
-  p.g.m <- matrix(NA, nrow(indata), length(unique(group.labels)),
-                   dimnames=list(rownames(indata), unique(group.labels)))
-  fdr.g.m <- matrix(NA, nrow(indata), length(unique(group.labels)),
-                     dimnames=list(rownames(indata), unique(group.labels)))
-  Fdr.g.m <- matrix(NA, nrow(indata), length(unique(group.labels)),
-                     dimnames=list(rownames(indata), unique(group.labels)))
-  n.0.m <- rep(NA, length(unique(group.labels)))
-    names(n.0.m) <- unique(group.labels)
-  perc.DE.m <- rep(NA, length(unique(group.labels)))
-    names(perc.DE.m) <- unique(group.labels)
+  env$WAD.g.m <- matrix(NA, nrow(env$indata), length(unique(env$group.labels)),
+                     dimnames=list(rownames(env$indata), unique(env$group.labels)))
+  env$t.g.m <- matrix(NA, nrow(env$indata), length(unique(env$group.labels)),
+                   dimnames=list(rownames(env$indata), unique(env$group.labels)))
+  env$p.g.m <- matrix(NA, nrow(env$indata), length(unique(env$group.labels)),
+                   dimnames=list(rownames(env$indata), unique(env$group.labels)))
+  env$fdr.g.m <- matrix(NA, nrow(env$indata), length(unique(env$group.labels)),
+                     dimnames=list(rownames(env$indata), unique(env$group.labels)))
+  env$Fdr.g.m <- matrix(NA, nrow(env$indata), length(unique(env$group.labels)),
+                     dimnames=list(rownames(env$indata), unique(env$group.labels)))
+  env$n.0.m <- rep(NA, length(unique(env$group.labels)))
+    names(env$n.0.m) <- unique(env$group.labels)
+  env$perc.DE.m <- rep(NA, length(unique(env$group.labels)))
+    names(env$perc.DE.m) <- unique(env$group.labels)
   
 
-  for (gr in seq_along(unique(group.labels)))
+  for (gr in seq_along(unique(env$group.labels)))
   {
-    samples.indata <- which(group.labels==unique(group.labels)[gr])
+    samples.indata <- which(env$group.labels==unique(env$group.labels)[gr])
     
     n <- length(samples.indata)
-    t.g.m[,gr] <- sqrt(n) * apply(indata[,samples.indata,drop=FALSE],1,function(x)
+    env$t.g.m[,gr] <- sqrt(n) * apply(env$indata[,samples.indata,drop=FALSE],1,function(x)
     {
       sd.estimate = if( n>1 ) sd(x) else 1
       if( sd.estimate == 0 ) sd.estimate = 1
@@ -44,11 +44,11 @@ pipeline.groupAnalysis <- function()
       return( mean(x) / sd.estimate )
     } )
 #    t.g.m[which(is.nan(t.g.m[,gr])|is.infinite(t.g.m[,gr])),gr] <- 0
-    p.g.m[,gr] <- 2 - 2*pt( abs(t.g.m[,gr]), max(n-1,1) )
+    env$p.g.m[,gr] <- 2 - 2*pt( abs(env$t.g.m[,gr]), max(n-1,1) )
 
     suppressWarnings({
       try.res <- try({
-        fdrtool.result <- fdrtool(p.g.m[,gr], statistic="pvalue", verbose=FALSE, plot=FALSE)
+        fdrtool.result <- fdrtool(env$p.g.m[,gr], statistic="pvalue", verbose=FALSE, plot=FALSE)
 #        fdrtool.result <- fdrtool(t.g.m[,gr], verbose=FALSE, plot=FALSE)
       }, silent=TRUE)
     })
@@ -56,61 +56,61 @@ pipeline.groupAnalysis <- function()
     if (!is(try.res,"try-error"))
     {
 #      p.g.m[,gr] <- fdrtool.result$pval
-      fdr.g.m[,gr] <- fdrtool.result$lfdr
-      Fdr.g.m[,gr] <- fdrtool.result$qval
-      n.0.m[gr] <- fdrtool.result$param[1,"eta0"]
-      perc.DE.m[gr] <- 1 - n.0.m[gr]
+      env$fdr.g.m[,gr] <- fdrtool.result$lfdr
+      env$Fdr.g.m[,gr] <- fdrtool.result$qval
+      env$n.0.m[gr] <- fdrtool.result$param[1,"eta0"]
+      env$perc.DE.m[gr] <- 1 - env$n.0.m[gr]
     } else
     {
 #      p.g.m[,gr] <- order(apply(indata[,samples.indata,drop=FALSE],1,mean)) / nrow(indata)
-      fdr.g.m[,gr] <- p.g.m[,gr]
-      Fdr.g.m[,gr] <- p.g.m[,gr]
-      n.0.m[gr] <- 0.5
-      perc.DE.m[gr] <- 0.5
+      env$fdr.g.m[,gr] <- env$p.g.m[,gr]
+      env$Fdr.g.m[,gr] <- env$p.g.m[,gr]
+      env$n.0.m[gr] <- 0.5
+      env$perc.DE.m[gr] <- 0.5
     }
     
-    delta.e.g.m <- apply(indata[,samples.indata,drop=FALSE],1,mean)
+    delta.e.g.m <- apply(env$indata[,samples.indata,drop=FALSE],1,mean)
 
-    w.g.m <- (delta.e.g.m - min(delta.e.g.m)) / (max(delta.e.g.m) - min(delta.e.g.m))
-    WAD.g.m[,gr] <- w.g.m * delta.e.g.m
+    env$w.g.m <- (delta.e.g.m - min(delta.e.g.m)) / (max(delta.e.g.m) - min(delta.e.g.m))
+    env$WAD.g.m[,gr] <- env$w.g.m * delta.e.g.m
   }
   
   
 
   # average over group members
     
-  metadata <- do.call(cbind, by(t(metadata), group.labels, colMeans)[unique(group.labels)])
+  env$metadata <- do.call(cbind, by(t(env$metadata), env$group.labels, colMeans)[unique(env$group.labels)])
 
-  indata <- do.call(cbind, by(t(indata+indata.gene.mean),
-                             group.labels,
-                             colMeans)[unique(group.labels)])
+  env$indata <- do.call(cbind, by(t(env$indata+env$indata.gene.mean),
+                              env$group.labels,
+                             colMeans)[unique(env$group.labels)])
 
-  indata.gene.mean <- rowMeans(indata)
+  env$indata.gene.mean <- rowMeans(env$indata)
 
-  if (preferences$feature.centralization)
+  if (env$preferences$feature.centralization)
   {
-    indata <- indata - indata.gene.mean
+    env$indata <- env$indata - env$indata.gene.mean
   }
 
-  group.colors <- group.colors[match(colnames(indata), group.labels)]
-  group.labels <- group.labels[match(colnames(indata), group.labels)]
-  names(group.labels) <- group.labels
-  names(group.colors) <- group.labels
+  env$group.colors <- env$group.colors[match(colnames(env$indata), env$group.labels)]
+  env$group.labels <- env$group.labels[match(colnames(env$indata), env$group.labels)]
+  names(env$group.labels) <- env$group.labels
+  names(env$group.colors) <- env$group.labels
 
 
 
 
-  output.paths <- c("CSV" = paste(files.name, "- Results/Summary Sheets - Groups/CSV Sheets"),
-                     "Summary Sheets Samples"= paste(files.name, "- Results/Summary Sheets - Groups/Reports"))
+  output.paths <- c("CSV" = paste(env$files.name, "- Results/Summary Sheets - Groups/CSV Sheets"),
+                     "Summary Sheets Samples"= paste(env$files.name, "- Results/Summary Sheets - Groups/Reports"))
   
-  util.call(pipeline.detectSpotsSamples, environment())
+  env <- pipeline.detectSpotsSamples(env)
 
-  if (preferences$activated.modules$geneset.analysis)
+  if (env$preferences$activated.modules$geneset.analysis)
   {
-    util.call(pipeline.genesetStatisticSamples, environment())
+    env <- pipeline.genesetStatisticSamples(env)
   }
 
-  util.call(pipeline.geneLists, environment())
-  util.call(pipeline.summarySheetsSamples, environment())
-  util.call(pipeline.htmlGroupSummary, environment())
+  pipeline.geneLists(env)
+  pipeline.summarySheetsSamples(env)
+  pipeline.htmlGroupSummary(env)
 }

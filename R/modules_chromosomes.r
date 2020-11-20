@@ -1,15 +1,15 @@
-modules.chromosomes <- function(spot.list, main, path)
+modules.chromosomes <- function(env, spot.list, main, path)
 {
-	if(length(chromosome.list) == 0)
+	if(length(env$chromosome.list) == 0)
   {
 		return()
 	}
 	
   pdf(path, 21/2.54, 29.7/2.54, useDingbats=FALSE)
  
-  sorted.unique.gene.positions <- unlist( sapply( 1:length(chromosome.list), function(i) paste( names(chromosome.list)[i], names(chromosome.list[[i]]), sep=" " ) ) )
+  sorted.unique.gene.positions <- unlist( sapply( 1:length(env$chromosome.list), function(i) paste( names(env$chromosome.list)[i], names(env$chromosome.list[[i]]), sep=" " ) ) )
   sorted.unique.gene.positions <- sort.label( sorted.unique.gene.positions )
-  n.all.chr.genes <- length(unlist(chromosome.list))
+  n.all.chr.genes <- length(unlist(env$chromosome.list))
 
   intersect.counts <- matrix(0,
                              length(sorted.unique.gene.positions),
@@ -19,7 +19,7 @@ modules.chromosomes <- function(spot.list, main, path)
 
   for (m in names(spot.list$spots))
   {
-    intersect.counts.spot <- sapply(chromosome.list, function(x)
+    intersect.counts.spot <- sapply(env$chromosome.list, function(x)
     {
       sapply(x, function(y)
       {
@@ -59,7 +59,7 @@ modules.chromosomes <- function(spot.list, main, path)
   image(1:ncol(intersect.counts),
         1:nrow(intersect.counts),
         t(intersect.counts[nrow(intersect.counts):1,]),
-        axes=FALSE, xlab="", ylab="", col=colkey, main=paste("Chromosome Map,",main), zlim=c(0,1))
+        axes=FALSE, xlab="", ylab="", col=colkey, main=paste("Chromosome Map,",env$main), zlim=c(0,1))
 
   title(main="(% band genes found in a spot)",line=0.1,cex.main=0.6)
   box()
@@ -84,18 +84,18 @@ modules.chromosomes <- function(spot.list, main, path)
 
   for (m in seq_along(spot.list$spots))
   {
-    intersect.counts <- sapply(chromosome.list, function(x)
+    intersect.counts <- sapply(env$chromosome.list, function(x)
     {
       sapply(x, function(y)
       {
         length(intersect(spot.list$spots[[m]]$genes,  y)) / length(y)
       })
     })
-    names(intersect.counts) <- names(chromosome.list)
+    names(intersect.counts) <- names(env$chromosome.list)
 
-    l <- c(rep(1,ceiling(length(chromosome.list)/2)), 2:(length(chromosome.list)+1))
-    l <- c(l, rep(0, (ceiling(length(chromosome.list)/2)*3) - length(l)))
-    layout(matrix(l, 3, ceiling(length(chromosome.list)/2), byrow=TRUE), heights=c(0.05,1,1))
+    l <- c(rep(1,ceiling(length(env$chromosome.list)/2)), 2:(length(env$chromosome.list)+1))
+    l <- c(l, rep(0, (ceiling(length(env$chromosome.list)/2)*3) - length(l)))
+    layout(matrix(l, 3, ceiling(length(env$chromosome.list)/2), byrow=TRUE), heights=c(0.05,1,1))
 
     par(mar=c(0,0,0,0))
     plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,1))
@@ -103,7 +103,7 @@ modules.chromosomes <- function(spot.list, main, path)
     text(0.2, 0, "(% band genes found in this spot)", cex=1.2)
 
     par(mar=c(1.5,2,0.2,0.3))
-    for (chromosome in sort.label(names(chromosome.list)))
+    for (chromosome in sort.label(names(env$chromosome.list)))
     {
       x <- intersect.counts[[chromosome]]
 

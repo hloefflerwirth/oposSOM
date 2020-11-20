@@ -110,8 +110,8 @@ opossom.run <- function(env)
   util.info("Name:", env$preferences$dataset.name)
 
   #### Preparation & Calculation part ####
-  
-  if (!util.call(pipeline.checkInputParameters, env)) {
+  env <- pipeline.checkInputParameters(env)
+  if (!env$passedInputChecking) {
     return()
   }
   
@@ -130,47 +130,46 @@ opossom.run <- function(env)
 
     if(env$preferences$activated.modules$primary.analysis)
     {
-      util.call(pipeline.qualityCheck, env)
+      pipeline.qualityCheck(env)
     } 
   }
-
   if(env$preferences$activated.modules$primary.analysis || env$preferences$activated.modules$geneset.analysis)
   {
     util.info("Loading gene annotation data.")
-    util.call(pipeline.prepareAnnotation, env)
+    env <- pipeline.prepareAnnotation(env)
   }
-
+  
   if(env$preferences$activated.modules$primary.analysis)
   {
     util.info("Processing SOM. This may take several time until next notification.")
-    util.call(pipeline.prepareIndata, env)
-    util.call(pipeline.generateSOM, env)
+    env <- pipeline.prepareIndata(env)
+    env <- pipeline.generateSOM(env)
     
     filename <- paste(env$files.name, "pre.RData")
     util.info("Saving environment image:", filename)
     save(env, file=filename)
     
     util.info("Processing Differential Expression Statistics")
-    util.call(pipeline.calcStatistics, env)
+    env <- pipeline.calcStatistics(env)
 
     util.info("Detecting Spots")
-    util.call(pipeline.detectSpotsSamples, env)
-    util.call(pipeline.detectSpotsIntegral, env)
-    util.call(pipeline.patAssignment, env)
-    util.call(pipeline.groupAssignment, env)    
+    env <- pipeline.detectSpotsSamples(env)
+    env <- pipeline.detectSpotsIntegral(env)
+    env <- pipeline.patAssignment(env)
+    env <- pipeline.groupAssignment(env)
   }
 
   if (env$preferences$activated.modules$geneset.analysis)
   {
     util.info("Calculating Geneset Enrichment")
-    util.call(pipeline.genesetStatisticSamples, env)
-    util.call(pipeline.genesetStatisticIntegral, env)
+    env <- pipeline.genesetStatisticSamples(env)
+    env <- pipeline.genesetStatisticIntegral(env)
   }
   
   if (env$preferences$activated.modules$psf.analysis)
   {
     util.info("Calculating Pathway Signal Flow (PSF)")
-    util.call(pipeline.PSFcalculation, env)    
+    env <- pipeline.PSFcalculation(env)    
   }
   
   if(env$preferences$activated.modules$primary.analysis || env$preferences$activated.modules$geneset.analysis)
@@ -191,21 +190,21 @@ opossom.run <- function(env)
   {
   
     util.info("Plotting Supporting Information")
-    util.call(pipeline.supportingMaps, env)
-    util.call(pipeline.entropyProfiles, env)
-    util.call(pipeline.topologyProfiles, env)
+    pipeline.supportingMaps(env)
+    pipeline.entropyProfiles(env)
+    pipeline.topologyProfiles(env)
 
     
     if(length(env$chromosome.list) > 0)
     {
       util.info("Plotting Chromosome Expression Reports")
-      util.call(pipeline.chromosomeExpressionReports, env)
+      pipeline.chromosomeExpressionReports(env)
     }
     
     if(ncol(env$indata) < 1000)
     {
       util.info("Plotting Sample Portraits")
-      util.call(pipeline.sampleExpressionPortraits, env)
+      pipeline.sampleExpressionPortraits(env)
     } 
     
     if ( env$preferences$activated.modules$sample.similarity.analysis && ncol(env$indata) > 2)
@@ -213,10 +212,10 @@ opossom.run <- function(env)
       util.info("Plotting Sample Similarity Analysis")
       dir.create(file.path(paste(env$files.name, "- Results"), "Sample Similarity Analysis"), showWarnings=FALSE)
       
-      util.call(pipeline.sampleSimilarityAnalysisED, env)
-      util.call(pipeline.sampleSimilarityAnalysisCor, env)
-      util.call(pipeline.sampleSimilarityAnalysisICA, env)
-      util.call(pipeline.sampleSimilarityAnalysisSOM, env)
+      pipeline.sampleSimilarityAnalysisED(env)
+      pipeline.sampleSimilarityAnalysisCor(env)
+      pipeline.sampleSimilarityAnalysisICA(env)
+      pipeline.sampleSimilarityAnalysisSOM(env)
     }
     
     if (env$preferences$activated.modules$geneset.analysis)
@@ -224,13 +223,13 @@ opossom.run <- function(env)
       dir.create(paste(env$files.name, "- Results/Geneset Analysis"), showWarnings=FALSE)
       
       util.info("Plotting Geneset Enrichment Heatmaps")
-      util.call(pipeline.genesetOverviews, env)
+      pipeline.genesetOverviews(env)
       
       util.info("Plotting Geneset Profiles and Maps")
-      util.call(pipeline.genesetProfilesAndMaps, env)
+      pipeline.genesetProfilesAndMaps(env)
       
       util.info("Calculating Cancer Hallmark Enrichment")
-      util.call(pipeline.cancerHallmarks, env)
+      pipeline.cancerHallmarks(env)
     }
     
     if (env$preferences$activated.modules$psf.analysis)
@@ -240,34 +239,34 @@ opossom.run <- function(env)
     }
     
     util.info("Writing Gene Lists")
-    util.call(pipeline.geneLists, env)
+    pipeline.geneLists(env)
 
     util.info("Plotting Summary Sheets (Samples)")
-    util.call(pipeline.summarySheetsSamples, env)
+    pipeline.summarySheetsSamples(env)
     
     util.info("Plotting Summary Sheets (Modules & PATs)")
-    util.call(pipeline.summarySheetsModules, env)
-    util.call(pipeline.summarySheetsPATs, env)
+    pipeline.summarySheetsModules(env)
+    pipeline.summarySheetsPATs(env)
       
 
     if(env$preferences$activated.modules$group.analysis && length(unique(env$group.labels)) >= 2)
     {
       util.info("Processing Group-centered Analyses")
-      util.call(pipeline.groupAnalysis, env)
+      pipeline.groupAnalysis(env)
     }
   
     if(env$preferences$activated.modules$difference.analysis)
     {
       util.info("Processing Difference Analyses")
-      util.call(pipeline.differenceAnalyses, env)
+      pipeline.differenceAnalyses(env)
     }
 
     util.info("Generating HTML Report")
-    util.call(pipeline.htmlSampleSummary, env)
-    util.call(pipeline.htmlModuleSummary, env)
-    util.call(pipeline.htmlGenesetAnalysis, env)  
+    pipeline.htmlSampleSummary(env)
+    pipeline.htmlModuleSummary(env)
+    pipeline.htmlGenesetAnalysis(env)  
     pipeline.htmlPsfAnalysis(env)
-    util.call(pipeline.htmlSummary, env)
+    pipeline.htmlSummary(env)
     
   }    
     

@@ -1,6 +1,6 @@
-pipeline.htmlModuleSummary <- function()
+pipeline.htmlModuleSummary <- function(env)
 {
-  filename <- file.path(paste(files.name, "- Results"),
+  filename <- file.path(paste(env$files.name, "- Results"),
                         "Summary Sheets - Modules",
                         "0verview.html")
 
@@ -10,7 +10,7 @@ pipeline.htmlModuleSummary <- function()
   cat("<!DOCTYPE html>
 <html>
   <head>
-    <title>Spot Summary of ", files.name, " dataset</title>
+    <title>Spot Summary of ", env$files.name, " dataset</title>
     <style>
       body {
         margin: 0;
@@ -138,7 +138,7 @@ pipeline.htmlModuleSummary <- function()
         </li>
       </ul>", sep="", file=outfile)
 
-  if (length(unique(group.labels)) > 1)
+  if (length(unique(env$group.labels)) > 1)
   {
     cat("<h2>Group Overexpression Spots</h2>
   
@@ -256,14 +256,14 @@ pipeline.htmlModuleSummary <- function()
             </td>
             <td>", sep="", file=outfile)
 
-  for (m in seq_along(spot.list.overexpression$spots))
+  for (m in seq_along(env$spot.list.overexpression$spots))
   {
     cat("<a href=\"../CSV Sheets/Spot Lists/Overexpression Spots ",
-        names(spot.list.overexpression$spots)[m],".csv\" target=\"_blank\">",
-        names(spot.list.overexpression$spots)[m],"</a>", sep="", file=outfile)
+        names(env$spot.list.overexpression$spots)[m],".csv\" target=\"_blank\">",
+        names(env$spot.list.overexpression$spots)[m],"</a>", sep="", file=outfile)
   }
 
-  if (length(unique(group.labels)) > 1)
+  if (length(unique(env$group.labels)) > 1)
   {
     cat("</td>
           </tr>
@@ -273,11 +273,11 @@ pipeline.htmlModuleSummary <- function()
             </td>
             <td>", sep="", file=outfile)
 
-    for (m in seq_along(spot.list.group.overexpression$spots))
+    for (m in seq_along(env$spot.list.group.overexpression$spots))
     {
       cat("<a href=\"../CSV Sheets/Spot Lists/Group Overexpression Spots ",
-          names(spot.list.group.overexpression$spots)[m],".csv\" target=\"_blank\">",
-          names(spot.list.group.overexpression$spots)[m],"</a>", sep="", file=outfile)
+          names(env$spot.list.group.overexpression$spots)[m],".csv\" target=\"_blank\">",
+          names(env$spot.list.group.overexpression$spots)[m],"</a>", sep="", file=outfile)
     }
 
   }
@@ -290,11 +290,11 @@ pipeline.htmlModuleSummary <- function()
             </td>
             <td>", sep="", file = outfile)
 
-  for (m in seq_along(spot.list.kmeans$spots))
+  for (m in seq_along(env$spot.list.kmeans$spots))
   {
     cat("<a href=\"../CSV Sheets/Spot Lists/K-Means Cluster ",
-        names(spot.list.kmeans$spots)[m],".csv\" target=\"_blank\">",
-        names(spot.list.kmeans$spots)[m],"</a>", sep="", file=outfile)
+        names(env$spot.list.kmeans$spots)[m],".csv\" target=\"_blank\">",
+        names(env$spot.list.kmeans$spots)[m],"</a>", sep="", file=outfile)
   }
 
   
@@ -306,11 +306,11 @@ pipeline.htmlModuleSummary <- function()
             </td>
             <td>", sep="", file = outfile)
   
-  for (m in seq_along(spot.list.dmap$spots))
+  for (m in seq_along(env$spot.list.dmap$spots))
   {
     cat("<a href=\"../CSV Sheets/Spot Lists/D-Cluster ",
-        names(spot.list.dmap$spots)[m],".csv\" target=\"_blank\">",
-        names(spot.list.dmap$spots)[m],"</a>", sep="", file=outfile)
+        names(env$spot.list.dmap$spots)[m],".csv\" target=\"_blank\">",
+        names(env$spot.list.dmap$spots)[m],"</a>", sep="", file=outfile)
   }
   
   cat("</td>

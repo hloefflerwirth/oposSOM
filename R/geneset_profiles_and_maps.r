@@ -1,63 +1,63 @@
-pipeline.genesetProfilesAndMaps <- function()
+pipeline.genesetProfilesAndMaps <- function(env)
 {
-  dirname <- file.path(paste(files.name, "- Results"), "Geneset Analysis")
+  dirname <- file.path(paste(env$files.name, "- Results"), "Geneset Analysis")
   util.info("Writing:", file.path(dirname, "*.{csv,pdf}"))
-	progressbar <-newProgressBar(min = 0, max = nrow(samples.GSZ.scores)); cat("\r")
+	progressbar <-newProgressBar(min = 0, max = nrow(env$samples.GSZ.scores)); cat("\r")
   
-  ylim <- quantile(samples.GSZ.scores,c(0.01,0.99))
-  off.thres <- -sd(samples.GSZ.scores)
-  on.thres <- sd(samples.GSZ.scores)
+  ylim <- quantile(env$samples.GSZ.scores,c(0.01,0.99))
+  off.thres <- -sd(env$samples.GSZ.scores)
+  on.thres <- sd(env$samples.GSZ.scores)
   
   
-  for (i in 1:nrow(samples.GSZ.scores))
+  for (i in 1:nrow(env$samples.GSZ.scores))
   {
-    filename.prefix <- substring(make.names(names(gs.def.list)[i]), 1, 80)
+    filename.prefix <- substring(make.names(names(env$gs.def.list)[i]), 1, 80)
     pdf(file.path(dirname, paste(filename.prefix, ".pdf",sep="")), 29.7/2.54, 21/2.54, useDingbats=FALSE)
      
     #### Geneset Profile + Heatmap
     layout(matrix(c(1,2,3),ncol=1,byrow=TRUE),heights=c(1.5,0.5,4))
     
-    set.genes <- unique( gene.info$ensembl.mapping[which(gene.info$ensembl.mapping$ensembl_gene_id %in% gs.def.list[[i]]$Genes),1] )
+    set.genes <- unique( env$gene.info$ensembl.mapping[which(env$gene.info$ensembl.mapping$ensembl_gene_id %in% env$gs.def.list[[i]]$Genes),1] )
     
-    gs.indata <- indata[set.genes,,drop=F]
+    gs.indata <- env$indata[set.genes,,drop=F]
     sig.genes <- which( apply(gs.indata,1,sd)>sd(gs.indata) )
     if(length(sig.genes)==0) sig.genes <- order(apply(gs.indata,1,sd),decreasing=TRUE)[1]
 
-    if( ncol(indata) * length(sig.genes) < 20000 )
+    if( ncol(env$indata) * length(sig.genes) < 20000 )
     {
       gs.indata <- gs.indata[ sig.genes, ,drop=FALSE]
-      rownames(gs.indata) <- gene.info$names[rownames(gs.indata)]
+      rownames(gs.indata) <- env$gene.info$names[rownames(gs.indata)]
       
       o.genes <- if(length(sig.genes)>1) hclust(dist(gs.indata))$order else 1
-      o.samples <- order(samples.GSZ.scores[i,])
+      o.samples <- order(env$samples.GSZ.scores[i,])
       
       
-      offset <- min(samples.GSZ.scores[i,])
+      offset <- min(env$samples.GSZ.scores[i,])
       
       par(mar=c(0,10,5,16))
-      barplot( samples.GSZ.scores[i,o.samples]-offset, ylab="", xlab="", ylim=range(samples.GSZ.scores[i,])-offset, xaxt="n", xaxs="i",
-                col=group.colors[o.samples], xpd=TRUE, space=c(0,0), offset=0, axes=FALSE, border=if (ncol(indata) < 100) "black" else NA )
+      barplot( env$samples.GSZ.scores[i,o.samples]-offset, ylab="", xlab="", ylim=range(env$samples.GSZ.scores[i,])-offset, xaxt="n", xaxs="i",
+                col=env$group.colors[o.samples], xpd=TRUE, space=c(0,0), offset=0, axes=FALSE, border=if (ncol(env$indata) < 100) "black" else NA )
         abline( h=0-offset, lty=2, col="gray" )
-        axis( 2, at=seq(from=0,to=(max(samples.GSZ.scores[i,])-offset),length.out=4), labels=round(seq(from=offset,to=max(samples.GSZ.scores[i,]),length.out=4),2),las=2, cex.axis=1.4)
-        mtext( names(gs.def.list[i]), side=3, cex=1.5, line=1 )
+        axis( 2, at=seq(from=0,to=(max(env$samples.GSZ.scores[i,])-offset),length.out=4), labels=round(seq(from=offset,to=max(env$samples.GSZ.scores[i,]),length.out=4),2),las=2, cex.axis=1.4)
+        mtext( names(env$gs.def.list[i]), side=3, cex=1.5, line=1 )
         mtext("GSZ", side=2, line=4.5, cex=1.25)
         
   
       par(new=TRUE,mar=c(0,0,0,0))
       frame()
-        legend(x=0.86,y=0.7,names(groupwise.group.colors),text.col=groupwise.group.colors)
+        legend(x=0.86,y=0.7,names(env$groupwise.group.colors),text.col=env$groupwise.group.colors)
   
       par(mar=c(0.5,10,0.5,16))
-      image( matrix(1:ncol(indata),ncol(indata),1), col=group.colors[o.samples], axes=FALSE )
+      image( matrix(1:ncol(env$indata),ncol(env$indata),1), col=env$group.colors[o.samples], axes=FALSE )
         box()
       
       par(mar=c(10,10,0,16))
-      image(x=1:ncol(gs.indata), y=1:nrow(gs.indata),z=t(gs.indata[o.genes,o.samples,drop=FALSE]),col=color.palette.heatmaps(1000), axes=FALSE,zlim=max(max(gs.indata),-min(gs.indata))*c(-1,1),xlab="", ylab="")
+      image(x=1:ncol(gs.indata), y=1:nrow(gs.indata),z=t(gs.indata[o.genes,o.samples,drop=FALSE]),col=env$color.palette.heatmaps(1000), axes=FALSE,zlim=max(max(gs.indata),-min(gs.indata))*c(-1,1),xlab="", ylab="")
         box()
         axis(2, 1:nrow(gs.indata), labels=rownames(gs.indata)[o.genes], las=2, line=-0.5, tick=0, cex.axis=min( 1.5, max( 0.5, 2-nrow(gs.indata) /67 ) ) )
       
       par(new=TRUE,mar=c(40,74,0,1))
-      image(matrix(c(1:1000), 1000, 1), axes=FALSE, col=color.palette.heatmaps(1000))
+      image(matrix(c(1:1000), 1000, 1), axes=FALSE, col=env$color.palette.heatmaps(1000))
         box()
         axis( 1, at=c(0,1), labels=round(range(gs.indata),1), cex.axis=1.4 )
         mtext( bquote(Delta ~ "e"), side=1, cex=1.25, line=1 )  
@@ -69,23 +69,23 @@ pipeline.genesetProfilesAndMaps <- function()
       
     # barplot
     par(mar=c(14,4,4,1))
-    barplot(samples.GSZ.scores[i,], beside=TRUE,
-            las=2, cex.names=1.2, cex.axis=1.4, col=group.colors, 
-            ylim=ylim, border=if (ncol(indata) < 100) "black" else NA,
-            names.arg=rep("",ncol(indata)))
+    barplot(env$samples.GSZ.scores[i,], beside=TRUE,
+            las=2, cex.names=1.2, cex.axis=1.4, col=env$group.colors, 
+            ylim=ylim, border=if (ncol(env$indata) < 100) "black" else NA,
+            names.arg=rep("",ncol(env$indata)))
 
       abline( h=c(off.thres,on.thres,0), lty=2)
-      mtext( names(gs.def.list[i]), side=3, cex=1.5, line=1 )
+      mtext( names(env$gs.def.list[i]), side=3, cex=1.5, line=1 )
       mtext("GSZ", side=2, line=2.5, cex=1.25)
     
     # barcode
     par(mar=c(1,5.5,0.1,2.7))
     
-    col <- rep("gray60",ncol(indata))
-    col[which(samples.GSZ.scores[i,]<off.thres)] <- "white"
-    col[which(samples.GSZ.scores[i,]>on.thres)] <- "black"
+    col <- rep("gray60",ncol(env$indata))
+    col[which(env$samples.GSZ.scores[i,]<off.thres)] <- "white"
+    col[which(env$samples.GSZ.scores[i,]>on.thres)] <- "black"
     
-    image( matrix(1:ncol(indata),ncol(indata),1), col=col, axes=FALSE )
+    image( matrix(1:ncol(env$indata),ncol(env$indata),1), col=col, axes=FALSE )
      box()
     
     par(new=TRUE, mar=c(1,1,0.1,4))
@@ -95,14 +95,14 @@ pipeline.genesetProfilesAndMaps <- function()
     # population map
     par(mar=c(16, 0, 6, 3.5))
      
-    n.map <- matrix(0,preferences$dim.1stLvlSom,preferences$dim.1stLvlSom)
-    gs.nodes <- som.result$feature.BMU[set.genes]
+    n.map <- matrix(0,env$preferences$dim.1stLvlSom,env$preferences$dim.1stLvlSom)
+    gs.nodes <- env$som.result$feature.BMU[set.genes]
     n.map[as.numeric(names(table(gs.nodes)))] <- table(gs.nodes)
     n.map[which(n.map==0)] <- NA
-    n.map <- matrix(n.map, preferences$dim.1stLvlSom)
+    n.map <- matrix(n.map, env$preferences$dim.1stLvlSom)
     
-    lim <- c(1,preferences$dim.1stLvlSom) + preferences$dim.1stLvlSom * 0.01 * c(-1, 1)
-    colr <- color.palette.heatmaps(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=TRUE)) /
+    lim <- c(1,env$preferences$dim.1stLvlSom) + env$preferences$dim.1stLvlSom * 0.01 * c(-1, 1)
+    colr <- env$color.palette.heatmaps(1000)[(na.omit(as.vector(n.map)) - min(n.map,na.rm=TRUE)) /
                            max(1, (max(n.map,na.rm=TRUE) - min(n.map,na.rm=TRUE))) *
                            999 + 1]
     
@@ -114,7 +114,7 @@ pipeline.genesetProfilesAndMaps <- function()
       box()
     
     par(new=TRUE, mar=c(32,21.5,6,0.5))
-    image(matrix(1:100, 1, 100), col = color.palette.heatmaps(1000), axes=FALSE)
+    image(matrix(1:100, 1, 100), col = env$color.palette.heatmaps(1000), axes=FALSE)
       axis(2, at=c(0,1), c(min(n.map,na.rm=TRUE), max(n.map,na.rm=TRUE)), las=2, tick=FALSE, pos=-0.36)
       box()
 
@@ -123,15 +123,15 @@ pipeline.genesetProfilesAndMaps <- function()
     layout(1)
     par(mar=c(12,6,4,5))
     
-    mean.boxes <- by(samples.GSZ.scores[i,], group.labels, c)[unique(group.labels)]
-    boxplot(mean.boxes, col=groupwise.group.colors, ylim=ylim+sum(abs(ylim))*0.1*c(-1,1), axes=FALSE, yaxs="i")
+    mean.boxes <- by(env$samples.GSZ.scores[i,], env$group.labels, c)[unique(env$group.labels)]
+    boxplot(mean.boxes, col=env$groupwise.group.colors, ylim=ylim+sum(abs(ylim))*0.1*c(-1,1), axes=FALSE, yaxs="i")
       box()
-      axis(1, seq_along(unique(group.labels)), unique(group.labels), las=2, tick=FALSE)
+      axis(1, seq_along(unique(env$group.labels)), unique(env$group.labels), las=2, tick=FALSE)
       axis(2, las=2)
 
       abline(h=0, lty=2)
 
-      mtext( names(gs.def.list[i]), side=3, cex=1.5, line=1 )
+      mtext( names(env$gs.def.list[i]), side=3, cex=1.5, line=1 )
       mtext("GSZ", side=2, line=2.5, cex=1.25)
 
     dev.off()
@@ -139,14 +139,14 @@ pipeline.genesetProfilesAndMaps <- function()
 
     ##### CSV sheets
 
-    out <- data.frame(AffyID=names(gene.info$ids[set.genes]),
-                      EnsemblID=gene.info$ids[set.genes],
-                      Metagene=gene.info$coordinates[set.genes],
-                      Max.expression.sample=colnames(indata)[apply(indata[set.genes, ,drop=FALSE], 1, which.max)],
-                      GeneSymbol=gene.info$names[set.genes],
-                      Description=gene.info$descriptions[set.genes])
+    out <- data.frame(AffyID=names(env$gene.info$ids[set.genes]),
+                      EnsemblID=env$gene.info$ids[set.genes],
+                      Metagene=env$gene.info$coordinates[set.genes],
+                      Max.expression.sample=colnames(env$indata)[apply(env$indata[set.genes, ,drop=FALSE], 1, which.max)],
+                      GeneSymbol=env$gene.info$names[set.genes],
+                      Description=env$gene.info$descriptions[set.genes])
 
-    csv.function(out, file.path(dirname, paste(filename.prefix, ".csv", sep="")), row.names=FALSE)
+    env$csv.function(out, file.path(dirname, paste(filename.prefix, ".csv", sep="")), row.names=FALSE)
 
     setTxtProgressBar( progressbar, progressbar$getVal()+1 )
   }

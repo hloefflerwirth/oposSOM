@@ -1,4 +1,4 @@
-pipeline.moduleCorrelationMap <- function(pcm, hcl)
+pipeline.moduleCorrelationMap <- function(env, pcm, hcl)
 {
   pcm <- pcm[hcl$order,hcl$order]
   core.rect.thresh <- quantile(pcm, 0.9)
@@ -136,14 +136,14 @@ pipeline.moduleCorrelationMap <- function(pcm, hcl)
            widths=c(1, 0.2, 4), heights=c(1.2, 0.2, 4), respect=TRUE)
 
     par(mar = c(8, 0, 0, 0.5))
-    image(rbind(1:ncol(pcm)), col=group.colors[hcl$order], axes=FALSE)
+    image(rbind(1:ncol(pcm)), col=env$group.colors[hcl$order], axes=FALSE)
 
     par(mar = c(0.5, 0, 0, 6))
-    image(cbind(1:ncol(pcm)), col=group.colors[hcl$order], axes=FALSE)
+    image(cbind(1:ncol(pcm)), col=env$group.colors[hcl$order], axes=FALSE)
 
     par(mar = c(8, 0, 0, 6))
 
-    image(x=c(0:ncol(pcm)), y=c(0:ncol(pcm)), z=pcm,col=color.palette.heatmaps(1000),
+    image(x=c(0:ncol(pcm)), y=c(0:ncol(pcm)), z=pcm,col=env$color.palette.heatmaps(1000),
           axes=FALSE, xlab="", ylab="")
 
     box()
@@ -164,7 +164,7 @@ pipeline.moduleCorrelationMap <- function(pcm, hcl)
       })
     }
 
-    spotdata <- get(paste("spot.list.",preferences$standard.spot.modules,sep=""))$spotdata
+    spotdata <- env[[paste("spot.list.",env$preferences$standard.spot.modules,sep="")]]$spotdata
     spotdata.sd.scale <- 1
 
     if (length(boxes.pos) > 0)
@@ -246,6 +246,6 @@ pipeline.moduleCorrelationMap <- function(pcm, hcl)
     plot(ddr, horiz=TRUE, axes=FALSE, yaxs="i", leaflab="none")
     par(mar=c(0, 0, 1, 6))
     plot(ddr, axes=FALSE, xaxs="i", leaflab="none")
-    title(paste("Module correlation map (",preferences$standard.spot.modules,")",sep=""), cex.main = 1.5)
+    title(paste("Module correlation map (",env$preferences$standard.spot.modules,")",sep=""), cex.main = 1.5)
   }
 }

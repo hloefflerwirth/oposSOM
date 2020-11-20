@@ -1,6 +1,6 @@
-pipeline.htmlDifferencesSummary <- function()
+pipeline.htmlDifferencesSummary <- function(env)
 {
-  dirname <- file.path(paste(files.name, "- Results"),
+  dirname <- file.path(paste(env$files.name, "- Results"),
                        "Summary Sheets - Differences")
 
   if (!file.exists(dirname))
@@ -15,7 +15,7 @@ pipeline.htmlDifferencesSummary <- function()
   cat("<!DOCTYPE html>
 <html>
   <head>
-    <title>Differences Summary of ", files.name, " dataset</title>
+    <title>Differences Summary of ", env$files.name, " dataset</title>
     <style>
       body {
         margin: 0;
@@ -101,9 +101,9 @@ pipeline.htmlDifferencesSummary <- function()
         </thead>
         <tbody>", sep="", file=f)
 
-  for (m in 1:ncol(indata))
+  for (m in 1:ncol(env$indata))
   {
-    name <- colnames(indata)[m]
+    name <- colnames(env$indata)[m]
     fname <- make.names(name)
 
     cat("

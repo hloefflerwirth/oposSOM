@@ -1,35 +1,36 @@
-pipeline.genesetStatisticSamples <- function()
+pipeline.genesetStatisticSamples <- function(env)
 {
 
   ### perform GS analysis ###
-  t.ensID.m <<- t.g.m[gene.info$ensembl.mapping[,1],]
-  t.ensID.m <<- do.call(rbind, by(t.ensID.m, gene.info$ensembl.mapping[,2], colMeans))
+  env$t.ensID.m <- env$t.g.m[env$gene.info$ensembl.mapping[,1],]
+  env$t.ensID.m <- do.call(rbind, by(env$t.ensID.m, env$gene.info$ensembl.mapping[,2], colMeans))
   
-  mean.t.all <- colMeans( t.ensID.m )
-  sd.t.all <- apply( t.ensID.m, 2, sd )
+  mean.t.all <- colMeans( env$t.ensID.m )
+  sd.t.all <- apply( env$t.ensID.m, 2, sd )
   
   gs.null.list <- list()
-  for (i in seq_along(gs.def.list))
+  for (i in seq_along(env$gs.def.list))
   {
     gs.null.list[[i]] <-
-      list(Genes=sample(unique(gene.info$ensembl.mapping$ensembl_gene_id), length(gs.def.list[[i]]$Genes)))
+      list(Genes=sample(unique(env$gene.info$ensembl.mapping$ensembl_gene_id), length(env$gs.def.list[[i]]$Genes)))
   }
 
-  null.scores <- sapply( gs.null.list, Sample.GSZ, t.ensID.m, mean.t.all, sd.t.all )
+  null.scores <- sapply( gs.null.list, Sample.GSZ, env$t.ensID.m, mean.t.all, sd.t.all )
   null.culdensity <- ecdf(abs(unlist(null.scores)))
 
-  samples.GSZ.scores <<- t( sapply( gs.def.list, Sample.GSZ, t.ensID.m, mean.t.all, sd.t.all ) )
+  env$samples.GSZ.scores <- t( sapply( env$gs.def.list, Sample.GSZ, env$t.ensID.m, mean.t.all, sd.t.all ) )
   
-  spot.list.samples <<- lapply(seq_along(spot.list.samples) , function(m)
+  env$spot.list.samples <- lapply(seq_along(env$spot.list.samples) , function(m)
   {
-    x <- spot.list.samples[[m]]
+    x <- env$spot.list.samples[[m]]
 
-    x$GSZ.score <- samples.GSZ.scores[,m]
+    x$GSZ.score <- env$samples.GSZ.scores[,m]
     x$GSZ.p.value <- 1 - null.culdensity(abs(x$GSZ.score))
     names(x$GSZ.p.value) <- names(x$GSZ.score)
 
     return(x)
   })
-  names(spot.list.samples) <<- colnames(indata)
-
+  names(env$spot.list.samples) <- colnames(env$indata)
+  
+  return(env)
 }

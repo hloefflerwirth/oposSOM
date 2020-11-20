@@ -1,4 +1,4 @@
-modules.report.sheets <- function(spot.list, main, path)
+modules.report.sheets <- function(env, spot.list, main, path)
 {
   pdf(path, 29.7/2.54, 21/2.54, useDingbats=FALSE)
   
@@ -9,8 +9,8 @@ modules.report.sheets <- function(spot.list, main, path)
     layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
     par(mar=c(5, 4, 4, 1))
     
-    col <- if(main!="D-Cluster") color.palette.portraits(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
-    image(matrix(spot.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
+    col <- if(main!="D-Cluster") env$color.palette.portraits(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
+    image(matrix(spot.list$overview.map, env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom),
           axes=FALSE, col=col, main=main, cex.main=1.5)
     
     mtext("landscape", 3)
@@ -28,9 +28,9 @@ modules.report.sheets <- function(spot.list, main, path)
   layout(matrix(c(1, 2), 1, 2), c(2, 1), 1)
   par(mar=c(5, 4, 4, 1))
   
-  image(x=c(1:preferences$dim.1stLvlSom),
-        y=c(1:preferences$dim.1stLvlSom),
-        z=matrix(spot.list$overview.mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
+  image(x=c(1:env$preferences$dim.1stLvlSom),
+        y=c(1:env$preferences$dim.1stLvlSom),
+        z=matrix(spot.list$overview.mask, env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom),
         col=colorRampPalette(c("darkblue","blue","lightblue","green2","yellow","red","darkred"))(max(spot.list$overview.mask, na.rm=TRUE)),
         axes=TRUE, main=main, cex.main=1.5, xlab="", ylab="", las=1)
   
@@ -38,8 +38,8 @@ modules.report.sheets <- function(spot.list, main, path)
   box()
   par(new=TRUE)
   
-  plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,preferences$dim.1stLvlSom),
-       ylim=c(0,preferences$dim.1stLvlSom), xaxs="i", yaxs="i")
+  plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,env$preferences$dim.1stLvlSom),
+       ylim=c(0,env$preferences$dim.1stLvlSom), xaxs="i", yaxs="i")
   
   points(do.call(rbind, lapply(spot.list$spots, function(x) { x$position })),
          pch=16, cex=3, col="black")
@@ -56,7 +56,7 @@ modules.report.sheets <- function(spot.list, main, path)
   
   box()
   
-  if (preferences$activated.modules$geneset.analysis)
+  if (env$preferences$activated.modules$geneset.analysis)
   {
     n.sets <- ifelse( length(spot.list$spots)<=15, 3, 2 ) 
     
@@ -89,18 +89,18 @@ modules.report.sheets <- function(spot.list, main, path)
   
   par(mar=c(0,0,0,0))
   
-  image(1:ncol(indata),
+  image(1:ncol(env$indata),
         1:nrow(spot.list$spotdata),
         sample.spot.expression.image,
-        col=color.palette.heatmaps(1000),
+        col=env$color.palette.heatmaps(1000),
         axes=FALSE, ylim=0.5+c(0,nrow(spot.list$spotdata)), yaxs="i", xlab="", ylab="",
         zlim=max(abs(sample.spot.expression.image),na.rm=TRUE)*c(-1,1))
   
   box()
   
-  if (ncol(indata)<100)
+  if (ncol(env$indata)<100)
   {
-    axis(1, 1:ncol(indata), labels=colnames(indata), las=2, line=-0.5, tick=0, cex.axis=1.4)
+    axis(1, 1:ncol(env$indata), labels=colnames(env$indata), las=2, line=-0.5, tick=0, cex.axis=1.4)
   }
   
   plot(0, type="n", xlab="", ylab="", axes=FALSE, xlim=c(0,1),
@@ -111,9 +111,9 @@ modules.report.sheets <- function(spot.list, main, path)
   
   par(mar=c(1,0,2,0))
   
-  if (length(unique(group.labels)) > 1)
+  if (length(unique(env$group.labels)) > 1)
   {
-    image(cbind(1:ncol(indata)), col = group.colors, axes = FALSE)
+    image(cbind(1:ncol(env$indata)), col = env$group.colors, axes = FALSE)
     box()
   } else
   {
@@ -135,7 +135,7 @@ modules.report.sheets <- function(spot.list, main, path)
   
   par(mar=c(5,2,4,2))
   
-  image(matrix(1:100, 100, 1),col=color.palette.heatmaps(1000),axes=FALSE, xlab="")
+  image(matrix(1:100, 100, 1),col=env$color.palette.heatmaps(1000),axes=FALSE, xlab="")
   
   axis(1, round(max(max(sample.spot.expression.image),
                     -min(sample.spot.expression.image)) * c(-1,1), 1),
@@ -168,7 +168,7 @@ modules.report.sheets <- function(spot.list, main, path)
     
     text(0.1, 0.55,
          paste("<r> metagenes =",
-               round(mean(cor(t(metadata[spot.list$spots[[m]]$metagenes,]))), 2)), adj=0)
+               round(mean(cor(t(env$metadata[spot.list$spots[[m]]$metagenes,]))), 2)), adj=0)
     
     if (length(spot.list$spots[[m]]$genes) < 1000)
     {
@@ -176,7 +176,7 @@ modules.report.sheets <- function(spot.list, main, path)
         try({
           text(0.1, 0.51,
                paste("<r> genes =",
-                     round(mean(cor(t(indata[spot.list$spots[[m]]$genes,]))), 2)),
+                     round(mean(cor(t(env$indata[spot.list$spots[[m]]$genes,]))), 2)),
                adj=0)
         }, silent=TRUE)
       })
@@ -192,39 +192,39 @@ modules.report.sheets <- function(spot.list, main, path)
     text(0.1, 0.39,
          paste("# samples with spot =",
                sum(sample.with.spot,na.rm=TRUE), "(",
-               round(100 * sum(sample.with.spot,na.rm=TRUE) / ncol(indata), 1), "%)"), adj=0)
+               round(100 * sum(sample.with.spot,na.rm=TRUE) / ncol(env$indata), 1), "%)"), adj=0)
     
-    if (length(unique(group.labels)) > 1 && sum(sample.with.spot,na.rm=TRUE) > 0)
+    if (length(unique(env$group.labels)) > 1 && sum(sample.with.spot,na.rm=TRUE) > 0)
     {
-      group.table <- table(group.labels[sample.with.spot])[unique(group.labels)]
+      group.table <- table(env$group.labels[sample.with.spot])[unique(env$group.labels)]
       group.table <- group.table[which(!is.na(group.table))]
       
       for (g in seq_along(group.table))
       {
         text(0.15, 0.39-g*0.04,
              paste(names(group.table)[g], ":", group.table[g], "(",
-                   round(100 * group.table[g]/sum(group.labels == names(group.table)[g]), 1),
-                   "%)"), adj=0,  col=group.colors[match(names(group.table)[g], group.labels)])
+                   round(100 * group.table[g]/sum(env$group.labels == names(group.table)[g]), 1),
+                   "%)"), adj=0,  col=env$group.colors[match(names(group.table)[g], env$group.labels)])
       }
     }
     
     par(mar=c(2,3,3,1))
     
-    col <- if(main!="D-Cluster") color.palette.portraits(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
-    image(matrix(spot.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
+    col <- if(main!="D-Cluster") env$color.palette.portraits(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
+    image(matrix(spot.list$overview.map, env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom),
           axes=FALSE, col=col, main="Overview Map", cex.main=1.5)
     
-    axis(1, seq(0, 1, length.out = preferences$dim.1stLvlSom/10+1),
-         c(1, seq(10, preferences$dim.1stLvlSom, length.out = preferences$dim.1stLvlSom/10)),
+    axis(1, seq(0, 1, length.out = env$preferences$dim.1stLvlSom/10+1),
+         c(1, seq(10, env$preferences$dim.1stLvlSom, length.out = env$preferences$dim.1stLvlSom/10)),
          cex.axis=1.0)
     
-    axis(2, seq(0, 1, length.out = preferences$dim.1stLvlSom/10+1),
-         c(1, seq(10, preferences$dim.1stLvlSom, length.out = preferences$dim.1stLvlSom/10)),
+    axis(2, seq(0, 1, length.out = env$preferences$dim.1stLvlSom/10+1),
+         c(1, seq(10, env$preferences$dim.1stLvlSom, length.out = env$preferences$dim.1stLvlSom/10)),
          cex.axis=1.0, las=1)
     
     box()
     
-    image(matrix(spot.list$overview.map, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
+    image(matrix(spot.list$overview.map, env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom),
           axes=FALSE, col=col, main="Spot", cex.main=1.5)
     
     par(new=TRUE)
@@ -233,15 +233,15 @@ modules.report.sheets <- function(spot.list, main, path)
     mask[which(is.na(spot.list$spots[[m]]$mask))] <- 1
     mask[which(!is.na(spot.list$spots[[m]]$mask))] <- NA
     
-    image(matrix(mask, preferences$dim.1stLvlSom, preferences$dim.1stLvlSom),
+    image(matrix(mask, env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom),
           axes=FALSE, col = "white")
     
-    axis(1, seq(0, 1, length.out = preferences$dim.1stLvlSom/10+1),
-         c(1, seq(10, preferences$dim.1stLvlSom, length.out = preferences$dim.1stLvlSom/10)),
+    axis(1, seq(0, 1, length.out = env$preferences$dim.1stLvlSom/10+1),
+         c(1, seq(10, env$preferences$dim.1stLvlSom, length.out = env$preferences$dim.1stLvlSom/10)),
          cex.axis=1.0)
     
-    axis(2, seq(0, 1, length.out = preferences$dim.1stLvlSom/10+1),
-         c(1, seq(10, preferences$dim.1stLvlSom, length.out = preferences$dim.1stLvlSom/10)),
+    axis(2, seq(0, 1, length.out = env$preferences$dim.1stLvlSom/10+1),
+         c(1, seq(10, env$preferences$dim.1stLvlSom, length.out = env$preferences$dim.1stLvlSom/10)),
          cex.axis=1.0, las=1)
     
     box()
@@ -249,10 +249,10 @@ modules.report.sheets <- function(spot.list, main, path)
     # Spot Profile Plot
     par(mar=c(8,3,1,1))
     
-    barplot(spot.list$spotdata[m,], col=group.colors, main="",
-            names.arg=if (ncol(indata)<100) colnames(indata) else rep("",ncol(indata)),
+    barplot(spot.list$spotdata[m,], col=env$group.colors, main="",
+            names.arg=if (ncol(env$indata)<100) colnames(env$indata) else rep("",ncol(env$indata)),
             las=2, cex.main=1, cex.lab=1, cex.axis=1, cex.names=0.8,
-            border=if (ncol(indata) < 80) "black" else NA)
+            border=if (ncol(env$indata) < 80) "black" else NA)
     
     box()
     
@@ -261,12 +261,12 @@ modules.report.sheets <- function(spot.list, main, path)
       # Spot Genelist
       r.genes <- sapply(spot.list$spots[[m]]$genes, function(x)
       {
-        gene <- indata[x,]
+        gene <- env$indata[x,]
         return(suppressWarnings(cor(gene, spot.list$spotdata[m,])))
       })
       
-      e.max <- apply(indata[spot.list$spots[[m]]$genes, ,drop=FALSE], 1, max, na.rm=TRUE)
-      e.min <- apply(indata[spot.list$spots[[m]]$genes, ,drop=FALSE], 1, min, na.rm=TRUE)
+      e.max <- apply(env$indata[spot.list$spots[[m]]$genes, ,drop=FALSE], 1, max, na.rm=TRUE)
+      e.min <- apply(env$indata[spot.list$spots[[m]]$genes, ,drop=FALSE], 1, min, na.rm=TRUE)
       
       if (main %in% c("Underexpression Spots"))
       {
@@ -298,8 +298,8 @@ modules.report.sheets <- function(spot.list, main, path)
       text(x.coords[3], y.coords, round(e.max[o], 2), cex=0.6, adj=0)
       text(x.coords[4], y.coords, round(e.min[o], 2), cex=0.6, adj=0)
       text(x.coords[5], y.coords, round(r.genes[o], 2), cex=0.6, adj=0)
-      text(x.coords[6], y.coords, gene.info$names[o], cex=0.6, adj=0)
-      text(x.coords[7], y.coords, gene.info$descriptions[o], cex=0.6, adj=0)
+      text(x.coords[6], y.coords, env$gene.info$names[o], cex=0.6, adj=0)
+      text(x.coords[7], y.coords, env$gene.info$descriptions[o], cex=0.6, adj=0)
     } else
     {
       frame()
@@ -307,10 +307,10 @@ modules.report.sheets <- function(spot.list, main, path)
     
     plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
     
-    if (preferences$activated.modules$geneset.analysis)
+    if (env$preferences$activated.modules$geneset.analysis)
     {
       n.sets <- 40
-      top.gs.p <- sort(spot.list$spots[[m]]$Fisher.p[names(which( sapply(gs.def.list, function(x)x$Type) != "Chromatin states" ))])[1:n.sets]
+      top.gs.p <- sort(spot.list$spots[[m]]$Fisher.p[names(which( sapply(env$gs.def.list, function(x)x$Type) != "Chromatin states" ))])[1:n.sets]
       par(mar=c(0,0,0,0))
       
       x.coords <- c(0, 0.1, 0.23, 0.34, 0.4)
@@ -326,16 +326,16 @@ modules.report.sheets <- function(spot.list, main, path)
       text(x.coords[1], y.coords, c(1:n.sets), adj=0)
       text(x.coords[2], y.coords, format(top.gs.p, digits=1), cex=0.6, adj=0)
       
-      text(x.coords[3], y.coords, paste (sapply(gs.def.list[names(top.gs.p)], function(x)
+      text(x.coords[3], y.coords, paste (sapply(env$gs.def.list[names(top.gs.p)], function(x)
       {
-        length(intersect(x$Genes, unique(gene.info$ensembl.mapping$ensembl_gene_id[which(gene.info$ensembl.mapping[,1]%in%spot.list$spots[[m]]$genes)])   ))
+        length(intersect(x$Genes, unique(env$gene.info$ensembl.mapping$ensembl_gene_id[which(env$gene.info$ensembl.mapping[,1]%in%spot.list$spots[[m]]$genes)])   ))
         
-      }), "/", sapply(gs.def.list[names(top.gs.p)], function(x)
+      }), "/", sapply(env$gs.def.list[names(top.gs.p)], function(x)
       {
         length(x$Genes)
       })), cex=0.6, adj=0)
       
-      text(x.coords[4], y.coords, sapply(gs.def.list, function(x) { x$Type })[names(top.gs.p)], cex=0.6, adj=0)
+      text(x.coords[4], y.coords, sapply(env$gs.def.list, function(x) { x$Type })[names(top.gs.p)], cex=0.6, adj=0)
       rect(x.coords[5]-0.01, y.coords+0.01, 1, 0, border="white", col="white")
       text(x.coords[5], y.coords, names(top.gs.p), cex=0.6, adj=0)
       
@@ -372,19 +372,19 @@ modules.report.sheets <- function(spot.list, main, path)
         lines(spot.list$spots[[m]]$Fisher.p[o], Fdr.spot.list.samples[o], lty=2, lwd=2)
         lines(spot.list$spots[[m]]$Fisher.p[o], fdr.spot.list.samples[o], lty=3, lwd=3)
 
-        legend("topright", c("p", expression(eta[0]), "Fdr", "fdr"),
+        legend("topright", c("p", expression(env$eta[0]), "Fdr", "fdr"),
                col=c("black","gray","black","black"), lty=c(1,1,2,3), lwd=c(1,1,1,2), cex=0.7)
       }
 
       ## Splitted Genesets Sheet
       n.sets <- 15
-      n.cat <- length(unique(sapply(gs.def.list, function(x) { x$Type })))
+      n.cat <- length(unique(sapply(env$gs.def.list, function(x) { x$Type })))
       par(mfrow=c(ceiling(n.cat/3), min(n.cat, 3)))
 
-      for (i in sort(unique(sapply(gs.def.list, function(x) { x$Type }))))
+      for (i in sort(unique(sapply(env$gs.def.list, function(x) { x$Type }))))
       {
         top.gs.p <-
-          sort(spot.list$spots[[m]]$Fisher.p[names(which(sapply(gs.def.list, function(x) { x$Type }) == i))])[1:n.sets]
+          sort(spot.list$spots[[m]]$Fisher.p[names(which(sapply(env$gs.def.list, function(x) { x$Type }) == i))])[1:n.sets]
 
         x.coords <- c(0.05, 0.15, 0.28, 0.39, 0.45)
         y.coords <- seq(0.85, 0.06, length.out=n.sets)
@@ -400,11 +400,11 @@ modules.report.sheets <- function(spot.list, main, path)
         text(x.coords[2], y.coords, format(top.gs.p, digits=1), cex=0.6, adj=0)
 
         text(x.coords[3], y.coords,
-             paste(sapply(gs.def.list[names(top.gs.p)], function(x)
+             paste(sapply(env$gs.def.list[names(top.gs.p)], function(x)
              {
-               length(intersect(x$Genes, unique(gene.info$ensembl.mapping$ensembl_gene_id[which(gene.info$ensembl.mapping[,1]%in%spot.list$spots[[m]]$genes)])   ))
+               length(intersect(x$Genes, unique(env$gene.info$ensembl.mapping$ensembl_gene_id[which(env$gene.info$ensembl.mapping[,1]%in%spot.list$spots[[m]]$genes)])   ))
              }), "/",
-             sapply(gs.def.list[names(top.gs.p)], function(x)
+             sapply(env$gs.def.list[names(top.gs.p)], function(x)
              {
                length(x$Genes)
              })), cex=0.6, adj=0)

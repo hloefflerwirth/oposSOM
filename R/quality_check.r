@@ -1,8 +1,8 @@
-pipeline.qualityCheck <- function()
+pipeline.qualityCheck <- function(env)
 {
-  dir.create(paste(files.name, "- Results/Data Overview"), showWarnings=FALSE)
+  dir.create(paste(env$files.name, "- Results/Data Overview"), showWarnings=FALSE)
 
-  plot.poly.density = function(subset=1:ncol(indata), col="#BEBEBE", main="", add=FALSE)
+  plot.poly.density = function(subset=1:ncol(env$indata), col="#BEBEBE", main="", add=FALSE)
   {
     col.t=paste(col,"50",sep="")
 
@@ -18,29 +18,29 @@ pipeline.qualityCheck <- function()
       col=col.t, border=col)
   }
 
-  mi = min(indata); ma = max(indata)
-  densities = apply(indata,2,function(x) density(x, from=mi, to=ma))
+  mi = min(env$indata); ma = max(env$indata)
+  densities = apply(env$indata,2,function(x) density(x, from=mi, to=ma))
   densities.y = t(sapply(densities, function(x) x$y))
   densities.x = densities[[1]]$x
 
-  filename <- file.path(paste(files.name, "- Results"), "Data Overview", "Data Distribution.pdf")
+  filename <- file.path(paste(env$files.name, "- Results"), "Data Overview", "Data Distribution.pdf")
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)
 
   par(mfrow=c(1,2))
-  plot(densities.x, densities.y[1,], main="Input data distribution", xlim=range(indata), ylim=range(densities.y), type="l", xlab="log Expression", ylab="Density")
+  plot(densities.x, densities.y[1,], main="Input data distribution", xlim=range(env$indata), ylim=range(densities.y), type="l", xlab="log Expression", ylab="Density")
     dummy=sapply(densities, lines)
 
-  for (i in seq_along(unique(group.labels)))
-    plot.poly.density(subset=which(group.labels==unique(group.labels)[i]), col=groupwise.group.colors[i], main="", add=ifelse(i==1,FALSE,TRUE))
+  for (i in seq_along(unique(env$group.labels)))
+    plot.poly.density(subset=which(env$group.labels==unique(env$group.labels)[i]), col=env$groupwise.group.colors[i], main="", add=ifelse(i==1,FALSE,TRUE))
 
   par(mfrow=c(2,3))
-  for (i in seq_along(unique(group.labels)))
-    plot.poly.density(subset=which(group.labels==unique(group.labels)[i]), col=groupwise.group.colors[i], main=unique(group.labels)[i])
+  for (i in seq_along(unique(env$group.labels)))
+    plot.poly.density(subset=which(env$group.labels==unique(env$group.labels)[i]), col=env$groupwise.group.colors[i], main=unique(env$group.labels)[i])
 
 	
-	indata.sample.sd <- apply(indata, 2, sd)
-	indata.sample.mean <- colMeans(indata)
+	indata.sample.sd <- apply(env$indata, 2, sd)
+	indata.sample.mean <- colMeans(env$indata)
 
 	Q13 <- quantile( indata.sample.mean, c(0.25,0.75) )
 	IQR1.mean <- c( Q13[1] - 1*diff( Q13 ), Q13[2] + 1*diff( Q13 ) )
@@ -55,7 +55,7 @@ pipeline.qualityCheck <- function()
 														 indata.sample.sd > IQR1.sd[2] ) )
 
 	par(mfrow=c(1,1), mar=c(5,4,3,2))
-	plot( indata.sample.mean, indata.sample.sd, pch=16, col=group.colors, xlab="mean expression level", ylab="standard deviation of expression" )
+	plot( indata.sample.mean, indata.sample.sd, pch=16, col=env$group.colors, xlab="mean expression level", ylab="standard deviation of expression" )
 		abline( v=IQR1.mean, col="gray20", lty=2 )
 		abline( v=IQR3.mean, col="gray20", lty=3 )
 		abline( h=IQR1.sd, col="gray20", lty=2 )
@@ -66,35 +66,34 @@ pipeline.qualityCheck <- function()
 		
   par(mfrow=c(2,1),mar=c(5,3,3,2))
 
-  barplot(indata.sample.mean, col=group.colors, main="Sample mean expression", names.arg=if (ncol(indata)<80) colnames(indata) else rep("",ncol(indata)), las=2, cex.main=1, cex.lab=1, cex.axis=0.8, cex.names=0.6, border = ifelse(ncol(indata)<80,"black",NA), ylim=range(indata.sample.mean)*c(0.99,1.01), xpd=FALSE)
+  barplot(indata.sample.mean, col=env$group.colors, main="Sample mean expression", names.arg=if (ncol(env$indata)<80) colnames(env$indata) else rep("",ncol(env$indata)), las=2, cex.main=1, cex.lab=1, cex.axis=0.8, cex.names=0.6, border = ifelse(ncol(env$indata)<80,"black",NA), ylim=range(indata.sample.mean)*c(0.99,1.01), xpd=FALSE)
     box()
 	
 
-  if (length(unique(group.labels)) > 1)
+  if (length(unique(env$group.labels)) > 1)
   {
-    mean.boxes = by(indata.sample.mean, group.labels, c)[unique(group.labels)]
+    mean.boxes = by(indata.sample.mean, env$group.labels, c)[unique(env$group.labels)]
     par(mar=c(5,3,0,2))
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2, main="", cex.main=1, cex.axis=0.8, xaxt="n")
-    axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2, cex.axis=0.8)
+    boxplot(mean.boxes, col=env$groupwise.group.colors, las=2, main="", cex.main=1, cex.axis=0.8, xaxt="n")
+    axis(1, seq_along(env$groupwise.group.colors), unique(env$group.labels), las=2, cex.axis=0.8)
   }
 
 
   par(mar=c(5,3,3,2))
 
-  barplot(indata.sample.sd, col=group.colors, main="Sample expression standard deviation", names.arg=if (ncol(indata)<80) colnames(indata) else rep("",ncol(indata)), las=2, cex.main=1, cex.lab=1, cex.axis=0.8, cex.names=0.6, border = ifelse(ncol(indata)<80,"black",NA), ylim=range(indata.sample.sd)*c(0.99,1.01), xpd=FALSE)
+  barplot(indata.sample.sd, col=env$group.colors, main="Sample expression standard deviation", names.arg=if (ncol(env$indata)<80) colnames(env$indata) else rep("",ncol(env$indata)), las=2, cex.main=1, cex.lab=1, cex.axis=0.8, cex.names=0.6, border = ifelse(ncol(env$indata)<80,"black",NA), ylim=range(indata.sample.sd)*c(0.99,1.01), xpd=FALSE)
   box()
 
-  if (length(unique(group.labels)) > 1)
+  if (length(unique(env$group.labels)) > 1)
   {
-    mean.boxes = by(indata.sample.sd, group.labels, c)[unique(group.labels)]
+    mean.boxes = by(indata.sample.sd, env$group.labels, c)[unique(env$group.labels)]
     par(mar=c(5,3,0,2))
-    boxplot(mean.boxes, col=groupwise.group.colors, las=2, main="", cex.main=1, cex.axis=0.8, xaxt="n")
-    axis(1, seq_along(groupwise.group.colors), unique(group.labels), las=2, cex.axis=0.8)
+    boxplot(mean.boxes, col=env$groupwise.group.colors, las=2, main="", cex.main=1, cex.axis=0.8, xaxt="n")
+    axis(1, seq_along(env$groupwise.group.colors), unique(env$group.labels), las=2, cex.axis=0.8)
   }
   
   
-  environment(pipeline.affymetrixQualityCheck) <- environment()
-  pipeline.affymetrixQualityCheck()
+  pipeline.affymetrixQualityCheck(env)
 
 
   dev.off()
