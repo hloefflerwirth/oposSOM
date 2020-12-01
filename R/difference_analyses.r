@@ -34,27 +34,38 @@ pipeline.differenceAnalyses = function(env)
   
   dir.create(paste(env$files.name, "- Results/Summary Sheets - Differences"), showWarnings=FALSE)
   dir.create(paste(env$files.name, "- Results/Summary Sheets - Differences/CSV Sheets"), showWarnings=FALSE)
+  
+  local.env <- new.env()
+  local.env$preferences <- env$preferences
+  local.env$t.ensID.m <- env$t.ensID.m
+  local.env$gene.info <- env$gene.info
+  local.env$gs.def.list <- env$gs.def.list
+  local.env$som.result <- env$som.result
+  local.env$files.name <- env$files.name
+  local.env$csv.function <- env$csv.function
+  local.env$color.palette.portraits <- env$color.palette.portraits
+  local.env$indata.gene.mean <- env$indata.gene.mean
 
-  env$WAD.g.m <- matrix(NA, nrow(env$indata), length(differences.list),
+  local.env$WAD.g.m <- matrix(NA, nrow(env$indata), length(differences.list),
                      dimnames=list(rownames(env$indata), names(differences.list)))
 
-  env$t.g.m <- matrix(NA, nrow(env$indata), length(differences.list),
+  local.env$t.g.m <- matrix(NA, nrow(env$indata), length(differences.list),
                    dimnames=list(rownames(env$indata), names(differences.list)))
 
-  env$p.g.m <- matrix(NA, nrow(env$indata), length(differences.list),
+  local.env$p.g.m <- matrix(NA, nrow(env$indata), length(differences.list),
                    dimnames=list(rownames(env$indata), names(differences.list)))
 
-  env$fdr.g.m <- matrix(NA, nrow(env$indata), length(differences.list),
+  local.env$fdr.g.m <- matrix(NA, nrow(env$indata), length(differences.list),
                      dimnames=list(rownames(env$indata), names(differences.list)))
 
-  env$Fdr.g.m <- matrix(NA, nrow(env$indata), length(differences.list),
+  local.env$Fdr.g.m <- matrix(NA, nrow(env$indata), length(differences.list),
                      dimnames=list(rownames(env$indata), names(differences.list)))
 
-  n.0.m <- rep(NA, length(differences.list))
-  names(n.0.m) <- names(differences.list)
+  local.env$n.0.m <- rep(NA, length(differences.list))
+  names(local.env$n.0.m) <- names(differences.list)
 
-  perc.DE.m <- rep(NA, length(differences.list))
-  names(perc.DE.m) <- names(differences.list)
+  local.env$perc.DE.m <- rep(NA, length(differences.list))
+  names(local.env$perc.DE.m) <- names(differences.list)
 
   indata.d <- matrix(NA, nrow(env$indata), length(differences.list),
                       dimnames=list(rownames(env$indata), names(differences.list)))
@@ -82,67 +93,67 @@ pipeline.differenceAnalyses = function(env)
     S2.y <- apply(env$indata[,samples.indata[[2]],drop=FALSE],1,var)
     S2.y[which(S2.y==0)] <- min(S2.y[which(S2.y!=0)])
     
-    env$t.g.m[,d] <- indata.d[,d] / sqrt( S2.x/n + S2.y/m )
+    local.env$t.g.m[,d] <- indata.d[,d] / sqrt( S2.x/n + S2.y/m )
 
     df <- ( S2.x/n + S2.y/m )^2  / ( S2.x^2 / (n^2*(n-1)) + S2.y^2 / (m^2*(m-1)) )
     
-    env$p.g.m[,d] <- 2 - 2*pt( abs(env$t.g.m[,d]), df )
+    local.env$p.g.m[,d] <- 2 - 2*pt( abs(local.env$t.g.m[,d]), df )
     
     
     suppressWarnings({
       try.res <- try({
-        fdrtool.result <- fdrtool(env$p.g.m[,d], statistic="pvalue", verbose=FALSE, plot=FALSE)
+        fdrtool.result <- fdrtool(local.env$p.g.m[,d], statistic="pvalue", verbose=FALSE, plot=FALSE)
       }, silent=TRUE)
     })
 
     if (!is(try.res,"try-error"))
     {
-      env$fdr.g.m[,d] <- fdrtool.result$lfdr
-      env$Fdr.g.m[,d] <- fdrtool.result$qval
-      n.0.m[d] <- fdrtool.result$param[1,"eta0"]
-      perc.DE.m[d] <- 1 - n.0.m[d]
+      local.env$fdr.g.m[,d] <- fdrtool.result$lfdr
+      local.env$Fdr.g.m[,d] <- fdrtool.result$qval
+      local.env$n.0.m[d] <- fdrtool.result$param[1,"eta0"]
+      local.env$perc.DE.m[d] <- 1 - local.env$n.0.m[d]
     } else
     {
-      env$fdr.g.m[,d] <- env$p.g.m[,d]
-      env$Fdr.g.m[,d] <- env$p.g.m[,d]
-      n.0.m[d] <- 0.5
-      perc.DE.m[d] <- 0.5
+      local.env$fdr.g.m[,d] <- local.env$p.g.m[,d]
+      local.env$Fdr.g.m[,d] <- local.env$p.g.m[,d]
+      local.env$n.0.m[d] <- 0.5
+      local.env$perc.DE.m[d] <- 0.5
     }
 
     delta.e.g.m <- indata.d[,d]
 
     w.g.m <- (delta.e.g.m - min(delta.e.g.m)) / (max(delta.e.g.m) - min(delta.e.g.m))
-    env$WAD.g.m[,d] <- w.g.m * delta.e.g.m
+    local.env$WAD.g.m[,d] <- w.g.m * delta.e.g.m
   }
 
-  indata <- indata.d
-  colnames(indata) <- names(differences.list)
+  local.env$indata <- indata.d
+  colnames(local.env$indata) <- names(differences.list)
 
-  metadata <- metadata.d
-  colnames(metadata) <- names(differences.list)
+  local.env$metadata <- metadata.d
+  colnames(local.env$metadata) <- names(differences.list)
 
-  group.labels <- names(differences.list)
-  names(group.labels) <- names(differences.list)
-  group.colors <- rep("gray20",length(differences.list))
-  names(group.colors) <- names(differences.list)
+  local.env$group.labels <- names(differences.list)
+  names(local.env$group.labels) <- names(differences.list)
+  local.env$group.colors <- rep("gray20",length(differences.list))
+  names(local.env$group.colors) <- names(differences.list)
 
-  output.paths <- c("CSV" = paste(env$files.name, "- Results/Summary Sheets - Differences/CSV Sheets"),
+  local.env$output.paths <- c("CSV" = paste(env$files.name, "- Results/Summary Sheets - Differences/CSV Sheets"),
                      "Summary Sheets Samples"= paste(env$files.name, "- Results/Summary Sheets - Differences/Reports"))
 
-  env <- pipeline.detectSpotsSamples(env)
+  local.env <- pipeline.detectSpotsSamples(local.env)
 
-  if (env$preferences$activated.modules$geneset.analysis)
+  if (local.env$preferences$activated.modules$geneset.analysis)
   {
-    if (ncol(env$t.g.m) == 1)
+    if (ncol(local.env$t.g.m) == 1)
     {
       # crack for by command, which requires >=2 columns
-      env$t.g.m <- cbind(env$t.g.m, env$t.g.m)
+      local.env$t.g.m <- cbind(local.env$t.g.m, local.env$t.g.m)
     }
 
-    env <- pipeline.genesetStatisticSamples(env)
+    local.env <- pipeline.genesetStatisticSamples(local.env)
   }
 
-  pipeline.geneLists(env)
-  pipeline.summarySheetsSamples(env)
-  pipeline.htmlDifferencesSummary(env)
+  pipeline.geneLists(local.env)
+  pipeline.summarySheetsSamples(local.env)
+  pipeline.htmlDifferencesSummary(local.env)
 }
