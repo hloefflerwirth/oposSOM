@@ -175,6 +175,7 @@ pipeline.PSFcalculation <- function(env)
   if(length(unique(env$group.labels))>1)
   {
     util.info("Performing PSF calculation for groups:" )
+    
     progressbar <- newProgressBar(min = 0, max = length(kegg.collection)); cat("\r")
 
     indata.ensID.groups <- do.call(cbind, by(t(env$indata.ensID.m),env$group.labels,colMeans)[unique(env$group.labels)])
@@ -189,7 +190,7 @@ pipeline.PSFcalculation <- function(env)
       {
         if (!length(kegg.collection[[i]]) == 0)
         {
-          g <- pathway.expression.mapping( kegg.collection[[i]]$graph, fc.m = 10^env$indata.ensID.groups[,m] )
+          g <- pathway.expression.mapping( kegg.collection[[i]]$graph, fc.m = 10^indata.ensID.groups[,m] )
 
           env$psf.results.groups[[names(kegg.collection)[i]]][[colnames(indata.ensID.groups)[m]]] <- psf.flow(g, node.ordering=kegg.collection[[i]]$order, sink.nodes=as.character(kegg.collection[[i]]$sink.nodes), nodeIDs=kegg.collection[[i]]$nodeIDs )
         }
