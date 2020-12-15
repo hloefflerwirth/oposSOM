@@ -43,5 +43,8 @@ pipeline.patAssignment <- function(env)
     } 
   
   env$pat.labels[which(env$pat.labels=="")] <- "none"
+	env$pat.colors <- color.palette.discrete(length(unique(env$pat.labels)))[match(env$pat.labels, unique(env$pat.labels))]
+	names(env$pat.colors) <- colnames(env$indata)
+
   return(env)
 }

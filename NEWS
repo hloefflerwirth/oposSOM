@@ -1,3 +1,5 @@
+2.1.2:
++ New color palettes implemented
 2.1.1:
 + Calculation of p-values for gene set enrichment is activated by default
 2.1.0:

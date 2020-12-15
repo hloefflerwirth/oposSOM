@@ -103,8 +103,7 @@ pipeline.groupAssignment <- function(env)
     env$group.colors <- rep("", ncol(env$indata))
     for (i in seq_along(unique(env$group.labels)))
     {
-      env$group.colors[which(env$group.labels == unique(env$group.labels)[i])] <-
-        colorRampPalette(c("blue3", "blue", "lightblue", "green2", "gold", "red", "red3"))(length(unique(env$group.labels)))[i]
+      env$group.colors[which(env$group.labels == unique(env$group.labels)[i])] <- color.palette.discrete(length(unique(env$group.labels)))[i]
     }
     names(env$group.colors) <- names(env$group.labels)
     env$groupwise.group.colors <- env$group.colors[match(unique(env$group.labels), env$group.labels)]

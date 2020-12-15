@@ -355,8 +355,7 @@ pipeline.checkInputParameters <- function(env)
       
       for (i in seq_along(unique(env$group.labels)))
       {
-        env$group.colors[which(env$group.labels == unique(env$group.labels)[i])] <-
-          colorRampPalette(c("blue3", "blue", "green3", "gold", "red", "red3"))(length(unique(env$group.labels)))[i]
+        env$group.colors[which(env$group.labels == unique(env$group.labels)[i])] <- color.palette.discrete(length(unique(env$group.labels)))[i]
       }
     }
     
@@ -385,11 +384,11 @@ pipeline.checkInputParameters <- function(env)
     if( length(environment(env$color.palette.portraits))!=3 || !all( c("colors","ramp") %in% ls(environment(env$color.palette.portraits)) ) )
     {
       util.warn("Invalid value of \"color.palette.portraits\". Using standard scheme")
-      env$color.palette.portraits <- colorRampPalette(c("darkblue","blue","lightblue3","green3","yellow2","red2","darkred"))
+      env$color.palette.portraits <- color.palette.portraits
     }
   } else
   {
-    env$color.palette.portraits <- colorRampPalette(c("darkblue","blue","lightblue3","green3","yellow2","red2","darkred"))
+    env$color.palette.portraits <- color.palette.portraits
   }
   
   if (!is.null(env$color.palette.heatmaps)) # check if given color palette is a valid function
@@ -397,11 +396,11 @@ pipeline.checkInputParameters <- function(env)
     if( length(environment(env$color.palette.heatmaps))!=3 || !all( c("colors","ramp") %in% ls(environment(env$color.palette.heatmaps)) ) )
     {
       util.warn("Invalid value of \"color.palette.heatmaps\". Using standard scheme")
-      env$color.palette.heatmaps <- colorRampPalette(c("#2C7BB6","#64A4CC","#9CCEE3","#C6E5DB","#ECF6C8","#FEEDAA","#FDC980","#F89D59","#E75B3A","#D7191C"))
+      env$color.palette.heatmaps <- color.palette.heatmaps
     }
   } else
   {
-    env$color.palette.heatmaps <- colorRampPalette(c("#2C7BB6","#64A4CC","#9CCEE3","#C6E5DB","#ECF6C8","#FEEDAA","#FDC980","#F89D59","#E75B3A","#D7191C"))
+    env$color.palette.heatmaps <- color.palette.heatmaps
   }
   
   if(env$preferences$activated.modules$primary.analysis)

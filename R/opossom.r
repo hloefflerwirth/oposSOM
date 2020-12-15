@@ -30,6 +30,7 @@ opossom.new <- function(preferences=NULL)
   env$n.0.m <- NULL
   env$output.paths <- NULL
   env$pat.labels <- NULL
+	env$pat.colors <- NULL
   env$p.g.m <- NULL
   env$p.m <- NULL
   env$perc.DE.m <- NULL
