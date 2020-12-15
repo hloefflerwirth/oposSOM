@@ -514,14 +514,14 @@ pipeline.summarySheetsGroups <- function(env)
       }
 
       top.level <- rev(top.level)
-      diff.metadata <- list(rowMeans(metadata[, group.member]))
+      diff.metadata <- list(rowMeans(env$metadata[, group.member]))
 
       for (hi in seq(2, length(hc$height)))
       {
         mem <- rev(merges)[[hi]]
         tl <- rev(top.level)[hi]
 
-        diff.metadata[[hi]] <- rowMeans(metadata[, group.member[mem]])
+        diff.metadata[[hi]] <- rowMeans(env$metadata[, group.member[mem]])
         diff.metadata[[hi]][which(is.na(diff.metadata[[tl]]))] <- NA
         diff.metadata[[hi]][which(diff.metadata[[tl]] > quantile(diff.metadata[[tl]],0.9, na.rm=TRUE))] <- NA
         diff.metadata[[hi]][which(diff.metadata[[tl]] < quantile(diff.metadata[[tl]],0.1, na.rm=TRUE))] <- NA
@@ -548,7 +548,7 @@ pipeline.summarySheetsGroups <- function(env)
 
       for (ii in (if (length(group.member)<80) 1 else ceiling(length(merges)/3)):length(merges))
       {
-        m <- matrix(rowMeans(metadata[, group.member[merges[[ii]]]]), env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom)
+        m <- matrix(rowMeans(env$metadata[, group.member[merges[[ii]]]]), env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom)
 
         if (max(m) - min(m) != 0)
         {
@@ -572,7 +572,7 @@ pipeline.summarySheetsGroups <- function(env)
       {
         for (ii in seq_along(group.member))
         {
-          m <- matrix(metadata[, group.member[hc$order[ii]]],
+          m <- matrix(env$metadata[, group.member[hc$order[ii]]],
                       env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom)
 
           if (max(m) - min(m) != 0)
@@ -594,7 +594,7 @@ pipeline.summarySheetsGroups <- function(env)
 
       for (ii in (if (length(group.member)<80) 1 else ceiling(length(merges)/3)):length(merges))
       {
-        m <- matrix(rowMeans(env$metadata[, group.member[merges[[ii]]]]) - rowMeans(metadata[, group.member]),
+        m <- matrix(rowMeans(env$metadata[, group.member[merges[[ii]]]]) - rowMeans(env$metadata[, group.member]),
                     env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom)
 
         if (max(m,na.rm=TRUE) - min(m,na.rm=TRUE) != 0)
