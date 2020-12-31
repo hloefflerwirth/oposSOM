@@ -40,7 +40,7 @@ pipeline.genesetOverviews <- function(env)
     }
 
     rownames(top.scores) <-
-      paste(LETTERS[apply(summary.spots.fisher.p[rownames(top.scores), ,drop=FALSE], 1, which.min)],
+      paste(env$LETTERS[apply(summary.spots.fisher.p[rownames(top.scores), ,drop=FALSE], 1, which.min)],
             rownames(top.scores), sep="  ")
 
     colnames(top.scores) <- colnames(env$indata)
