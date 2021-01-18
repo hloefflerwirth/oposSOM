@@ -25,7 +25,7 @@ opossom.run(env)
 env <- opossom.new(list(dataset.name="Example",
                         dim.1stLvlSom=20))
 
-env$indata <- matrix(runif(1000), 100, 10)
+env$indata <- matrix(rnorm(1000), 100, 10)
 
 opossom.run(env)
 
