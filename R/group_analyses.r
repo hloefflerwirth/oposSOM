@@ -43,16 +43,14 @@ pipeline.groupAnalysis <- function(env)
   {
     samples.indata <- which(env$group.labels==unique(env$group.labels)[gr])
     
-    n <- length(samples.indata)
-    local.env$t.g.m[,gr] <- sqrt(n) * apply(env$indata[,samples.indata,drop=FALSE],1,function(x)
+    t.res <- apply(env$indata, 1, function(x) 
     {
-      sd.estimate = if( n>1 ) sd(x) else 1
-      if( sd.estimate == 0 ) sd.estimate = 1
-        
-      return( mean(x) / sd.estimate )
-    } )
-#    t.g.m[which(is.nan(t.g.m[,gr])|is.infinite(t.g.m[,gr])),gr] <- 0
-    local.env$p.g.m[,gr] <- 2 - 2*pt( abs(local.env$t.g.m[,gr]), max(n-1,1) )
+      t.res <- t.test(x[samples.indata],x[-samples.indata])
+      return(c(score=t.res$statistic,p=t.res$p.value))
+    })
+    
+    local.env$t.g.m[,gr] <- t.res["score.t",]
+    local.env$p.g.m[,gr] <- t.res["p",]
 
     suppressWarnings({
       try.res <- try({
