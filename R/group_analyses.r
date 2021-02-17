@@ -20,6 +20,7 @@ pipeline.groupAnalysis <- function(env)
   local.env$files.name <- env$files.name
   local.env$csv.function <- env$csv.function
   local.env$color.palette.portraits <- env$color.palette.portraits
+  local.env$color.palette.heatmaps <- env$color.palette.heatmaps
   
   # calculate differential expression statistics
 
