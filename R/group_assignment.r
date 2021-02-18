@@ -109,14 +109,10 @@ pipeline.groupAssignment <- function(env)
     env$groupwise.group.colors <- env$group.colors[match(unique(env$group.labels), env$group.labels)]
     names(env$groupwise.group.colors) <- unique(env$group.labels)
     
-    env$t.g.m <- env$t.g.m[,o]
     env$p.g.m <- env$p.g.m[,o]
     env$fdr.g.m <- env$fdr.g.m[,o]
-    env$Fdr.g.m <- env$Fdr.g.m[,o]
-    env$WAD.g.m <- env$WAD.g.m[,o]
     env$n.0.m <- env$n.0.m[o]
     env$perc.DE.m <- env$perc.DE.m[o]    
-    env$t.m <- env$t.m[,o]
     env$p.m <- env$p.m[,o]
     
     env$indata <- env$indata[,o]

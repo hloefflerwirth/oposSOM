@@ -72,9 +72,8 @@ pipeline.summarySheetsSamples <- function(env)
                          length(minus.fdr.genes), " -)"), adj=0)
 
     text(0.1, 0.35,  paste("<FC> =", round(mean(env$indata[,m]), 2)), adj=0)
-    text(0.1, 0.3, paste("<t-score> =", round(mean(env$t.g.m[,m]), 2)), adj=0)
-    text(0.1, 0.25,  paste("<p-value> =", round(10 ^ mean(log10(env$p.g.m[,m])), 2)), adj=0)
-    text(0.1, 0.2, paste("<fdr> =", round(mean(env$fdr.g.m[,m]), 2)), adj=0)
+    text(0.1, 0.3,  paste("<p-value> =", round(10 ^ mean(log10(env$p.g.m[,m])), 2)), adj=0)
+    text(0.1, 0.25, paste("<fdr> =", round(mean(env$fdr.g.m[,m]), 2)), adj=0)
 
     
     # portrait
@@ -212,12 +211,11 @@ pipeline.summarySheetsSamples <- function(env)
     plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=FALSE)
     axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=1)
     o <- order(env$p.g.m[,m])
-    lines(env$p.g.m[o,m], env$Fdr.g.m[o,m], lty=2, lwd=2)
     lines(env$p.g.m[o,m], env$fdr.g.m[o,m], lty=3, lwd=3)
 
-    legend("topright", c("p", expression(env$eta[0]), "Fdr", "fdr"),
-           col=c("black","gray","black","black"), lty=c(1,1,2,3),
-           lwd=c(1,1,1,2), cex=0.7)
+    legend("topright", c("p", expression(env$eta[0]), "fdr"),
+           col=c("black","gray","black"), lty=c(1,1,3),
+           lwd=c(1,1,2), cex=0.7)
 
     
     if (env$preferences$activated.modules$geneset.analysis)

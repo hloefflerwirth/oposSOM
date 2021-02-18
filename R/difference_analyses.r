@@ -37,7 +37,6 @@ pipeline.differenceAnalyses = function(env)
   
   local.env <- new.env()
   local.env$preferences <- env$preferences
-  local.env$t.ensID.m <- env$t.ensID.m
   local.env$gene.info <- env$gene.info
   local.env$gs.def.list <- env$gs.def.list
   local.env$som.result <- env$som.result
@@ -46,19 +45,10 @@ pipeline.differenceAnalyses = function(env)
   local.env$color.palette.portraits <- env$color.palette.portraits
   local.env$indata.gene.mean <- env$indata.gene.mean
 
-  local.env$WAD.g.m <- matrix(NA, nrow(env$indata), length(differences.list),
-                     dimnames=list(rownames(env$indata), names(differences.list)))
-
-  local.env$t.g.m <- matrix(NA, nrow(env$indata), length(differences.list),
-                   dimnames=list(rownames(env$indata), names(differences.list)))
-
   local.env$p.g.m <- matrix(NA, nrow(env$indata), length(differences.list),
                    dimnames=list(rownames(env$indata), names(differences.list)))
 
   local.env$fdr.g.m <- matrix(NA, nrow(env$indata), length(differences.list),
-                     dimnames=list(rownames(env$indata), names(differences.list)))
-
-  local.env$Fdr.g.m <- matrix(NA, nrow(env$indata), length(differences.list),
                      dimnames=list(rownames(env$indata), names(differences.list)))
 
   local.env$n.0.m <- rep(NA, length(differences.list))
@@ -84,21 +74,13 @@ pipeline.differenceAnalyses = function(env)
     metadata.d[,d] <- rowMeans(env$metadata[,samples.indata[[1]],drop=FALSE]) -
                         rowMeans(env$metadata[,samples.indata[[2]],drop=FALSE])
     
-    
-    n <- length(samples.indata[[1]])
-    m <- length(samples.indata[[2]])
-
-    S2.x <- apply(env$indata[,samples.indata[[1]],drop=FALSE],1,var)
-    S2.x[which(S2.x==0)] <- min(S2.x[which(S2.x!=0)])
-    S2.y <- apply(env$indata[,samples.indata[[2]],drop=FALSE],1,var)
-    S2.y[which(S2.y==0)] <- min(S2.y[which(S2.y!=0)])
-    
-    local.env$t.g.m[,d] <- indata.d[,d] / sqrt( S2.x/n + S2.y/m )
-
-    df <- ( S2.x/n + S2.y/m )^2  / ( S2.x^2 / (n^2*(n-1)) + S2.y^2 / (m^2*(m-1)) )
-    
-    local.env$p.g.m[,d] <- 2 - 2*pt( abs(local.env$t.g.m[,d]), df )
-    
+    local.env$p.g.m[,d] <- apply( env$indata, 1, function(x)
+    {
+      if( length(samples.indata[[1]])>1 && var(x[samples.indata[[1]]]) == 0 ) return(1) 
+      if( length(samples.indata[[2]])>1 && var(x[samples.indata[[2]]]) == 0 ) return(1) 
+      
+      return( t.test( x[samples.indata[[1]]], x[samples.indata[[2]]], paired=FALSE, var.equal=(length(samples.indata[[1]])==1 || length(samples.indata[[2]])==1 ) )$p.value )
+    } )
     
     suppressWarnings({
       try.res <- try({
@@ -109,21 +91,15 @@ pipeline.differenceAnalyses = function(env)
     if (!is(try.res,"try-error"))
     {
       local.env$fdr.g.m[,d] <- fdrtool.result$lfdr
-      local.env$Fdr.g.m[,d] <- fdrtool.result$qval
       local.env$n.0.m[d] <- fdrtool.result$param[1,"eta0"]
       local.env$perc.DE.m[d] <- 1 - local.env$n.0.m[d]
     } else
     {
       local.env$fdr.g.m[,d] <- local.env$p.g.m[,d]
-      local.env$Fdr.g.m[,d] <- local.env$p.g.m[,d]
       local.env$n.0.m[d] <- 0.5
       local.env$perc.DE.m[d] <- 0.5
     }
 
-    delta.e.g.m <- indata.d[,d]
-
-    w.g.m <- (delta.e.g.m - min(delta.e.g.m)) / (max(delta.e.g.m) - min(delta.e.g.m))
-    local.env$WAD.g.m[,d] <- w.g.m * delta.e.g.m
   }
 
   local.env$indata <- indata.d
@@ -144,13 +120,18 @@ pipeline.differenceAnalyses = function(env)
 
   if (local.env$preferences$activated.modules$geneset.analysis)
   {
-    if (ncol(local.env$t.g.m) == 1)
+    if (ncol(local.env$indata) == 1)   # crack for by command, which requires >=2 columns
     {
-      # crack for by command, which requires >=2 columns
-      local.env$t.g.m <- cbind(local.env$t.g.m, local.env$t.g.m)
+      local.env$indata <- cbind(local.env$indata, local.env$indata)
+      local.env <- pipeline.detectSpotsSamples(local.env)
+      local.env <- pipeline.genesetStatisticSamples(local.env)
+      local.env$indata <- local.env$indata[,1,drop=FALSE]
+      local.env$spot.list.samples <- local.env$spot.list.samples[1]
+      local.env$samples.GSZ.scores <- local.env$samples.GSZ.scores[,1,drop=FALSE]
+    } else
+    {
+      local.env <- pipeline.genesetStatisticSamples(local.env)
     }
-
-    local.env <- pipeline.genesetStatisticSamples(local.env)
   }
 
   pipeline.geneLists(local.env)

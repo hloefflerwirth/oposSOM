@@ -47,9 +47,9 @@ GeneSet.Fisher <- function(list.ids, all.ids, gs.def.list, sort=FALSE)
   return(p.values[o])
 }
 
-Sample.GSZ <- function(gene.set,t.ensID.m,mean.t.all,sd.t.all)
+Sample.GSZ <- function(gene.set,ex.ensID.m,mean.ex.all,sd.ex.all)
 {
-  mean.t.set <- colMeans( t.ensID.m[gene.set$Genes,] )
+  mean.ex.set <- colMeans( ex.ensID.m[gene.set$Genes,] )
   
-  GSZ <- sqrt(length(gene.set$Genes)) * ( mean.t.set - mean.t.all ) / sd.t.all
+  GSZ <- sqrt(length(gene.set$Genes)) * ( mean.ex.set - mean.ex.all ) / sd.ex.all
 }

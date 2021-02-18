@@ -13,7 +13,6 @@ pipeline.groupAnalysis <- function(env)
 
   local.env <- new.env()
   local.env$preferences <- env$preferences
-  local.env$t.ensID.m <- env$t.ensID.m
   local.env$gene.info <- env$gene.info
   local.env$gs.def.list <- env$gs.def.list
   local.env$som.result <- env$som.result
@@ -24,15 +23,9 @@ pipeline.groupAnalysis <- function(env)
   
   # calculate differential expression statistics
 
-  local.env$WAD.g.m <- matrix(NA, nrow(env$indata), length(unique(env$group.labels)),
-                     dimnames=list(rownames(env$indata), unique(env$group.labels)))
-  local.env$t.g.m <- matrix(NA, nrow(env$indata), length(unique(env$group.labels)),
-                   dimnames=list(rownames(env$indata), unique(env$group.labels)))
   local.env$p.g.m <- matrix(NA, nrow(env$indata), length(unique(env$group.labels)),
                    dimnames=list(rownames(env$indata), unique(env$group.labels)))
   local.env$fdr.g.m <- matrix(NA, nrow(env$indata), length(unique(env$group.labels)),
-                     dimnames=list(rownames(env$indata), unique(env$group.labels)))
-  local.env$Fdr.g.m <- matrix(NA, nrow(env$indata), length(unique(env$group.labels)),
                      dimnames=list(rownames(env$indata), unique(env$group.labels)))
   local.env$n.0.m <- rep(NA, length(unique(env$group.labels)))
     names(env$n.0.m) <- unique(env$group.labels)
@@ -43,20 +36,17 @@ pipeline.groupAnalysis <- function(env)
   for (gr in seq_along(unique(env$group.labels)))
   {
     samples.indata <- which(env$group.labels==unique(env$group.labels)[gr])
-    
-    t.res <- apply(env$indata, 1, function(x) 
-    {
-      t.res <- t.test(x[samples.indata],x[-samples.indata])
-      return(c(score=t.res$statistic,p=t.res$p.value))
-    })
-    
-    local.env$t.g.m[,gr] <- t.res["score.t",]
-    local.env$p.g.m[,gr] <- t.res["p",]
 
+    local.env$p.g.m[,gr] <- apply( env$indata, 1, function(x)
+    {
+      if( var(x[-samples.indata]) == 0 ) return(1) 
+      
+      return( t.test( x[samples.indata], x[-samples.indata], var.equal=length(samples.indata)==1 )$p.value )
+    } )
+      
     suppressWarnings({
       try.res <- try({
         fdrtool.result <- fdrtool(local.env$p.g.m[,gr], statistic="pvalue", verbose=FALSE, plot=FALSE)
-#        fdrtool.result <- fdrtool(t.g.m[,gr], verbose=FALSE, plot=FALSE)
       }, silent=TRUE)
     })
     
@@ -64,22 +54,15 @@ pipeline.groupAnalysis <- function(env)
     {
 #      p.g.m[,gr] <- fdrtool.result$pval
       local.env$fdr.g.m[,gr] <- fdrtool.result$lfdr
-      local.env$Fdr.g.m[,gr] <- fdrtool.result$qval
       local.env$n.0.m[gr] <- fdrtool.result$param[1,"eta0"]
       local.env$perc.DE.m[gr] <- 1 - local.env$n.0.m[gr]
     } else
     {
 #      p.g.m[,gr] <- order(apply(indata[,samples.indata,drop=FALSE],1,mean)) / nrow(indata)
       local.env$fdr.g.m[,gr] <- local.env$p.g.m[,gr]
-      local.env$Fdr.g.m[,gr] <- local.env$p.g.m[,gr]
       local.env$n.0.m[gr] <- 0.5
       local.env$perc.DE.m[gr] <- 0.5
-    }
-    
-    delta.e.g.m <- apply(env$indata[,samples.indata,drop=FALSE],1,mean)
-
-    local.env$w.g.m <- (delta.e.g.m - min(delta.e.g.m)) / (max(delta.e.g.m) - min(delta.e.g.m))
-    local.env$WAD.g.m[,gr] <- local.env$w.g.m * delta.e.g.m
+    }    
   }
   
   
@@ -103,7 +86,6 @@ pipeline.groupAnalysis <- function(env)
   local.env$group.labels <- env$group.labels[match(colnames(local.env$indata), env$group.labels)]
   names(local.env$group.labels) <- local.env$group.labels
   names(local.env$group.colors) <- local.env$group.labels
-
 
 
 

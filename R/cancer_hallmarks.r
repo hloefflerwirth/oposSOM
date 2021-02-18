@@ -74,10 +74,10 @@ pipeline.cancerHallmarks <- function(env)
   {  
     hallmark.sets.list <- lapply(hallmark.sets.genes, function(x) list(Genes=x,Type=""))
   
-    mean.t.all <- colMeans( env$t.ensID.m )
-    sd.t.all <- apply( env$t.ensID.m, 2, sd )
+    mean.ex.all <- colMeans( env$indata.ensID.m )
+    sd.ex.all <- apply( env$indata.ensID.m, 2, sd )
     
-    hallmark.GSZ.matrix <- t( sapply( hallmark.sets.list, Sample.GSZ, env$t.ensID.m, mean.t.all, sd.t.all ) )
+    hallmark.GSZ.matrix <- t( sapply( hallmark.sets.list, Sample.GSZ, env$indata.ensID.m, mean.ex.all, sd.ex.all ) )
 
     hallmark.spot.enrichment <- unlist(sapply( env[[paste("spot.list.",env$preferences$standard.spot.modules,sep="")]]$spots, function(x)
     {

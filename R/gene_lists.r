@@ -51,11 +51,8 @@ pipeline.geneLists <- function(env)
   
       out <- cbind(out,
                    logFC=env$indata[o, m],
-                   WAD=env$WAD.g.m[o, m],
-                   T.Score=env$t.g.m[o, m],
                    p.value=paste(env$p.g.m[o, m],"     ."),
                    fdr=paste(env$fdr.g.m[o, m],"     ."),
-                   Fdr=paste(env$Fdr.g.m[o, m],"     ."),
                    Metagene=env$gene.info$coordinates[o],
                    Spot=genes.spot.assoc[o],
                    Chromosome=paste( env$gene.info$chr.name[rownames(env$indata)[o]], env$gene.info$chr.band[rownames(env$indata)[o]]),
@@ -73,7 +70,6 @@ pipeline.geneLists <- function(env)
       writeLines(paste("#genes with fdr < 0.01" ,"", length(which(env$fdr.g.m[,m] < 0.01)) , sep=";"), f)
       writeLines("", f)
       writeLines(paste("<FC> =", round(mean(env$indata[,m]), 2))  ,f)
-      writeLines(paste("<t-score> =", round(mean(env$t.g.m[,m]), 2))  ,f)
       writeLines(paste("<p-value> =", round(10 ^ mean(log10(env$p.g.m[,m])), 2))  ,f)
       writeLines(paste("<fdr> =", round(mean(env$fdr.g.m[,m]), 2))  ,f)
       writeLines("", f);  writeLines("", f);  writeLines("", f)

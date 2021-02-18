@@ -5,7 +5,6 @@ opossom.new <- function(preferences=NULL)
   env <- new.env()
   env$color.palette.portraits <- NULL
   env$color.palette.heatmaps <- NULL
-  env$Fdr.g.m <- NULL
   env$fdr.g.m <- NULL
   env$files.name <- NULL
   env$gene.info <- NULL
@@ -37,11 +36,7 @@ opossom.new <- function(preferences=NULL)
   env$psf.results.samples <- NULL
   env$psf.results.groups <- NULL
   env$som.result <- NULL
-  env$t.g.m <- NULL
-	env$t.ensID.m <- NULL
-  env$t.m <- NULL
   env$groupwise.group.colors <- NULL
-  env$WAD.g.m <- NULL
   env$csv.function <- write.csv2
 
   # Generate some additional letters
@@ -151,7 +146,7 @@ opossom.run <- function(env)
     save(env, file=filename)
     
     util.info("Processing Differential Expression Statistics")
-    env <- pipeline.calcStatistics(env)
+    env <- pipeline.diffExpressionStatistics(env)
 
     util.info("Detecting Spots")
     env <- pipeline.detectSpotsSamples(env)
