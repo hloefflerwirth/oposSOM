@@ -150,7 +150,7 @@ opossom.run <- function(env)
 
     util.info("Detecting Spots")
     env <- pipeline.detectSpotsSamples(env)
-    env <- pipeline.detectSpotsIntegral(env)
+    env <- pipeline.detectSpotsModules(env)
     env <- pipeline.patAssignment(env)
     env <- pipeline.groupAssignment(env)
   }
@@ -159,7 +159,7 @@ opossom.run <- function(env)
   {
     util.info("Calculating Geneset Enrichment")
     env <- pipeline.genesetStatisticSamples(env)
-    env <- pipeline.genesetStatisticIntegral(env)
+    env <- pipeline.genesetStatisticModules(env)
   }
   
   if (env$preferences$activated.modules$psf.analysis)

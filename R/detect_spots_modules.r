@@ -1,4 +1,4 @@
-pipeline.detectSpotsIntegral <- function(env)
+pipeline.detectSpotsModules <- function(env)
 {
   metadata.scaled <- apply(env$metadata, 2, function(x)
   {

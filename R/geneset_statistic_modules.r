@@ -1,4 +1,4 @@
-pipeline.genesetStatisticIntegral <- function(env)
+pipeline.genesetStatisticModules <- function(env)
 {
   spot.fisher.p <- function(spot)
   {
