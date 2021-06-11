@@ -163,7 +163,7 @@ pipeline.prepareAnnotation <- function(env)
     util.info("Download of", length(env$gs.def.list), "GO sets with", sum(sapply(sapply(env$gs.def.list, head, 1), length)), "entries")
 
     ## simple small-gs-filtering
-    env$gs.def.list <- env$gs.def.list[ which(sapply(sapply(env$gs.def.list, head, 1), length) >= 20)]
+    env$gs.def.list <- env$gs.def.list[ which( sapply(env$gs.def.list, function(x) length(x$Genes)) >= 20 ) ]
     util.info("Filtered to", length(env$gs.def.list), "GO sets with", sum(sapply(sapply(env$gs.def.list, head, 1), length)), "entries")
 
     biomart.table[,4] <- sub("biological_process", "BP", biomart.table[,4])

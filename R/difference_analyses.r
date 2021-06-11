@@ -43,6 +43,7 @@ pipeline.differenceAnalyses = function(env)
   local.env$files.name <- env$files.name
   local.env$csv.function <- env$csv.function
   local.env$color.palette.portraits <- env$color.palette.portraits
+  local.env$color.palette.heatmaps <- env$color.palette.heatmaps
   local.env$indata.gene.mean <- env$indata.gene.mean
 
   local.env$p.g.m <- matrix(NA, nrow(env$indata), length(differences.list),
