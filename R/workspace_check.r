@@ -139,10 +139,6 @@ workspace.check <- function(env)
 
   # Geneset objects
 
-  if (is.null(env$gene.info$ensembl.mapping))
-  {
-    cat("ensembl.mapping: missing in gene.info object\n"); flush.console()
-  }
   if (!is.null(env$gs.def.list))
   {
     unique.ens.ids <- unique(env$gene.info$ensembl.mapping$ensembl_gene_id)

@@ -63,7 +63,7 @@ som.training.phase <- function(indata, weightMatrix, metricSamples, epochs,
       if( progressbar$getVal() == 0 )
       {
         past.runtime = as.double(difftime( Sys.time(),t1, units="secs"))
-        util.info("Remaining time for SOM training: ~", ceiling(11*past.runtime/60), "min = ~", round(11*past.runtime/3600,1),"h")      
+        util.info("Remaining time for SOM training: ~", ceiling((epochs-1+epochs*5)*past.runtime/60), "min = ~", round((epochs-1+epochs*5)*past.runtime/3600,1),"h")      
       } 
       setTxtProgressBar( progressbar, progressbar$getVal()+1 )
     }
@@ -100,7 +100,7 @@ som.training <- function( indata, weightMatrix, metricSamples, prolongationFacto
 {
   if( missing(metricSamples) ) metricSamples <- seq( ncol(indata) )
 
-  if(verbose) { pb <-newProgressBar(min = 0, max = 12); cat("\r") } else pb <- NULL
+  if(verbose) { pb <-newProgressBar(min = 0, max = 12*prolongationFactor); cat("\r") } else pb <- NULL
   
   somSize <- sqrt(nrow(weightMatrix))
 
