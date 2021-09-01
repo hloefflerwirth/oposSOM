@@ -1,12 +1,30 @@
 pipeline.detectSpotsModules <- function(env)
 {
+  env <- pipeline.detectOverexpressionModules(env)
+  env <- pipeline.detectUnderexpressionModules(env)
+  env <- pipeline.detectCorrelationModules(env)
+  env <- pipeline.detectKMeansModules(env)
+  env <- pipeline.detectGroupOverexpressionModules(env)
+  env <- pipeline.detectDMapModules(env)
+  
+  # check standard spot modules
+  if( length( env[[paste("spot.list.", env$preferences$standard.spot.modules,sep="")]]$spots ) < 2 )
+  {
+    env$preferences$standard.spot.modules <- "kmeans"
+    util.warn("Invalid value of \"standard.spot.modules\": Too few spots detected. Using \"kmeans\"")
+  } 
+  
+  return(env)
+}
+  
+  
+pipeline.detectOverexpressionModules <- function(env)
+{
   metadata.scaled <- apply(env$metadata, 2, function(x)
   {
     (x-min(x)) / (max(x)-min(x))
   })
-
-  ##### Overexpression Spots ######
-
+  
   # extract sample modules
   sample.spot.list <- list()
   sample.spot.core.list <- list()
@@ -253,9 +271,17 @@ pipeline.detectSpotsModules <- function(env)
 
   colnames(env$spot.list.overexpression$spotdata) <- colnames(env$indata)
 
+  return(env)   
+}
 
-  ##### Underexpression Spots ######
 
+pipeline.detectUnderexpressionModules <- function(env)
+{
+  metadata.scaled <- apply(env$metadata, 2, function(x)
+  {
+    (x-min(x)) / (max(x)-min(x))
+  })
+  
   ## extract sample modules ##
   sample.spot.list <- list()
   sample.spot.core.list <- list()
@@ -500,8 +526,12 @@ pipeline.detectSpotsModules <- function(env)
 
   colnames(env$spot.list.underexpression$spotdata) <- colnames(env$indata)
 
+  return(env)   
+}
 
-  ##### Correlation Cluster ######
+
+pipeline.detectCorrelationModules <- function(env)
+{
   env$spot.list.correlation <- list()
   env$spot.list.correlation$overview.map <- NA
   env$spot.list.correlation$overview.mask <- rep(NA, env$preferences$dim.1stLvlSom ^ 2)
@@ -579,8 +609,12 @@ pipeline.detectSpotsModules <- function(env)
 
   colnames(env$spot.list.correlation$spotdata) <- colnames(env$indata)
 
+  return(env)   
+}
 
-  ##### K-Means Clustering #####
+
+pipeline.detectKMeansModules <- function(env)
+{
   n.cluster <- ceiling( env$preferences$dim.1stLvlSom / 2 )
   prototypes <- env$metadata[round(seq(1, env$preferences$dim.1stLvlSom^2, length.out=n.cluster)),]
   res <- kmeans(env$metadata, prototypes)
@@ -637,9 +671,13 @@ pipeline.detectSpotsModules <- function(env)
     }))
 
   colnames(env$spot.list.kmeans$spotdata) <- colnames(env$indata)
+  
+  return(env)   
+}
 
 
-  ##### Group Spots ######
+pipeline.detectGroupOverexpressionModules <- function(env)
+{
   if (length(unique(env$group.labels)) > 1)
   {
     group.metadata <- do.call(cbind, by(t(env$metadata), env$group.labels, colMeans))[,unique(env$group.labels)]
@@ -904,9 +942,12 @@ pipeline.detectSpotsModules <- function(env)
     colnames(env$spot.list.group.overexpression$spotdata) <- colnames(env$indata)
   }
   
+  return(env)   
+}
+
   
-  
-	#### Distance Map Spots ####
+pipeline.detectDMapModules <- function(env)
+{
   uh <- rep(NA, env$preferences$dim.1stLvlSom^2)
   
   for (i in 1:env$preferences$dim.1stLvlSom^2)
@@ -1056,12 +1097,5 @@ pipeline.detectSpotsModules <- function(env)
   
   colnames(env$spot.list.dmap$spotdata) <- colnames(env$indata)
   
-  # check standard spot modules
-  if( length( env[[paste("spot.list.", env$preferences$standard.spot.modules,sep="")]]$spots ) < 2 )
-  {
-    env$preferences$standard.spot.modules <- "kmeans"
-    util.warn("Invalid value of \"standard.spot.modules\": Too few spots detected. Using \"kmeans\"")
-  } 
-
- return(env)   
+  return(env)   
 }
