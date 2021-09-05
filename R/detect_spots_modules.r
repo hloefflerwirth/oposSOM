@@ -1050,28 +1050,28 @@ pipeline.detectDMapModules <- function(env)
       }
     }))
   
-  sig.spots <- which( apply( env$spot.list.dmap$spotdata, 1, function(x) sd(x) > sd(env$spot.list.dmap$spotdata,na.rm=T) ) )
-  if( length(sig.spots) > 0 )
-  {
-    env$spot.list.dmap$spots <- env$spot.list.dmap$spots[sig.spots]
-    env$spot.list.dmap$overview.mask[which(!env$spot.list.dmap$overview.mask%in%sig.spots)] <- NA
-    env$spot.list.dmap$overview.mask[!is.na(env$spot.list.dmap$overview.mask  )] <-
-      match(env$spot.list.dmap$overview.mask[!is.na(env$spot.list.dmap$overview.mask)], sort(unique(na.omit(as.vector(env$spot.list.dmap$overview.mask)))))
-  }
+  # sig.spots <- which( apply( env$spot.list.dmap$spotdata, 1, function(x) sd(x) > sd(env$spot.list.dmap$spotdata,na.rm=T) ) )
+  # if( length(sig.spots) > 0 )
+  # {
+  #   env$spot.list.dmap$spots <- env$spot.list.dmap$spots[sig.spots]
+  #   env$spot.list.dmap$overview.mask[which(!env$spot.list.dmap$overview.mask%in%sig.spots)] <- NA
+  #   env$spot.list.dmap$overview.mask[!is.na(env$spot.list.dmap$overview.mask  )] <-
+  #     match(env$spot.list.dmap$overview.mask[!is.na(env$spot.list.dmap$overview.mask)], sort(unique(na.omit(as.vector(env$spot.list.dmap$overview.mask)))))
+  # }
   
-  start.spot <- which.min( apply( sapply(env$spot.list.dmap$spots, function(x) x$position ), 2, min ) )
+  # start.spot <- which.min( apply( sapply(env$spot.list.dmap$spots, function(x) x$position ), 2, min ) )
   
   spot.arcs <- sapply(env$spot.list.dmap$spots, function(x)
   {
     -atan2(x$position['y'] - env$preferences$dim.1stLvlSom / 2, x$position['x'] - env$preferences$dim.1stLvlSom / 2)
   })
   
-  spot.arcs <- spot.arcs - spot.arcs[start.spot]
+  # spot.arcs <- spot.arcs - spot.arcs[start.spot]
   
-  if (any(spot.arcs<0))
-  {
-    spot.arcs[which(spot.arcs<0)] <- spot.arcs[which(spot.arcs<0)] + (2 * pi)
-  }
+  # if (any(spot.arcs<0))
+  # {
+  #   spot.arcs[which(spot.arcs<0)] <- spot.arcs[which(spot.arcs<0)] + (2 * pi)
+  # }
   
   
   
