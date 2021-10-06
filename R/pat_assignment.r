@@ -16,6 +16,7 @@ pipeline.patAssignment <- function(env)
 
   thresh.global <- sd(as.vector(spot.list$spotdata))
   spot.counts <- rowSums( spot.list$spotdata > thresh.global )
+  spot.counts <- spot.counts[which(spot.counts>0)]
   spot.order <- order(spot.counts,decreasing = T)
   
   env$pat.labels <- apply( spot.list$spotdata, 2, function(x)
