@@ -132,6 +132,7 @@ pipeline.prepareAnnotation <- function(env)
     gene.positions.table <- cbind( env$gene.info$chr.name, env$gene.info$chr.band )
     gene.positions.table <- gene.positions.table[ which( gene.positions.table[,1] != "" & gene.positions.table[,2] != "" ) , ]
     skip.chrnames <- names(which(table(env$gene.info$chr.name) < 20)) # filter low abundand chromosome information
+    skip.chrnames <- union( skip.chrnames,  unique(env$gene.info$chr.name)[ which(nchar( unique(env$gene.info$chr.name) ) >= 8) ]   )  # filter strange CHR_ chromosomes
     gene.positions.table <- gene.positions.table[ which( !gene.positions.table[,1] %in% skip.chrnames ) , ]
       
     if(nrow(gene.positions.table)>0)
