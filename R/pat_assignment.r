@@ -32,10 +32,10 @@ pipeline.patAssignment <- function(env)
     while( sort(table(env$pat.labels))[1] < length(env$pat.labels)*0.01 )
     {
       pat.to.merge <- find.next.merge.pat( env$pat.labels, spot.counts )
-      least.freq.spot <- names(sort(spot.counts[ strsplit(pat.to.merge," ")[[1]] ])[1])
-      pat.after.merge <- sub(least.freq.spot,"",pat.to.merge)
-      pat.after.merge <- sub("  "," ",pat.after.merge)
-      pat.after.merge <- sub("^ | $","",pat.after.merge)  
+			pat.to.merge.split <- strsplit(pat.to.merge," ")[[1]]
+      least.freq.spot <- names(sort(spot.counts[ pat.to.merge.split ])[1])
+			pat.after.merge <- pat.to.merge.split[which(pat.to.merge.split!=least.freq.spot)]
+			pat.after.merge <- paste(pat.after.merge,collapse=" ")
       env$pat.labels[which(env$pat.labels==pat.to.merge)] <- pat.after.merge
     } 
   
