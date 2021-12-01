@@ -80,7 +80,9 @@ pipeline.differenceAnalyses = function(env)
       if( length(samples.indata[[1]])>1 && var(x[samples.indata[[1]]]) == 0 ) return(1) 
       if( length(samples.indata[[2]])>1 && var(x[samples.indata[[2]]]) == 0 ) return(1) 
       
-      return( t.test( x[samples.indata[[1]]], x[samples.indata[[2]]], paired=FALSE, var.equal=(length(samples.indata[[1]])==1 || length(samples.indata[[2]])==1 ) )$p.value )
+			p <- t.test( x[samples.indata[[1]]], x[samples.indata[[2]]], paired=FALSE, var.equal=(length(samples.indata[[1]])==1 || length(samples.indata[[2]])==1 ) )$p.value
+			if( p < 1e-16) p <- 1e-16
+      return( p )
     } )
     
     suppressWarnings({
