@@ -40,8 +40,9 @@ pipeline.groupAnalysis <- function(env)
     local.env$p.g.m[,gr] <- apply( env$indata, 1, function(x)
     {
       if( var(x[-samples.indata]) == 0 ) return(1) 
-      
-      return( t.test( x[samples.indata], x[-samples.indata], var.equal=length(samples.indata)==1 )$p.value )
+      p <- t.test( x[samples.indata], x[-samples.indata], var.equal=length(samples.indata)==1 )$p.value
+			if( p < 1e-16) p <- 1e-16
+      return( p )
     } )
       
     suppressWarnings({
