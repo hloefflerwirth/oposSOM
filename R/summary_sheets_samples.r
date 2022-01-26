@@ -161,37 +161,42 @@ pipeline.summarySheetsSamples <- function(env)
     text(x.coords, rep(c(0.82, 0.80), 4)[1:7],
          c("Rank", "ID", "log(FC)", "p-value", "fdr", "Metagene", "Description"),
          cex=1, adj=0)
-    text(x.coords[1], 0.77, "Overexpressed", cex=0.8, adj=0, font=3)
     
-    text(x.coords[1], y.coords, c(1:n.genes), adj=0)
-    text(x.coords[2], y.coords, de.genes.labels, cex=0.6, adj=0)
-    rect(x.coords[3]-0.02, y.coords[1]+0.01, 1, 0, border="white", col="white")
-    text(x.coords[3], y.coords, round(env$indata[de.genes, m], 2), cex=0.6, adj=0)
-    text(x.coords[4], y.coords, format(env$p.g.m[de.genes, m], digits=1), cex=0.6, adj=0)
-    text(x.coords[5], y.coords, format(env$fdr.g.m[de.genes, m], digits=1), cex=0.6, adj=0)
-    text(x.coords[6], y.coords, env$gene.info$coordinates[de.genes], cex=0.6, adj=0)
-    text(x.coords[7], y.coords, env$gene.info$descriptions[de.genes], cex=0.6, adj=0)
-
+    if( length(de.genes)>0 )
+    {
+      text(x.coords[1], 0.77, "Overexpressed", cex=0.8, adj=0, font=3)
+      
+      text(x.coords[1], y.coords, c(1:n.genes), adj=0)
+      text(x.coords[2], y.coords, de.genes.labels, cex=0.6, adj=0)
+      rect(x.coords[3]-0.02, y.coords[1]+0.01, 1, 0, border="white", col="white")
+      text(x.coords[3], y.coords, round(env$indata[de.genes, m], 2), cex=0.6, adj=0)
+      text(x.coords[4], y.coords, format(env$p.g.m[de.genes, m], digits=1), cex=0.6, adj=0)
+      text(x.coords[5], y.coords, format(env$fdr.g.m[de.genes, m], digits=1), cex=0.6, adj=0)
+      text(x.coords[6], y.coords, env$gene.info$coordinates[de.genes], cex=0.6, adj=0)
+      text(x.coords[7], y.coords, env$gene.info$descriptions[de.genes], cex=0.6, adj=0)
+    }
     
     de.genes <- names(sort(env$p.g.m[,m]))
-    de.genes <- de.genes[ which(env$indata[de.genes,m]<0) ][1:n.genes]
+    de.genes <- na.omit(  de.genes[ which(env$indata[de.genes,m]<0) ][1:n.genes]  )
     
-    de.genes.labels <- env$gene.info$names[de.genes]
-    de.genes.labels[which(de.genes.labels=="")] <- de.genes[which(de.genes.labels=="")]
-    
-    y.coords <- seq(0.35, 0.02, length.out=n.genes)
-    
-    text(x.coords[1], 0.37, "Underexpressed", cex=0.8, adj=0, font=3)
-    
-    text(x.coords[1], y.coords, c(1:n.genes), adj=0)
-    text(x.coords[2], y.coords, de.genes.labels, cex=0.6, adj=0)
-    rect(x.coords[3]-0.02, y.coords[1]+0.01, 1, 0, border="white", col="white")
-    text(x.coords[3], y.coords, round(env$indata[de.genes, m], 2), cex=0.6, adj=0)
-    text(x.coords[4], y.coords, format(env$p.g.m[de.genes, m], digits=1), cex=0.6, adj=0)
-    text(x.coords[5], y.coords, format(env$fdr.g.m[de.genes, m], digits=1), cex=0.6, adj=0)
-    text(x.coords[6], y.coords, env$gene.info$coordinates[de.genes], cex=0.6, adj=0)
-    text(x.coords[7], y.coords, env$gene.info$descriptions[de.genes], cex=0.6, adj=0)
-    
+    if( length(de.genes)>0 )
+    {
+      de.genes.labels <- env$gene.info$names[de.genes]
+      de.genes.labels[which(de.genes.labels=="")] <- de.genes[which(de.genes.labels=="")]
+      
+      y.coords <- seq(0.35, 0.02, length.out=n.genes)
+      
+      text(x.coords[1], 0.37, "Underexpressed", cex=0.8, adj=0, font=3)
+      
+      text(x.coords[1], y.coords, c(1:n.genes), adj=0)
+      text(x.coords[2], y.coords, de.genes.labels, cex=0.6, adj=0)
+      rect(x.coords[3]-0.02, y.coords[1]+0.01, 1, 0, border="white", col="white")
+      text(x.coords[3], y.coords, round(env$indata[de.genes, m], 2), cex=0.6, adj=0)
+      text(x.coords[4], y.coords, format(env$p.g.m[de.genes, m], digits=1), cex=0.6, adj=0)
+      text(x.coords[5], y.coords, format(env$fdr.g.m[de.genes, m], digits=1), cex=0.6, adj=0)
+      text(x.coords[6], y.coords, env$gene.info$coordinates[de.genes], cex=0.6, adj=0)
+      text(x.coords[7], y.coords, env$gene.info$descriptions[de.genes], cex=0.6, adj=0)
+    }  
     
     # p-value histogram
     
