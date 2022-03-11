@@ -140,7 +140,7 @@ pipeline.sampleSimilarityAnalysisSOM <- function(env)
     yl <- c(0,21)
   
     plot( 0, type="n", axes=FALSE, xlab="", ylab="", xlim=xl, ylim=yl, xaxs="i", yaxs="i",main=paste("Sample SOM on",n), cex.main=1)  
-    
+
     if (length(unique(env$group.labels)) > 1)
     {
       legend("topright", as.character(unique(env$group.labels)), cex=0.5,
@@ -152,8 +152,8 @@ pipeline.sampleSimilarityAnalysisSOM <- function(env)
     {
       
       which.samples <-
-        intersect(which(coord.bins[secLvlSom$feature.coords[,"x"]+1] == coord.bins[secLvlSom$node.summary[j,"x"]+1]),
-                  which(coord.bins[secLvlSom$feature.coords[,"y"]+1] == coord.bins[secLvlSom$node.summary[j,"y"]+1]))
+        intersect(which(coord.bins[secLvlSom$feature.coords[,"x"]] == coord.bins[secLvlSom$node.summary[j,"x"]]),
+                  which(coord.bins[secLvlSom$feature.coords[,"y"]] == coord.bins[secLvlSom$node.summary[j,"y"]]))
   
       if (!is.na(which.samples[1]))
       {
@@ -168,20 +168,20 @@ pipeline.sampleSimilarityAnalysisSOM <- function(env)
         x <- pixmapIndexed(m , col=env$color.palette.portraits(1000), cellres=10)
   
         addlogo(x,
-                coord.bins[secLvlSom$feature.coords[which.samples[1],"x"]+1]+c(-0.45,0.455),
-                coord.bins[secLvlSom$feature.coords[which.samples[1],"y"]+1]+c(-0.45,0.45))
+                coord.bins[secLvlSom$feature.coords[which.samples[1],"x"]]+c(-0.45,0.455),
+                coord.bins[secLvlSom$feature.coords[which.samples[1],"y"]]+c(-0.45,0.45))
   
         which.samples <- which.samples[1:min(9, length(which.samples))]
   
         x.seq <- c(0,0.3,0,-0.3,0,-0.3,0.3,-0.3,0.3)[seq_along(which.samples)]
         y.seq <- c(0,0,0.3,0,-0.3,-0.3,-0.3,0.3,0.3)[seq_along(which.samples)]
   
-        points(coord.bins[secLvlSom$feature.coords[which.samples[1],"x"]+1]+x.seq,
-               coord.bins[secLvlSom$feature.coords[which.samples[1],"y"]+1]+y.seq,
+        points(coord.bins[secLvlSom$feature.coords[which.samples[1],"x"]]+x.seq,
+               coord.bins[secLvlSom$feature.coords[which.samples[1],"y"]]+y.seq,
                pch=16, col=env$group.colors[which.samples], cex=1.2)
   
-        points(coord.bins[secLvlSom$feature.coords[which.samples[1],"x"]+1]+x.seq,
-               coord.bins[secLvlSom$feature.coords[which.samples[1],"y"]+1]+y.seq,
+        points(coord.bins[secLvlSom$feature.coords[which.samples[1],"x"]]+x.seq,
+               coord.bins[secLvlSom$feature.coords[which.samples[1],"y"]]+y.seq,
                pch=1, col="gray20", cex=1.2, lwd=1)
       }
     }
