@@ -1,3 +1,5 @@
+2.1.9:
++ Bugfix in PAT group assignment with only one unique PAT
 2.1.8:
 + Bugfix in sample SOM visualization with portraits
 2.1.7:

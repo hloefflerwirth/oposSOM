@@ -16,12 +16,9 @@ pipeline.groupAssignment <- function(env)
     
     if( length(pat.labels.test) <= 1 )
     {
-      util.warn("Too few different PATs for clustering. Using all PATs as classes.")
+      util.warn("Too few different PATs for clustering. PATs as classes.")
       
-      # assign new groups 
-      
-      env$group.labels <- apply( sample.pat.distances[pat.labels.sorted[1:length(pat.labels.sorted)],,drop=FALSE], 2, function(x) names(x)[which.min(x)] )
-      env$group.labels <- paste( env$group.labels, "*" )
+      env$group.labels <- env$pat.labels  
       names(env$group.labels) <- colnames(env$indata)
       
     } else
@@ -129,7 +126,7 @@ pipeline.groupAssignment <- function(env)
   if (length(unique(env$group.labels)) < 2)
   {
     env$group.silhouette.coef <- rep(100, ncol(env$indata))
-    return()
+    return(env)
   }
 
 
