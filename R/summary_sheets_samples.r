@@ -44,8 +44,8 @@ pipeline.summarySheetsSamples <- function(env)
                           length(plus.fdr.genes), "+ /",
                           length(minus.fdr.genes), " -)"), adj=0)
 
-    all.fdr.genes <- which(env$fdr.g.m[,m] < 0.1)
-    plus.fdr.genes <- which(env$indata[all.fdr.genes, m] > 0)
+    all.fdr.genes   <- which(env$fdr.g.m[,m] < 0.1)
+    plus.fdr.genes  <- which(env$indata[all.fdr.genes, m] > 0)
     minus.fdr.genes <- which(env$indata[all.fdr.genes, m] <= 0)
 
     text(0.1, 0.6, paste("# genes with fdr < 0.1  =",
@@ -53,8 +53,8 @@ pipeline.summarySheetsSamples <- function(env)
                          length(plus.fdr.genes), "+ /",
                          length(minus.fdr.genes), " -)"), adj=0)
 
-    all.fdr.genes <- which(env$fdr.g.m[,m] < 0.05)
-    plus.fdr.genes <- which(env$indata[all.fdr.genes, m] > 0)
+    all.fdr.genes   <- which(env$fdr.g.m[,m] < 0.05)
+    plus.fdr.genes  <- which(env$indata[all.fdr.genes, m] > 0)
     minus.fdr.genes <- which(env$indata[all.fdr.genes, m] <= 0)
 
     text(0.1, 0.55, paste("# genes with fdr < 0.05  =",
@@ -62,8 +62,8 @@ pipeline.summarySheetsSamples <- function(env)
                           length(plus.fdr.genes), "+ /",
                           length(minus.fdr.genes), " -)"), adj=0)
 
-    all.fdr.genes <- which(env$fdr.g.m[,m] < 0.01)
-    plus.fdr.genes <- which(env$indata[all.fdr.genes, m] > 0)
+    all.fdr.genes   <- which(env$fdr.g.m[,m] < 0.01)
+    plus.fdr.genes  <- which(env$indata[all.fdr.genes, m] > 0)
     minus.fdr.genes <- which(env$indata[all.fdr.genes, m] <= 0)
 
     text(0.1, 0.5, paste("# genes with fdr < 0.01 =",
@@ -142,10 +142,11 @@ pipeline.summarySheetsSamples <- function(env)
       
     # differentially expressed genes list
     
-    n.genes <- 20
+    n.genes <- min(20, nrow(env$indata))
     
     de.genes <- names(sort(env$p.g.m[,m]))
-    de.genes <- de.genes[ which(env$indata[de.genes,m]>0) ][1:n.genes]
+    de.genes <- de.genes[ which(env$indata[de.genes,m]>0) ]
+    de.genes <- de.genes[ 1:min(n.genes,length(de.genes)) ]
     
     de.genes.labels <- env$gene.info$names[de.genes]
     de.genes.labels[which(de.genes.labels=="")] <- de.genes[which(de.genes.labels=="")]
@@ -153,7 +154,7 @@ pipeline.summarySheetsSamples <- function(env)
     par(mar=c(0,0,0,0))
 
     x.coords <- c(0, 0.06, 0.2, 0.28, 0.36, 0.44, 0.52)
-    y.coords <- seq(0.75, 0.4, length.out=n.genes)
+    y.coords <- seq(0.75, 0.4, length.out=n.genes)[1:length(de.genes)]
 
     plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
@@ -166,7 +167,7 @@ pipeline.summarySheetsSamples <- function(env)
     {
       text(x.coords[1], 0.77, "Overexpressed", cex=0.8, adj=0, font=3)
       
-      text(x.coords[1], y.coords, c(1:n.genes), adj=0)
+      text(x.coords[1], y.coords, c(1:length(de.genes)), adj=0)
       text(x.coords[2], y.coords, de.genes.labels, cex=0.6, adj=0)
       rect(x.coords[3]-0.02, y.coords[1]+0.01, 1, 0, border="white", col="white")
       text(x.coords[3], y.coords, round(env$indata[de.genes, m], 2), cex=0.6, adj=0)
@@ -177,18 +178,21 @@ pipeline.summarySheetsSamples <- function(env)
     }
     
     de.genes <- names(sort(env$p.g.m[,m]))
-    de.genes <- na.omit(  de.genes[ which(env$indata[de.genes,m]<0) ][1:n.genes]  )
+    de.genes <- de.genes[ which(env$indata[de.genes,m]<0) ]
+    
     
     if( length(de.genes)>0 )
     {
+      de.genes <- de.genes[ 1:min(n.genes,length(de.genes)) ]
+      
       de.genes.labels <- env$gene.info$names[de.genes]
       de.genes.labels[which(de.genes.labels=="")] <- de.genes[which(de.genes.labels=="")]
       
-      y.coords <- seq(0.35, 0.02, length.out=n.genes)
+      y.coords <- seq(0.35, 0.02, length.out=n.genes)[1:length(de.genes)]
       
       text(x.coords[1], 0.37, "Underexpressed", cex=0.8, adj=0, font=3)
       
-      text(x.coords[1], y.coords, c(1:n.genes), adj=0)
+      text(x.coords[1], y.coords, c(1:length(de.genes)), adj=0)
       text(x.coords[2], y.coords, de.genes.labels, cex=0.6, adj=0)
       rect(x.coords[3]-0.02, y.coords[1]+0.01, 1, 0, border="white", col="white")
       text(x.coords[3], y.coords, round(env$indata[de.genes, m], 2), cex=0.6, adj=0)
@@ -223,7 +227,8 @@ pipeline.summarySheetsSamples <- function(env)
            lwd=c(1,1,2), cex=0.7)
 
     
-    if (env$preferences$activated.modules$geneset.analysis)
+    #if (env$preferences$activated.modules$geneset.analysis)
+    if (env$preferences$activated.modules$geneset.analysis & n.genes > 0)
     {
       # differentially expressed gene sets list
       
