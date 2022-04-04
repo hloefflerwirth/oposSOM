@@ -594,7 +594,8 @@ pipeline.detectCorrelationModules <- function(env)
 
   env$spot.list.correlation$overview.mask[!is.na(env$spot.list.correlation$overview.mask)] <-
     match(env$spot.list.correlation$overview.mask[!is.na(env$spot.list.correlation$overview.mask)], sort(unique(env$spot.list.correlation$overview.mask))[o])
-
+  env$spot.list.correlation$overview.map <- env$spot.list.correlation$overview.mask
+  
   env$spot.list.correlation$spotdata <-
     t(sapply(env$spot.list.correlation$spots, function(x)
     {
@@ -657,6 +658,7 @@ pipeline.detectKMeansModules <- function(env)
   
   env$spot.list.kmeans$overview.mask[!is.na(env$spot.list.kmeans$overview.mask)] <-
     match(env$spot.list.kmeans$overview.mask[!is.na(env$spot.list.kmeans$overview.mask)], sort(unique(env$spot.list.kmeans$overview.mask))[o])
+  env$spot.list.kmeans$overview.map <- env$spot.list.kmeans$overview.mask
 
   env$spot.list.kmeans$spotdata <-
     t(sapply(env$spot.list.kmeans$spots, function(x)
@@ -1082,7 +1084,7 @@ pipeline.detectDMapModules <- function(env)
   
   env$spot.list.dmap$overview.mask[!is.na(env$spot.list.dmap$overview.mask  )] <-
     match(env$spot.list.dmap$overview.mask[!is.na(env$spot.list.dmap$overview.mask)], sort(unique(na.omit(as.vector(env$spot.list.dmap$overview.mask))))[o])
-   
+  
   env$spot.list.dmap$spotdata <-
     t(sapply(env$spot.list.dmap$spots, function(x)
     {
