@@ -1,11 +1,11 @@
 pipeline.groupAnalysis <- function(env)
 {
-  dir.create(paste(env$files.name, "- Results/Summary Sheets - Groups"), showWarnings=FALSE)
-  dir.create(paste(env$files.name, "- Results/Summary Sheets - Groups/CSV Sheets"), showWarnings=FALSE)
+  dir.create("Summary Sheets - Groups", showWarnings=FALSE)
+  dir.create("Summary Sheets - Groups/CSV Sheets", showWarnings=FALSE)
 
   if (env$preferences$activated.modules$geneset.analysis)
   {
-    dir.create(paste(env$files.name, "- Results/Summary Sheets - Groups/Geneset Analysis"), showWarnings=FALSE)
+    dir.create("Summary Sheets - Groups/Geneset Analysis", showWarnings=FALSE)
     pipeline.groupSpecificGenesets(env)
   }
 
@@ -90,8 +90,8 @@ pipeline.groupAnalysis <- function(env)
 
 
 
-  local.env$output.paths <- c("CSV" = paste(env$files.name, "- Results/Summary Sheets - Groups/CSV Sheets"),
-                     "Summary Sheets Samples"= paste(env$files.name, "- Results/Summary Sheets - Groups/Reports"))
+  local.env$output.paths <- c("CSV" = "Summary Sheets - Groups/CSV Sheets",
+                     "Summary Sheets Samples"= "Summary Sheets - Groups/Reports")
   
   local.env <- pipeline.detectSpotsSamples(local.env)
 

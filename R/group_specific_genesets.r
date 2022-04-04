@@ -14,8 +14,7 @@ pipeline.groupSpecificGenesets <- function(env)
     gs.p.values <- sort(gs.p.values)
     top.gs <- gs.p.values[1:20]
 
-    pdf(paste(env$files.name,
-              " - Results/Summary Sheets - Groups/Geneset Analysis/Specific GS ",
+    pdf(paste("Summary Sheets - Groups/Geneset Analysis/Specific GS ",
               make.names(unique(env$group.labels)[gr]),".pdf", sep=""), 21/2.54, 29.7/2.54, useDingbats=FALSE)
 
     layout(matrix(c(1:8),4, byrow=TRUE), widths=c(3,1))
@@ -66,8 +65,7 @@ pipeline.groupSpecificGenesets <- function(env)
     out <- cbind(names(gs.p.values), paste(gs.p.values,"     ."), paste(fdr.res$lfdr,"     ."))
     colnames(out) = c("gene set","p-value","fdr")
 
-    env$csv.function(out, paste(env$files.name,
-                          " - Results/Summary Sheets - Groups/Geneset Analysis/Specific GS ",
+    env$csv.function(out, paste("Summary Sheets - Groups/Geneset Analysis/Specific GS ",
                           make.names(unique(env$group.labels)[gr]),".csv", sep=""), row.names=FALSE)
   }
   
@@ -79,8 +77,7 @@ pipeline.groupSpecificGenesets <- function(env)
   }) 
   top.gs <- names(sort(gs.F,decreasing=TRUE)[1:20])
   
-  pdf(paste(env$files.name,
-            " - Results/Summary Sheets - Groups/Geneset Analysis/0verall specific GS.pdf", sep=""), 21/2.54, 29.7/2.54, useDingbats=FALSE)
+  pdf("Summary Sheets - Groups/Geneset Analysis/0verall specific GS.pdf", 21/2.54, 29.7/2.54, useDingbats=FALSE)
   
   layout(matrix(c(1:8),4, byrow=TRUE), widths=c(3,1))
   

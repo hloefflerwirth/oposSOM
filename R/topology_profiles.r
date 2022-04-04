@@ -2,7 +2,7 @@ pipeline.topologyProfiles <- function(env)
 {
   metadata.scaled <- apply(env$metadata, 2, function(x) { (x-min(x)) / (max(x)-min(x)) })
 
-  filename <- file.path(paste(env$files.name, "- Results"), "Supporting Maps&Profiles", "Topology Profiles.pdf")
+  filename <- file.path("Supporting Maps&Profiles", "Topology Profiles.pdf")
   util.info("Writing:", filename)
 
   if (length(unique(env$group.labels)) > 1)

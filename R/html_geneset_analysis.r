@@ -5,7 +5,7 @@ pipeline.htmlGenesetAnalysis <- function(env)
     return()
   }
 
-  filename <- file.path(paste(env$files.name, "- Results"), "Geneset Analysis", "0verview.html")
+  filename <- file.path("Geneset Analysis", "0verview.html")
   util.info("Writing:", filename)
   outfile <- file(filename, "w")
 

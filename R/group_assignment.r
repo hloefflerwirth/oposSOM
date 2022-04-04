@@ -68,11 +68,9 @@ pipeline.groupAssignment <- function(env)
       
       if(env$preferences$activated.modules$reporting)
       {  
-        dir.create(paste(env$files.name, "- Results/Summary Sheets - Groups"), showWarnings=FALSE)
+        dir.create("Summary Sheets - Groups", showWarnings=FALSE)
         
-        filename <- file.path(paste(env$files.name, "- Results"),
-                              "Summary Sheets - Groups",
-                              "PAT-groups assignment.pdf")
+        filename <- file.path("Summary Sheets - Groups","PAT-groups assignment.pdf")
         
         util.info("Writing:", filename)
         pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)

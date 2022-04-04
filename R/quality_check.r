@@ -1,6 +1,6 @@
 pipeline.qualityCheck <- function(env)
 {
-  dir.create(paste(env$files.name, "- Results/Data Overview"), showWarnings=FALSE)
+  dir.create("Data Overview", showWarnings=FALSE)
 
   plot.poly.density = function(subset=1:ncol(env$indata), col="#BEBEBE", main="", add=FALSE)
   {
@@ -23,7 +23,7 @@ pipeline.qualityCheck <- function(env)
   densities.y = t(sapply(densities, function(x) x$y))
   densities.x = densities[[1]]$x
 
-  filename <- file.path(paste(env$files.name, "- Results"), "Data Overview", "Data Distribution.pdf")
+  filename <- file.path("Data Overview", "Data Distribution.pdf")
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)
 

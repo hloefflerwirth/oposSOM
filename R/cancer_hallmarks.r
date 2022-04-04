@@ -87,7 +87,7 @@ pipeline.cancerHallmarks <- function(env)
   
   
     ### Output
-    filename <- file.path(paste(env$files.name, "- Results"), "Geneset Analysis", "0verview Cancer Hallmarks.pdf")
+    filename <- file.path("Geneset Analysis", "0verview Cancer Hallmarks.pdf")
     util.info("Writing:", filename)
     pdf(filename, 21/2.54, 29.7/2.54, useDingbats=FALSE)
   

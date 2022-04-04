@@ -1,7 +1,7 @@
 pipeline.sampleSimilarityAnalysisSOM <- function(env)
 {
 
-  filename <- file.path(paste(env$files.name, "- Results"), "Sample Similarity Analysis", "Sample SOM.pdf")
+  filename <- file.path("Sample Similarity Analysis", "Sample SOM.pdf")
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
 

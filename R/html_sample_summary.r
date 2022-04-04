@@ -2,9 +2,7 @@ pipeline.htmlSampleSummary <- function(env)
 {
   if(ncol(env$indata) >= 1000) return()
 	
-  filename <- file.path(paste(env$files.name, "- Results"),
-                        "Summary Sheets - Samples",
-                        "0verview.html")
+  filename <- file.path("Summary Sheets - Samples","0verview.html")
 
   util.info("Writing:", filename)
   outfile <- file(filename, "w")

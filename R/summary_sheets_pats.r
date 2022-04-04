@@ -2,14 +2,12 @@ pipeline.summarySheetsPATs <- function(env)
 {
   util.info("Processing PAT-centered Analyses")
   
-  dir.create(paste(env$files.name, "- Results/Summary Sheets - PATs"), showWarnings=FALSE)
+  dir.create("Summary Sheets - PATs", showWarnings=FALSE)
   
   pat.metadata <- do.call(cbind, by(t(env$metadata), env$pat.labels, colMeans))
 
 
-  filename <- file.path(paste(env$files.name, "- Results"),
-                        "Summary Sheets - PATs",
-                        "PAT report.pdf")
+  filename <- file.path("Summary Sheets - PATs","PAT report.pdf")
 
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)

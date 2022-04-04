@@ -84,9 +84,9 @@ pipeline.chromosomeExpressionReports <- function(env)
   }
   
   # Heatmap Outputs
-  dir.create(paste(env$files.name, "- Results/Data Overview"), showWarnings=FALSE)
+  dir.create("Data Overview", showWarnings=FALSE)
 
-  filename <- file.path(paste(env$files.name, "- Results"), "Data Overview", "Chromosome Expression.pdf")
+  filename <- file.path("Data Overview", "Chromosome Expression.pdf")
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)
 

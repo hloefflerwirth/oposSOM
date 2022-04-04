@@ -1,6 +1,6 @@
 pipeline.entropyProfiles <- function(env)
 {
-  filename <- file.path(paste(env$files.name, "- Results"), "Supporting Maps&Profiles", "Entropy Profiles.pdf")
+  filename <- file.path("Supporting Maps&Profiles", "Entropy Profiles.pdf")
   util.info("Writing:", filename)
 
   ### Metagene Mean Expresion + Variance ###

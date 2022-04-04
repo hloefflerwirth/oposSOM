@@ -212,12 +212,12 @@ pipeline.PSFoutput <- function(env)
   
   if( !is.null(env$psf.results.samples) || !is.null(env$psf.results.groups) )
   {
-    dir.create(file.path(paste(env$files.name, "- Results"),"PSF Analysis"), showWarnings=FALSE)
+    dir.create("PSF Analysis", showWarnings=FALSE)
   }
   
   if( !is.null(env$psf.results.samples) )
   {
-    output.path <- file.path(paste(env$files.name, "- Results"),"PSF Analysis","Sample Centered")
+    output.path <- file.path("PSF Analysis","Sample Centered")
     
     dir.create(output.path, showWarnings=FALSE)
     
@@ -229,7 +229,7 @@ pipeline.PSFoutput <- function(env)
   
   if( !is.null(env$psf.results.groups) )
   {
-    output.path <- file.path(paste(env$files.name, "- Results"),"PSF Analysis","Group Centered")
+    output.path <- file.path("PSF Analysis","Group Centered")
     
     dir.create(output.path, showWarnings=FALSE)
     

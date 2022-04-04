@@ -1,11 +1,11 @@
 pipeline.summarySheetsModules <- function(env)
 {
-  dirname <- paste(env$files.name, "- Results/Summary Sheets - Modules")
+  dirname <- "Summary Sheets - Modules"
   dir.create(dirname, showWarnings=FALSE, recursive=TRUE)
 
   #### Overexpression Spots ####
   
-  dirname <- file.path( paste(env$files.name, "- Results"),"Summary Sheets - Modules","Overexpression Spots" )
+  dirname <- file.path( "Summary Sheets - Modules","Overexpression Spots" )
   util.info("Writing:", file.path(dirname, "*.pdf"))
   dir.create(dirname, showWarnings=FALSE, recursive=TRUE)
 
@@ -17,7 +17,7 @@ pipeline.summarySheetsModules <- function(env)
   
   #### Underexpression Spots ####
   
-  dirname <- file.path( paste(env$files.name, "- Results"),"Summary Sheets - Modules","Underexpression Spots" )
+  dirname <- file.path( "Summary Sheets - Modules","Underexpression Spots" )
   util.info("Writing:", file.path(dirname, "*.pdf"))
   dir.create(dirname, showWarnings=FALSE, recursive=TRUE)
   
@@ -26,7 +26,7 @@ pipeline.summarySheetsModules <- function(env)
   
   #### Correlation Cluster ####
   
-  dirname <- file.path( paste(env$files.name, "- Results"),"Summary Sheets - Modules","Correlation Cluster" )
+  dirname <- file.path( "Summary Sheets - Modules","Correlation Cluster" )
   util.info("Writing:", file.path(dirname, "*.pdf"))
   dir.create(dirname, showWarnings=FALSE, recursive=TRUE)
   
@@ -35,7 +35,7 @@ pipeline.summarySheetsModules <- function(env)
   
   #### K-Means Cluster ####
   
-  dirname <- file.path( paste(env$files.name, "- Results"),"Summary Sheets - Modules","K-Means Cluster" )
+  dirname <- file.path( "Summary Sheets - Modules","K-Means Cluster" )
   util.info("Writing:", file.path(dirname, "*.pdf"))
   dir.create(dirname, showWarnings=FALSE, recursive=TRUE)
   
@@ -47,7 +47,7 @@ pipeline.summarySheetsModules <- function(env)
   
   #### D-Clusters ####
   
-  dirname <- file.path( paste(env$files.name, "- Results"),"Summary Sheets - Modules","D-Cluster" )
+  dirname <- file.path( "Summary Sheets - Modules","D-Cluster" )
   util.info("Writing:", file.path(dirname, "*.pdf"))
   dir.create(dirname, showWarnings=FALSE, recursive=TRUE)
   
@@ -61,7 +61,7 @@ pipeline.summarySheetsModules <- function(env)
   
   if (length(unique(env$group.labels)) > 1)
   {
-    dirname <- file.path( paste(env$files.name, "- Results"),"Summary Sheets - Modules","Group Overexpression Spots" )
+    dirname <- file.path( "Summary Sheets - Modules","Group Overexpression Spots" )
     util.info("Writing:", file.path(dirname, "*.pdf"))
     dir.create(dirname, showWarnings=FALSE, recursive=TRUE)
     

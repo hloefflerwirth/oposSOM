@@ -1,6 +1,6 @@
 pipeline.sampleSimilarityAnalysisICA <- function(env)
 {
-  filename <- file.path(paste(env$files.name, "- Results"), "Sample Similarity Analysis", "Component Analysis.pdf")
+  filename <- file.path("Sample Similarity Analysis", "Component Analysis.pdf")
   util.info("Writing:", filename)
 
   pdf(filename, 21/2.54, 29.7/2.54, useDingbats=FALSE)

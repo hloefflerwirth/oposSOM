@@ -1,6 +1,6 @@
 pipeline.genesetProfilesAndMaps <- function(env)
 {
-  dirname <- file.path(paste(env$files.name, "- Results"), "Geneset Analysis")
+  dirname <- "Geneset Analysis"
   util.info("Writing:", file.path(dirname, "*.{csv,pdf}"))
 	progressbar <-newProgressBar(min = 0, max = nrow(env$samples.GSZ.scores)); cat("\r")
   

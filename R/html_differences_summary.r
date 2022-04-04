@@ -1,7 +1,6 @@
 pipeline.htmlDifferencesSummary <- function(env)
 {
-  dirname <- file.path(paste(env$files.name, "- Results"),
-                       "Summary Sheets - Differences")
+  dirname <- "Summary Sheets - Differences"
 
   if (!file.exists(dirname))
   {

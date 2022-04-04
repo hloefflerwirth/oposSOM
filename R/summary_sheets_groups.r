@@ -59,9 +59,7 @@ pipeline.summarySheetsGroups <- function(env)
 
   }
 
-  filename <- file.path(paste(env$files.name, "- Results"),
-                        "Summary Sheets - Groups",
-                        "Expression Portraits Groups.pdf")
+  filename <- file.path("Summary Sheets - Groups","Expression Portraits Groups.pdf")
 
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)
@@ -344,9 +342,7 @@ pipeline.summarySheetsGroups <- function(env)
 
 
   ###### Group stability scores
-  filename <- file.path(paste(env$files.name, "- Results"),
-                        "Summary Sheets - Groups",
-                        "Group Assignment.pdf")
+  filename <- file.path("Summary Sheets - Groups","Group Assignment.pdf")
 
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 29.7/2.54, useDingbats=FALSE)
@@ -455,9 +451,7 @@ pipeline.summarySheetsGroups <- function(env)
     invisible(mid)
   }
 
-  filename <- file.path(paste(env$files.name, "- Results"),
-                        "Summary Sheets - Groups",
-                        "Group Clustering.pdf")
+  filename <- file.path("Summary Sheets - Groups","Group Clustering.pdf")
 
   util.info("Writing:", filename)
   pdf(filename , 29.7/2.54, 21/2.54, useDingbats=FALSE)

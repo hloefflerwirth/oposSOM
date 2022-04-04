@@ -34,7 +34,7 @@ pipeline.sampleSimilarityAnalysisCor <- function(env)
     
   #### Correlation Spanning Tree ####
   
-  filename <- file.path(paste(env$files.name, "- Results"), "Sample Similarity Analysis", "Correlation Spanning Tree.pdf")
+  filename <- file.path("Sample Similarity Analysis", "Correlation Spanning Tree.pdf")
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
   
@@ -77,7 +77,7 @@ pipeline.sampleSimilarityAnalysisCor <- function(env)
   
   #### Correlation Backbone ####
   
-  filename <- file.path(paste(env$files.name, "- Results"), "Sample Similarity Analysis", "Correlation Backbone.pdf")
+  filename <- file.path("Sample Similarity Analysis", "Correlation Backbone.pdf")
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
   
@@ -130,7 +130,7 @@ pipeline.sampleSimilarityAnalysisCor <- function(env)
   
   #### Correlation Network ####
   
-  filename <- file.path(paste(env$files.name, "- Results"), "Sample Similarity Analysis", "Correlation Network.pdf")
+  filename <- file.path("Sample Similarity Analysis", "Correlation Network.pdf")
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
   
@@ -181,7 +181,7 @@ pipeline.sampleSimilarityAnalysisCor <- function(env)
   
   #### Pairwise Correlation Maps ####
   
-  filename <- file.path(paste(env$files.name, "- Results"), "Sample Similarity Analysis", "Correlation Maps.pdf")
+  filename <- file.path("Sample Similarity Analysis", "Correlation Maps.pdf")
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)
   

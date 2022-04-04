@@ -123,7 +123,8 @@ opossom.run <- function(env)
     # create output dirs
     dir.create(paste(env$files.name, "- Results"), showWarnings=FALSE)
     dir.create(paste(env$files.name, "- Results/CSV Sheets"), showWarnings=FALSE)
-
+	setwd(paste(env$files.name, "- Results"))
+	
     if(env$preferences$activated.modules$primary.analysis)
     {
       pipeline.qualityCheck(env)
@@ -206,7 +207,7 @@ opossom.run <- function(env)
     if ( env$preferences$activated.modules$sample.similarity.analysis && ncol(env$indata) > 2)
     {    
       util.info("Plotting Sample Similarity Analysis")
-      dir.create(file.path(paste(env$files.name, "- Results"), "Sample Similarity Analysis"), showWarnings=FALSE)
+      dir.create("Sample Similarity Analysis", showWarnings=FALSE)
       
       pipeline.sampleSimilarityAnalysisED(env)
       pipeline.sampleSimilarityAnalysisCor(env)
@@ -216,7 +217,7 @@ opossom.run <- function(env)
     
     if (env$preferences$activated.modules$geneset.analysis)
     {
-      dir.create(paste(env$files.name, "- Results/Geneset Analysis"), showWarnings=FALSE)
+      dir.create("Geneset Analysis", showWarnings=FALSE)
       
       util.info("Plotting Geneset Enrichment Heatmaps")
       pipeline.genesetOverviews(env)

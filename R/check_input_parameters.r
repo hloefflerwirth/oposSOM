@@ -411,8 +411,7 @@ pipeline.checkInputParameters <- function(env)
     }
     
     env$output.paths <-
-      c("CSV"=paste(env$files.name, "- Results/CSV Sheets"),
-        "Summary Sheets Samples"=paste(env$files.name, "- Results/Summary Sheets - Samples") )
+      c("CSV"="CSV Sheets","Summary Sheets Samples"="Summary Sheets - Samples")
     
     if( !grepl("german",sessionInfo()$locale,ignore.case=TRUE) &&
         !grepl("bioinf.uni-leipzig.de",Sys.info()["nodename"],ignore.case=TRUE) )

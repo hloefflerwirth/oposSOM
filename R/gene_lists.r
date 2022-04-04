@@ -10,7 +10,7 @@ pipeline.geneLists <- function(env)
                     Chromosome=paste( env$gene.info$chr.name[rownames(env$indata)[o]], env$gene.info$chr.band[rownames(env$indata)[o]]),
                     Description=env$gene.info$descriptions[o])
   
-  filename <- file.path(paste(env$files.name, "- Results"), "CSV Sheets", "Gene localization.csv")
+  filename <- file.path("CSV Sheets", "Gene localization.csv")
   util.info("Writing:", filename)
   env$csv.function(out, filename, row.names=FALSE)
   

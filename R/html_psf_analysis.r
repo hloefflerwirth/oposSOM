@@ -6,13 +6,13 @@ pipeline.htmlPsfAnalysis <- function(env)
   }
   
   data("kegg.collection")
-  folders <- dir( file.path(paste(env$files.name, "- Results"), "PSF Analysis" ) )
+  folders <- dir( "PSF Analysis" )
   
   if(length(folders)>0)
   for( x in folders )
   {
     
-    filename <- file.path(paste(env$files.name, "- Results"), "PSF Analysis", x, "0verview.html" )
+    filename <- file.path("PSF Analysis", x, "0verview.html" )
     util.info("Writing:", filename)
     outfile <- file(filename, "w")
   

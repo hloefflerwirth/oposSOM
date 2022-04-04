@@ -5,9 +5,7 @@ pipeline.htmlGroupSummary <- function(env)
     return()
   }
 
-  filename <- file.path(paste(env$files.name, "- Results"),
-                        "Summary Sheets - Groups",
-                        "0verview.html")
+  filename <- file.path("Summary Sheets - Groups","0verview.html")
 
   util.info("Writing:", filename)
   f <- file(filename, "w")

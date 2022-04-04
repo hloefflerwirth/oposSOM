@@ -32,8 +32,8 @@ pipeline.differenceAnalyses = function(env)
   }
   
   
-  dir.create(paste(env$files.name, "- Results/Summary Sheets - Differences"), showWarnings=FALSE)
-  dir.create(paste(env$files.name, "- Results/Summary Sheets - Differences/CSV Sheets"), showWarnings=FALSE)
+  dir.create("Summary Sheets - Differences", showWarnings=FALSE)
+  dir.create("Summary Sheets - Differences/CSV Sheets", showWarnings=FALSE)
   
   local.env <- new.env()
   local.env$preferences <- env$preferences
@@ -116,8 +116,8 @@ pipeline.differenceAnalyses = function(env)
   local.env$group.colors <- rep("gray20",length(differences.list))
   names(local.env$group.colors) <- names(differences.list)
 
-  local.env$output.paths <- c("CSV" = paste(env$files.name, "- Results/Summary Sheets - Differences/CSV Sheets"),
-                     "Summary Sheets Samples"= paste(env$files.name, "- Results/Summary Sheets - Differences/Reports"))
+  local.env$output.paths <- c("CSV" = "Summary Sheets - Differences/CSV Sheets",
+                     "Summary Sheets Samples"= "Summary Sheets - Differences/Reports")
 
   local.env <- pipeline.detectSpotsSamples(local.env)
 

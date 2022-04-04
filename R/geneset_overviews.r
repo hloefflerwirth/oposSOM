@@ -1,6 +1,6 @@
 pipeline.genesetOverviews <- function(env)
 {
-  filename <- file.path(paste(env$files.name, "- Results"), "Geneset Analysis", "0verview Heatmaps.pdf")
+  filename <- file.path("Geneset Analysis", "0verview Heatmaps.pdf")
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
 

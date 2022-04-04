@@ -1,6 +1,6 @@
 pipeline.supportingMaps <- function(env)
 {
-  dirname <- paste(env$files.name, "- Results/Supporting Maps&Profiles")
+  dirname <- "Supporting Maps&Profiles"
   dir.create(dirname, showWarnings=FALSE)
 
   filename <- file.path(dirname, "Supporting Maps.pdf")

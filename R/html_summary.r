@@ -1,6 +1,6 @@
 pipeline.htmlSummary <- function(env)
 {
-  filename <- file.path(paste(env$files.name, "- Results"), "Summary.html")
+  filename <- "Summary.html"
   util.info("Writing:", filename)
   outfile <- file(filename, "w")
 
@@ -108,7 +108,7 @@ pipeline.htmlSummary <- function(env)
       </p>", sep="", file=outfile)
 
   
-  if( file.exists(file.path(paste(env$files.name, "- Results"), "Expression Portraits.pdf")) )
+  if( file.exists("Expression Portraits.pdf") )
   {
       cat("
         <ul>
@@ -153,7 +153,7 @@ pipeline.htmlSummary <- function(env)
         </li>
       </ul>", sep="", file=outfile)
       
-  if( file.exists(file.path(paste(env$files.name, "- Results"), "Summary Sheets - Samples", "0verview.html")) )
+  if( file.exists(file.path("Summary Sheets - Samples", "0verview.html")) )
   {
     cat("<h2>Sample Summaries</h2>
   
@@ -170,7 +170,7 @@ pipeline.htmlSummary <- function(env)
         </ul>", sep="", file=outfile)
   }
   
-  if( file.exists(file.path(paste(env$files.name, "- Results"), "Geneset Analysis", "0verview.html")) )
+  if( file.exists(file.path("Geneset Analysis", "0verview.html")) )
   {
     cat("
       <h2>Geneset Enrichment Analysis</h2>
@@ -190,7 +190,7 @@ pipeline.htmlSummary <- function(env)
   }
   
       
-  if( file.exists(file.path(paste(env$files.name, "- Results"), "Sample Similarity Analysis")) ) 
+  if( file.exists("Sample Similarity Analysis") ) 
   {      
     cat("
         <h2>Sample Similarity Analyses</h2>
@@ -292,7 +292,7 @@ pipeline.htmlSummary <- function(env)
     </ul>", sep="", file=outfile)    
 
 
-  if( file.exists(file.path(paste(env$files.name, "- Results"), "Summary Sheets - Groups/0verview.html")) ) 
+  if( file.exists("Summary Sheets - Groups/0verview.html") ) 
   {  
     cat("
       <h2>Group Analyses</h2>
@@ -310,7 +310,7 @@ pipeline.htmlSummary <- function(env)
       </ul>", sep="", file=outfile)
   }
 
-  if( file.exists(file.path(paste(env$files.name, "- Results"), "Summary Sheets - Differences/0verview.html")) ) 
+  if( file.exists(file.path("Summary Sheets - Differences","0verview.html")) ) 
   {
     cat("
       <h2>Pairwise Differences Analyses</h2>

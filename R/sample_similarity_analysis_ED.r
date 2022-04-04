@@ -3,7 +3,7 @@ pipeline.sampleSimilarityAnalysisED <- function(env)
 
   #### t-SNE ####
   
-  filename <- file.path(paste(env$files.name, "- Results"), "Sample Similarity Analysis", "t-SNE.pdf")
+  filename <- file.path("Sample Similarity Analysis", "t-SNE.pdf")
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
 
@@ -23,7 +23,7 @@ pipeline.sampleSimilarityAnalysisED <- function(env)
   
   #### Neighbor Joining ####
   
-  filename <- file.path(paste(env$files.name, "- Results"), "Sample Similarity Analysis", "Neighbor Joining.pdf")
+  filename <- file.path("Sample Similarity Analysis", "Neighbor Joining.pdf")
   util.info("Writing:", filename)
   pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
   
@@ -48,7 +48,7 @@ pipeline.sampleSimilarityAnalysisED <- function(env)
 
   #### Heatmaps ####
 
-  filename <- file.path(paste(env$files.name, "- Results"), "Sample Similarity Analysis", "Hierarchical Clustering.pdf")
+  filename <- file.path("Sample Similarity Analysis", "Hierarchical Clustering.pdf")
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)
   

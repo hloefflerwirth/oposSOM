@@ -1,7 +1,7 @@
 pipeline.sampleExpressionPortraits <- function(env)
 {
   ## Expression portraits
-  filename <- file.path(paste(env$files.name, "- Results"), "Expression Portraits.pdf")
+  filename <- "Expression Portraits.pdf"
   util.info("Writing:", filename)
 
   pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)
@@ -93,7 +93,7 @@ pipeline.sampleExpressionPortraits <- function(env)
 
   ## Alternative expression portraits
 
-  filename <- file.path(paste(env$files.name, "- Results"), "Expression Portraits - alternative scales.pdf")
+  filename <- "Expression Portraits - alternative scales.pdf"
   util.info("Writing:", filename)
   
   pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE )
