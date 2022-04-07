@@ -406,7 +406,7 @@ pipeline.checkInputParameters <- function(env)
   if(env$preferences$activated.modules$primary.analysis)
   {
     env$files.name <- env$preferences$dataset.name
-    while (file.exists(paste(env$files.name, ".RData", sep=""))) {
+    while (file.exists(paste(env$files.name, "- Results"))) {
       env$files.name <- paste(env$files.name, "+", sep="")
     }
     
