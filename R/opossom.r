@@ -102,7 +102,7 @@ opossom.new <- function(preferences=NULL)
 # Executes the oposSOM pipeline.
 opossom.run <- function(env)
 {
-  util.info("Started:", env$preferences$started)
+  util.info("oposSOM is ready to fly! Starting analysis.")
   util.info("Name:", env$preferences$dataset.name)
 
   #### Preparation & Calculation part ####
