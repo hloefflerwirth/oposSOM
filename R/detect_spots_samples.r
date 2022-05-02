@@ -87,12 +87,12 @@ get.neighbors <- function(x, y, dim)
 
     if (y > 1)
     {
-      ret[['u']] <- (y-2) * dim + x
+      ret[['d']] <- (y-2) * dim + x
     }
 
     if (y < dim)
     {
-      ret[['d']] <- (y) * dim + x
+      ret[['u']] <- (y) * dim + x
     }
   }
 
