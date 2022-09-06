@@ -61,8 +61,8 @@ pipeline.geneLists <- function(env)
   
       out <- cbind(out,
                    logFC=env$indata[o, m],
-                   p.value=paste(env$p.g.m[o, m],"     ."),
-                   fdr=paste(env$fdr.g.m[o, m],"     ."),
+                   p.value=env$p.g.m[o, m],
+                   fdr=env$fdr.g.m[o, m],
                    Metagene=env$gene.info$coordinates[o],
                    Spot=genes.spot.assoc[o],
                    Chromosome=paste( env$gene.info$chr.name[rownames(env$indata)[o]], env$gene.info$chr.band[rownames(env$indata)[o]]),
