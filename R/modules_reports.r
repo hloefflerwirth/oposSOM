@@ -12,8 +12,9 @@ modules.report.sheets <- function(env, spot.list, main, path)
     col <- if(main!="D-Cluster") env$color.palette.portraits(1000) else colorRampPalette(c("blue2","white","red2"))(1000)
     image(matrix(spot.list$overview.map, env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom),
           axes=FALSE, col=col, main=main, cex.main=1.5)
-    
+
     mtext("landscape", 3)
+    spot.borders(spot.list)
     box()
     par(mar=c(5, 1, 4, 2))
     
@@ -35,11 +36,9 @@ modules.report.sheets <- function(env, spot.list, main, path)
         axes=TRUE, main=main, cex.main=1.5, xlab="", ylab="", las=1)
   
   mtext("annotation", 3)
+  spot.borders(spot.list)
   box()
   par(new=TRUE)
-  
-  plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,env$preferences$dim.1stLvlSom),
-       ylim=c(0,env$preferences$dim.1stLvlSom), xaxs="i", yaxs="i")
   
   points(do.call(rbind, lapply(spot.list$spots, function(x) { x$position })),
          pch=16, cex=3, col="black")

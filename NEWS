@@ -1,3 +1,5 @@
+2.2.3:
++ Overexpression modules further enhanced; minor fixes for module overview maps; spot.borders() incorporated
 2.2.2:
 + Overexpression modules are now always contiguous
 2.2.1:

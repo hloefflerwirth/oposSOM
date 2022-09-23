@@ -269,7 +269,7 @@ pipeline.detectOverexpressionModules <- function(env)
       env$spot.list.overexpression$spots[[env$LETTERS[i]]]$mask[spot.metagenes] <- 1
 
       env$spot.list.overexpression$spots[[env$LETTERS[i]]]$position <-
-        colMeans(apply(env$som.result$node.summary[spot.metagenes, 1:2] + 1, 2, range))
+        colMeans(apply(env$som.result$node.summary[spot.metagenes, 1:2], 2, range))
 
       env$spot.list.overexpression$spots[[env$LETTERS[i]]]$beta.statistic <-
         get.beta.statistic(set.data=env$metadata[env$spot.list.overexpression$spots[[env$LETTERS[i]]]$metagenes,,drop=FALSE],
@@ -524,7 +524,7 @@ pipeline.detectUnderexpressionModules <- function(env)
       env$spot.list.underexpression$spots[[env$letters[i]]]$mask[spot.metagenes] <- 1
 
       env$spot.list.underexpression$spots[[env$letters[i]]]$position <-
-        colMeans(apply(env$som.result$node.summary[spot.metagenes, 1:2]+1, 2, range))
+        colMeans(apply(env$som.result$node.summary[spot.metagenes, 1:2], 2, range))
 
       env$spot.list.underexpression$spots[[env$letters[i]]]$beta.statistic <-
         get.beta.statistic(set.data=env$metadata[env$spot.list.underexpression$spots[[env$letters[i]]]$metagenes,,drop=FALSE],
@@ -600,7 +600,7 @@ pipeline.detectCorrelationModules <- function(env)
         env$spot.list.correlation$spots[[env$LETTERS[count.cluster]]]$mask[as.numeric(cluster)] <- 1
 
         env$spot.list.correlation$spots[[env$LETTERS[count.cluster]]]$position <-
-          apply(apply(env$som.result$node.summary[cluster, 1:2], 2, range), 2, mean) + 0.5
+          apply(apply(env$som.result$node.summary[cluster, 1:2], 2, range), 2, mean)
 
         env$spot.list.correlation$spots[[env$LETTERS[count.cluster]]]$beta.statistic <-
           get.beta.statistic(set.data=env$metadata[env$spot.list.correlation$spots[[count.cluster]]$metagenes,,drop=FALSE],
@@ -671,7 +671,7 @@ pipeline.detectKMeansModules <- function(env)
       env$spot.list.kmeans$spots[[env$LETTERS[i]]]$mask[as.numeric(nodes)] <- 1
 
       env$spot.list.kmeans$spots[[env$LETTERS[i]]]$position <-
-        apply(apply(env$som.result$node.summary[nodes, 1:2], 2, range), 2, mean) + 0.5
+        apply(apply(env$som.result$node.summary[nodes, 1:2], 2, range), 2, mean)
 
       env$spot.list.kmeans$spots[[env$LETTERS[i]]]$beta.statistic <-
         get.beta.statistic(set.data=env$metadata[env$spot.list.kmeans$spots[[env$LETTERS[i]]]$metagenes,,drop=FALSE],
@@ -1061,7 +1061,7 @@ pipeline.detectDMapModules <- function(env)
       env$spot.list.dmap$spots[[env$LETTERS[count.cluster]]]$mask[spot.metagenes] <- 1
       
       env$spot.list.dmap$spots[[env$LETTERS[count.cluster]]]$position <-
-        colMeans(apply(env$som.result$node.summary[spot.metagenes, 1:2]+1, 2, range))
+        colMeans(apply(env$som.result$node.summary[spot.metagenes, 1:2], 2, range))
       
       env$spot.list.dmap$spots[[env$LETTERS[count.cluster]]]$beta.statistic <-
         get.beta.statistic(set.data=env$metadata[env$spot.list.dmap$spots[[env$LETTERS[count.cluster]]]$metagenes,,drop=FALSE],
