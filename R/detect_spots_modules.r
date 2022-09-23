@@ -235,9 +235,12 @@ pipeline.detectOverexpressionModules <- function(env)
       
       for( module.i in 1:max(core,na.rm=TRUE) )
       {
-        split.module <- core == module.i
-        split.module[which(!split.module)] <- NA
-        sample.spot.list[[length(sample.spot.list)+1]] <- split.module
+        if( sum(core == module.i, na.rm=TRUE) >= env$preferences$spot.coresize.modules ) 
+        {
+          split.module <- core == module.i
+          split.module[which(!split.module)] <- NA
+          sample.spot.list[[length(sample.spot.list)+1]] <- split.module
+        }
       }
     }
   }
