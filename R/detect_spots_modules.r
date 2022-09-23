@@ -214,6 +214,34 @@ pipeline.detectOverexpressionModules <- function(env)
     sample.spot.list[[1]][ which.max(rowMeans(env$metadata)) ] = 1
   }
 
+  ## check for split modules
+
+  for (i in seq_along(sample.spot.list))
+  {
+    core <- sample.spot.list[[i]]
+    core[which(!is.na(core))] <- -1
+    spot.i <- 0
+    
+    while (nrow(which(core == -1, arr.ind=TRUE)) > 0)
+    {
+      start.pix <- which(core == -1, arr.ind=TRUE)[1,]
+      spot.i <- spot.i + 1
+      core <- col.pix(core, start.pix[1], start.pix[2], spot.i, env$preferences$dim.1stLvlSom)
+    }
+    
+    if( max(core,na.rm=TRUE) > 1 )
+    {
+      sample.spot.list <- sample.spot.list[-i]
+      
+      for( module.i in 1:max(core,na.rm=TRUE) )
+      {
+        split.module <- core == module.i
+        split.module[which(!split.module)] <- NA
+        sample.spot.list[[length(sample.spot.list)+1]] <- split.module
+      }
+    }
+  }
+  
   ## define overexpression spots ##
   env$spot.list.overexpression <- list()
 

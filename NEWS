@@ -1,3 +1,5 @@
+2.2.2:
++ Overexpression modules are now always contiguous
 2.2.1:
 + Gene set collection update
 2.2.0:
