@@ -28,7 +28,7 @@ pipeline.patAssignment <- function(env)
   
   # join small pats into their precursors
   
-  if(any(env$pat.labels!=""))
+  if(any(env$pat.labels!="")&&length(unique(env$pat.labels))>4)
     while( sort(table(env$pat.labels))[1] < length(env$pat.labels)*0.01 )
     {
       pat.to.merge <- find.next.merge.pat( env$pat.labels, spot.counts )
