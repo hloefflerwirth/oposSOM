@@ -261,7 +261,7 @@ pipeline.detectOverexpressionModules <- function(env)
 
     if (length(spot.genes) > 0)
     {
-      env$spot.list.overexpression$overview.mask[which(!is.na(sample.spot.list[[i]]))] <- i
+      env$spot.list.overexpression$overview.mask[which(!is.na(sample.spot.list[[i]]))] <- ifelse( all(is.na(env$spot.list.overexpression$overview.mask)), 1, max(env$spot.list.overexpression$overview.mask,na.rm=TRUE)+1 )
       env$spot.list.overexpression$spots[[env$LETTERS[i]]] <- list()
       env$spot.list.overexpression$spots[[env$LETTERS[i]]]$metagenes <- spot.metagenes
       env$spot.list.overexpression$spots[[env$LETTERS[i]]]$genes <- spot.genes
@@ -516,7 +516,7 @@ pipeline.detectUnderexpressionModules <- function(env)
 
     if (length(spot.genes) > 0)
     {
-      env$spot.list.underexpression$overview.mask[which(!is.na(sample.spot.list[[i]]))] <- i
+      env$spot.list.underexpression$overview.mask[which(!is.na(sample.spot.list[[i]]))] <- ifelse( all(is.na(env$spot.list.underexpression$overview.mask)), 1, max(env$spot.list.underexpression$overview.mask,na.rm=TRUE)+1 )
       env$spot.list.underexpression$spots[[env$letters[i]]] <- list()
       env$spot.list.underexpression$spots[[env$letters[i]]]$metagenes <- spot.metagenes
       env$spot.list.underexpression$spots[[env$letters[i]]]$genes <- spot.genes
@@ -592,7 +592,7 @@ pipeline.detectCorrelationModules <- function(env)
       
       if (length(geneset.genes) > 0)
       {
-        env$spot.list.correlation$overview.mask[as.numeric(cluster)] <- count.cluster
+        env$spot.list.correlation$overview.mask[as.numeric(cluster)] <- ifelse( all(is.na(env$spot.list.correlation$overview.mask)), 1, max(env$spot.list.correlation$overview.mask,na.rm=TRUE)+1 )
         env$spot.list.correlation$spots[[env$LETTERS[count.cluster]]] <- list()
         env$spot.list.correlation$spots[[env$LETTERS[count.cluster]]]$metagenes <- as.numeric(cluster)
         env$spot.list.correlation$spots[[env$LETTERS[count.cluster]]]$genes <- geneset.genes
@@ -663,7 +663,7 @@ pipeline.detectKMeansModules <- function(env)
 
     if (length(geneset.genes) > 0)
     {
-      env$spot.list.kmeans$overview.mask[as.numeric(nodes)] <- i
+      env$spot.list.kmeans$overview.mask[as.numeric(nodes)] <- ifelse( all(is.na(env$spot.list.kmeans$overview.mask)), 1, max(env$spot.list.kmeans$overview.mask,na.rm=TRUE)+1 )
       env$spot.list.kmeans$spots[[env$LETTERS[i]]] <- list()
       env$spot.list.kmeans$spots[[env$LETTERS[i]]]$metagenes <- as.numeric(nodes)
       env$spot.list.kmeans$spots[[env$LETTERS[i]]]$genes <- geneset.genes
@@ -919,7 +919,7 @@ pipeline.detectGroupOverexpressionModules <- function(env)
 
       if (length(spot.genes) > 0)
       {
-        env$spot.list.group.overexpression$overview.mask[which(!is.na(sample.spot.list[[i]]))] <- i
+        env$spot.list.group.overexpression$overview.mask[which(!is.na(sample.spot.list[[i]]))] <- ifelse( all(is.na(env$spot.list.group.overexpression$overview.mask)), 1, max(env$spot.list.group.overexpression$overview.mask,na.rm=TRUE)+1 )
         env$spot.list.group.overexpression$spots[[env$LETTERS[i]]] <- list()
         env$spot.list.group.overexpression$spots[[env$LETTERS[i]]]$metagenes <- spot.metagenes
         env$spot.list.group.overexpression$spots[[env$LETTERS[i]]]$genes <- spot.genes
@@ -1053,7 +1053,7 @@ pipeline.detectDMapModules <- function(env)
     
     if (length(spot.genes) > 0)
     {
-      env$spot.list.dmap$overview.mask[spot.metagenes] <- count.cluster
+      env$spot.list.dmap$overview.mask[spot.metagenes] <- ifelse( all(is.na(env$spot.list.dmap$overview.mask)), 1, max(env$spot.list.dmap$spot.list.group.overexpression,na.rm=TRUE)+1 )
       env$spot.list.dmap$spots[[env$LETTERS[count.cluster]]] <- list()
       env$spot.list.dmap$spots[[env$LETTERS[count.cluster]]]$metagenes <- spot.metagenes
       env$spot.list.dmap$spots[[env$LETTERS[count.cluster]]]$genes <- spot.genes

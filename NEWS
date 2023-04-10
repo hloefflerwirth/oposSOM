@@ -1,3 +1,5 @@
+2.2.6:
++ Bugfix for module masks when empty spots were dropped
 2.2.5:
 + Gene set collection update
 2.2.4:
