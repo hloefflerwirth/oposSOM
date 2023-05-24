@@ -12,7 +12,7 @@ pipeline.sampleSimilarityAnalysisED <- function(env)
     d <- if( i == 1 ) env[[paste("spot.list.",env$preferences$standard.spot.modules,sep="")]]$spotdata else env$metadata
     n <- if( i == 1 ) paste( "module data (", env$preferences$standard.spot.modules, ")") else "metagene data"
     
-    suppressMessages({  tsne.res <- tsne( t(d), perplexity=max(30,ncol(env$indata)/20), max_iter=3000 )  })
+    suppressMessages({  tsne.res <- tsne( t(d), perplexity=max(30,ncol(env$indata)/20), max_iter=500 )  })
     
     par(mar=c(2,2,2,2))
     plot(tsne.res, col=env$group.colors, pch=16)
