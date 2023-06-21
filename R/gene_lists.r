@@ -26,7 +26,7 @@ pipeline.geneLists <- function(env)
   
 	
 	#### Sample GSZ Table ####
-  filename <- file.path( env$output.paths["CSV"], "Sample GSZ scores.csv")
+  filename <- file.path( "CSV Sheets", "Sample GSZ scores.csv")
   util.info("Writing:", filename)
   env$csv.function(env$samples.GSZ.scores, filename)
 	

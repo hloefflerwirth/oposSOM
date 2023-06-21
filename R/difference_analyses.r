@@ -137,7 +137,6 @@ pipeline.differenceAnalyses = function(env)
     }
   }
 
-  pipeline.geneLists(local.env)
   pipeline.summarySheetsSamples(local.env)
   pipeline.htmlDifferencesSummary(local.env)
 }

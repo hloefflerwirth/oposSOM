@@ -100,7 +100,6 @@ pipeline.groupAnalysis <- function(env)
     local.env <- pipeline.genesetStatisticSamples(local.env)
   }
 
-  pipeline.geneLists(local.env)
   pipeline.summarySheetsSamples(local.env)
   pipeline.htmlGroupSummary(local.env)
 }
