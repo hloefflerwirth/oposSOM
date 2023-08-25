@@ -1,4 +1,6 @@
-2.7.7:
+2.2.8:
++ Gene set update: Tirosh molecular programs for multiple cell types and cancer
+2.2.7:
 + Collection of multiple fixes and gene set updates
 2.2.6:
 + Bugfix for module masks when empty spots were dropped
