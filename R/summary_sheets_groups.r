@@ -1,7 +1,6 @@
 pipeline.summarySheetsGroups <- function(env)
 {
   group.metadata <- do.call(cbind, by(t(env$metadata), env$group.labels, colMeans))[,unique(env$group.labels)]
-  group.metadata.sd <- do.call(cbind, by(t(env$metadata), env$group.labels, function(x) { apply(x,2,sd) }))[,unique(env$group.labels)]
 
   loglog.group.metadata <- apply(group.metadata, 2, function(x)
   {
@@ -10,61 +9,47 @@ pipeline.summarySheetsGroups <- function(env)
     meta <- meta - min(meta, na.rm=TRUE)
     return(meta * meta.sign)
   })
-  WAD.group.metadata <- apply(group.metadata ,2, function(x) { x * ((x - min(x)) / (max(x) - min(x))) })
 
-  bleached.group.metadata <- group.metadata
-  bleached.WAD.group.metadata <- WAD.group.metadata
-  bleached.loglog.group.metadata <- loglog.group.metadata
-
-  for (i in seq_along(unique(env$group.labels)))
-  {
-    pos.metagenes <- which(group.metadata[,i] >= 0)
-    neg.metagenes <- which(group.metadata[,i] < 0)
-
-    bleached.group.metadata[pos.metagenes,i] <-
-      bleached.group.metadata[pos.metagenes,i] -
-      pmin(bleached.group.metadata[pos.metagenes,i],
-           apply(group.metadata[pos.metagenes,-i,drop=FALSE], 1, max))
-
-    bleached.group.metadata[neg.metagenes,i] <-
-      bleached.group.metadata[neg.metagenes,i] -
-      pmax(bleached.group.metadata[neg.metagenes,i],
-           apply(group.metadata[neg.metagenes,-i,drop=FALSE], 1, min))
-
-    pos.metagenes <- which(WAD.group.metadata[,i] >= 0)
-    neg.metagenes <- which(WAD.group.metadata[,i] < 0)
-
-    bleached.WAD.group.metadata[pos.metagenes,i] <-
-      bleached.WAD.group.metadata[pos.metagenes,i] -
-      pmin(bleached.WAD.group.metadata[pos.metagenes,i],
-           apply(WAD.group.metadata[pos.metagenes,-i,drop=FALSE], 1, max))
-
-    bleached.WAD.group.metadata[neg.metagenes,i] <-
-      bleached.WAD.group.metadata[neg.metagenes,i] -
-      pmax(bleached.WAD.group.metadata[neg.metagenes,i],
-           apply(WAD.group.metadata[neg.metagenes,-i,drop=FALSE], 1, min))
-
-    pos.metagenes <- which(loglog.group.metadata[,i] >= 0)
-    neg.metagenes <- which(loglog.group.metadata[,i] < 0)
-
-    bleached.loglog.group.metadata[pos.metagenes,i] <-
-      bleached.loglog.group.metadata[pos.metagenes,i] -
-      pmin(bleached.loglog.group.metadata[pos.metagenes,i],
-           apply(loglog.group.metadata[pos.metagenes,-i,drop=FALSE], 1, max))
-
-    bleached.loglog.group.metadata[neg.metagenes,i] <-
-      bleached.loglog.group.metadata[neg.metagenes,i] -
-      pmax(bleached.loglog.group.metadata[neg.metagenes,i],
-           apply(loglog.group.metadata[neg.metagenes,-i,drop=FALSE], 1, min))
-
-  }
+  # bleached.group.metadata <- group.metadata
+  # bleached.loglog.group.metadata <- loglog.group.metadata
+  # 
+  # for (i in seq_along(unique(env$group.labels)))
+  # {
+  #   pos.metagenes <- which(group.metadata[,i] >= 0)
+  #   neg.metagenes <- which(group.metadata[,i] < 0)
+  # 
+  #   bleached.group.metadata[pos.metagenes,i] <-
+  #     bleached.group.metadata[pos.metagenes,i] -
+  #     pmin(bleached.group.metadata[pos.metagenes,i],
+  #          apply(group.metadata[pos.metagenes,-i,drop=FALSE], 1, max))
+  # 
+  #   bleached.group.metadata[neg.metagenes,i] <-
+  #     bleached.group.metadata[neg.metagenes,i] -
+  #     pmax(bleached.group.metadata[neg.metagenes,i],
+  #          apply(group.metadata[neg.metagenes,-i,drop=FALSE], 1, min))
+  # 
+  # 
+  #   pos.metagenes <- which(loglog.group.metadata[,i] >= 0)
+  #   neg.metagenes <- which(loglog.group.metadata[,i] < 0)
+  # 
+  #   bleached.loglog.group.metadata[pos.metagenes,i] <-
+  #     bleached.loglog.group.metadata[pos.metagenes,i] -
+  #     pmin(bleached.loglog.group.metadata[pos.metagenes,i],
+  #          apply(loglog.group.metadata[pos.metagenes,-i,drop=FALSE], 1, max))
+  # 
+  #   bleached.loglog.group.metadata[neg.metagenes,i] <-
+  #     bleached.loglog.group.metadata[neg.metagenes,i] -
+  #     pmax(bleached.loglog.group.metadata[neg.metagenes,i],
+  #          apply(loglog.group.metadata[neg.metagenes,-i,drop=FALSE], 1, min))
+  # 
+  # }
 
   filename <- file.path("Summary Sheets - Groups","Expression Portraits Groups.pdf")
 
   util.info("Writing:", filename)
   pdf(filename, 29.7/2.54, 21/2.54, useDingbats=FALSE)
 
-  par(mfrow=c(5,6))
+  layout( cbind( matrix(1:18,ncol=3,byrow=TRUE), rep(0,6), matrix(19:36,ncol=3,byrow=TRUE) ) )
   par(mar=c(0.5,2.5,4.5,1.5))
 
   for (i in seq_along(unique(env$group.labels)))
@@ -79,47 +64,23 @@ pipeline.summarySheetsGroups <- function(env)
     image(matrix(group.metadata[,i], env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom),
           axes=FALSE, col = env$color.palette.portraits(1000))
 
-    title(main="logFC", cex.main=1.5, line=0.5)
+    title(main="logFC", cex.main=1, line=0.5)
     box()
 
-    image(matrix(bleached.group.metadata[,i],
-                 env$preferences$dim.1stLvlSom,
-                 env$preferences$dim.1stLvlSom),
-          axes=FALSE, col = env$color.palette.portraits(1000), zlim=range(bleached.group.metadata))
 
-    title(main="group specific logFC", cex.main=1.3, line=0.5)
-    box()
-
-    image(matrix(WAD.group.metadata[,i],
-                 env$preferences$dim.1stLvlSom,
-                 env$preferences$dim.1stLvlSom),
-          axes=FALSE, col = env$color.palette.portraits(1000))
-
-    title(main="WAD", cex.main=1.5, line=0.5)
-    box()
-
-    image(matrix(bleached.WAD.group.metadata[,i],
-                 env$preferences$dim.1stLvlSom,
-                 env$preferences$dim.1stLvlSom),
-          axes=FALSE, col = env$color.palette.portraits(1000), zlim=range(bleached.WAD.group.metadata))
-
-    title(main="group specific WAD", cex.main=1.3, line=0.5)
+    image(matrix(group.metadata[,i], env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom),
+          axes=FALSE, col = env$color.palette.portraits(1000), zlim=range(group.metadata) )
+    
+    title(main="absolute", cex.main=1, line=0.5)
     box()
 
     image(matrix(loglog.group.metadata[,i],
                  env$preferences$dim.1stLvlSom,
                  env$preferences$dim.1stLvlSom),
           axes=FALSE, col = env$color.palette.portraits(1000))
-    title(main="loglogFC", cex.main=1.5, line=0.5)
+    title(main="loglogFC", cex.main=1, line=0.5)
     box()
 
-    image(matrix(bleached.loglog.group.metadata[,i],
-                 env$preferences$dim.1stLvlSom,
-                 env$preferences$dim.1stLvlSom),
-          axes=FALSE, col = env$color.palette.portraits(1000), zlim=range(bleached.loglog.group.metadata))
-
-    title(main="group specific loglogFC", cex.main=1.3, line=0.5)
-    box()
   }
 
 
