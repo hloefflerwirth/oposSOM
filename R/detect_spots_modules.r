@@ -1053,7 +1053,7 @@ pipeline.detectDMapModules <- function(env)
     
     if (length(spot.genes) > 0)
     {
-      env$spot.list.dmap$overview.mask[spot.metagenes] <- ifelse( all(is.na(env$spot.list.dmap$overview.mask)), 1, max(env$spot.list.dmap$spot.list.group.overexpression,na.rm=TRUE)+1 )
+      env$spot.list.dmap$overview.mask[spot.metagenes] <- ifelse( all(is.na(env$spot.list.dmap$overview.mask)), 1, max(env$spot.list.dmap$overview.mask,na.rm=TRUE)+1 )
       env$spot.list.dmap$spots[[env$LETTERS[count.cluster]]] <- list()
       env$spot.list.dmap$spots[[env$LETTERS[count.cluster]]]$metagenes <- spot.metagenes
       env$spot.list.dmap$spots[[env$LETTERS[count.cluster]]]$genes <- spot.genes
