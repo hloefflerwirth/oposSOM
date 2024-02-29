@@ -1,6 +1,7 @@
 workspace.check <- function(env)
 {
-
+  if(missing("env")) stop("environment missing!")
+  
   cat("Perform Workspace Check\n***********************\n"); flush.console()
   
   # Workspace objects and preferences list
@@ -84,6 +85,36 @@ workspace.check <- function(env)
   {
     cat("spot.list.*: beta scores missing\n"); flush.console()
   }  
+
+  if( any( colnames(env$spot.list.correlation$spotdata)!=colnames(env$indata) ) )
+  {
+    cat("spot.list.correlation: spotdata columns do not fit indata columns\n"); flush.console()
+  }
+  if( any( colnames(env$spot.list.dmap$spotdata)!=colnames(env$indata) ) )
+  {
+    cat("spot.list.dmap: spotdata columns do not fit indata columns\n"); flush.console()
+  }
+  if( any( colnames(env$spot.list.group.overexpression$spotdata)!=colnames(env$indata) ) )
+  {
+    cat("spot.list.group.overexpression: spotdata columns do not fit indata columns\n"); flush.console()
+  }
+  if( any( colnames(env$spot.list.kmeans$spotdata)!=colnames(env$indata) ) )
+  {
+    cat("spot.list.kmeans: spotdata columns do not fit indata columns\n"); flush.console()
+  }
+  if( any( colnames(env$spot.list.overexpression$spotdata)!=colnames(env$indata) ) )
+  {
+    cat("spot.list.overexpression: spotdata columns do not fit indata columns\n"); flush.console()
+  }
+  if( any( colnames(env$spot.list.underexpression$spotdata)!=colnames(env$indata) ) )
+  {
+    cat("spot.list.underexpression: spotdata columns do not fit indata columns\n"); flush.console()
+  }
+  
+  if( any( colnames(env$samples.GSZ.scores)!=colnames(env$indata) ) )
+  {
+    cat("samples.GSZ.scores: columns do not fit indata columns\n"); flush.console()
+  } 
   
 
   # groups
