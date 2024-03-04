@@ -85,36 +85,74 @@ workspace.check <- function(env)
   {
     cat("spot.list.*: beta scores missing\n"); flush.console()
   }  
-
-  if( any( colnames(env$spot.list.correlation$spotdata)!=colnames(env$indata) ) )
+  
+  
+  for( x in ls(env) )
   {
-    cat("spot.list.correlation: spotdata columns do not fit indata columns\n"); flush.console()
-  }
-  if( any( colnames(env$spot.list.dmap$spotdata)!=colnames(env$indata) ) )
-  {
-    cat("spot.list.dmap: spotdata columns do not fit indata columns\n"); flush.console()
-  }
-  if( any( colnames(env$spot.list.group.overexpression$spotdata)!=colnames(env$indata) ) )
-  {
-    cat("spot.list.group.overexpression: spotdata columns do not fit indata columns\n"); flush.console()
-  }
-  if( any( colnames(env$spot.list.kmeans$spotdata)!=colnames(env$indata) ) )
-  {
-    cat("spot.list.kmeans: spotdata columns do not fit indata columns\n"); flush.console()
-  }
-  if( any( colnames(env$spot.list.overexpression$spotdata)!=colnames(env$indata) ) )
-  {
-    cat("spot.list.overexpression: spotdata columns do not fit indata columns\n"); flush.console()
-  }
-  if( any( colnames(env$spot.list.underexpression$spotdata)!=colnames(env$indata) ) )
-  {
-    cat("spot.list.underexpression: spotdata columns do not fit indata columns\n"); flush.console()
+    y <- get(x,envir = env)
+    
+    if( is.list(y) )
+    {
+      dummy <- sapply( names(y), function(xx)
+      {
+        yy <- y[[xx]]
+        if( is.matrix(yy) && any(colnames(yy)%in%colnames(env$indata)) ) 
+        { 
+          if( ncol(yy)!=ncol(env$indata) || any( colnames(yy) != colnames(env$indata) ) )
+            cat("samples in data object do not fit indata columns:",paste(x,xx,sep="$"),"\n"); flush.console()
+          
+        } else if( is.vector(yy) && any(names(yy)%in%colnames(env$indata)) ) 
+        { 
+          if( length(yy)!=ncol(env$indata) || any( names(yy) != colnames(env$indata) ) )
+            cat("samples in data object do not fit indata columns:",paste(x,xx,sep="$"),"\n"); flush.console()
+        }
+        
+      }) 
+      
+    } else if( is.matrix(y) && any(colnames(y)%in%colnames(env$indata)) ) 
+    { 
+      if( ncol(y)!=ncol(env$indata) || any( colnames(y) != colnames(env$indata) ) )
+        cat("samples in data object do not fit indata columns:",x,"\n"); flush.console()
+    }
+    else if( is.vector(y) && any(names(y)%in%colnames(env$indata)) ) 
+    { 
+      if( length(y)!=ncol(env$indata) || any( names(y) != colnames(env$indata) ) )
+        cat("samples in data object do not fit indata columns:",x,"\n"); flush.console()
+    }
+    
   }
   
-  if( any( colnames(env$samples.GSZ.scores)!=colnames(env$indata) ) )
-  {
-    cat("samples.GSZ.scores: columns do not fit indata columns\n"); flush.console()
-  } 
+  
+# 
+#   if( any( colnames(env$spot.list.correlation$spotdata)!=colnames(env$indata) ) )
+#   {
+#     cat("spot.list.correlation: spotdata columns do not fit indata columns\n"); flush.console()
+#   }
+#   if( any( colnames(env$spot.list.dmap$spotdata)!=colnames(env$indata) ) )
+#   {
+#     cat("spot.list.dmap: spotdata columns do not fit indata columns\n"); flush.console()
+#   }
+#   if( any( colnames(env$spot.list.group.overexpression$spotdata)!=colnames(env$indata) ) )
+#   {
+#     cat("spot.list.group.overexpression: spotdata columns do not fit indata columns\n"); flush.console()
+#   }
+#   if( any( colnames(env$spot.list.kmeans$spotdata)!=colnames(env$indata) ) )
+#   {
+#     cat("spot.list.kmeans: spotdata columns do not fit indata columns\n"); flush.console()
+#   }
+#   if( any( colnames(env$spot.list.overexpression$spotdata)!=colnames(env$indata) ) )
+#   {
+#     cat("spot.list.overexpression: spotdata columns do not fit indata columns\n"); flush.console()
+#   }
+#   if( any( colnames(env$spot.list.underexpression$spotdata)!=colnames(env$indata) ) )
+#   {
+#     cat("spot.list.underexpression: spotdata columns do not fit indata columns\n"); flush.console()
+#   }
+#   
+#   if( any( colnames(env$samples.GSZ.scores)!=colnames(env$indata) ) )
+#   {
+#     cat("samples.GSZ.scores: columns do not fit indata columns\n"); flush.console()
+#   } 
   
 
   # groups
