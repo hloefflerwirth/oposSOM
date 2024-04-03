@@ -119,17 +119,13 @@ pipeline.differenceAnalyses = function(env)
   local.env$output.paths <- c("CSV" = "Summary Sheets - Differences/CSV Sheets",
                      "Summary Sheets Samples"= "Summary Sheets - Differences/Reports")
 
-  local.env <- pipeline.detectSpotsSamples(local.env)
-
   if (local.env$preferences$activated.modules$geneset.analysis)
   {
     if (ncol(local.env$indata) == 1)   # crack for by command, which requires >=2 columns
     {
       local.env$indata <- cbind(local.env$indata, local.env$indata)
-      local.env <- pipeline.detectSpotsSamples(local.env)
       local.env <- pipeline.genesetStatisticSamples(local.env)
       local.env$indata <- local.env$indata[,1,drop=FALSE]
-      local.env$spot.list.samples <- local.env$spot.list.samples[1]
       local.env$samples.GSZ.scores <- local.env$samples.GSZ.scores[,1,drop=FALSE]
     } else
     {

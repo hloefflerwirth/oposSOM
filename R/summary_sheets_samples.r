@@ -234,81 +234,41 @@ pipeline.summarySheetsSamples <- function(env)
       
       n.sets <- 20
 
-      top.gs.score <- sort(env$spot.list.samples[[m]]$GSZ.score, decreasing=TRUE)[1:n.sets]
-      top.gs.p <- env$spot.list.samples[[m]]$GSZ.p.value[names(top.gs.score)]
+      top.gs.score <- sort(env$samples.GSZ.scores[,m], decreasing=TRUE)[1:n.sets] 
 
       par(mar=c(0,0,0,0))
 
-      x.coords <- c(0, 0.1, 0.18, 0.30, 0.39, 0.47)
+      x.coords <- c(0, 0.1, 0.18, 0.27, 0.37)
       y.coords <- seq(0.75, 0.4, length.out=n.sets)
 
       plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1))
 
       text(0, 0.88, "Differentially expressed gene sets", cex=1.8, adj=0)
-      text(x.coords, 0.82, c("Rank", "GSZ", "p-value", "#all", "Geneset", ""), cex=1, adj=0)
+      text(x.coords, 0.82, c("Rank", "GSZ", "#all", "Geneset", ""), cex=1, adj=0)
       text(x.coords[1], 0.77, "Overexpressed", cex=0.8, adj=0, font=3)
 
       text(x.coords[1], y.coords, c(1:n.genes), adj=0)
       text(x.coords[2], y.coords, round(top.gs.score, 2), cex=0.6, adj=0)
-      text(x.coords[3], y.coords, format(top.gs.p, digits=1), cex=0.6, adj=0)
 
-      text(x.coords[4], y.coords, sapply(env$gs.def.list[names(top.gs.score)],
+      text(x.coords[3], y.coords, sapply(env$gs.def.list[names(top.gs.score)],
                                          function(x) { length(x$Genes) }), cex=0.6, adj=0)
 
-      text(x.coords[5], y.coords, sapply(env$gs.def.list, function(x) { x$Type })[names(top.gs.score)], cex=0.6, adj=0)
-      text(x.coords[6], y.coords, names(top.gs.score), cex=0.6, adj=0)
+      text(x.coords[4], y.coords, sapply(env$gs.def.list, function(x) { x$Type })[names(top.gs.score)], cex=0.6, adj=0)
+      text(x.coords[5], y.coords, names(top.gs.score), cex=0.6, adj=0)
 
-      top.gs.score <- sort(env$spot.list.samples[[m]]$GSZ.score, decreasing=FALSE)[1:n.sets]
-      top.gs.p <- env$spot.list.samples[[m]]$GSZ.p.value[names(top.gs.score)]
+      top.gs.score <- sort(env$samples.GSZ.scores[,m], decreasing=FALSE)[1:n.sets]
 
       y.coords <- seq(0.35, 0.02, length.out=n.sets)
 
       text(x.coords[1], 0.37, "Underexpressed", cex=0.8, adj=0, font=3)
       text(x.coords[1], y.coords, c(1:n.genes), adj=0)
       text(x.coords[2], y.coords, round(top.gs.score, 2), cex=0.6, adj=0)
-      text(x.coords[3], y.coords, format(top.gs.p, digits=1), cex=0.6, adj=0)
 
-      text(x.coords[4], y.coords, sapply(env$gs.def.list[names(top.gs.score)],
+      text(x.coords[3], y.coords, sapply(env$gs.def.list[names(top.gs.score)],
                                          function(x) { length(x$Genes) }), cex=0.6, adj=0)
 
-      text(x.coords[5], y.coords, sapply(env$gs.def.list, function(x) { x$Type })[names(top.gs.score)], cex=0.6, adj=0)
-      text(x.coords[6], y.coords, names(top.gs.score), cex=0.6, adj=0)
-
-      
-      # p-value histogram
-      
-      p <- env$spot.list.samples[[m]]$GSZ.p.value
-
-      fdrtool.result <- suppressWarnings(fdrtool(p, statistic="pvalue", verbose=FALSE, plot=FALSE))
-      fdr.spot.list.samples <- fdrtool.result$lfdr
-      Fdr.spot.list.samples <- fdrtool.result$qval
-
-      n.0.spot.list.samples <- fdrtool.result$param[1,"eta0"]
-      perc.DE.spot.list.samples <- 1 - n.0.spot.list.samples
-
-      par(mar=c(3,6,2,6))
-
-      hist(p, bre=20, freq=FALSE, xlab="p-value", ylab="", main="p-values",
-           las=1, cex.main=1.5, cex.lab=1, cex.axis=1)
-
-      box()
-      mtext("Density", side=2, line=3, cex=1)
-      mtext("FDR", side=4, line=3, cex=1)
-      mtext(paste("%DE =", round(perc.DE.spot.list.samples ,2)), line=-1.2, cex=0.5)
-
-      abline(h=n.0.spot.list.samples , col="gray", lwd=2)
-
-      par(new=TRUE)
-      plot(0, type="n", xlim=c(0,1), ylim=c(0,1), xlab="", ylab="", axes=FALSE)
-      axis(4, seq(0, 1, 0.2), seq(0, 1, 0.2), las=1, cex.axis=1)
-      o = order(p)
-      lines(p[o], Fdr.spot.list.samples[o], lty=2, lwd=2)
-      lines(p[o], fdr.spot.list.samples[o], lty=3, lwd=3)
-
-      legend("topright",
-             c("p", expression(env$eta[0]), "Fdr", "fdr"),
-             col=c("black","gray","black","black"),
-             lty=c(1,1,2,3), lwd=c(1,1,1,2), cex=0.7)
+      text(x.coords[4], y.coords, sapply(env$gs.def.list, function(x) { x$Type })[names(top.gs.score)], cex=0.6, adj=0)
+      text(x.coords[5], y.coords, names(top.gs.score), cex=0.6, adj=0)
     }
 
     dev.off()

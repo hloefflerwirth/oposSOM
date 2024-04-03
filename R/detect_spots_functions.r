@@ -98,17 +98,3 @@ get.neighbors <- function(x, y, dim)
 
   return(ret)
 }
-
-pipeline.detectSpotsSamples <- function(env)
-{
-  env$spot.list.samples <- list()
-
-  for (j in 1:ncol(env$indata))
-  {
-    env$spot.list.samples[[j]] <- list()
-  }
-
-  names(env$spot.list.samples) <- colnames(env$indata)
-  
-  return(env)
-}

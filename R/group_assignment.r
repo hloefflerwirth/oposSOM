@@ -114,7 +114,6 @@ pipeline.groupAssignment <- function(env)
     env$metadata <- env$metadata[,o]
     env$indata.sample.mean <- env$indata.sample.mean[o]
 
-    env$spot.list.samples <- env$spot.list.samples[o]
     env <- pipeline.detectSpotsModules(env)
   }
   

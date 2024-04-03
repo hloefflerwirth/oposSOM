@@ -93,8 +93,6 @@ pipeline.groupAnalysis <- function(env)
   local.env$output.paths <- c("CSV" = "Summary Sheets - Groups/CSV Sheets",
                      "Summary Sheets Samples"= "Summary Sheets - Groups/Reports")
   
-  local.env <- pipeline.detectSpotsSamples(local.env)
-
   if (local.env$preferences$activated.modules$geneset.analysis)
   {
     local.env <- pipeline.genesetStatisticSamples(local.env)

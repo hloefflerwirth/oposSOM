@@ -19,7 +19,6 @@ opossom.new <- function(preferences=NULL)
   env$spot.list.group.overexpression <- NULL
   env$spot.list.kmeans <- NULL
   env$spot.list.overexpression <- NULL
-  env$spot.list.samples <- NULL
   env$spot.list.underexpression <- NULL
   env$indata <- NULL
 	env$indata.ensID.m <- NULL
@@ -150,7 +149,6 @@ opossom.run <- function(env)
     env <- pipeline.diffExpressionStatistics(env)
 
     util.info("Detecting Spots")
-    env <- pipeline.detectSpotsSamples(env)
     env <- pipeline.detectSpotsModules(env)
     env <- pipeline.patAssignment(env)
     env <- pipeline.groupAssignment(env)

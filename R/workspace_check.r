@@ -99,12 +99,12 @@ workspace.check <- function(env)
         if( is.matrix(yy) && any(colnames(yy)%in%colnames(env$indata)) ) 
         { 
           if( ncol(yy)!=ncol(env$indata) || any( colnames(yy) != colnames(env$indata) ) )
-            cat("samples in data object do not fit indata columns:",paste(x,xx,sep="$"),"\n"); flush.console()
+            cat("samples in matrix object do not fit indata columns:",paste(x,xx,sep="$"),"\n"); flush.console()
           
         } else if( is.vector(yy) && any(names(yy)%in%colnames(env$indata)) ) 
         { 
           if( length(yy)!=ncol(env$indata) || any( names(yy) != colnames(env$indata) ) )
-            cat("samples in data object do not fit indata columns:",paste(x,xx,sep="$"),"\n"); flush.console()
+            cat("samples in vector object do not fit indata columns:",paste(x,xx,sep="$"),"\n"); flush.console()
         }
         
       }) 
@@ -122,38 +122,7 @@ workspace.check <- function(env)
     
   }
   
-  
-# 
-#   if( any( colnames(env$spot.list.correlation$spotdata)!=colnames(env$indata) ) )
-#   {
-#     cat("spot.list.correlation: spotdata columns do not fit indata columns\n"); flush.console()
-#   }
-#   if( any( colnames(env$spot.list.dmap$spotdata)!=colnames(env$indata) ) )
-#   {
-#     cat("spot.list.dmap: spotdata columns do not fit indata columns\n"); flush.console()
-#   }
-#   if( any( colnames(env$spot.list.group.overexpression$spotdata)!=colnames(env$indata) ) )
-#   {
-#     cat("spot.list.group.overexpression: spotdata columns do not fit indata columns\n"); flush.console()
-#   }
-#   if( any( colnames(env$spot.list.kmeans$spotdata)!=colnames(env$indata) ) )
-#   {
-#     cat("spot.list.kmeans: spotdata columns do not fit indata columns\n"); flush.console()
-#   }
-#   if( any( colnames(env$spot.list.overexpression$spotdata)!=colnames(env$indata) ) )
-#   {
-#     cat("spot.list.overexpression: spotdata columns do not fit indata columns\n"); flush.console()
-#   }
-#   if( any( colnames(env$spot.list.underexpression$spotdata)!=colnames(env$indata) ) )
-#   {
-#     cat("spot.list.underexpression: spotdata columns do not fit indata columns\n"); flush.console()
-#   }
-#   
-#   if( any( colnames(env$samples.GSZ.scores)!=colnames(env$indata) ) )
-#   {
-#     cat("samples.GSZ.scores: columns do not fit indata columns\n"); flush.console()
-#   } 
-  
+ 
 
   # groups
 
@@ -181,10 +150,7 @@ workspace.check <- function(env)
   {
     cat("groupwise.group.colors: not converted into #RGB format\n"); flush.console()
   }
-  if (!all(names(env$group.silhouette.coef) == colnames(env$indata)))
-  {
-    cat("group.silhouette.coef: does not fit to samples\n"); flush.console()
-  }
+
 
    
   # Info objects
