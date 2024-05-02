@@ -384,11 +384,11 @@ pipeline.checkInputParameters <- function(env)
     if( length(environment(env$color.palette.portraits))!=3 || !all( c("colors","ramp") %in% ls(environment(env$color.palette.portraits)) ) )
     {
       util.warn("Invalid value of \"color.palette.portraits\". Using standard scheme")
-      env$color.palette.portraits <- color.palette.portraits
+      env$color.palette.portraits <- if(env$preferences$colorblindsave.portraits) color.palette.portraits.cbs else color.palette.portraits
     }
   } else
   {
-    env$color.palette.portraits <- color.palette.portraits
+    env$color.palette.portraits <- if(env$preferences$colorblindsave.portraits) color.palette.portraits.cbs else color.palette.portraits
   }
   
   if (!is.null(env$color.palette.heatmaps)) # check if given color palette is a valid function

@@ -50,6 +50,7 @@ color.palette.interlace <- function(n)
 }
 
 color.palette.portraits <- colorRampPalette(c("darkblue","blue","lightblue3","green3","yellow2","red2","darkred"))
+color.palette.portraits.cbs <- colorRampPalette(c("#364B9A","#4393C3","#D1E5F0","#5AAE61","#F7F056","#DD3D2D","#662506"))
 
 # color.palette.heatmaps <- colorRampPalette(c("#2C7BB6","#64A4CC","#9CCEE3","#C6E5DB","#ECF6C8","#FEEDAA","#FDC980","#F89D59","#E75B3A","#D7191C"))
 color.palette.heatmaps <- colorRampPalette(c("#364B9A","#4A7BB7","#6EA6CD","#98CAE1","#C2E4EF","#EAECCC","#FEDA8B","#FDB366","#F67E4B","#DD3D2D","#A50026"))

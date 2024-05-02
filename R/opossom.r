@@ -55,6 +55,7 @@ opossom.new <- function(preferences=NULL)
                           training.extension = 1,
                           rotate.SOM.portraits = 0,
                           flip.SOM.portraits = FALSE,
+													colorblindsave.portraits = TRUE,
                           activated.modules = list( "reporting" = TRUE,
                                                     "primary.analysis" = TRUE, 
                                                     "sample.similarity.analysis" = TRUE,
