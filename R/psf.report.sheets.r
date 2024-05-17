@@ -74,22 +74,23 @@ plot.psf.titlepage <- function(env, psf.object, signal.values, bar.colors)
     
     
     ### Profile of mean sink signals ###
-    ylim <- c(-2, 2)
+    
+    ylim <- range( sapply(signal.values,function(x) log10(x$signal.at.nodes) ) )
+    
     par(mar=c(2,7,4,5))
     
     barplot( sapply(signal.values,function(x) mean(log10(x$signal.at.sinks),na.rm=T) ),
              beside=TRUE, col=bar.colors, names.arg=rep("",length(signal.values)),
              ylim=ylim, border=if (length(signal.values) < 80) "black" else NA )
-    mtext(bquote("<log"[10] ~ "s>"), side=2, line=2.5, cex=1.5)
+    mtext(bquote("<log"[10] ~ "sinks>"), side=2, line=2.5, cex=1.5)
     
-    ### Profile of max sink signals ###
-    ylim <- c(-2, 2)
+    ### Profile of mean node signals ###
     par(mar=c(6,7,0,5))
     
-    bar.coords <- barplot( sapply(signal.values,function(x) max(log10(x$signal.at.sinks),na.rm=T) ),
+    bar.coords <- barplot( sapply(signal.values,function(x) mean(log10(x$signal.at.nodes),na.rm=T) ),
                            beside=TRUE, names.arg=rep("",length(signal.values)),
                            col=bar.colors, ylim=ylim, border=if (length(signal.values) < 80) "black" else NA )
-    mtext(bquote("log"[10] ~ "s"[max]), side=2, line=2.5, cex=1.5)
+    mtext(bquote("<log"[10] ~ "nodes>"), side=2, line=2.5, cex=1.5)
     
     if (length(signal.values)<100)
       text(bar.coords, par('usr')[3], labels=names(signal.values), srt=45, adj=c(1.1,1.1), xpd=TRUE)
