@@ -123,7 +123,7 @@ opossom.run <- function(env)
     # create output dirs
     dir.create(paste(env$files.name, "- Results"), showWarnings=FALSE)
     dir.create(paste(env$files.name, "- Results/CSV Sheets"), showWarnings=FALSE)
-	setwd(paste(env$files.name, "- Results"))
+  	setwd(paste(env$files.name, "- Results"))
 	
     if(env$preferences$activated.modules$primary.analysis)
     {
