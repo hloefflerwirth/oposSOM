@@ -185,16 +185,8 @@ workspace.check <- function(env)
   }
 
 
-  # functions
+  # other
 
-  if (class(c) != "function")
-  {
-    cat("basic function: c overwritten\n"); flush.console()
-  }
-  if (class(t) != "function")
-  {
-    cat("basic function: t overwritten\n"); flush.console()
-  }
   if ( F != FALSE )
   {
     cat("basic constant: F overwritten\n"); flush.console()
