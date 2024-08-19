@@ -75,58 +75,58 @@ plot.psf.titlepage <- function(env, psf.object, signal.values, bar.colors)
     
     ### Profile of mean sink signals ###
     
-    ylim <- range( sapply(signal.values,function(x) log10(x$signal.at.nodes) ) )
+    ylim <- range( log10(signal.values) )
     
     par(mar=c(2,7,4,5))
     
-    barplot( sapply(signal.values,function(x) mean(log10(x$signal.at.sinks),na.rm=T) ),
-             beside=TRUE, col=bar.colors, names.arg=rep("",length(signal.values)),
-             ylim=ylim, border=if (length(signal.values) < 80) "black" else NA )
+    barplot( log10( colMeans(signal.values[psf.object$sink.nodes,]) ),
+             beside=TRUE, col=bar.colors, names.arg=rep("",ncol(signal.values)),
+             ylim=ylim, border=if (ncol(signal.values) < 80) "black" else NA )
     mtext(bquote("<log"[10] ~ "sinks>"), side=2, line=2.5, cex=1.5)
     
     ### Profile of mean node signals ###
     par(mar=c(6,7,0,5))
     
-    bar.coords <- barplot( sapply(signal.values,function(x) mean(log10(x$signal.at.nodes),na.rm=T) ),
-                           beside=TRUE, names.arg=rep("",length(signal.values)),
-                           col=bar.colors, ylim=ylim, border=if (length(signal.values) < 80) "black" else NA )
+    bar.coords <- barplot( log10( colMeans(signal.values) ),
+                           beside=TRUE, names.arg=rep("",ncol(signal.values)),
+                           col=bar.colors, ylim=ylim, border=if (ncol(signal.values) < 80) "black" else NA )
     mtext(bquote("<log"[10] ~ "nodes>"), side=2, line=2.5, cex=1.5)
     
-    if (length(signal.values)<100)
-      text(bar.coords, par('usr')[3], labels=names(signal.values), srt=45, adj=c(1.1,1.1), xpd=TRUE)
+    if (ncol(signal.values)<100)
+      text(bar.coords, par('usr')[3], labels=colnames(signal.values), srt=45, adj=c(1.1,1.1), xpd=TRUE)
   }
 }
 
 
-plot.psf.pathway.keggrest <- function( kegg.pathway, signal.values=NULL, signal.values.lim, main="", highlight.genes=NULL, color.palette=NULL )
+plot.psf.pathway.keggrest <- function( psf.object, signal.values=NULL, signal.values.lim, main="", highlight.genes=NULL, color.palette=NULL )
 {
-	width = ncol(kegg.pathway$pathway.img)
-	height = nrow(kegg.pathway$pathway.img)
+	width = ncol(psf.object$pathway.img)
+	height = nrow(psf.object$pathway.img)
 	max.xy = max(width,height)
 
 	par(mar = c(0, 0, 0, 0))
 	plot(c(0-(max.xy-width)/2, width+(max.xy-width)/2), c(0-(max.xy-height)/2, height+(max.xy-height)/2), type = "n", xlab = "", ylab = "", xaxs = "i", yaxs = "i", axes=F)
 
-	rasterImage(kegg.pathway$pathway.img, 0, 0, width, height, interpolate = F)
+	rasterImage(psf.object$pathway.img, 0, 0, width, height, interpolate = F)
 
-	title.node <- which( sapply( kegg.pathway$pathway.info, function(x) grepl("TITLE:", x$graphics$label.long ) ) )
+	title.node <- which( sapply( psf.object$pathway.info, function(x) grepl("TITLE:", x$label.long ) ) )
 	if(length(title.node)>0)
 	{
-		rect( kegg.pathway$pathway.info[[title.node]]$graphics$x-kegg.pathway$pathway.info[[title.node]]$graphics$width*0.6,
-					height-kegg.pathway$pathway.info[[title.node]]$graphics$y+kegg.pathway$pathway.info[[title.node]]$graphics$height*0.6,
-					kegg.pathway$pathway.info[[title.node]]$graphics$x+kegg.pathway$pathway.info[[title.node]]$graphics$width*0.6,
-					height-kegg.pathway$pathway.info[[title.node]]$graphics$y-kegg.pathway$pathway.info[[title.node]]$graphics$height*0.6,
+		rect( psf.object$pathway.info[[title.node]]$x-psf.object$pathway.info[[title.node]]$width*0.6,
+					height-psf.object$pathway.info[[title.node]]$y+psf.object$pathway.info[[title.node]]$height*0.6,
+					psf.object$pathway.info[[title.node]]$x+psf.object$pathway.info[[title.node]]$width*0.6,
+					height-psf.object$pathway.info[[title.node]]$y-psf.object$pathway.info[[title.node]]$height*0.6,
 					col="gray90", lwd=0.5 )
 
-		text( kegg.pathway$pathway.info[[title.node]]$graphics$x, height - kegg.pathway$pathway.info[[title.node]]$graphics$y, main,
+		text( psf.object$pathway.info[[title.node]]$x, height - psf.object$pathway.info[[title.node]]$y, main,
 					cex = .5, col = "black", family="sans" )
 	}
 	
 	
-	for( i in names( which( sapply(kegg.pathway$pathway.info,"[[", "type" ) == "gene" ) ) )
+	for( i in names( which( sapply(psf.object$pathway.info,"[[", "type" ) == "gene" ) ) )
 	{
 		node.col = "gray90"
-		if( paste( kegg.pathway$pathway.info[[i]]$id, kegg.pathway$pathway.info[[i]]$graphics$x, kegg.pathway$pathway.info[[i]]$graphics$y ) %in% highlight.genes )
+		if( paste( psf.object$pathway.info[[i]]$name, psf.object$pathway.info[[i]]$x, psf.object$pathway.info[[i]]$y ) %in% highlight.genes )
 		{
 			node.col = "olivedrab1"
 
@@ -135,54 +135,39 @@ plot.psf.pathway.keggrest <- function( kegg.pathway, signal.values=NULL, signal.
 			node.col = color.palette(1000)[999*(signal.values[i]-signal.values.lim[1])/(signal.values.lim[2]-signal.values.lim[1])+1]
 		}
 
-		rect( kegg.pathway$pathway.info[[i]]$graphics$x-kegg.pathway$pathway.info[[i]]$graphics$width*0.5,
-					height-kegg.pathway$pathway.info[[i]]$graphics$y+kegg.pathway$pathway.info[[i]]$graphics$height*0.5,
-					kegg.pathway$pathway.info[[i]]$graphics$x+kegg.pathway$pathway.info[[i]]$graphics$width*0.5,
-					height-kegg.pathway$pathway.info[[i]]$graphics$y-kegg.pathway$pathway.info[[i]]$graphics$height*0.5,
+		rect( psf.object$pathway.info[[i]]$x-psf.object$pathway.info[[i]]$width*0.5,
+					height-psf.object$pathway.info[[i]]$y+psf.object$pathway.info[[i]]$height*0.5,
+					psf.object$pathway.info[[i]]$x+psf.object$pathway.info[[i]]$width*0.5,
+					height-psf.object$pathway.info[[i]]$y-psf.object$pathway.info[[i]]$height*0.5,
 					col=node.col, lwd=0.5 )
 
-		text( kegg.pathway$pathway.info[[i]]$graphics$x, height - kegg.pathway$pathway.info[[i]]$graphics$y, kegg.pathway$pathway.info[[i]]$graphics$label.short,
-					cex = ifelse( nchar(kegg.pathway$pathway.info[[i]]$graphics$label.short)<=6,.3,.24), col = "black", family="sans" )
+		text( psf.object$pathway.info[[i]]$x, height - psf.object$pathway.info[[i]]$y, psf.object$pathway.info[[i]]$label.short,
+					cex = ifelse( nchar(psf.object$pathway.info[[i]]$label.short)<=6,.45,.4), col = "black", family="sans" )
 	}
 	
-	for( i in which( sapply(kegg.pathway$pathway.info,"[[", "type" ) == "gene" ) )
+	for( i in which( sapply(psf.object$pathway.info,"[[", "type" ) == "compound" ) )
 	  if( i %in% names(signal.values) )	  
   	{
   	  node.col = color.palette(1000)[999*(signal.values[i]-signal.values.lim[1])/(signal.values.lim[2]-signal.values.lim[1])+1]
   
-  	  rect( kegg.pathway$pathway.info[[i]]$graphics$x-kegg.pathway$pathway.info[[i]]$graphics$width*0.5,
-  	        height-kegg.pathway$pathway.info[[i]]$graphics$y+kegg.pathway$pathway.info[[i]]$graphics$height*0.5,
-  	        kegg.pathway$pathway.info[[i]]$graphics$x+kegg.pathway$pathway.info[[i]]$graphics$width*0.5+2,
-  	        height-kegg.pathway$pathway.info[[i]]$graphics$y-kegg.pathway$pathway.info[[i]]$graphics$height*0.5,
-  	        col=node.col, lwd=0.5 )
-  
-  	  text( kegg.pathway$pathway.info[[i]]$graphics$x, height - kegg.pathway$pathway.info[[i]]$graphics$y, kegg.pathway$pathway.info[[i]]$graphics$label.short,
-  	        cex = 1-0.02*nchar(kegg.pathway$pathway.info[[i]]$graphics$label.short), col = "black", family="sans" )
-  	}
-
-	for( i in which( sapply(kegg.pathway$pathway.info,"[[", "type" ) == "compound" ) )
-	  if( i %in% names(signal.values) )	  
-  	{
-  	  node.col = color.palette(1000)[999*(signal.values[i]-signal.values.lim[1])/(signal.values.lim[2]-signal.values.lim[1])+1]
-  
-  	  circle( kegg.pathway$pathway.info[[i]]$graphics$x, height-kegg.pathway$pathway.info[[i]]$graphics$y,
-  	          kegg.pathway$pathway.info[[i]]$graphics$width*0.75,
+  	  circle( psf.object$pathway.info[[i]]$x, height-psf.object$pathway.info[[i]]$y,
+  	          psf.object$pathway.info[[i]]$width*0.75,
   	          col=node.col, lwd=0.5 )
   	}
 
-	map.nodes <- which( sapply(kegg.pathway$pathway.info,"[[", "type" ) == "map" )
+	map.nodes <- which( sapply(psf.object$pathway.info,"[[", "type" ) == "map" )
 	map.nodes <- setdiff( map.nodes, title.node )
 
 	for( i in map.nodes )
 	{
-	  rect( kegg.pathway$pathway.info[[i]]$graphics$x-kegg.pathway$pathway.info[[i]]$graphics$width*0.5-1,
-	        height-kegg.pathway$pathway.info[[i]]$graphics$y+kegg.pathway$pathway.info[[i]]$graphics$height*0.5+1,
-	        kegg.pathway$pathway.info[[i]]$graphics$x+kegg.pathway$pathway.info[[i]]$graphics$width*0.5+2,
-	        height-kegg.pathway$pathway.info[[i]]$graphics$y-kegg.pathway$pathway.info[[i]]$graphics$height*0.5-3,
+	  rect( psf.object$pathway.info[[i]]$x-psf.object$pathway.info[[i]]$width*0.5-1,
+	        height-psf.object$pathway.info[[i]]$y+psf.object$pathway.info[[i]]$height*0.5+1,
+	        psf.object$pathway.info[[i]]$x+psf.object$pathway.info[[i]]$width*0.5+2,
+	        height-psf.object$pathway.info[[i]]$y-psf.object$pathway.info[[i]]$height*0.5-3,
 	        col = "gray95", lwd=0.5 )
 	  
-	  text( kegg.pathway$pathway.info[[i]]$graphics$x, height - kegg.pathway$pathway.info[[i]]$graphics$y, kegg.pathway$pathway.info[[i]]$graphics$label.short,
-	        cex = 1-0.02*nchar(kegg.pathway$pathway.info[[i]]$graphics$label.short), col = "black", family="sans" )
+	  text( psf.object$pathway.info[[i]]$x, height - psf.object$pathway.info[[i]]$y, psf.object$pathway.info[[i]]$label.short,
+	        cex = 1-0.02*nchar(psf.object$pathway.info[[i]]$label.short), col = "black", family="sans" )
 	}
 
 }
@@ -197,10 +182,6 @@ psf.report.sheets <- function(env, psf.results, output.path, bar.colors )
   for(pw in 1:length(kegg.collection) )
   {
 
-    kegg.collection[[pw]]$id = strsplit( kegg.collection[[pw]]$attrs$name, ":" )[[1]][2]
-    data(list=kegg.collection[[pw]]$id)
-    
-
     filename <- file.path(output.path, paste( make.names(names(kegg.collection)[pw]),".pdf",sep="") )
     pdf(filename, 29.7/2.54, 21/2.54)
 
@@ -212,27 +193,27 @@ psf.report.sheets <- function(env, psf.results, output.path, bar.colors )
     node.genes <- lapply(kegg.collection[[pw]]$graph@nodeData@data,function(x)x$genes)
     node.genes <- lapply(node.genes,function(x) unique(env$gene.info$ensembl.mapping[which(env$gene.info$ensembl.mapping$ensembl_gene_id %in% x),1] ) )
     node.genes <- sapply(node.genes,function(x) any(!is.na(x)) )
-    node.genes <- sapply( kegg.collection[[pw]]$graph@nodeData@data[which(node.genes)], function(x) paste(x$kegg.name, x$kegg.gr.x, x$kegg.gr.y ) )
+    node.genes <- sapply(kegg.collection[[pw]]$graph@nodeData@data[which(node.genes)], function(x) paste(x$kegg.name, x$kegg.gr.x, x$kegg.gr.y ) )
  
-    plot.psf.pathway.keggrest( kegg.pathway = kegg.data, highlight.genes=node.genes, main=paste(names(kegg.collection)[pw],"\ngenes with data" ) )
+    plot.psf.pathway.keggrest( psf.object=kegg.collection[[pw]], highlight.genes=node.genes, main=paste(names(kegg.collection)[pw],"\ngenes with data" ) )
  
 
     par(mfrow=c(1,1),mar=c(0,0,0,0))
     
     sink.genes <- sapply(kegg.collection[[pw]]$graph@nodeData@data,function(x)x$kegg.id %in% kegg.collection[[pw]]$sink.nodes )
-    sink.genes <- sapply( kegg.collection[[pw]]$graph@nodeData@data[which(sink.genes)], function(x) paste(x$kegg.name, x$kegg.gr.x, x$kegg.gr.y ) )
+    sink.genes <- sapply(kegg.collection[[pw]]$graph@nodeData@data[which(sink.genes)], function(x) paste(x$kegg.name, x$kegg.gr.x, x$kegg.gr.y ) )
     
-    plot.psf.pathway.keggrest( kegg.pathway = kegg.data, highlight.genes=sink.genes, main=paste(names(kegg.collection)[pw],"\nsink nodes") )
+    plot.psf.pathway.keggrest( psf.object=kegg.collection[[pw]], highlight.genes=sink.genes, main=paste(names(kegg.collection)[pw],"\nsink nodes") )
  
  
-    for( m in 1:length(psf.results[[pw]]) )
+    for( m in 1:ncol(psf.results[[pw]]) )
     {
-      signal.values = log10( psf.results[[pw]][[m]]$signal.at.nodes )
+      signal.values = log10( psf.results[[pw]][,m] )
       names(signal.values) = sapply( kegg.collection[[pw]]$graph@nodeData@data, function(x) paste(x$kegg.name, x$kegg.gr.x, x$kegg.gr.y ) )
 
-      plot.psf.pathway.keggrest( kegg.pathway = kegg.data, signal.values = signal.values,
-                                  signal.values.lim = c(-1,1)*max( abs( log10( sapply( psf.results[[pw]], function(x) x$signal.at.nodes ) ) ) ),
-                                  main=paste(names(kegg.collection)[pw],"\n",names(psf.results[[pw]])[m] ),
+      plot.psf.pathway.keggrest( psf.object=kegg.collection[[pw]], signal.values = signal.values,
+                                  signal.values.lim = c(-1,1)*max( abs( log10( psf.results[[pw]] ) ) ),
+                                  main=paste(names(kegg.collection)[pw],"\n",colnames(psf.results[[pw]])[m] ),
                                   color.palette=env$color.palette.heatmaps)
     }
 

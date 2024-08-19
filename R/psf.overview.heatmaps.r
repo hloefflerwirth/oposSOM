@@ -8,8 +8,7 @@ psf.overview.heatmaps <- function(psf.results, output.path, group.colors, color.
   pdf(filename, 21/2.54, 21/2.54)
   
   
-  
-  mean.psf.matrix <- t( sapply( psf.results, function(x) sapply( x, function(y) if(length(y$signal.at.sinks)>0) mean(y$signal.at.sinks) else 1 )  ) )
+  mean.psf.matrix <- t( sapply( psf.results, function(x) colMeans( x ) ) )
   mean.psf.matrix <- mean.psf.matrix[ order(apply(mean.psf.matrix,1,var),decreasing=TRUE)[1:(nrow(mean.psf.matrix)/2)] , ]
   
   heatmap(x=log1p(log1p(mean.psf.matrix)), cex.main=2,
