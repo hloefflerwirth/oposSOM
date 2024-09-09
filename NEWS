@@ -1,3 +1,5 @@
+2.5.1:
++ Gene set collection update: Livermetastasis-related gene sets added
 2.5.0:
 + PSF data and algorithm update according to PSF toolkit (https://github.com/hakobyansiras/psf)
 2.4.2:
