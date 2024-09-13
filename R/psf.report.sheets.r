@@ -209,7 +209,7 @@ psf.report.sheets <- function(env, psf.results, output.path, bar.colors )
     for( m in 1:ncol(psf.results[[pw]]) )
     {
       signal.values = log10( psf.results[[pw]][,m] )
-      names(signal.values) = sapply( kegg.collection[[pw]]$graph@nodeData@data, function(x) paste(x$kegg.name, x$kegg.gr.x, x$kegg.gr.y ) )
+      names(signal.values) = sapply( kegg.collection[[pw]]$graph@nodeData@data[as.numeric(names(signal.values))], function(x) paste(x$kegg.name, x$kegg.gr.x, x$kegg.gr.y ) )
 
       plot.psf.pathway.keggrest( psf.object=kegg.collection[[pw]], signal.values = signal.values,
                                   signal.values.lim = c(-1,1)*max( abs( log10( psf.results[[pw]] ) ) ),

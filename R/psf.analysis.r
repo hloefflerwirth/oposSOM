@@ -167,55 +167,6 @@ eval_formulas <- function(g, node.ordering, sink.nodes, split = TRUE, sum = FALS
               
             }
             
-            #### on hold, will implemetn this version in the future
-            # if(node_fun[i,1] == "sum") {
-            # 
-            #   for (parent in parent.nodes){
-            #     if(!is.null(eval.exprs[[parent]])){
-            #       in.sign.impacts[[parent]] = sprintf("(W['%s','%s'])*(%s)^(I['%s','%s'])", parent, node, paste("eval.exprs[['",parent,"']]",sep=""), parent, node)
-            #       # signal.base.denoms[[parent]] = sprintf("(%s)",paste("eval.exprs[['",parent,"']]",sep=""))
-            #     } else {
-            #       in.sign.impacts[[parent]] = sprintf("(W['%s','%s'])*(E['%s',1])^(I['%s','%s'])", parent, node, parent, parent, node)
-            #       # signal.base.denoms[[parent]] = sprintf("(E['%s',1])",parent)
-            #     }
-            #   }
-            # 
-            #   in.sign.impact = paste(in.sign.impacts, collapse = "+")
-            # 
-            # } else {
-            #   if(node_fun[i,1] == "max") {
-            # 
-            #   }
-            #   if(node_fun[i,1] == "min")
-            # }
-            # 
-            # 
-            # 
-            # 
-            # sprintf("node_fun['%s', 1]()")
-            # 
-            # eval.exprs[[node]] = sprintf("(%s)*(%s)", signal.base, in.signal.impact)
-            # 
-            # 
-            # 
-            # if(length(in.signal) > 1) {
-            #   in.signal_adjusted <- weight*in.signal
-            # } else {
-            #   in.signal_adjusted <- min(weight)*in.signal
-            #   impact <- min(impact)
-            # }
-            # 
-            # if(tmm_update_mode) {
-            # 
-            #   affecting_in_signal <- in.signal_adjusted^impact
-            # 
-            #   node.signal <- prod(c(node.exp, affecting_in_signal))
-            # } else {
-            #   node.signal <- prod(node.exp*in.signal_adjusted^impact)
-            # }
-            
-            
-            
           } else {
             #Returns the product of signals without splitting - is for updateing, but applies only in this special case where all the rules are s*t, or 1/s*t
             
@@ -332,6 +283,7 @@ psf_processing <- function(fc.expression, pathway)
   psf_activities <- apply(psf_activities, 2, as.numeric)
   colnames(psf_activities) <- colnames(pathway_exp_data)
   rownames(psf_activities) <- rownames(pathway_exp_data)
+    
   
   # pathway$psf_activities <- psf_activities
   # pathway$exp_fc <- pathway_exp_data
@@ -395,7 +347,7 @@ pipeline.PSFcalculation <- function(env)
     
     for (i in 1:length(kegg.collection))
     {
-      env$psf.results.groups[[names(kegg.collection)[i]]] <- psf_processing(fc.expression, kegg.collection[[i]]) 
+      env$psf.results.groups[[names(kegg.collection)[i]]] <- psf_processing(fc.expression, pathway=kegg.collection[[i]]) 
       
       setTxtProgressBar( progressbar, progressbar$getVal()+1 )
     }
@@ -433,7 +385,7 @@ pipeline.PSFoutput <- function(env)
     
     dir.create(output.path, showWarnings=FALSE)
     
-    psf.overview.heatmaps(env$psf.results.groups, output.path, env$groupwise.group.colors, env$color.palette.heatmaps)
+    psf.overview.heatmaps(env$psf.results.groups, output.path, group.colors=env$groupwise.group.colors, env$color.palette.heatmaps)
     psf.report.sheets(env,psf.results=env$psf.results.groups, output.path, bar.colors=env$groupwise.group.colors)
   }
   
