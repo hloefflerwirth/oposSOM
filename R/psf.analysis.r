@@ -308,6 +308,14 @@ pipeline.PSFcalculation <- function(env)
 {
   data(kegg.collection)
   
+  all.psf.genes <- unique( do.call( c, lapply(kegg.collection, function(x) unique( do.call( c, sapply(x$graph@nodeData@data,function(xx)xx$genes) ) ) ) ) )
+  if( mean( all.psf.genes %in% env$gene.info$ids ) < 0.75 )
+  {
+    util.warn("Too few KEGG signalling pathway genes covered. Disabling PSF analysis.")
+    env$preferences$activated.modules$psf.analysis <- FALSE
+    return(env)
+  }
+  
   if( is.null(env$indata.ensID.m) )
   {
     env$indata.ensID.m <- env$indata[env$gene.info$ensembl.mapping[,1],]

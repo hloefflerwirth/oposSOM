@@ -1,3 +1,5 @@
+2.5.3:
++ PSF automatically skipped when too few KEGG pathway genes are covered
 2.5.2:
 + Critical bugfix in PSF report sheets (error caused by wrong IDs extracted from xml files)
 2.5.1:
