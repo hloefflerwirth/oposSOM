@@ -3,13 +3,15 @@ pipeline.groupSpecificGenesets <- function(env)
   sd.thres <- sd( env$samples.GSZ.scores )
   
   for (gr in seq_along(unique(env$group.labels)))
-  {
-    gs.p.values <- apply(env$samples.GSZ.scores, 1, function(x)
+  { 
+    w1 <- which(env$group.labels!=unique(env$group.labels)[gr])
+    w2 <- which(env$group.labels==unique(env$group.labels)[gr])
+    
+    gs.p.values <- chunk.apply.rows( env$samples.GSZ.scores, function(x)
     {
-      wilcox.test(x[which(env$group.labels!=unique(env$group.labels)[gr])],
-                  x[which(env$group.labels==unique(env$group.labels)[gr])],
-                  alternative="less")$p.value
-    })
+      wilcox.test(x[w1], x[w2], alternative="less")$p.value
+      
+    }, list( w1=w1, w2=w2 ) )
 
     gs.p.values <- sort(gs.p.values)
     top.gs <- gs.p.values[1:20]
@@ -60,7 +62,7 @@ pipeline.groupSpecificGenesets <- function(env)
     }
 
     dev.off()
-
+    
     fdr.res <- fdrtool(gs.p.values,statistic="pvalue",plot=FALSE,verbose=FALSE)
     out <- cbind(names(gs.p.values), paste(gs.p.values,"     ."), paste(fdr.res$lfdr,"     ."))
     colnames(out) = c("gene set","p-value","fdr")
@@ -70,12 +72,15 @@ pipeline.groupSpecificGenesets <- function(env)
   }
   
   ### detect GS that switch in group specific fashion
-
-  gs.F <- apply(env$samples.GSZ.scores, 1, function(x)
+  
+  gs.F <- chunk.apply.rows( env$samples.GSZ.scores, function(x)
   { 
-    summary(aov(x~env$group.labels))[[1]]$'F value'[1]
-  }) 
+    summary(aov(x~group.labels))[[1]]$'F value'[1]
+    
+  }, list(group.labels=env$group.labels) )
+  
   top.gs <- names(sort(gs.F,decreasing=TRUE)[1:20])
+  
   
   pdf("Summary Sheets - Groups/Geneset Analysis/0verall specific GS.pdf", 21/2.54, 29.7/2.54, useDingbats=FALSE)
   
@@ -129,5 +134,4 @@ pipeline.groupSpecificGenesets <- function(env)
   }
   
   dev.off()
-  
 }

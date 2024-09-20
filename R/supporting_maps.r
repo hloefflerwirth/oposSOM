@@ -50,49 +50,51 @@ pipeline.supportingMaps <- function(env)
   box()
 
   ### Significance Map ###
-  par(mfrow = c(1, 1))
-  par(mar=c(5, 6, 4, 5))
-  suppressWarnings({ p <- -apply(env$p.m, 1, mean) })
-
-  image(matrix(p, env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom),
-        axes=FALSE, main="Metagene Significance Map", cex.main=2.5, zlim=c(-1,0),
-        col=colorRampPalette(c("blue4", "blue4", "blue3", "blue3", "blue2",
-                               "blue2", "blue1", "lightblue", "darkgreen",
-                               "#008B00", "green3", "green", "yellow", "gold",
-                               "orange", "red", "darkred"))(1000))
-
-  mtext(expression(paste("<",p[k],">")), side=1, line=1, cex=1.4)
-  box()
-
-  par(new=TRUE, mar=c(1, 0, 0, 0))
-  layout(matrix(c(0, 0, 0, 0, 1, 0, 0, 0, 0), 3, 3), c(1, 0.05, 0.02), c(0.14, 1.15, 0.15))
-
-  image(matrix(1:10, 1, 10), axes=FALSE,
-        col=rev(colorRampPalette(c("darkgreen", "#008B00", "green3", "green",
-                                   "yellow", "gold", "orange", "red", "darkred"))(1000)))
-
-  axis(2, c("0.0", "0.05", "0.1", "0.2", "0.3", "0.4", "0.5"),
-       at=c(-0.05, 0.06, 0.17, 0.39, 0.61, 0.83, 1.05), las=2, tick=FALSE, pos=-0.5, cex.axis=1.4)
-
-  box()
-
-  par(mfrow = c(1, 1))
-  par(mar=c(5, 6, 4, 5))
-  suppressWarnings({ p <- apply(env$p.m, 1, min) })
-
-  image(matrix(-log(p), env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom),
-        axes=FALSE, main="Metagene Significance Map", cex.main=2.5,
-        col=env$color.palette.heatmaps(1000))
-
-  mtext(expression(paste(min[m],"( log ",p["k,m"]," )")), side=1, line=1, cex=1.4)
-  box()
-
-  par(new=TRUE, mar=c(1, 0, 0, 0))
-  layout(matrix(c(0, 0, 0, 0, 1, 0, 0, 0, 0), 3, 3), c(1, 0.05, 0.02), c(0.14, 0.3, 1))
-  image(matrix(1:100, 1, 100), col=rev(env$color.palette.heatmaps(1000)), axes=FALSE)
-  axis(2, at=c(0,1), c(round(min(log(p),na.rm=TRUE)), 0), las=2, tick=FALSE, pos=-0.5, cex.axis=1.4)
-  box()
-
+  if( !is.null(env$p.m) )
+  {   
+    par(mfrow = c(1, 1))
+    par(mar=c(5, 6, 4, 5))
+    suppressWarnings({ p <- -apply(env$p.m, 1, mean) })
+  
+    image(matrix(p, env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom),
+          axes=FALSE, main="Metagene Significance Map", cex.main=2.5, zlim=c(-1,0),
+          col=colorRampPalette(c("blue4", "blue4", "blue3", "blue3", "blue2",
+                                 "blue2", "blue1", "lightblue", "darkgreen",
+                                 "#008B00", "green3", "green", "yellow", "gold",
+                                 "orange", "red", "darkred"))(1000))
+  
+    mtext(expression(paste("<",p[k],">")), side=1, line=1, cex=1.4)
+    box()
+  
+    par(new=TRUE, mar=c(1, 0, 0, 0))
+    layout(matrix(c(0, 0, 0, 0, 1, 0, 0, 0, 0), 3, 3), c(1, 0.05, 0.02), c(0.14, 1.15, 0.15))
+  
+    image(matrix(1:10, 1, 10), axes=FALSE,
+          col=rev(colorRampPalette(c("darkgreen", "#008B00", "green3", "green",
+                                     "yellow", "gold", "orange", "red", "darkred"))(1000)))
+  
+    axis(2, c("0.0", "0.05", "0.1", "0.2", "0.3", "0.4", "0.5"),
+         at=c(-0.05, 0.06, 0.17, 0.39, 0.61, 0.83, 1.05), las=2, tick=FALSE, pos=-0.5, cex.axis=1.4)
+  
+    box()
+  
+    par(mfrow = c(1, 1))
+    par(mar=c(5, 6, 4, 5))
+    suppressWarnings({ p <- apply(env$p.m, 1, min) })
+  
+    image(matrix(-log(p), env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom),
+          axes=FALSE, main="Metagene Significance Map", cex.main=2.5,
+          col=env$color.palette.heatmaps(1000))
+  
+    mtext(expression(paste(min[m],"( log ",p["k,m"]," )")), side=1, line=1, cex=1.4)
+    box()
+  
+    par(new=TRUE, mar=c(1, 0, 0, 0))
+    layout(matrix(c(0, 0, 0, 0, 1, 0, 0, 0, 0), 3, 3), c(1, 0.05, 0.02), c(0.14, 0.3, 1))
+    image(matrix(1:100, 1, 100), col=rev(env$color.palette.heatmaps(1000)), axes=FALSE)
+    axis(2, at=c(0,1), c(round(min(log(p),na.rm=TRUE)), 0), las=2, tick=FALSE, pos=-0.5, cex.axis=1.4)
+    box()
+  }
 
   ### Entropy Map ###
   q25 <- quantile(env$metadata, 0.25)

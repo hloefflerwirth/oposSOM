@@ -28,9 +28,9 @@ pipeline.groupAnalysis <- function(env)
   local.env$fdr.g.m <- matrix(NA, nrow(env$indata), length(unique(env$group.labels)),
                      dimnames=list(rownames(env$indata), unique(env$group.labels)))
   local.env$n.0.m <- rep(NA, length(unique(env$group.labels)))
-    names(env$n.0.m) <- unique(env$group.labels)
+  names(local.env$n.0.m) <- unique(env$group.labels)
   local.env$perc.DE.m <- rep(NA, length(unique(env$group.labels)))
-    names(env$perc.DE.m) <- unique(env$group.labels)
+  names(local.env$perc.DE.m) <- unique(env$group.labels)
   
 
   for (gr in seq_along(unique(env$group.labels)))
@@ -53,19 +53,16 @@ pipeline.groupAnalysis <- function(env)
     
     if (!is(try.res,"try-error"))
     {
-#      p.g.m[,gr] <- fdrtool.result$pval
       local.env$fdr.g.m[,gr] <- fdrtool.result$lfdr
       local.env$n.0.m[gr] <- fdrtool.result$param[1,"eta0"]
       local.env$perc.DE.m[gr] <- 1 - local.env$n.0.m[gr]
     } else
     {
-#      p.g.m[,gr] <- order(apply(indata[,samples.indata,drop=FALSE],1,mean)) / nrow(indata)
       local.env$fdr.g.m[,gr] <- local.env$p.g.m[,gr]
       local.env$n.0.m[gr] <- 0.5
       local.env$perc.DE.m[gr] <- 0.5
     }    
   }
-  
   
 
   # average over group members

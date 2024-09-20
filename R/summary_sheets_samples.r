@@ -1,7 +1,5 @@
 pipeline.summarySheetsSamples <- function(env)
 {
-  if(ncol(env$indata) >= 1000) return()
-    
   dir.create(env$output.paths["Summary Sheets Samples"], showWarnings=FALSE)
 
   #### Summary Sheets ####

@@ -195,6 +195,13 @@ pipeline.checkInputParameters <- function(env)
     names(env$preferences$pairwise.comparison.list)[which(names(env$preferences$pairwise.comparison.list)=="")] <- 1:sum(names(env$preferences$pairwise.comparison.list)=="")   
   }
   
+  if (!is.numeric(env$preferences$max.cores) ||
+      env$preferences$max.cores < 1 ||
+      env$preferences$max.cores > detectCores()-1 )
+  {
+    env$preferences$max.cores <- detectCores()-1
+    util.warn( paste( "Invalid value of \"max.cores\". Using", detectCores()-1 ) )
+  }
   
   #### check input data ####
   if (is.null(env$indata))
@@ -417,6 +424,13 @@ pipeline.checkInputParameters <- function(env)
         !grepl("bioinf.uni-leipzig.de",Sys.info()["nodename"],ignore.case=TRUE) )
       env$csv.function <- write.csv
   } 
+  
+  if( is.null(env$preferences$activated.modules$largedata.mode) )
+  {
+    env$preferences$activated.modules$largedata.mode <- ( ncol(env$indata) >= 1000 )
+  }
+  
+  
   env$passedInputChecking <- TRUE
   return(env)
 }

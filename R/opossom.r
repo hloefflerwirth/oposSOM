@@ -50,6 +50,7 @@ opossom.new <- function(preferences=NULL)
   # Set default preferences
   env$preferences <- list(dataset.name = "Unnamed",
 													note = "",
+													max.cores = detectCores()-1,
                           dim.1stLvlSom = "auto",
                           dim.2ndLvlSom = 20,
                           training.extension = 1,
@@ -62,7 +63,8 @@ opossom.new <- function(preferences=NULL)
                                                     "geneset.analysis" = TRUE, 
                                                     "psf.analysis" = TRUE,
                                                     "group.analysis" = TRUE,
-                                                    "difference.analysis" = TRUE ),
+                                                    "difference.analysis" = TRUE,
+                                                    "largedata.mode" = NULL),
                           database.biomart = "ENSEMBL_MART_ENSEMBL",
                           database.host = "https://jan2020.archive.ensembl.org",
                           database.dataset = "auto",
@@ -146,8 +148,11 @@ opossom.run <- function(env)
     util.info("Saving environment image:", filename)
     save(env, file=filename)
     
-    util.info("Processing Differential Expression Statistics")
-    env <- pipeline.diffExpressionStatistics(env)
+    if( !env$preferences$activated.modules$largedata.mode )
+    {
+      util.info("Processing Differential Expression Statistics")
+      env <- pipeline.diffExpressionStatistics(env)
+    }
 
     util.info("Detecting Spots")
     env <- pipeline.detectSpotsModules(env)
@@ -197,13 +202,15 @@ opossom.run <- function(env)
       pipeline.chromosomeExpressionReports(env)
     }
     
-    if(ncol(env$indata) < 1000)
+    if( !env$preferences$activated.modules$largedata.mode )
     {
       util.info("Plotting Sample Portraits")
       pipeline.sampleExpressionPortraits(env)
     } 
     
-    if ( env$preferences$activated.modules$sample.similarity.analysis && ncol(env$indata) > 2)
+    if ( env$preferences$activated.modules$sample.similarity.analysis && 
+         ncol(env$indata) > 2 &&
+         !env$preferences$activated.modules$largedata.mode )
     {    
       util.info("Plotting Sample Similarity Analysis")
       dir.create("Sample Similarity Analysis", showWarnings=FALSE)
@@ -214,7 +221,8 @@ opossom.run <- function(env)
       pipeline.sampleSimilarityAnalysisSOM(env)
     }
     
-    if (env$preferences$activated.modules$geneset.analysis)
+    if (env$preferences$activated.modules$geneset.analysis &&
+        !env$preferences$activated.modules$largedata.mode )
     {
       dir.create("Geneset Analysis", showWarnings=FALSE)
       
@@ -237,8 +245,11 @@ opossom.run <- function(env)
     util.info("Writing Gene Lists")
     pipeline.geneLists(env)
 
-    util.info("Plotting Summary Sheets (Samples)")
-    pipeline.summarySheetsSamples(env)
+    if( !env$preferences$activated.modules$largedata.mode )
+    {
+      util.info("Plotting Summary Sheets (Samples)")
+      pipeline.summarySheetsSamples(env)
+    }
     
     util.info("Plotting Summary Sheets (Modules & PATs)")
     pipeline.summarySheetsModules(env)

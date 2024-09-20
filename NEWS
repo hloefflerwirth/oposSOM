@@ -1,3 +1,5 @@
+3.0.0:
++ Optimization for large data set incl. massive parallelization of bottleneck functionalities; largedata.mode added
 2.5.3:
 + PSF automatically skipped when too few KEGG pathway genes are covered
 2.5.2:

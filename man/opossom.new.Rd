@@ -21,6 +21,7 @@
 			\item{note} a short note shown in html summary file to give some keywords about the data or analysis parameters (character).
       \item{dim.1stLvlSom}: dimension of primary SOM; use "auto" to apply automatic size estimation (integer, >5)
       \item{dim.2ndLvlSom}: dimensions of second level SOM (integer, >5)
+	  \item{max.cores}:  maximum number of cores utilized by parallelized computing (integer, >0)
       \item{training.extension}: factor to extend the number of iterations in SOM training (numerical, >0)
       \item{rotate.SOM.portraits}: number of roations of the primary SOM in counter-clockwise fashion (integer \{0,1,2,3\})
       \item{flip.SOM.portraits}: mirroring the primary SOM along the bottom-left to top-right diagonal (boolean)
@@ -28,6 +29,7 @@
       \item{database.id.type}: type of rowname identifier in biomaRt database; obsolete if \code{database.dataset="auto"} (character)
 			\item{activated.modules} (list): activates/deactivates pipeline functionalities:
 				\itemize{
+					\item{largedata.mode} (boolean): enables or disables calculation and output of single sample analyses (default: NULL). When activated, time-consuming functionalities are skipped. When NULL, large data mode is automatically activated when number of samples exceeds 1000.
 					\item{reporting} (boolean): enables or disables output of pdf and csv results and html summaries (default: TRUE). When deactivated, only R workspace will be stored after analysis.
 					\item{primary.analysis} (boolean): enables or disables data preprocessing and SOM training (default: TRUE). When deactivated, prior SOM training results are required to be contained in the workspace environment.
 					\item{sample.similarity.analysis} (boolean): enables or disables diversity analyses such as clustering heatmaps, correlation networks and ICA (default: TRUE).
@@ -57,7 +59,8 @@ Please check the vignette for more details on the parameters.
 }
 \examples{
 env <- opossom.new(list(dataset.name="Example",
-												note="a test with 10 random samples",
+						note="a test with 10 random samples",	
+						max.cores=2,
                         dim.1stLvlSom="auto",
                         dim.2ndLvlSom=10,
                         training.extension=1,
@@ -65,7 +68,8 @@ env <- opossom.new(list(dataset.name="Example",
                         flip.SOM.portraits=FALSE,
                         database.dataset="auto",
                         activated.modules = list( 
-													"reporting" = TRUE,
+						  "largedata.mode" = NULL,
+						  "reporting" = TRUE,
                           "primary.analysis" = TRUE, 
                           "sample.similarity.analysis" = TRUE,
                           "geneset.analysis" = TRUE, 

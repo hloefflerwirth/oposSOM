@@ -319,7 +319,7 @@ pipeline.PSFcalculation <- function(env)
   if( is.null(env$indata.ensID.m) )
   {
     env$indata.ensID.m <- env$indata[env$gene.info$ensembl.mapping[,1],]
-    env$indata.ensID.m <- do.call(rbind, by(env$indata.ensID.m, env$gene.info$ensembl.mapping[,2], colMeans))
+    env$indata.ensID.m <- do.call(rbind, by.minicluster(env$indata.ensID.m, env$gene.info$ensembl.mapping[,2], colMeans))
   }
   
   if( ncol(env$indata) <= 100 )

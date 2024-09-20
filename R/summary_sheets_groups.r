@@ -10,39 +10,6 @@ pipeline.summarySheetsGroups <- function(env)
     return(meta * meta.sign)
   })
 
-  # bleached.group.metadata <- group.metadata
-  # bleached.loglog.group.metadata <- loglog.group.metadata
-  # 
-  # for (i in seq_along(unique(env$group.labels)))
-  # {
-  #   pos.metagenes <- which(group.metadata[,i] >= 0)
-  #   neg.metagenes <- which(group.metadata[,i] < 0)
-  # 
-  #   bleached.group.metadata[pos.metagenes,i] <-
-  #     bleached.group.metadata[pos.metagenes,i] -
-  #     pmin(bleached.group.metadata[pos.metagenes,i],
-  #          apply(group.metadata[pos.metagenes,-i,drop=FALSE], 1, max))
-  # 
-  #   bleached.group.metadata[neg.metagenes,i] <-
-  #     bleached.group.metadata[neg.metagenes,i] -
-  #     pmax(bleached.group.metadata[neg.metagenes,i],
-  #          apply(group.metadata[neg.metagenes,-i,drop=FALSE], 1, min))
-  # 
-  # 
-  #   pos.metagenes <- which(loglog.group.metadata[,i] >= 0)
-  #   neg.metagenes <- which(loglog.group.metadata[,i] < 0)
-  # 
-  #   bleached.loglog.group.metadata[pos.metagenes,i] <-
-  #     bleached.loglog.group.metadata[pos.metagenes,i] -
-  #     pmin(bleached.loglog.group.metadata[pos.metagenes,i],
-  #          apply(loglog.group.metadata[pos.metagenes,-i,drop=FALSE], 1, max))
-  # 
-  #   bleached.loglog.group.metadata[neg.metagenes,i] <-
-  #     bleached.loglog.group.metadata[neg.metagenes,i] -
-  #     pmax(bleached.loglog.group.metadata[neg.metagenes,i],
-  #          apply(loglog.group.metadata[neg.metagenes,-i,drop=FALSE], 1, min))
-  # 
-  # }
 
   filename <- file.path("Summary Sheets - Groups","Expression Portraits Groups.pdf")
 
@@ -412,188 +379,195 @@ pipeline.summarySheetsGroups <- function(env)
     invisible(mid)
   }
 
-  filename <- file.path("Summary Sheets - Groups","Group Clustering.pdf")
-
-  util.info("Writing:", filename)
-  pdf(filename , 29.7/2.54, 21/2.54, useDingbats=FALSE)
-
-  for (i in seq_along(unique(env$group.labels)))
+  
+  if(!env$preferences$activated.modules$largedata.mode)
   {
-    group.member <- which(env$group.labels==unique(env$group.labels)[i])
-
-    if (length(group.member) >= 5)
+    filename <- file.path("Summary Sheets - Groups","Group Clustering.pdf")
+  
+    util.info("Writing:", filename)
+    pdf(filename , 29.7/2.54, 21/2.54, useDingbats=FALSE)
+  
+    for (i in seq_along(unique(env$group.labels)))
     {
-      hc <- hclust(dist(t(env$metadata[,group.member])))#, method="average")
-      hc$labels <- names(group.member)
-
-      absi(hc)
-      o <- order(env$.heights)
-      coords.h <- env$.heights[o]
-      coords.x <- env$.topAbsis[o]
-
-      merges <- list()
-      old.cluster.size <- rep(1,length(group.member))
-
-      for (hi in c(seq_along(hc$height)))
+      group.member <- which(env$group.labels==unique(env$group.labels)[i])
+  
+      if (length(group.member) >= 5)
       {
-        new.clusters <- cutree(hc, h=hc$height[hi])
-        new.cluster.size <- table(new.clusters)[new.clusters]
-        merges[[hi]] <- which(old.cluster.size != new.cluster.size)
-        old.cluster.size <- new.cluster.size
-      }
-
-      equal.merges <- which(sapply(merges,length) == 0)
-
-      for (em.i in equal.merges)
-      {
-        root.branch <- max(which(setdiff(c(seq_along(merges)), equal.merges) < em.i))
-        merges[[em.i]] <- merges[[root.branch]]
-      }
-
-      top.level <- c(0)
-
-      for (hi in seq(2, length(hc$height)))
-      {
-        mem <- rev(merges)[[hi]]
-        last.level <- 0
-
-        for (hi2 in 1:(hi-1))
+        hc <- hclust(dist(t(env$metadata[,group.member])))#, method="average")
+        hc$labels <- names(group.member)
+  
+        absi(hc)
+        o <- order(env$.heights)
+        coords.h <- env$.heights[o]
+        coords.x <- env$.topAbsis[o]
+  
+        merges <- list()
+        old.cluster.size <- rep(1,length(group.member))
+  
+        for (hi in c(seq_along(hc$height)))
         {
-          if (any(mem %in% rev(merges)[[hi2]]))
+          new.clusters <- cutree(hc, h=hc$height[hi])
+          new.cluster.size <- table(new.clusters)[new.clusters]
+          merges[[hi]] <- which(old.cluster.size != new.cluster.size)
+          old.cluster.size <- new.cluster.size
+        }
+  
+        equal.merges <- which(sapply(merges,length) == 0)
+  
+        for (em.i in equal.merges)
+        {
+          root.branch <- max(which(setdiff(c(seq_along(merges)), equal.merges) < em.i))
+          merges[[em.i]] <- merges[[root.branch]]
+        }
+  
+        top.level <- c(0)
+  
+        for (hi in seq(2, length(hc$height)))
+        {
+          mem <- rev(merges)[[hi]]
+          last.level <- 0
+  
+          for (hi2 in 1:(hi-1))
           {
-            last.level <- hi2
+            if (any(mem %in% rev(merges)[[hi2]]))
+            {
+              last.level <- hi2
+            }
           }
+  
+          top.level[hi] <- last.level
         }
-
-        top.level[hi] <- last.level
-      }
-
-      top.level <- rev(top.level)
-      diff.metadata <- list(rowMeans(env$metadata[, group.member]))
-
-      for (hi in seq(2, length(hc$height)))
-      {
-        mem <- rev(merges)[[hi]]
-        tl <- rev(top.level)[hi]
-
-        diff.metadata[[hi]] <- rowMeans(env$metadata[, group.member[mem]])
-        diff.metadata[[hi]][which(is.na(diff.metadata[[tl]]))] <- NA
-        diff.metadata[[hi]][which(diff.metadata[[tl]] > quantile(diff.metadata[[tl]],0.9, na.rm=TRUE))] <- NA
-        diff.metadata[[hi]][which(diff.metadata[[tl]] < quantile(diff.metadata[[tl]],0.1, na.rm=TRUE))] <- NA
-      }
-
-      diff.metadata <- rev(diff.metadata)
-
-      if (length(group.member) >= 20)
-      {
-        cex.branch.portraits <- c(0.6, 2 * 0.6 * max(hc$height) / length(group.member))
-        cex.sample.portraits <- c(0.4, 2 * 0.4 * max(hc$height) / length(group.member))
-        y.sample.portraits <- -1
-      } else
-      {
-        c1 <- 0.1 + (0.4 * (length(group.member)-5)) / 15
-        c2 <- 0.1 + (0.3 * (length(group.member)-5)) / 15
-        cex.branch.portraits <- c(c1, 2 * c1 * max(hc$height) / length(group.member))
-        cex.sample.portraits <- c(c2, 2 * c2 * max(hc$height) / length(group.member))
-        y.sample.portraits <- 0
-      }
-
-      plot(hc, main=unique(env$group.labels)[i], col.main=unique(env$group.colors)[i], xlab="", sub="")
-      mtext("mean branch portraits")
-
-      for (ii in (if (length(group.member)<80) 1 else ceiling(length(merges)/3)):length(merges))
-      {
-        m <- matrix(rowMeans(env$metadata[, group.member[merges[[ii]]]]), env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom)
-
-        if (max(m) - min(m) != 0)
+  
+        top.level <- rev(top.level)
+        diff.metadata <- list(rowMeans(env$metadata[, group.member]))
+  
+        for (hi in seq(2, length(hc$height)))
         {
-          m <- 1 + (m - min(m)) / (max(m) - min(m)) * 999
+          mem <- rev(merges)[[hi]]
+          tl <- rev(top.level)[hi]
+  
+          diff.metadata[[hi]] <- rowMeans(env$metadata[, group.member[mem]])
+          diff.metadata[[hi]][which(is.na(diff.metadata[[tl]]))] <- NA
+          diff.metadata[[hi]][which(diff.metadata[[tl]] > quantile(diff.metadata[[tl]],0.9, na.rm=TRUE))] <- NA
+          diff.metadata[[hi]][which(diff.metadata[[tl]] < quantile(diff.metadata[[tl]],0.1, na.rm=TRUE))] <- NA
         }
-
-        m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
-        x <- pixmapIndexed(m , col = env$color.palette.portraits(1000), cellres=10)
-
-        addlogo(x,
-                coords.x[ii]+cex.branch.portraits[1]*c(-1,1),
-                coords.h[ii]+cex.branch.portraits[2]*c(-1,1))
-
-        rect(coords.x[ii] - cex.branch.portraits[1],
-             coords.h[ii] - cex.branch.portraits[2],
-             coords.x[ii] + cex.branch.portraits[1],
-             coords.h[ii] + cex.branch.portraits[2])
-      }
-
-      if (length(group.member) < 80)
-      {
-        for (ii in seq_along(group.member))
+  
+        diff.metadata <- rev(diff.metadata)
+  
+        if (length(group.member) >= 20)
         {
-          m <- matrix(env$metadata[, group.member[hc$order[ii]]],
-                      env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom)
-
+          cex.branch.portraits <- c(0.6, 2 * 0.6 * max(hc$height) / length(group.member))
+          cex.sample.portraits <- c(0.4, 2 * 0.4 * max(hc$height) / length(group.member))
+          y.sample.portraits <- -1
+        } else
+        {
+          c1 <- 0.1 + (0.4 * (length(group.member)-5)) / 15
+          c2 <- 0.1 + (0.3 * (length(group.member)-5)) / 15
+          cex.branch.portraits <- c(c1, 2 * c1 * max(hc$height) / length(group.member))
+          cex.sample.portraits <- c(c2, 2 * c2 * max(hc$height) / length(group.member))
+          y.sample.portraits <- 0
+        }
+  
+        plot(hc, main=unique(env$group.labels)[i], col.main=unique(env$group.colors)[i], xlab="", sub="")
+        mtext("mean branch portraits")
+  
+        for (ii in (if (length(group.member)<80) 1 else ceiling(length(merges)/3)):length(merges))
+        {
+          m <- matrix(rowMeans(env$metadata[, group.member[merges[[ii]]]]), env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom)
+  
           if (max(m) - min(m) != 0)
           {
             m <- 1 + (m - min(m)) / (max(m) - min(m)) * 999
           }
-
+  
           m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
           x <- pixmapIndexed(m , col = env$color.palette.portraits(1000), cellres=10)
-
+  
           addlogo(x,
-                  ii+cex.sample.portraits[1]*c(-1,1),
-                  y.sample.portraits+cex.sample.portraits[2]*c(-1,1))
+                  coords.x[ii]+cex.branch.portraits[1]*c(-1,1),
+                  coords.h[ii]+cex.branch.portraits[2]*c(-1,1))
+  
+          rect(coords.x[ii] - cex.branch.portraits[1],
+               coords.h[ii] - cex.branch.portraits[2],
+               coords.x[ii] + cex.branch.portraits[1],
+               coords.h[ii] + cex.branch.portraits[2])
         }
-      }
-
-      plot(hc, main=unique(env$group.labels)[i], col.main=unique(env$group.colors)[i], xlab="", sub="")
-      mtext("mean branch portraits; difference to mean group portrait")
-
-      for (ii in (if (length(group.member)<80) 1 else ceiling(length(merges)/3)):length(merges))
-      {
-        m <- matrix(rowMeans(env$metadata[, group.member[merges[[ii]]]]) - rowMeans(env$metadata[, group.member]),
-                    env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom)
-
-        if (max(m,na.rm=TRUE) - min(m,na.rm=TRUE) != 0)
+  
+        if (length(group.member) < 80)
         {
-          m <- 1 + (m - min(m,na.rm=TRUE)) / (max(m,na.rm=TRUE) - min(m,na.rm=TRUE)) * 999
-        }
-
-        m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
-        m[which(is.na(m))] <- 0
-        x <- pixmapIndexed(m , col = c("gray90", env$color.palette.portraits(1000)), cellres=10)
-
-        addlogo(x,
-                coords.x[ii]+cex.branch.portraits[1]*c(-1,1),
-                coords.h[ii]+cex.branch.portraits[2]*c(-1,1))
-
-        rect(coords.x[ii] - cex.branch.portraits[1],
-             coords.h[ii] - cex.branch.portraits[2],
-             coords.x[ii] + cex.branch.portraits[1],
-             coords.h[ii] + cex.branch.portraits[2])
-      }
-
-      if (length(group.member) < 80)
-      {
-        for (ii in seq_along(group.member))
-        {
-          m <- matrix(env$metadata[, group.member[hc$order[ii]]],
-                      env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom)
-
-          if (max(m) - min(m) != 0)
+          for (ii in seq_along(group.member))
           {
-            m <- 1 + (m - min(m)) / (max(m) - min(m)) * 999
+            m <- matrix(env$metadata[, group.member[hc$order[ii]]],
+                        env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom)
+  
+            if (max(m) - min(m) != 0)
+            {
+              m <- 1 + (m - min(m)) / (max(m) - min(m)) * 999
+            }
+  
+            m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
+            x <- pixmapIndexed(m , col = env$color.palette.portraits(1000), cellres=10)
+  
+            addlogo(x,
+                    ii+cex.sample.portraits[1]*c(-1,1),
+                    y.sample.portraits+cex.sample.portraits[2]*c(-1,1))
           }
-
-          m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
-          x <- pixmapIndexed(m , col = env$color.palette.portraits(1000), cellres=10)
-
-          addlogo(x,
-                  ii+cex.sample.portraits[1]*c(-1,1),
-                  y.sample.portraits+cex.sample.portraits[2]*c(-1,1))
         }
+  
+        plot(hc, main=unique(env$group.labels)[i], col.main=unique(env$group.colors)[i], xlab="", sub="")
+        mtext("mean branch portraits; difference to mean group portrait")
+  
+        for (ii in (if (length(group.member)<80) 1 else ceiling(length(merges)/3)):length(merges))
+        {
+          m <- matrix(rowMeans(env$metadata[, group.member[merges[[ii]]]]) - rowMeans(env$metadata[, group.member]),
+                      env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom)
+  
+          if (max(m,na.rm=TRUE) - min(m,na.rm=TRUE) != 0)
+          {
+            m <- 1 + (m - min(m,na.rm=TRUE)) / (max(m,na.rm=TRUE) - min(m,na.rm=TRUE)) * 999
+          }
+  
+          m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
+          m[which(is.na(m))] <- 0
+          x <- pixmapIndexed(m , col = c("gray90", env$color.palette.portraits(1000)), cellres=10)
+  
+          addlogo(x,
+                  coords.x[ii]+cex.branch.portraits[1]*c(-1,1),
+                  coords.h[ii]+cex.branch.portraits[2]*c(-1,1))
+  
+          rect(coords.x[ii] - cex.branch.portraits[1],
+               coords.h[ii] - cex.branch.portraits[2],
+               coords.x[ii] + cex.branch.portraits[1],
+               coords.h[ii] + cex.branch.portraits[2])
+        }
+  
+        if (length(group.member) < 80)
+        {
+          for (ii in seq_along(group.member))
+          {
+            m <- matrix(env$metadata[, group.member[hc$order[ii]]],
+                        env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom)
+  
+            if (max(m) - min(m) != 0)
+            {
+              m <- 1 + (m - min(m)) / (max(m) - min(m)) * 999
+            }
+  
+            m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
+            x <- pixmapIndexed(m , col = env$color.palette.portraits(1000), cellres=10)
+  
+            addlogo(x,
+                    ii+cex.sample.portraits[1]*c(-1,1),
+                    y.sample.portraits+cex.sample.portraits[2]*c(-1,1))
+          }
+        }
+  
       }
-
     }
+    
+    dev.off()
+    
   }
 
-  dev.off()
+  
 }
