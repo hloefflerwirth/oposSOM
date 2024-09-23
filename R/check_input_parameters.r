@@ -427,7 +427,12 @@ pipeline.checkInputParameters <- function(env)
   
   if( is.null(env$preferences$activated.modules$largedata.mode) )
   {
-    env$preferences$activated.modules$largedata.mode <- ( ncol(env$indata) >= 1000 )
+	env$preferences$activated.modules$largedata.mode <- ( ncol(env$indata) >= 1000 )
+	
+	if( ncol(env$indata) >= 1000 )
+	{
+		util.warn("Data has >1000 samples. 'Large data mode' activated!")
+	}     
   }
   
   
