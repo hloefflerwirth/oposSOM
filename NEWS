@@ -1,3 +1,5 @@
+3.0.1:
++ Bugfixes in difference analysis and HTML scripts
 3.0.0:
 + Optimization for large data set incl. massive parallelization of bottleneck functionalities; largedata.mode added
 2.5.3:

@@ -1,6 +1,8 @@
 pipeline.htmlGenesetAnalysis <- function(env)
 {
-  if (!env$preferences$activated.modules$geneset.analysis)
+  dirname <- "Geneset Analysis"
+  
+  if (!file.exists(dirname))
   {
     return()
   }

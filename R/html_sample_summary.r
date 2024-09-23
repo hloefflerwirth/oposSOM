@@ -1,6 +1,11 @@
 pipeline.htmlSampleSummary <- function(env)
 {
-  if(ncol(env$indata) >= 1000) return()
+  dirname <- "Summary Sheets - Samples"
+
+  if (!file.exists(dirname))
+  {
+    return()
+  }
 	
   filename <- file.path("Summary Sheets - Samples","0verview.html")
 

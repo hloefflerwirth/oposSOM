@@ -1,6 +1,8 @@
 pipeline.htmlPsfAnalysis <- function(env)
 {
-  if (!env$preferences$activated.modules$psf.analysis)
+  dirname <- "PSF Analysis"
+
+  if (!file.exists(dirname))
   {
     return()
   }

@@ -5,7 +5,7 @@ pipeline.diffExpressionStatistics <- function(env)
   
   ### Single Genes ###
   
-  env$p.g.m <- sapply( ncol(indata), function(m)
+  env$p.g.m <- sapply( 1:ncol(env$indata), function(m)
   {
     chunk.apply.rows( env$indata, function(x)
     {

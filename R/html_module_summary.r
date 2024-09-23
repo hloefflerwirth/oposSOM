@@ -1,5 +1,12 @@
 pipeline.htmlModuleSummary <- function(env)
 {
+  dirname <- "Summary Sheets - Modules"
+
+  if (!file.exists(dirname))
+  {
+    return()
+  }
+  
   filename <- file.path("Summary Sheets - Modules","0verview.html")
 
   util.info("Writing:", filename)
