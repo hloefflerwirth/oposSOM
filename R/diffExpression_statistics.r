@@ -1,23 +1,21 @@
 pipeline.diffExpressionStatistics <- function(env)
 {
-
   util.info("Calculating Single Gene Statistic")
   
   ### Single Genes ###
   
-  env$p.g.m <- sapply( 1:ncol(env$indata), function(m)
+  env$p.g.m <- chunk.apply.rows( env$indata, function(x)
   {
-    chunk.apply.rows( env$indata, function(x)
+    sapply( seq(x), function(m)
     {
       if( all(x[-m] == x[-m][1]) ) return(1)
-        
+      
       return( t.test( x[m], x[-m], var.equal=TRUE )$p.value )
-        
-    }, list(m=m) )
-    
-  })
+    })
+  } )
   colnames(env$p.g.m) <- colnames(env$indata)
-
+  
+  
   env$n.0.m <- rep(NA, ncol(env$indata))
   names(env$n.0.m) <- colnames(env$indata)
   
@@ -26,6 +24,7 @@ pipeline.diffExpressionStatistics <- function(env)
   
   env$fdr.g.m <- matrix(NA, nrow(env$indata), ncol(env$indata), dimnames=list(rownames(env$indata), colnames(env$indata)))
   
+
   for (m in 1:ncol(env$indata))
   {
     suppressWarnings({ try.res <- try({
@@ -48,7 +47,6 @@ pipeline.diffExpressionStatistics <- function(env)
     }
 
   }
- 
 
   ### Metagenes ###
 

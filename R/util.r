@@ -87,12 +87,18 @@ chunk.apply.rows <- function(data,fun.para,add.data=NULL)
     on.exit(options(oopts))
     
     chunk.results <- future_lapply( chunk.list$data, apply, 1, chunk.list$fun )
-    
+
     if( is.matrix(chunk.results[[1]]) )
     {
-      chunk.results <- do.call(rbind,chunk.results)
-      colnames(chunk.results) <- colnames(data)
-      
+      if( rowSums(sapply(chunk.results,dim))[2] == rowSums(sapply(chunk.list$data,dim))[1] )
+      {
+        chunk.results <- t(do.call(cbind,chunk.results))
+
+      } else
+      {
+        chunk.results <- do.call(rbind,chunk.results)
+        colnames(chunk.results) <- colnames(data)
+      }
     } else
     {
       n <- do.call( c, sapply(chunk.results,names) )
@@ -108,7 +114,7 @@ chunk.apply.rows <- function(data,fun.para,add.data=NULL)
   fun.para <- paste( deparse(fun.para), collapse="\n")
   eval( parse(text = paste("fun.para <- ",fun.para)) )
   
-  n.chunks <- env$preferences$max.cores
+  n.chunks <- min( env$preferences$max.cores, detectCores()-1 )
   chunk.list <<- split( rownames(data), cut(seq(nrow(data)), n.chunks, labels=F ) )
   chunk.list <<- lapply( chunk.list, function(x) data[x,] )
   chunk.list <<- list(fun=fun.para,data=chunk.list)
@@ -171,7 +177,7 @@ chunk.apply.rows <- function(data,fun.para,add.data=NULL)
 #   fun.para <- paste( deparse(fun.para), collapse="\n")
 #   eval( parse(text = paste("fun.para <- ",fun.para)) )
 #   
-#   n.chunks <- env$preferences$max.cores
+#   n.chunks <- min( env$preferences$max.cores, detectCores()-1 )
 #   chunk.list <<- split( rownames(data), cut(seq(nrow(data)), n.chunks, labels=F ) )
 #   chunk.list <<- lapply( chunk.list, function(x) data[x,] )
 #   chunk.list <<- list(fun=fun.para,data=chunk.list)
@@ -236,7 +242,7 @@ chunk.sapply <- function(data,fun.para,add.data,max.chunks=env$preferences$max.c
   fun.para <- paste( deparse(fun.para), collapse="\n")
   eval( parse(text = paste("fun.para <- ",fun.para)) )
   
-  n.chunks <- min( env$preferences$max.cores, max.chunks )
+  n.chunks <- min( c( env$preferences$max.cores, max.chunks, detectCores()-1 ) )
   chunk.list <<- split( names(data), cut(seq(length(data)), n.chunks, labels=F ) )
   chunk.list <<- lapply( chunk.list, function(x) data[x] )
   chunk.list <<- list(fun=fun.para,data=chunk.list)
