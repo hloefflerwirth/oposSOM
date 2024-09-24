@@ -161,11 +161,8 @@ pipeline.prepareAnnotation <- function(env)
 
   if (length(env$gs.def.list) > 0)
   {
-    util.info("Download of", length(env$gs.def.list), "GO sets with", sum(sapply(sapply(env$gs.def.list, head, 1), length)), "entries")
-
     ## simple small-gs-filtering
     env$gs.def.list <- env$gs.def.list[ which( sapply(env$gs.def.list, function(x) length(x$Genes)) >= 20 ) ]
-    util.info("Filtered to", length(env$gs.def.list), "GO sets with", sum(sapply(sapply(env$gs.def.list, head, 1), length)), "entries")
 
     biomart.table[,4] <- sub("biological_process", "BP", biomart.table[,4])
     biomart.table[,4] <- sub("molecular_function", "MF", biomart.table[,4])
@@ -208,7 +205,7 @@ pipeline.prepareAnnotation <- function(env)
   if (length(env$gs.def.list) > 0)
   {
     env$gs.def.list <- lapply(env$gs.def.list, function(x) { names(x$Genes) = NULL; return(x) })
-    util.info("In total", length(env$gs.def.list), "gene sets to be considered in analysis")
+    util.info(length(env$gs.def.list), "annotated gene sets derived for functional analysis")
   } else
   {
     env$preferences$activated.modules$geneset.analysis <- FALSE

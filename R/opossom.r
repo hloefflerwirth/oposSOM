@@ -202,7 +202,7 @@ opossom.run <- function(env)
       pipeline.chromosomeExpressionReports(env)
     }
     
-    if( !env$preferences$activated.modules$largedata.mode )
+    if( !env$preferences$activated.modules$largedata.mode && ncol(env$indata)<1000 )
     {
       util.info("Plotting Sample Portraits")
       pipeline.sampleExpressionPortraits(env)
@@ -245,7 +245,7 @@ opossom.run <- function(env)
     util.info("Writing Gene Lists")
     pipeline.geneLists(env)
 
-    if( !env$preferences$activated.modules$largedata.mode )
+    if( !env$preferences$activated.modules$largedata.mode && ncol(env$indata)<1000 )
     {
       util.info("Plotting Summary Sheets (Samples)")
       pipeline.summarySheetsSamples(env)
