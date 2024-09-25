@@ -175,6 +175,8 @@ opossom.run <- function(env)
   
   if(env$preferences$activated.modules$primary.analysis || env$preferences$activated.modules$geneset.analysis)
   {    
+	if( !is.null(env$indata.ensID.m) && env$preferences$activated.modules$largedata.mode ) rm(indata.ensID.m,envir=env)
+  
     filename <- paste(env$files.name, ".RData", sep="")
     util.info("Saving environment image:", filename)
     save(env, file=filename)
