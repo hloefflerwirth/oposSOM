@@ -5,6 +5,7 @@ pipeline.groupAnalysis <- function(env)
 
   if (env$preferences$activated.modules$geneset.analysis)
   {
+    util.info("Writing: Summary Sheets - Groups/Geneset Analysis/*.pdf")
     dir.create("Summary Sheets - Groups/Geneset Analysis", showWarnings=FALSE)
     pipeline.groupSpecificGenesets(env)
   }
