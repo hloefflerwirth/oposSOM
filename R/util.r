@@ -101,7 +101,7 @@ chunk.apply.rows <- function(data,fun.para,add.data=NULL)
       }
     } else
     {
-      n <- do.call( c, sapply(chunk.results,names) )
+      n <- do.call( c, lapply(chunk.results,names) )
       chunk.results <- do.call(c,chunk.results)
       names(chunk.results) <- n
     }
