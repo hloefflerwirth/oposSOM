@@ -8,30 +8,29 @@
 \SweaveOpts{concordance=TRUE}
 
 \title{The oposSOM Package}
-\author{Henry L\"offler-Wirth, Martin Kalcher}
+\author{Henry L\"offler-Wirth}
 \maketitle
 
-
-High-throughput technologies such as whole genome transcriptional profiling
-revolutionized molecular biology and provide an incredible amount of data. On
-the other hand, these techniques pose elementary methodological challenges
+Modern molecular biology technologies, such as whole genome transcriptional profiling, single-cell and spatial transcriptomics,
+provide an incredible amount of data, however posing elementary methodological challenges
 simply by the huge and ever increasing amount of data produced: researchers
 need adequate tools to extract the information content of the data in an
 effective and intelligent way. This includes algorithmic tasks such as data
 compression and filtering, feature selection, linkage with the functional
 context, and proper visualization.
-Especially, the latter task is very important because an intuitive
-visualization of massive data clearly promotes quality control, the discovery
-of their intrinsic structure, functional data mining and finally the generation
-of hypotheses.
-We aim at adapting a holistic view on the gene activation patterns as seen by
+\\
+
+About ten years ago, the oposSOM package was introduced to CRAN and Bioconductor repositories. In the following, the software was steadily 
+improved and optimized for processing larger and larger data sets. The now published version 3.0 further improved utilization of oposSOM with 
+focus on high definition spatial transcriptomics with usually several 100,000 spots measured.
+\\
+With our oposSOM workflow, we aim at adapting a holistic view on the gene activation patterns as seen by
 expression studies rather than to consider single genes or single pathways.
 This view requires methods which support an integrative and reductionist
 approach to disentangle the complex gene-phenotype interactions related to
 cancer genesis and progression. With this motivation we implemented an analysis
 pipeline based on data processing by a Self-Organizing Map (SOM)
-\citep{Wirth2011}\citep{Wirth2012}\citep{Loffler-Wirth2015}. This approach simultaneously searches for features which are differentially expressed and correlated in their profiles in the set of samples studied. We include functional information about such co-expressed genes to extract distinct functional modules inherent in the data and attribute them to particular types of cellular and biological processes such as inflammation, cell division, etc. This modular view facilitates the understanding of the gene expression patterns characterizing different cancer subtypes on the molecular level. Importantly, SOMs preserve the information richness of the original data allowing the detailed study of the samples after SOM clustering. A central role in our analysis is played by the so-called expression portraits which serve as intuitive and easy-to-interpret fingerprints of the transcriptional activity of the samples. Their analysis provides a holistic view on the expression patterns activated in a particular sample. Importantly, they also allow identification and interpretation of outlier samples and, thus, improve data quality \citep{Hopp2013a}\citep{Hopp2013}.
-
+\citep{Wirth2011}\citep{Wirth2012}\citep{Loffler-Wirth2015}. This approach simultaneously searches for features which are differentially expressed and correlated in their profiles in the set of samples studied. We include functional information about such co-expressed genes to extract distinct functional modules inherent in the data and attribute them to particular types of cellular and biological processes such as inflammation, cell division, etc. This modular view facilitates the understanding of the gene expression patterns characterizing different cancer subtypes on the molecular level. Importantly, SOMs preserve the information richness of the original data allowing the detailed study of the samples after SOM clustering. A central role in our analysis is played by the so-called expression portraits which serve as intuitive and easy-to-interpret fingerprints of the transcriptional activity of the samples. Their analysis provides a holistic view on the expression patterns activated in a particular sample.
 
 \section{Example data: transctiptome of healthy human tissue samples}
 
@@ -187,10 +186,6 @@ further visualized and evaluated (Figure ~\ref{fig:Results summary}b). Sample
 similarity structure is analysed using different algorithms and distance
 metrics, for example by clustering the pairwise sample correlation matrix
 (Figure ~\ref{fig:Results summary}c).\\
-Detailed description of the respective algorithms and visualizations would
-exceed the scope of this outline. We therefore refer to our publications aiming
-at methodical issues and application of the pipeline
-\citep{Wirth2011}\citep{Wirth2012m}\citep{Wirth2012}\citep{Wirth2012a}\citep{Steiner2012}\citep{Binder2012}\citep{Hopp2013a}\citep{Hopp2013}.\\
 HTML files are generated to provide straightforward access to this great
 amount of analysis results (see Figure ~\ref{fig:Results HTML}). They guide the
 user in terms of giving the most prominent links at a glance and leading from
@@ -212,11 +207,29 @@ the functional analyses page.}
 	\label{fig:Results HTML}
 \end{figure}
 
-\pagebreak
 
+
+\pagebreak
+\section{oposSOM-Browser}
+
+A recent development is the interactive opoSOM-Browser, a data and results mining tool for oposSOM processed data sets \citep{Loeffler-Wirth2020}. It provides interactive and intuitive access to all the information generated by means of the oposSOM data portraying method. The oposSOM-Browser complements and extends the functionalities of the oposSOM software package by interactive functionalities in the context of gene-expression and gene-function profiling, associations with phenotypes, and pathway activities in selected transcriptome data sets on different cancer entities, blood transcriptomes, and other health research-related scientific projects. The browser was recently extended by 
+comprehensive spatial transcriptomics data mining functionalities \citep{Schmidt2024}, and is continuously supplemented with novel data sets.
+
+\begin{figure}[h!]
+	\begin{center}
+	\includegraphics[width=0.9\textwidth]{browser.pdf}
+	\end{center}
+	\caption{oposSOM-Browser functionalities applied on a spatial melanoma data set: (a) Multiple data mappings onto the microskopic image are available, including mouse hover functions. b) An enlarged view of the image and, c), a second zoom panel shows the cell type/cluster assignments of the spots as colored circles. d) The ST image shows the SOM portraits of each of the spots as indicated in the enlargement. e) Segmentation of the ST image into clusters enables zoom-in discovery of the spot portrait environment at the cursor position. Three examples are shown on the right.}
+	\label{fig:oposSOM-Browser}
+\end{figure}
+
+
+
+
+\pagebreak
 \section{Parameter settings}
 
-All parameters are optional and will be set to default values if missing.
+Parameters are optional and will be set to default values if missing.
 However we recommend to adapt the following parameters according to the
 respective analysis:
 
@@ -250,8 +263,10 @@ The parameters below are secondary and may be left unattended by the user:
 
 \begin{itemize}
 	\item \textit{note} (character): a short note shown in html summary file to give some keywords about the data or analysis parameters (default: "").
+  \item \textit{max.cores} (integer, >0):  maximum number of cores utilized by parallelized computing (default: \# cores in the machine -1)
   \item \textit{activated.modules} (list): activates/deactivates pipeline functionalities:
     \begin{itemize} 
+      \item \textit{largedata.mode} (boolean): enables or disables calculation and output of single sample analyses (default: NULL). When activated, time-consuming functionalities are skipped. When NULL, large data mode is automatically activated when number of samples exceeds 1000.
       \item \textit{reporting} (boolean): enables or disables output of pdf and csv results and html summaries (default: TRUE). When deactivated, only R workspace will be stored after analysis.
       \item \textit{primary.analysis} (boolean): enables or disables data preprocessing and SOM training (default: TRUE). When deactivated, prior SOM training results are required to be contained in the workspace environment.
       \item \textit{sample.similarity.analysis} (boolean): enables or disables diversity analyses such as clustering heatmaps, correlation networks and ICA (default: TRUE).
@@ -307,7 +322,7 @@ The size of the SOM required to resolve main expression modules depends on both 
 
 \begin{figure}[h!]
 	\begin{center}
-	\includegraphics[width=1.0\textwidth]{SizeRecommendation.pdf}
+	\includegraphics[width=1.0\textwidth]{Size and runtime.pdf}
 	\end{center}
 	\caption{Recommended size of the SOM and estimated runtime of the SOM training on an Intel Core i7 system (16GB RAM).}
 	\label{fig:Size recommendation}
@@ -341,14 +356,6 @@ listFilters(mart)
 \section{Citing oposSOM}
 
 Please cite \citep{Loffler-Wirth2015} when using the package.
-
-
-\section{Details}
-
-This document was written using:
-<<>>=
-sessionInfo()
-@
 
 \pagebreak
 \bibliographystyle{plainnat}
