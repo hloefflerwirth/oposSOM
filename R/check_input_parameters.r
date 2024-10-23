@@ -435,7 +435,7 @@ pipeline.checkInputParameters <- function(env)
 	}     
   }
   
-  
+  util.info("Data dimension:",nrow(env$indata),"features in ",ncol(env$indata),"samples")
   env$passedInputChecking <- TRUE
   return(env)
 }
