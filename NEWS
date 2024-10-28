@@ -1,3 +1,5 @@
+3.0.4:
++ bugfix in parallel statistics when data matrix has low number of rows
 3.0.3:
 + Vignette update
 3.0.2:

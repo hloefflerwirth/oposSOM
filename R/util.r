@@ -114,9 +114,9 @@ chunk.apply.rows <- function(data,fun.para,add.data=NULL)
   fun.para <- paste( deparse(fun.para), collapse="\n")
   eval( parse(text = paste("fun.para <- ",fun.para)) )
   
-  n.chunks <- min( env$preferences$max.cores, detectCores()-1 )
+  n.chunks <- min( nrow(data), env$preferences$max.cores, detectCores()-1 )
   chunk.list <<- split( rownames(data), cut(seq(nrow(data)), n.chunks, labels=F ) )
-  chunk.list <<- lapply( chunk.list, function(x) data[x,] )
+  chunk.list <<- lapply( chunk.list, function(x) data[x,,drop=FALSE] )
   chunk.list <<- list(fun=fun.para,data=chunk.list)
   
   for(add.n in names(add.data) )
