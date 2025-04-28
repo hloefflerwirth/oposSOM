@@ -1,3 +1,5 @@
+3.0.8:
++ Bugfix in PSF analysis: inconsistent coordinates in kegg.collection between graph and kgml matched
 3.0.7:
 + Gene set collection update: metastasis-related gene sets added
 3.0.6:

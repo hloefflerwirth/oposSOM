@@ -9,7 +9,7 @@ psf.overview.heatmaps <- function(psf.results, output.path, group.colors, color.
   
   
   mean.psf.matrix <- t( sapply( psf.results, function(x) colMeans( x ) ) )
-  mean.psf.matrix <- mean.psf.matrix[ order(apply(mean.psf.matrix,1,var),decreasing=TRUE)[1:(nrow(mean.psf.matrix)/2)] , ]
+  mean.psf.matrix <- mean.psf.matrix[ order(apply(mean.psf.matrix,1,var),decreasing=TRUE)[1:min(20,nrow(mean.psf.matrix))] , ,drop=F]
   
   heatmap(x=log1p(log1p(mean.psf.matrix)), cex.main=2,
                col=color.palette(1000),scale="r",

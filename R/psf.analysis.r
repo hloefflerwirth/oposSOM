@@ -41,12 +41,7 @@ eval_formulas <- function(g, node.ordering, sink.nodes, split = TRUE, sum = FALS
       }
     }
   }
-  
-  recalc.sinks =F
-  if(is.null(sink.nodes)){
-    recalc.sinks = T
-    cat("\nsink nodes were not supplied. Those will be recalculated ...\n")
-  }
+
   
   for (i in 1:length(nods)){
     
@@ -204,22 +199,7 @@ eval_formulas <- function(g, node.ordering, sink.nodes, split = TRUE, sum = FALS
     } else {
       eval.exprs[[node]] = sprintf("E[%d,1]",i)
     }
-    
-    if(recalc.sinks){
-      if (length(parent.nodes) > 0){
-        child.nodes <- unlist(graph::edges(g, names(node.order)[i]))
-        if (length(child.nodes) >0) {
-          child.node.ranks <- node.rank[child.nodes]
-          rank.comp = child.node.ranks > node.rank[i]
-          if (all(rank.comp))
-            sink.nodes <- c(sink.nodes, names(node.order)[i])
-        } else {
-          sink.nodes <- c(sink.nodes, names(node.order)[i])
-        }
-      }
-    }
-    # sink.nodes <- c(sink.nodes, names(node.order)[i])
-    
+        
   }
   
   return(list("graph" = g, "order"=node.ordering, "sink.nodes" = sink.nodes,
@@ -284,17 +264,6 @@ psf_processing <- function(fc.expression, pathway)
   colnames(psf_activities) <- colnames(pathway_exp_data)
   rownames(psf_activities) <- rownames(pathway_exp_data)
     
-  
-  # pathway$psf_activities <- psf_activities
-  # pathway$exp_fc <- pathway_exp_data
-  # 
-  # 
-  # pathway$eval.exprs <- eval_g$eval.exprs
-  # 
-  # pathway$I <- I
-  # pathway$W <- W
-  
-  # pathway$graph <- NULL
   
   return(psf_activities)
   
