@@ -1,209 +1,70 @@
-#' Calculates PSF formulas for each node in graphNEL object.
-#' @param g graphNEL pathway object.
-#' @param node.ordering order of nodes calculated with order.nodes function.
-#' @param sink.nodes list of terminal (sink) nodes calculated with determine.sink.nodes function.
-#' @param split logical, if true then the incoming signal will be proportionally splitted among the edges.
-#' @param sum logical, default value is FALSE. When set to true pathway activity formulas will be calculated via addition, when set to false then activity formulas will be calculated via multiplication.
-#' @param tmm_mode when set to true specific PSF configuration will be used for calculation of the pathway activity formulas described in https://www.frontiersin.org/articles/10.3389/fgene.2021.662464/full
-#' @param tmm_update_mode when set to true specific PSF configuration will be used for calculation the pathway activity formulas described in https://www.frontiersin.org/articles/10.3389/fgene.2021.662464/full
-#' @import graph
 
-eval_formulas <- function(g, node.ordering, sink.nodes, split = TRUE, sum = FALSE, tmm_mode = FALSE, tmm_update_mode = FALSE) {
+eval_formulas <- function( pathway ) {
   
-  node.order <- node.ordering$node.order
-  node.rank <- node.ordering$node.rank
-  
-  nods <- names(node.order)
-  eval.exprs = vector("list")
-  
-  #expressions
-  node_fun = data.frame(as.character(graph::nodeData(g, nods, attr = "psf_function")), row.names=nods)
+  ordered.nodes <- names(pathway$node.order)
+  eval.exprs <- vector("list")
   
   #impacts
-  I = matrix(data=NA, nrow=length(nods),ncol= length(nods))
-  W = matrix(data = NA, nrow = length(nods), ncol = length(nods))
-  rownames(I) = nods
-  colnames(I) = nods
-  rownames(W) = nods
-  colnames(W) = nods
-  
-  for (node in nods){
-    #     show(node)
-    l = length(graph::edgeL(g)[[node]]$edges)
-    for (e in 1:l){
-      from = node
-      to = graph::nodes(g)[graph::edgeL(g)[node][[1]]$edges][e]
-      if (!is.na(to) && length(to)>0){
-        weight = graph::edgeData(g, from = from, to =to, attr = "weight")[[1]]
-        W[from, to] = weight
-        impact = graph::edgeData(g, from = from, to =to, attr = "impact")[[1]]
-        I[from, to] = impact
-      }
-    }
-  }
+  I <- matrix( NA, nrow=length(ordered.nodes),ncol=length(ordered.nodes), dimnames=list(ordered.nodes,ordered.nodes) )
+  W <- matrix( NA, nrow=length(ordered.nodes),ncol=length(ordered.nodes), dimnames=list(ordered.nodes,ordered.nodes) )
 
+  for( edge in pathway$edge.info )  
+  {
+    W[ edge$entry1, edge$entry2 ] <- edge$weight
+    I[ edge$entry1, edge$entry2 ] <- edge$impact
+  }
   
-  for (i in 1:length(nods)){
-    
-    parent.nodes <- graph::inEdges(nods[i], g)[[1]]
-    
-    # if(tmm_mode) {
-    #   ## skipping nodes with FC value 1
-    #   parent.nodes <- parent.nodes[which(unlist(graph::nodeData(g, parent.nodes, attr = "signal")) != 1)]
-    # }
-    
-    node = nods[i]
-    
-    if (length(parent.nodes)>0) {
-      #       node.exp <- nodeData(g, i, attr = "expression")[[1]]
-      # node.exp = E[i,1]
+  for( node.i in seq(ordered.nodes) )
+  {
+    node.id <- ordered.nodes[ node.i ]
+    parent.nodes <- sapply(pathway$edge.info,"[[","entry1")[ which( sapply(pathway$edge.info,"[[","entry2")==node.id ) ]
       
-      ### input signal processing of function nodes (will be implemented in the future)
-      # if("psf_function" %in% names(graph::nodeDataDefaults(g))) {
-      #   if(unname(unlist(graph::nodeData(g, node, attr = "psf_function"))) %in% c("min", "max", "sum")) {
-      #     in.signal <- get(unname(unlist(graph::nodeData(g, node, attr = "psf_function"))), envir = globalenv())(unlist(graph::nodeData(g, parent.nodes, attr = "signal")))
-      #   } else {
-      #     in.signal <- unlist(graph::nodeData(g, parent.nodes, attr = "signal"))
-      #   }
-      # } else {
-      #   in.signal <- unlist(graph::nodeData(g, parent.nodes, attr = "signal"))
-      # }
+    if( length(parent.nodes)>0 ) 
+    {
+      # incoming signal will be proportionally splitted among the edges
       
-      if(sum){
-        
-        in.sign.impacts = vector("list")
-        for (parent in parent.nodes){
-          if(!is.null(eval.exprs[[parent]])){
-            in.sign.impacts[[parent]] = sprintf("(W['%s','%s'])*(%s)*(I['%s','%s'])", parent, node, paste("eval.exprs[['",parent,"']]",sep=""), parent, node)
-          } else {
-            in.sign.impacts[[parent]] = sprintf("(W['%s','%s'])*(E['%s',1])*(I['%s','%s'])", parent, node, parent, parent, node)
+      in.sign.impacts <- vector("list")
+      signal.base.denoms <- vector("list")
+      
+      if(length(parent.nodes) > 1) 
+      {
+        for (parent in parent.nodes)
+        {
+          if(!is.null(eval.exprs[[parent]]))
+          {
+            in.sign.impacts[[parent]] = sprintf("(W['%s','%s'])*(%s)^(1+I['%s','%s'])", parent, node.id, paste("eval.exprs[['",parent,"']]",sep=""), parent, node.id)
+            signal.base.denoms[[parent]] = sprintf("(%s)",paste("eval.exprs[['",parent,"']]",sep=""))
+            
+          } else 
+          {
+            in.sign.impacts[[parent]] = sprintf("(W['%s','%s'])*(E['%s',1])^(1+I['%s','%s'])", parent, node.id, parent, parent, node.id)
+            signal.base.denoms[[parent]] = sprintf("(E['%s',1])",parent)
           }
         }
+        signal.base.denom <- paste(signal.base.denoms, collapse="+")
+        signal.base <- sprintf("E[%d,1]/(%s)", node.i, signal.base.denom)
         in.signal.impact = paste(in.sign.impacts,collapse="+")
+        eval.exprs[[node.id]] = sprintf("(%s)*(%s)", signal.base, in.signal.impact)
         
-        eval.exprs[[node]] = sprintf("(E[%d,1])+(%s)", i, in.signal.impact)
-        
-        
-      } else {
-        if(split){
-          
-          in.sign.impacts = vector("list")
-          signal.base.denoms = vector("list")
-          if(length(parent.nodes) > 1) {
-            for (parent in parent.nodes){
-              if(!is.null(eval.exprs[[parent]])){
-                in.sign.impacts[[parent]] = sprintf("(W['%s','%s'])*(%s)^(1+I['%s','%s'])", parent, node, paste("eval.exprs[['",parent,"']]",sep=""), parent, node)
-                signal.base.denoms[[parent]] = sprintf("(%s)",paste("eval.exprs[['",parent,"']]",sep=""))
-              } else {
-                in.sign.impacts[[parent]] = sprintf("(W['%s','%s'])*(E['%s',1])^(1+I['%s','%s'])", parent, node, parent, parent, node)
-                signal.base.denoms[[parent]] = sprintf("(E['%s',1])",parent)
-              }
-            }
-            signal.base.denom = paste(signal.base.denoms, collapse="+")
-            signal.base = sprintf("E[%d,1]/(%s)", i, signal.base.denom)
-            in.signal.impact = paste(in.sign.impacts,collapse="+")
-            eval.exprs[[node]] = sprintf("(%s)*(%s)", signal.base, in.signal.impact)
-          } else {
-            parent = parent.nodes[1]
-            if(!is.null(eval.exprs[[parent]])){
-              in.signal.impact = sprintf("(W['%s','%s'])*(%s)^(I['%s','%s'])", parent, node, paste("eval.exprs[['",parent,"']]",sep=""), parent, node)
-            } else {
-              in.signal.impact = sprintf("(W['%s','%s'])*(E['%s',1])^(I['%s','%s'])", parent, node, parent, parent, node)
-            }
-            signal.base = sprintf("E[%d,1]", i)
-            eval.exprs[[node]] = sprintf("(%s)*(%s)", signal.base, in.signal.impact)
-          }
-          
-          #### special formula for signal exponential decay, not used yet ####
-          # a = 2000
-          # proportion = in.signal/sum(in.signal)
-          # node.signal <- sum((proportion * weight * node.exp) *  a*(2/(1+exp((-2*in.signal^impact)/a)) - 1))
-          
-          
+      } else 
+      {
+        if(!is.null(eval.exprs[[parent.nodes]])){
+          in.signal.impact <- sprintf("(W['%s','%s'])*(%s)^(I['%s','%s'])", parent.nodes, node.id, paste("eval.exprs[['",parent.nodes,"']]",sep=""), parent.nodes, node.id)
         } else {
-          
-          in.sign.impacts = vector("list")
-          signal.base.denoms = vector("list")
-          
-          if(tmm_mode) {
-            
-            for (parent in parent.nodes){
-              if(!is.null(eval.exprs[[parent]])){
-                in.sign.impacts[[parent]] = sprintf("(W['%s','%s'])*(%s)^(I['%s','%s'])", parent, node, paste("eval.exprs[['",parent,"']]",sep=""), parent, node)
-                signal.base.denoms[[parent]] = sprintf("(%s)",paste("eval.exprs[['",parent,"']]",sep=""))
-              } else {
-                in.sign.impacts[[parent]] = sprintf("(W['%s','%s'])*(E['%s',1])^(I['%s','%s'])", parent, node, parent, parent, node)
-                signal.base.denoms[[parent]] = sprintf("(E['%s',1])",parent)
-              }
-            }
-            
-            if(node_fun[i,1] %in% c("min", "max", "sum")) {
-              signal.base.denom <- paste(signal.base.denoms, collapse = ", ")
-              
-              in.signal <- sprintf("%s(%s, %s)", node_fun[i,1], signal.base.denom, "na.rm = TRUE")
-              
-              eval.exprs[[node]] <- sprintf("(E[%d,1])*(%s)", i, in.signal)
-              
-            } else {
-              
-              if(tmm_update_mode) {
-                total_signal <- paste(c(sprintf("E[%d,1]", i), in.sign.impacts), collapse = ",")
-                
-                eval.exprs[[node]] <- sprintf("%s(%s, %s)", "prod", total_signal, "na.rm = TRUE")
-                
-                # eval.exprs[[node]] <- paste(c(sprintf("E[%d,1]", i), in.sign.impacts), collapse = "*")
-              } else {
-                total_signal <- paste("(", paste(sprintf("E[%d,1]", i), in.sign.impacts, sep = "*"), ")", collapse = ", ")
-                
-                eval.exprs[[node]] <- sprintf("%s(%s, %s)", "prod", total_signal, "na.rm = TRUE")
-                # eval.exprs[[node]] <- paste("(", paste(sprintf("E[%d,1]", i), in.sign.impacts, sep = "*"), ")", collapse = "*")
-                
-              }
-              
-            }
-            
-          } else {
-            #Returns the product of signals without splitting - is for updateing, but applies only in this special case where all the rules are s*t, or 1/s*t
-            
-            in.sign.impacts = vector("list")
-            if(length(parent.nodes) > 1) {
-              for (parent in parent.nodes){
-                if(!is.null(eval.exprs[[parent]])){
-                  in.sign.impacts[[parent]] = sprintf("(W['%s','%s'])*(%s)^(I['%s','%s'])", parent, node, paste("eval.exprs[['",parent,"']]",sep=""), parent, node)
-                } else {
-                  in.sign.impacts[[parent]] = sprintf("(W['%s','%s'])*(E['%s',1])^(I['%s','%s'])", parent, node, parent, parent, node)
-                }
-              }
-              
-              in.signal.impact = paste(in.sign.impacts,collapse="*")
-              signal.base = sprintf("E[%d,1]", i)
-              
-              eval.exprs[[node]] = sprintf("(%s)*(%s)", signal.base, in.signal.impact)
-            } else {
-              parent = parent.nodes[1]
-              if(!is.null(eval.exprs[[parent]])){
-                in.signal.impact = sprintf("(W['%s','%s'])*(%s)^(I['%s','%s'])", parent, node, paste("eval.exprs[['",parent,"']]",sep=""), parent, node)
-              } else {
-                in.signal.impact = sprintf("(W['%s','%s'])*(E['%s',1])^(I['%s','%s'])", parent, node, parent, parent, node)
-              }
-              signal.base = sprintf("E[%d,1]", i)
-              eval.exprs[[node]] = sprintf("(%s)*(%s)", signal.base, in.signal.impact)
-            }
-            
-          }
-          
-          
+          in.signal.impact <- sprintf("(W['%s','%s'])*(E['%s',1])^(I['%s','%s'])", parent.nodes, node.id, parent.nodes, parent.nodes, node.id)
         }
+        signal.base <- sprintf("E[%d,1]", node.i)
+        eval.exprs[[node.id]] = sprintf("(%s)*(%s)", signal.base, in.signal.impact)
       }
       
-    } else {
-      eval.exprs[[node]] = sprintf("E[%d,1]",i)
+    } else 
+    {
+      eval.exprs[[node.id]] <- sprintf("E[%d,1]",node.i)
     }
         
   }
   
-  return(list("graph" = g, "order"=node.ordering, "sink.nodes" = sink.nodes,
-              "eval.exprs" = eval.exprs, "I" = I, "W" = W))
+  return(list("eval.exprs"=eval.exprs, "I"=I, "W"=W))
   
 }
 
@@ -213,38 +74,50 @@ psf_processing <- function(fc.expression, pathway)
 {
   
   ### building psf formulas
-  eval_g <- eval_formulas(g = pathway$graph, node.ordering = pathway$order, sink.nodes = pathway$sink.nodes, split = T, sum = F, tmm_mode = F, tmm_update_mode = F)
-  
+  eval_g <- eval_formulas( pathway )
   
   ### building exp FC matrix for the pathway
-  gene.data <- graph::nodeData(pathway$graph)[names(pathway$order$node.order)]
-  pathway_exp_data <- lapply(gene.data, function(x) {
+  get.gene.node.expression <- function(ens.ids,fc.expression)
+  {
+    genes.in.node <- intersect(rownames(fc.expression), ens.ids)
     
-    genes.in.node = which(rownames(fc.expression) %in% x$genes)
-    expression.values <- fc.expression[genes.in.node,, drop = F]
+    if( length(genes.in.node)>0 )
+    {
+      expression.values <- fc.expression[genes.in.node,, drop = F]
+      return( matrix( apply(expression.values, 2, max), ncol = ncol(fc.expression)) )
+      
+    } else    
+    return( matrix(rep(1, ncol(fc.expression)), ncol = ncol(fc.expression)) )
+  }
+  
+  pathway_exp_data <- lapply( pathway$node.info[names(pathway$node.order)], function(x) 
+  {
+    expression <- matrix(rep(1, ncol(fc.expression)), ncol = ncol(fc.expression))
     
-    if (nrow(expression.values)>0){
-      if (x$type == "gene"){
-        expression <- matrix(colMeans(expression.values), ncol = ncol(fc.expression))
-      } else { 
-        if(x$type == "group") {
-          expression <- apply(expression.values, 2, FUN = min)
-        } else {
-          expression <- matrix(rep(1, ncol(fc.expression)), ncol = ncol(fc.expression))
-        }
-      }
-    } else {
-      expressions <- matrix(rep(1, ncol(fc.expression)), ncol = ncol(fc.expression))
-    }
+    if (x$type == "gene")
+    {
+      expression <- get.gene.node.expression( x$ens.ids, fc.expression )
+
+    } else 
+    if(x$type == "group") 
+    {
+      gr.expression <- lapply( x$components, function(comp) get.gene.node.expression( comp$ens.ids, fc.expression ) )
+      gr.expression <- do.call( rbind, gr.expression )  
+      gr.expression <- gr.expression[ which(apply(gr.expression,1,function(y)any(y!=1))), , drop=F]
+      
+      if(nrow(gr.expression)>0)
+        expression <- apply(gr.expression, 2, min)
+    } 
     
+    return(expression)    
   })
   
   pathway_exp_data <- Reduce(rbind, pathway_exp_data)
   
-  rownames(pathway_exp_data) <- names(pathway$order$node.order)
+  rownames(pathway_exp_data) <- names(pathway$node.order)
   colnames(pathway_exp_data) <- colnames(fc.expression)
   
-  
+
   ### calculating psf with pathway formulas
   I = eval_g$I
   W = eval_g$W
@@ -266,7 +139,6 @@ psf_processing <- function(fc.expression, pathway)
     
   
   return(psf_activities)
-  
 }
 
 
@@ -277,8 +149,8 @@ pipeline.PSFcalculation <- function(env)
 {
   data(kegg.collection)
   
-  all.psf.genes <- unique( do.call( c, lapply(kegg.collection, function(x) unique( do.call( c, sapply(x$graph@nodeData@data,function(xx)xx$genes) ) ) ) ) )
-  if( mean( all.psf.genes %in% env$gene.info$ids ) < 0.75 )
+  all.psf.genes <- unique( do.call( c, lapply(kegg.collection, function(x) unique( do.call( c, sapply(x$node.info,function(xx)xx$ens.ids) ) ) ) ) )
+  if( mean( all.psf.genes %in% env$gene.info$ids ) < 0.50 )
   {
     util.warn("Too few KEGG signalling pathway genes covered. Disabling PSF analysis.")
     env$preferences$activated.modules$psf.analysis <- FALSE

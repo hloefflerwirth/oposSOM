@@ -183,6 +183,14 @@ workspace.check <- function(env)
       cat("gs.def.list: genes of",n.bad.sets,"sets not in unique.protein.ids\n"); flush.console()
     }
   }
+  
+  # PSF objects
+  
+  if( !is.null(env$psf.results.samples) && !setequal( rownames(env$psf.results.samples[[1]]), names(kegg.collection[[1]]$node.info ) ) ||
+      !is.null(env$psf.results.groups) && !setequal( rownames(env$psf.results.groups[[1]]), names(kegg.collection[[1]]$node.info ) ) )
+  {
+    cat("PSF results are outdated (oposSOM < 3.1.0)"); flush.console()
+  }
 
 
   # other

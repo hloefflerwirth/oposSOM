@@ -1,3 +1,5 @@
+3.1.0:
++ PSF analysis: KEGG signalling pathways updated and curated; new data structure for kegg.collection; graph package dependency removed
 3.0.8:
 + Bugfix in PSF analysis: inconsistent coordinates in kegg.collection between graph and kgml matched
 3.0.7:

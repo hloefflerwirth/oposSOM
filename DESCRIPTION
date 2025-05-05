@@ -1,6 +1,6 @@
 Package: oposSOM
 Title: Comprehensive analysis of transcriptome data
-Version: 3.0.8
+Version: 3.1.0
 Description: This package translates microarray expression data into metadata
   of reduced dimension. It provides various sample-centered and group-centered
   visualizations, sample similarity analyses and functional enrichment analyses.
@@ -9,7 +9,7 @@ Description: This package translates microarray expression data into metadata
   It enables extraction and description of functional expression modules inherent
   in the data.
 Depends: R (>= 4.0.0), igraph (>= 1.0.0)
-Imports: fastICA, tsne, scatterplot3d, pixmap, fdrtool, ape, biomaRt, Biobase, RcppParallel, Rcpp, methods, graph, future, future.apply, parallel
+Imports: fastICA, tsne, scatterplot3d, pixmap, fdrtool, ape, biomaRt, Biobase, RcppParallel, Rcpp, methods, future, future.apply, parallel
 LinkingTo: RcppParallel, Rcpp
 Suggests: knitr
 VignetteBuilder: knitr
