@@ -119,9 +119,7 @@ pipeline.htmlGroupSummary <- function(env)
         <thead>
           <tr>
             <th>Group</th>
-            <th>Summary Sheet</th>
-            <th>Global Gene List</th>
-            <th>Gene Set List</th>", sep="", file=f)
+            <th>Summary Sheet</th>", sep="", file=f)
 
   if (env$preferences$activated.modules$geneset.analysis)
   {
@@ -147,16 +145,7 @@ pipeline.htmlGroupSummary <- function(env)
                 PDF
               </a>
             </td>
-            <td>
-              <a href=\"CSV Sheets/Gene Lists - Global/", fname, ".csv\" target=\"_blank\">
-                CSV
-              </a>
-            </td>
-            <td>
-              <a href=\"CSV Sheets/Gene Set Lists - Global/", fname, ".csv\" target=\"_blank\">
-                CSV
-              </a>
-            </td>", sep="", file=f)
+            <td>", sep="", file=f)
 
     if (env$preferences$activated.modules$geneset.analysis)
     {

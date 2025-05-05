@@ -1,7 +1,6 @@
 pipeline.groupAnalysis <- function(env)
 {
   dir.create("Summary Sheets - Groups", showWarnings=FALSE)
-  dir.create("Summary Sheets - Groups/CSV Sheets", showWarnings=FALSE)
 
   if (env$preferences$activated.modules$geneset.analysis)
   {
