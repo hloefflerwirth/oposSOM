@@ -32,23 +32,17 @@ modules.report.sheets <- function(env, spot.list, main, path)
   image(x=c(1:env$preferences$dim.1stLvlSom),
         y=c(1:env$preferences$dim.1stLvlSom),
         z=matrix(spot.list$overview.mask, env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom),
-        col=colorRampPalette(c("darkblue","blue","lightblue","green2","yellow","red","darkred"))(max(spot.list$overview.mask, na.rm=TRUE)),
+        col="gray85",
         axes=TRUE, main=main, cex.main=1.5, xlab="", ylab="", las=1)
   
   mtext("annotation", 3)
   spot.borders(spot.list)
   box()
-  par(new=TRUE)
-  
-  points(do.call(rbind, lapply(spot.list$spots, function(x) { x$position })),
-         pch=16, cex=3, col="black")
-  
-  points(do.call(rbind, lapply(spot.list$spots, function(x) { x$position })),
-         pch=1, cex=3, col="white")
   
   text(do.call(rbind, lapply(spot.list$spots, function(x) { x$position })),
-       names(spot.list$spots), col="white")
-  
+       names(spot.list$spots), cex=1.5, col="black")
+
+    
   par(mar=c(5, 1, 4, 2))
   
   plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1), ylim=c(0,1), xaxs="i", yaxs="i")
@@ -61,17 +55,14 @@ modules.report.sheets <- function(env, spot.list, main, path)
     
     top.GS <- lapply(spot.list$spots, function(x) names(head(x$Fisher.p , n.sets)))
     
-    leg.col <- colorRampPalette(c("darkblue","blue","lightblue","green2","yellow","red","darkred"))(length(spot.list$spots))
-    leg.col <- as.vector(sapply(leg.col, c, rep(NA,n.sets-1)) )
     leg.num <- names(spot.list$spots)
     leg.num <- as.vector(sapply(leg.num, c, rep(NA,n.sets-1)) )
     
-    legend(x=0.05, y=1, unlist(top.GS), cex=0.7, col = leg.col, pch=15,
-           pt.cex=1.5, bty="n")
+    legend(x=0.02, y=1, unlist(top.GS), cex=0.7, bty="n")
     
     legend(x=-0.04, y=1, legend=leg.num, cex=0.7, bty="n")
   }
-  
+
   
   #### Spot - Sample - Heatmap ####
   

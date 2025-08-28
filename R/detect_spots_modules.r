@@ -927,7 +927,7 @@ pipeline.detectGroupOverexpressionModules <- function(env)
         env$spot.list.group.overexpression$spots[[env$LETTERS[i]]]$mask[spot.metagenes] <- 1
 
         env$spot.list.group.overexpression$spots[[env$LETTERS[i]]]$position <-
-          colMeans(apply(env$som.result$node.summary[spot.metagenes, 1:2]+1, 2, range))
+          colMeans(apply(env$som.result$node.summary[spot.metagenes, 1:2], 2, range))
 
         env$spot.list.group.overexpression$spots[[env$LETTERS[i]]]$beta.statistic <-
           get.beta.statistic(set.data=env$metadata[env$spot.list.group.overexpression$spots[[env$LETTERS[i]]]$metagenes,,drop=FALSE],

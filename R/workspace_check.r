@@ -186,6 +186,8 @@ workspace.check <- function(env)
   
   # PSF objects
   
+  data("kegg.collection")
+  
   if( !is.null(env$psf.results.samples) && !setequal( rownames(env$psf.results.samples[[1]]), names(kegg.collection[[1]]$node.info ) ) ||
       !is.null(env$psf.results.groups) && !setequal( rownames(env$psf.results.groups[[1]]), names(kegg.collection[[1]]$node.info ) ) )
   {
