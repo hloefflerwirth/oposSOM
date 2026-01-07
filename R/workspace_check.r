@@ -1,8 +1,16 @@
 workspace.check <- function(env)
 {
   if(missing("env")) stop("environment missing!")
+
+  cat("Perform Workspace Check\n***********************\n\n"); flush.console()
   
-  cat("Perform Workspace Check\n***********************\n"); flush.console()
+  oposSOM.version <- "unknown"
+  if( "oposSOM" %in% names(env$preferences$session.info$otherPkgs) ) oposSOM.version <- env$preferences$session.info$otherPkgs$oposSOM$Version
+  if( "oposSOM" %in% names(env$preferences$session.info$loadedOnly) ) oposSOM.version <- env$preferences$session.info$loadedOnly$oposSOM$Version
+  
+  oposSOM.version
+  
+  cat("Workspace generated using oposSOM version",oposSOM.version,"\n\n"); flush.console()
   
   # Workspace objects and preferences list
 
@@ -176,11 +184,18 @@ workspace.check <- function(env)
 
   if (!is.null(env$gs.def.list))
   {
-    unique.ens.ids <- unique(env$gene.info$ensembl.mapping$ensembl_gene_id)
-    n.bad.sets = sum(!sapply(env$gs.def.list,function(x)all(x$Genes%in%unique.ens.ids)) )
-    if (n.bad.sets>0)
+    if(   any( sapply(env$gs.def.list,function(x) any( !c("genes","type") %in% names(x) ) ) )   )
     {
-      cat("gs.def.list: genes of",n.bad.sets,"sets not in unique.protein.ids\n"); flush.console()
+      cat("gs.def.list: object names are not 'genes' and 'type' -> maybe old format?\n"); flush.console()
+      
+    } else
+    {
+      unique.ens.ids <- unique(env$gene.info$ensembl.mapping$ensembl_gene_id)
+      n.bad.sets = sum(!sapply(env$gs.def.list,function(x)all(x$genes%in%unique.ens.ids)) )
+      if (n.bad.sets>0)
+      {
+        cat("gs.def.list: genes of",n.bad.sets,"sets not in unique.protein.ids\n"); flush.console()
+      }
     }
   }
   

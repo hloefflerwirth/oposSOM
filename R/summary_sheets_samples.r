@@ -249,9 +249,9 @@ pipeline.summarySheetsSamples <- function(env)
       text(x.coords[2], y.coords, round(top.gs.score, 2), cex=0.6, adj=0)
 
       text(x.coords[3], y.coords, sapply(env$gs.def.list[names(top.gs.score)],
-                                         function(x) { length(x$Genes) }), cex=0.6, adj=0)
+                                         function(x) { length(x$genes) }), cex=0.6, adj=0)
 
-      text(x.coords[4], y.coords, sapply(env$gs.def.list, function(x) { x$Type })[names(top.gs.score)], cex=0.6, adj=0)
+      text(x.coords[4], y.coords, sapply(env$gs.def.list, function(x) { x$type })[names(top.gs.score)], cex=0.6, adj=0)
       text(x.coords[5], y.coords, names(top.gs.score), cex=0.6, adj=0)
 
       top.gs.score <- sort(env$samples.GSZ.scores[,m], decreasing=FALSE)[1:n.sets]
@@ -263,9 +263,9 @@ pipeline.summarySheetsSamples <- function(env)
       text(x.coords[2], y.coords, round(top.gs.score, 2), cex=0.6, adj=0)
 
       text(x.coords[3], y.coords, sapply(env$gs.def.list[names(top.gs.score)],
-                                         function(x) { length(x$Genes) }), cex=0.6, adj=0)
+                                         function(x) { length(x$genes) }), cex=0.6, adj=0)
 
-      text(x.coords[4], y.coords, sapply(env$gs.def.list, function(x) { x$Type })[names(top.gs.score)], cex=0.6, adj=0)
+      text(x.coords[4], y.coords, sapply(env$gs.def.list, function(x) { x$type })[names(top.gs.score)], cex=0.6, adj=0)
       text(x.coords[5], y.coords, names(top.gs.score), cex=0.6, adj=0)
     }
 

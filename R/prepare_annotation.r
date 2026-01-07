@@ -153,16 +153,18 @@ pipeline.prepareAnnotation <- function(env)
     return(env)
   }
   
+  ### load GO gene sets BP, MF and CC
+  
   suppressWarnings({  biomart.table <- getBM(c("ensembl_gene_id", "go_id", "name_1006", "namespace_1003"), "ensembl_gene_id", unique(env$gene.info$ensembl.mapping$ensembl_gene_id), mart, checkFilters=FALSE) })
   biomart.table <- biomart.table[which( apply(biomart.table,1,function(x) sum(x=="") ) == 0 ),]  
   env$gs.def.list <- tapply(biomart.table[,1], biomart.table[,2], c)
-  env$gs.def.list <- lapply(env$gs.def.list, function(x) { list(Genes=x, Type="") })
+  env$gs.def.list <- lapply(env$gs.def.list, function(x) { list(genes=x, type="") })
 
 
   if (length(env$gs.def.list) > 0)
   {
     ## simple small-gs-filtering
-    env$gs.def.list <- env$gs.def.list[ which( sapply(env$gs.def.list, function(x) length(x$Genes)) >= 20 ) ]
+    env$gs.def.list <- env$gs.def.list[ which( sapply(env$gs.def.list, function(x) length(x$genes)) >= 20 ) ]
 
     biomart.table[,4] <- sub("biological_process", "BP", biomart.table[,4])
     biomart.table[,4] <- sub("molecular_function", "MF", biomart.table[,4])
@@ -172,7 +174,7 @@ pipeline.prepareAnnotation <- function(env)
     {
       o <- match(names(env$gs.def.list)[i], biomart.table[,2])
       names(env$gs.def.list)[i] <- biomart.table[o, 3]
-      env$gs.def.list[[i]]$Type <- biomart.table[o, 4]
+      env$gs.def.list[[i]]$type <- biomart.table[o, 4]
     }
 
     env$gs.def.list <- env$gs.def.list[order(names(env$gs.def.list))]
@@ -183,28 +185,33 @@ pipeline.prepareAnnotation <- function(env)
 
   if(length(env$chromosome.list)>0)
   {
-    chr.gs.list <- lapply(env$chromosome.list, function(x) { list(Genes=env$gene.info$ids[unlist(x)], Type="Chr") })
+    chr.gs.list <- lapply(env$chromosome.list, function(x) { list(genes=env$gene.info$ids[unlist(x)], type="Chr") })
     names(chr.gs.list) <- paste("Chr", names(env$chromosome.list))
     env$gs.def.list <- c(env$gs.def.list, chr.gs.list)
   }
 
 
-  # load custom genesets
+  ### load gene sets from collection data object
+  
   data(opossom.genesets)
-  env$gs.def.list <- c(env$gs.def.list, opossom.genesets)
+  
+  if( env$preferences$database.dataset == "hsapiens_gene_ensembl" )  env$gs.def.list <- c(env$gs.def.list, opossom.genesets$hsapiens )
+  if( env$preferences$database.dataset == "mmusculus_gene_ensembl" )  env$gs.def.list <- c(env$gs.def.list, opossom.genesets$mmusculus )
 
+  
+  ### final filtering and checks
+  
   env$gs.def.list <- lapply(env$gs.def.list, function(x) {
-    x$Genes <- intersect(x$Genes, unique(env$gene.info$ensembl.mapping$ensembl_gene_id))
+    x$genes <- intersect(x$genes, unique(env$gene.info$ensembl.mapping$ensembl_gene_id))
     return(x)
   })
-
 
   env$gs.def.list <- env$gs.def.list[ which(sapply(sapply(env$gs.def.list, head, 1), length) >= 10) ]
   env$gs.def.list <- env$gs.def.list[ which(sapply(names(env$gs.def.list),nchar) < 60 ) ]
 
   if (length(env$gs.def.list) > 0)
   {
-    env$gs.def.list <- lapply(env$gs.def.list, function(x) { names(x$Genes) = NULL; return(x) })
+    env$gs.def.list <- lapply(env$gs.def.list, function(x) { names(x$genes) = NULL; return(x) })
     util.info(length(env$gs.def.list), "annotated gene sets derived for functional analysis")
   } else
   {

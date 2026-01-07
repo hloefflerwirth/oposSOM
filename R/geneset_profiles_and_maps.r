@@ -17,7 +17,7 @@ pipeline.genesetProfilesAndMaps <- function(env)
     #### Geneset Profile + Heatmap
     layout(matrix(c(1,2,3),ncol=1,byrow=TRUE),heights=c(1.5,0.5,4))
     
-    set.genes <- unique( env$gene.info$ensembl.mapping[which(env$gene.info$ensembl.mapping$ensembl_gene_id %in% env$gs.def.list[[i]]$Genes),1] )
+    set.genes <- unique( env$gene.info$ensembl.mapping[which(env$gene.info$ensembl.mapping$ensembl_gene_id %in% env$gs.def.list[[i]]$genes),1] )
     
     gs.indata <- env$indata[set.genes,,drop=F]
     sig.genes <- which( apply(gs.indata,1,sd)>sd(gs.indata) )
@@ -36,7 +36,7 @@ pipeline.genesetProfilesAndMaps <- function(env)
       
       par(mar=c(0,10,5,16))
       barplot( env$samples.GSZ.scores[i,o.samples]-offset, ylab="", xlab="", ylim=range(env$samples.GSZ.scores[i,])-offset, xaxt="n", xaxs="i",
-                col=env$group.colors[o.samples], xpd=TRUE, space=c(0,0), offset=0, axes=FALSE, border=if (ncol(env$indata) < 100) "black" else NA )
+                col=env$group.colors[o.samples], xpd=TRUE, space=0, offset=0, axes=FALSE, border=if (ncol(env$indata) < 100) "black" else NA )
         abline( h=0-offset, lty=2, col="gray" )
         axis( 2, at=seq(from=0,to=(max(env$samples.GSZ.scores[i,])-offset),length.out=4), labels=round(seq(from=offset,to=max(env$samples.GSZ.scores[i,]),length.out=4),2),las=2, cex.axis=1.4)
         mtext( names(env$gs.def.list[i]), side=3, cex=1.5, line=1 )

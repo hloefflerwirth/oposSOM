@@ -61,14 +61,14 @@ pipeline.summarySheetsModules <- function(env)
   
   if (length(unique(env$group.labels)) > 1)
   {
-    dirname <- file.path( "Summary Sheets - Modules","Group Overexpression Spots" )
+    dirname <- file.path( "Summary Sheets - Modules","Group Overexpression" )
     util.info("Writing:", file.path(dirname, "*.pdf"))
     dir.create(dirname, showWarnings=FALSE, recursive=TRUE)
     
-    modules.report.sheets(env=env, spot.list=env$spot.list.group.overexpression, main="Group Overexpression Spots", path=file.path(dirname,"Report.pdf") )
-    modules.profiles(env=env, spot.list=env$spot.list.group.overexpression, main="Group Overexpression Spots", path=file.path(dirname,"Profiles.pdf") )
-    modules.chromosomes(env=env, spot.list=env$spot.list.group.overexpression, main="Group Overexpression Spots", path=file.path(dirname,"Chromosomes.pdf") )
-    modules.relations(env=env, spot.list=env$spot.list.group.overexpression, main="Group Overexpression Spots", path=file.path(dirname,"Relations.pdf") )
+    modules.report.sheets(env=env, spot.list=env$spot.list.group.overexpression, main="Group Overexpression", path=file.path(dirname,"Report.pdf") )
+    modules.profiles(env=env, spot.list=env$spot.list.group.overexpression, main="Group Overexpression", path=file.path(dirname,"Profiles.pdf") )
+    modules.chromosomes(env=env, spot.list=env$spot.list.group.overexpression, main="Group Overexpression", path=file.path(dirname,"Chromosomes.pdf") )
+    modules.relations(env=env, spot.list=env$spot.list.group.overexpression, main="Group Overexpression", path=file.path(dirname,"Relations.pdf") )
   }
 
     

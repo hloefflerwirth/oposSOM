@@ -56,7 +56,7 @@ pipeline.cancerHallmarks <- function(env)
 
   hallmark.sets.genes <- lapply(hallmark.sets.names, function(x)
   {
-    unique(unlist(sapply(env$gs.def.list[x], function(y) { y$Genes })))
+    unique(unlist(sapply(env$gs.def.list[x], function(y) { y$genes })))
   })
 
   hallmark.sets.ids <- lapply(hallmark.sets.genes, function(x)
@@ -72,7 +72,7 @@ pipeline.cancerHallmarks <- function(env)
   
   if(length(hallmark.sets.ids)>1)
   {  
-    hallmark.sets.list <- lapply(hallmark.sets.genes, function(x) list(Genes=x,Type=""))
+    hallmark.sets.list <- lapply(hallmark.sets.genes, function(x) list(genes=x,type=""))
   
     mean.ex.all <- colMeans( env$indata.ensID.m )
     sd.ex.all <- apply( env$indata.ensID.m, 2, sd )

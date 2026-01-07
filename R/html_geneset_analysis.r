@@ -101,8 +101,8 @@ pipeline.htmlGenesetAnalysis <- function(env)
         <dt>Number of Gene Sets</dt>
         <dd>", length(env$gs.def.list), "</dd>
         <dt>Categories</dt>
-        <dd>", paste(paste(names(table(sapply(env$gs.def.list, function(x) { x$Type }))),
-               table(sapply(env$gs.def.list, function(x) { x$Type })), sep=" ("), collapse=") , ") , ")</dd>
+        <dd>", paste(paste(names(table(sapply(env$gs.def.list, function(x) { x$type }))),
+               table(sapply(env$gs.def.list, function(x) { x$type })), sep=" ("), collapse=") , ") , ")</dd>
       </dl>
 
       <ul>
@@ -127,7 +127,7 @@ pipeline.htmlGenesetAnalysis <- function(env)
 
       <ul id=\"toc\">", sep="", file=outfile)
 
-    for (i in names(table(sapply(env$gs.def.list, function(x) { x$Type }))))
+    for (i in names(table(sapply(env$gs.def.list, function(x) { x$type }))))
     {
       cat("
         <li><a href=\"#", i, "\">", i, "</a></li>", sep="", file=outfile)
@@ -146,9 +146,9 @@ pipeline.htmlGenesetAnalysis <- function(env)
         tables.
       </p>", sep="", file=outfile)
 
-  for (i in names(table(sapply(env$gs.def.list, function(x) { x$Type }))))
+  for (i in names(table(sapply(env$gs.def.list, function(x) { x$type }))))
   {
-    category.gs.list <- env$gs.def.list[which(sapply(env$gs.def.list, function(x) { x$Type }) == i)]
+    category.gs.list <- env$gs.def.list[which(sapply(env$gs.def.list, function(x) { x$type }) == i)]
 
     cat("
 
@@ -170,7 +170,7 @@ pipeline.htmlGenesetAnalysis <- function(env)
       cat("
           <tr>
             <td>", names(category.gs.list)[ii], "</td>
-            <td>", sapply(category.gs.list,function(x){x$Type})[ii], "</td>
+            <td>", sapply(category.gs.list,function(x){x$type})[ii], "</td>
             <td><a href=\"", substring(make.names(names(category.gs.list)[ii]), 1, 100),
               ".pdf\" target=\"_blank\">PDF</a></td>
             <td><a href=\"", substring(make.names(names(category.gs.list)[ii]), 1, 100),

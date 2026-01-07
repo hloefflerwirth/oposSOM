@@ -38,7 +38,7 @@ pipeline.groupSpecificGenesets <- function(env)
 
 
       n.map <- matrix(0,env$preferences$dim.1stLvlSom,env$preferences$dim.1stLvlSom)
-      gs.genes <- unique( env$gene.info$ensembl.mapping[which(env$gene.info$ensembl.mapping$ensembl_gene_id %in% env$gs.def.list[[names(top.gs)[i]]]$Genes),1] )
+      gs.genes <- unique( env$gene.info$ensembl.mapping[which(env$gene.info$ensembl.mapping$ensembl_gene_id %in% env$gs.def.list[[names(top.gs)[i]]]$genes),1] )
       gs.nodes <- env$som.result$feature.BMU[gs.genes]
       n.map[as.numeric(names(table(gs.nodes)))] <- table(gs.nodes)
       n.map[which(n.map==0)] <- NA
@@ -110,7 +110,7 @@ pipeline.groupSpecificGenesets <- function(env)
       text(label.x, ylim[2]*0.92, label.string, col=env$groupwise.group.colors,cex=2.5)
     
     n.map <- matrix(0,env$preferences$dim.1stLvlSom,env$preferences$dim.1stLvlSom)
-    gs.genes <- unique( env$gene.info$ensembl.mapping[which(env$gene.info$ensembl.mapping$ensembl_gene_id %in% env$gs.def.list[[top.gs[i]]]$Genes),1] )
+    gs.genes <- unique( env$gene.info$ensembl.mapping[which(env$gene.info$ensembl.mapping$ensembl_gene_id %in% env$gs.def.list[[top.gs[i]]]$genes),1] )
     gs.nodes <- env$som.result$feature.BMU[gs.genes]
     n.map[as.numeric(names(table(gs.nodes)))] <- table(gs.nodes)
     n.map[which(n.map==0)] <- NA

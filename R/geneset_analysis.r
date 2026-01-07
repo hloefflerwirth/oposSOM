@@ -5,8 +5,8 @@ GeneSet.maxmean <- function(z, gs.def.list)
   
   S <- sapply(gs.def.list, function(x, S.plus, S.minus )
   {
-    S.plus <- mean( s.plus[x$Genes] )
-    S.minus <- mean( s.minus[x$Genes] )
+    S.plus <- mean( s.plus[x$genes] )
+    S.minus <- mean( s.minus[x$genes] )
     
     if( S.plus >= abs(S.minus) ) S.plus else S.minus
     
@@ -22,7 +22,7 @@ GeneSet.Fisher <- function(list.ids, all.ids, gs.def.list, sort=FALSE)
 
   fn <- function(x, list.ids, all.ids)
   {
-    set.ids <- x$Genes
+    set.ids <- x$genes
 
     n.list.set <- sum(set.ids %in% list.ids)
     n.set <- sum(! set.ids %in% list.ids)
@@ -49,7 +49,7 @@ GeneSet.Fisher <- function(list.ids, all.ids, gs.def.list, sort=FALSE)
 
 Sample.GSZ <- function(gene.set,ex.ensID.m,mean.ex.all,sd.ex.all)
 {
-  mean.ex.set <- colMeans( ex.ensID.m[gene.set$Genes,] )
+  mean.ex.set <- colMeans( ex.ensID.m[gene.set$genes,] )
   
-  GSZ <- sqrt(length(gene.set$Genes)) * ( mean.ex.set - mean.ex.all ) / sd.ex.all
+  GSZ <- sqrt(length(gene.set$genes)) * ( mean.ex.set - mean.ex.all ) / sd.ex.all
 }

@@ -300,7 +300,7 @@ modules.report.sheets <- function(env, spot.list, main, path)
     if (env$preferences$activated.modules$geneset.analysis)
     {
       n.sets <- 40
-      top.gs.p <- sort(spot.list$spots[[m]]$Fisher.p[names(which( sapply(env$gs.def.list, function(x)x$Type) != "Chromatin states" ))])[1:n.sets]
+      top.gs.p <- sort(spot.list$spots[[m]]$Fisher.p[names(which( sapply(env$gs.def.list, function(x)x$type) != "Chromatin states" ))])[1:n.sets]
       par(mar=c(0,0,0,0))
       
       x.coords <- c(0, 0.1, 0.23, 0.34, 0.4)
@@ -318,14 +318,14 @@ modules.report.sheets <- function(env, spot.list, main, path)
       
       text(x.coords[3], y.coords, paste (sapply(env$gs.def.list[names(top.gs.p)], function(x)
       {
-        length(intersect(x$Genes, unique(env$gene.info$ensembl.mapping$ensembl_gene_id[which(env$gene.info$ensembl.mapping[,1]%in%spot.list$spots[[m]]$genes)])   ))
+        length(intersect(x$genes, unique(env$gene.info$ensembl.mapping$ensembl_gene_id[which(env$gene.info$ensembl.mapping[,1]%in%spot.list$spots[[m]]$genes)])   ))
         
       }), "/", sapply(env$gs.def.list[names(top.gs.p)], function(x)
       {
-        length(x$Genes)
+        length(x$genes)
       })), cex=0.6, adj=0)
       
-      text(x.coords[4], y.coords, sapply(env$gs.def.list, function(x) { x$Type })[names(top.gs.p)], cex=0.6, adj=0)
+      text(x.coords[4], y.coords, sapply(env$gs.def.list, function(x) { x$type })[names(top.gs.p)], cex=0.6, adj=0)
       rect(x.coords[5]-0.01, y.coords+0.01, 1, 0, border="white", col="white")
       text(x.coords[5], y.coords, names(top.gs.p), cex=0.6, adj=0)
       
@@ -368,35 +368,35 @@ modules.report.sheets <- function(env, spot.list, main, path)
 
       ## Splitted Genesets Sheet
       n.sets <- 15
-      n.cat <- length(unique(sapply(env$gs.def.list, function(x) { x$Type })))
+      n.cat <- length(unique(sapply(env$gs.def.list, function(x) { x$type })))
       par(mfrow=c(ceiling(n.cat/3), min(n.cat, 3)))
 
-      for (i in sort(unique(sapply(env$gs.def.list, function(x) { x$Type }))))
+      for (i in sort(unique(sapply(env$gs.def.list, function(x) { x$type }))))
       {
         top.gs.p <-
-          sort(spot.list$spots[[m]]$Fisher.p[names(which(sapply(env$gs.def.list, function(x) { x$Type }) == i))])[1:n.sets]
+          sort(spot.list$spots[[m]]$Fisher.p[names(which(sapply(env$gs.def.list, function(x) { x$type }) == i))])[1:n.sets]
 
         x.coords <- c(0.05, 0.15, 0.28, 0.39, 0.45)
-        y.coords <- seq(0.85, 0.06, length.out=n.sets)
+        y.coords <- seq(0.82, 0.03, length.out=n.sets)
 
         par(mar=c(0,0,0,0))
 
         plot(0, type="n", axes=FALSE, xlab="", ylab="", xlim=c(0,1),
              ylim=c(0,1), xaxs="i", yaxs="i")
 
-        text(x.coords[1], 0.97, i, cex=1, adj=0)
-        text(x.coords, 0.92, c("Rank", "p-value", "#in/all", "Geneset", ""), cex=0.8, adj=0)
+        text(x.coords[1], 0.95, i, cex=0.9, adj=0)
+        text(x.coords, 0.89, c("Rank", "p-value", "#in/all", "Geneset", ""), cex=0.8, adj=0)
         text(x.coords[1], y.coords, c(1:n.sets), adj=0, cex=0.6)
         text(x.coords[2], y.coords, format(top.gs.p, digits=1), cex=0.6, adj=0)
 
         text(x.coords[3], y.coords,
              paste(sapply(env$gs.def.list[names(top.gs.p)], function(x)
              {
-               length(intersect(x$Genes, unique(env$gene.info$ensembl.mapping$ensembl_gene_id[which(env$gene.info$ensembl.mapping[,1]%in%spot.list$spots[[m]]$genes)])   ))
+               length(intersect(x$genes, unique(env$gene.info$ensembl.mapping$ensembl_gene_id[which(env$gene.info$ensembl.mapping[,1]%in%spot.list$spots[[m]]$genes)])   ))
              }), "/",
              sapply(env$gs.def.list[names(top.gs.p)], function(x)
              {
-               length(x$Genes)
+               length(x$genes)
              })), cex=0.6, adj=0)
 
         text(x.coords[4], y.coords, names(top.gs.p), cex=0.6, adj=0)

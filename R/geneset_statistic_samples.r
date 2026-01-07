@@ -12,9 +12,9 @@ pipeline.genesetStatisticSamples <- function(env)
 
   env$samples.GSZ.scores <- t( chunk.sapply( env$gs.def.list, function(gene.set)
   {
-    mean.ex.set <- colMeans( ex.ensID.m[gene.set$Genes,] )
+    mean.ex.set <- colMeans( ex.ensID.m[gene.set$genes,] )
     
-    GSZ <- sqrt(length(gene.set$Genes)) * ( mean.ex.set - mean.ex.all ) / sd.ex.all
+    GSZ <- sqrt(length(gene.set$genes)) * ( mean.ex.set - mean.ex.all ) / sd.ex.all
     
   }, list(ex.ensID.m=env$indata.ensID.m, mean.ex.all=mean.ex.all, sd.ex.all=sd.ex.all ), max.chunks=4 ) )
   
