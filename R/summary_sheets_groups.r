@@ -269,82 +269,89 @@ pipeline.summarySheetsGroups <- function(env)
   dev.off()
 
 
-  ###### Group stability scores
-  filename <- file.path("Summary Sheets - Groups","Group Assignment.pdf")
+###### Group stability scores
+filename <- file.path("Summary Sheets - Groups","Group Assignment.pdf")
 
-  util.info("Writing:", filename)
-  pdf(filename, 21/2.54, 29.7/2.54, useDingbats=FALSE)
+util.info("Writing:", filename)
+pdf(filename, 21/2.54, 21/2.54, useDingbats=FALSE)
 
 
-  S <- tapply( env$group.silhouette.coef, env$group.labels, sort, decreasing=TRUE, simplify=FALSE )[unique(env$group.labels)]
-  names(S) <- NA
-  S <- unlist(S)
-  names(S) <- sub( paste("^NA.",sep=""), "", names(S) )
+S <- tapply( env$group.silhouette.coef, env$group.labels, sort, decreasing=TRUE, simplify=FALSE )[unique(env$group.labels)]
+names(S) <- NA
+S <- unlist(S)
+names(S) <- sub( paste("^NA.",sep=""), "", names(S) )
+
+
+PCM <- cor( env$metadata )
+diag(PCM) <- NA
+
+group.correlations <- sapply( seq(ncol(env$metadata)), function(i)
+{
+  mean.group.correlations <- tapply( PCM[,i], env$group.labels, mean, na.rm=TRUE )[unique(env$group.labels)]
   
+  return(  mean.group.correlations )
+} )
+colnames(group.correlations) <- colnames(env$indata)
+group.correlations[which(is.nan(group.correlations))] <- 0
+
+
+hc <- hclust(dist(t(group.metadata)))
+sample.merge.height <- hc$height[  sapply( 1:ncol(group.metadata), function(i.sample) which(hc$merge==-i.sample,arr.ind=T)[1] )  ][ hc$order ]
+
+plot(hc, xlab="", ann=F, hang=0.12)
+  mtext("height",2,line=2)
+  title(main="Group hierarchical clustering")
+
+sample.label.height <- sample.merge.height - 0.1*max(hc$height)
+cex.sample.portraits <- c(0.4, 1.2 * 0.4 * max(hc$height) / length(hc$order))
+
+for( i.gr in hc$order )
+{
+  m <- matrix(rowMeans(group.metadata[,colnames(group.metadata)[i.gr],drop=F]), env$preferences$dim.1stLvlSom, env$preferences$dim.1stLvlSom)
+  if (max(m) - min(m) != 0)    m <- 1 + (m - min(m)) / (max(m) - min(m)) * 999
+  m <- cbind(apply(m, 1, function(x){x}))[nrow(m):1,]
+  x <- pixmapIndexed(m , col = env$color.palette.portraits(1000), cellres=10)
   
-  PCM <- cor( env$metadata )
-  diag(PCM) <- NA
-   
-  group.correlations <- sapply( seq(ncol(env$metadata)), function(i)
-  {
-    mean.group.correlations <- tapply( PCM[,i], env$group.labels, mean, na.rm=TRUE )[unique(env$group.labels)]
-    
-    return(  mean.group.correlations )
-  } )
-  colnames(group.correlations) <- colnames(env$indata)
-  group.correlations[which(is.nan(group.correlations))] <- 0
-    
+  addlogo(x,
+          which(hc$order==i.gr)+cex.sample.portraits[1]*c(-1,1),
+          sample.label.height[which(hc$order==i.gr)]+cex.sample.portraits[2]*c(-1,1))
+}
+
+
+par(mfrow=c(2,1))
+par(mar=c(5,3,3,2))
+
+b<-barplot( S, col=env$group.colors[names(S)], main="Correlation silhouette of all samples", names.arg=if(ncol(env$indata)<80) names(S) else rep("",length(S)), las=2, cex.main=1, cex.lab=1, cex.axis=0.8, cex.names=0.6, border = ifelse(ncol(env$indata)<80,"black",NA), xpd=FALSE, ylim=c(-.25,1) )  
+mtext("S",2,line=1.9,cex=0.8)
+abline( h=c(0,0.25,0.5,0.75), lty=2, col="gray80" )
+title( main= bquote("<" ~ s ~ "> = " ~ .(round(mean(S),2))), line=0.5, cex.main=1 )
+box()
+points( b, rep(-0.2,ncol(env$indata)), pch=15, cex=1, col=env$groupwise.group.colors[apply( group.correlations[,names(S)], 2, which.max )] )
+
+mean.boxes <- by( S, env$group.labels, c )[ unique( env$group.labels ) ]
+mean.mean.S <- sapply( mean.boxes, mean )
+
+par(mar=c(6,3,2,2))
+boxplot( mean.boxes, col=env$groupwise.group.colors, las=2, main="Correlation silhouette of all samples", cex.main=1, cex.axis=0.8, xaxt="n", ylim=c(-.25,1) )
+mtext("S",2,line=1.9,cex=0.8)
+abline( h=c(0,0.25,0.5,0.75), lty=2, col="gray80" )
+axis( 1, 1:length(env$groupwise.group.colors), paste( unique(env$group.labels), "\n<s> =", round(mean.mean.S,2) ), las=2, cex.axis=0.8 )
+
+
+par(mfrow=c(2,1))
+
+for( gr in unique(env$group.labels) )
+{
+  samples <- names(which(env$group.labels==gr))
+  samples.o <- rev( names(S[which(names(S)%in%samples)]) )
   
-  layout(matrix(c(0,1,2,0),ncol=1))
-  #par(mfrow=c(2,1))
   par(mar=c(5,3,3,2))
-  
-  b<-barplot( S, col=env$group.colors[names(S)], main="Correlation Silhouette", names.arg=if(ncol(env$indata)<80) names(S) else rep("",length(S)), las=2, cex.main=1, cex.lab=1, cex.axis=0.8, cex.names=0.6, border = ifelse(ncol(env$indata)<80,"black",NA), xpd=FALSE, ylim=c(-.25,1) )  
-  mtext("S",2,line=1.9,cex=0.8)
-  abline( h=c(0,0.25,0.5,0.75), lty=2, col="gray80" )
-  title( main= bquote("<" ~ s ~ "> = " ~ .(round(mean(S),2))), line=0.5, cex.main=1 )
-  box()
-  points( b, rep(-0.2,ncol(env$indata)), pch=15, cex=1, col=env$groupwise.group.colors[apply( group.correlations[,names(S)], 2, which.max )] )
-  
-  mean.boxes <- by( S, env$group.labels, c )[ unique( env$group.labels ) ]
-  mean.mean.S <- sapply( mean.boxes, mean )
-  
-  par(mar=c(5,3,0,2))
-  boxplot( mean.boxes, col=env$groupwise.group.colors, las=2, main="", cex.main=1, cex.axis=0.8, xaxt="n", ylim=c(-.25,1) )
-  mtext("S",2,line=1.9,cex=0.8)
-  abline( h=c(0,0.25,0.5,0.75), lty=2, col="gray80" )
-  axis( 1, 1:length(env$groupwise.group.colors), paste( unique(env$group.labels), "\n<s> =", round(mean.mean.S,2) ), las=2, cex.axis=0.8 )
+  boxplot( t(group.correlations[,samples.o,drop=FALSE]), col=env$groupwise.group.colors, main=paste("Correlation of samples of group",gr) )
+    abline( h=0.25*c(-3:3), lty=2, col="gray80" )
+    mtext("with respect to group",1,line=1.9,cex=0.8)
+}
 
- 
-  
-  par(mfrow=c(1,1), mar=c(5,15,1,1) )
-  
-  for( gr in unique(env$group.labels) )
-  {
-    samples <- names(which(env$group.labels==gr))
-    samples.o <- rev( names(S[which(names(S)%in%samples)]) )
-    
-    image( group.correlations[,samples.o,drop=FALSE], col=colorRampPalette(c("gray90","orange","red4"))(1000) , zlim=c(0,1), axes=FALSE )
-    box()	
-    
-    dummy<-sapply(1:length(unique(env$group.labels)), function(i)
-    {	
-      axis(1, seq(0,1,length.out=length(unique(env$group.labels)))[i], unique(env$group.labels)[i], col.axis=env$groupwise.group.colors[i], las=2, cex.axis=0.6)
-    }	)
-    
-    for( i in seq(samples.o) )
-    {
-      axis(2, seq(0,1,length.out=length(samples.o))[i], samples.o[i], las=2, col.axis=env$groupwise.group.colors[gr], line=10, tick=FALSE, cex.axis=0.6 )      
-      axis(2, seq(0,1,length.out=length(samples.o))[i], bquote("<" ~ r[.(gr)] ~ "> = " ~ .(round(group.correlations[gr,samples.o[i]],2)) ) , las=2, col.axis=env$groupwise.group.colors[gr], line=5, tick=FALSE, cex.axis=0.6 )
-            
-      second.corr.group <- sort( group.correlations[,samples.o[i]], decreasing=TRUE )      
-      second.corr.group <- names(second.corr.group)[ which(names(second.corr.group)!=gr)[1] ]
-      axis(2, seq(0,1,length.out=length(samples))[i], bquote("<" ~ r[.(second.corr.group)] ~ "> = " ~ .(round(group.correlations[second.corr.group,samples.o[i]],2)) ) , las=2, col.axis=env$groupwise.group.colors[second.corr.group], line=0, tick=FALSE, cex.axis=0.6 )					
-    }
-    
-  }
-  
-  dev.off()
+dev.off()
 
   
   

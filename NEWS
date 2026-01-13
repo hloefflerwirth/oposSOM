@@ -1,3 +1,5 @@
+3.2.1:
++ Group correlation and clustering report improved ("Group Assignment.pdf")
 3.2.0:
 + Gene set collection automatically selected for human and mouse; more GSEA collections incorporated; lower case object names in gs.def.list
 3.1.2:
