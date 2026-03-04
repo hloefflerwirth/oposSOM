@@ -1,30 +1,3 @@
-newProgressBar <- function (min = 0, max = 1, initial = 0) 
-{
-  .val <- initial
-  .nb <- 0L
-  .pc <- -1L
-  width <- 70
-
-  up3 <- function(value) {
-    if (!is.finite(value) || value < min || value > max) 
-      return()
-    .val <<- value
-    nb <- round(width * (value - min)/(max - min))
-    pc <- round(100 * (value - min)/(max - min))
-    if (nb == .nb && pc == .pc) 
-      return()
-    cat(paste0("\r  |", rep(" ", 1 * width + 6)))
-    cat(paste(c("\r  |", rep.int("=", nb), rep.int(" ", 1 * (width - nb)), sprintf("| %3d%%", pc)), collapse = "") )
-    flush.console()
-    .nb <<- nb
-    .pc <<- pc
-  }
-  getVal <- function() .val
-  kill <- function() { cat("\n");  flush.console() }
-  structure(list(getVal = getVal, up = up3, kill=kill), class = "txtProgressBar")
-}
-
-
 
 som.training.phase <- function(indata, weightMatrix, metricSamples, epochs, 
                                initLearnRate, inverseLearnRate, initRadius, progressbar )

@@ -8,8 +8,6 @@ workspace.check <- function(env)
   if( "oposSOM" %in% names(env$preferences$session.info$otherPkgs) ) oposSOM.version <- env$preferences$session.info$otherPkgs$oposSOM$Version
   if( "oposSOM" %in% names(env$preferences$session.info$loadedOnly) ) oposSOM.version <- env$preferences$session.info$loadedOnly$oposSOM$Version
   
-  oposSOM.version
-  
   cat("Workspace generated using oposSOM version",oposSOM.version,"\n\n"); flush.console()
   
   # Workspace objects and preferences list
