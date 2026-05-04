@@ -14,7 +14,7 @@ pipeline.prepareAnnotation <- function(env)
                       chr.start = empty.vec.num,
                       ensembl.mapping = data.frame( indata.id=rownames(env$indata), ensembl.id=rep("", nrow(env$indata)), stringsAsFactors=FALSE )   )
   
-  if(!env$preferences$activated.modules$primary.analysis)
+  if( !is.null(env$som.result) )
   {
     env$gene.info$coordinates <- apply( env$som.result$node.summary[env$som.result$feature.BMU,c("x","y")], 1, paste, collapse=" x " )
     names(env$gene.info$coordinates) <- rownames(env$indata)
