@@ -679,10 +679,11 @@ pipeline.detectKMeansModules <- function(env)
     }
   }
 
-  o <- order(sapply(env$spot.list.kmeans$spots, function(x)
+  spot.arcs <- sapply(env$spot.list.kmeans$spots, function(x)
   {
-    which.max(apply(env$metadata[x$metagenes,,drop=FALSE], 2, mean))
-  }))
+    -atan2(x$position['y'] - env$preferences$dim.1stLvlSom / 2, x$position['x'] - env$preferences$dim.1stLvlSom / 2)
+  })
+  o <- order(spot.arcs)
 
   env$spot.list.kmeans$spots <- env$spot.list.kmeans$spots[o]
   names(env$spot.list.kmeans$spots) <- env$LETTERS[seq_along(env$spot.list.kmeans$spots)]
