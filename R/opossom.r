@@ -74,6 +74,7 @@ opossom.new <- function(preferences=NULL)
                           spot.threshold.modules = 0.95,
                           spot.coresize.groupmap = 5,
                           spot.threshold.groupmap = 0.75,
+                          kmeans.module.cluster = NULL,
                           adjust.autogroup.number = 0,
                           feature.centralization = TRUE,
                           sample.quantile.normalization = TRUE,

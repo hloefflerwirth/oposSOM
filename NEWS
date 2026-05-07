@@ -1,3 +1,5 @@
+3.2.5:
++ k-means module number can be determined by parameter 'kmeans.module.cluster'
 3.2.4:
 + k-means modules labeled in clock-wise order
 3.2.3:

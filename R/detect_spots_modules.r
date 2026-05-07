@@ -647,8 +647,8 @@ pipeline.detectCorrelationModules <- function(env)
 
 pipeline.detectKMeansModules <- function(env)
 {
-  n.cluster <- ceiling( env$preferences$dim.1stLvlSom / 2 )
-  prototypes <- env$metadata[round(seq(1, env$preferences$dim.1stLvlSom^2, length.out=n.cluster)),]
+  if( is.null(env$preferences$kmeans.module.cluster) ) env$preferences$kmeans.module.cluster <- ceiling( env$preferences$dim.1stLvlSom / 2 )
+  prototypes <- env$metadata[round(seq(1, env$preferences$dim.1stLvlSom^2, length.out=env$preferences$kmeans.module.cluster)),]
   res <- kmeans(env$metadata, prototypes)
 
   env$spot.list.kmeans <- list()
@@ -656,7 +656,7 @@ pipeline.detectKMeansModules <- function(env)
   env$spot.list.kmeans$overview.mask <- rep(NA, env$preferences$dim.1stLvlSom ^ 2)
   env$spot.list.kmeans$spots <- list()
 
-  for (i in 1:n.cluster)
+  for (i in 1:env$preferences$kmeans.module.cluster)
   {
     nodes <- which(res$cluster == i)
     geneset.genes <- rownames(env$indata)[which(env$som.result$feature.BMU %in% nodes)]
