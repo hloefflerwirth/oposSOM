@@ -45,7 +45,7 @@ pipeline.topologyProfiles <- function(env)
   if (is.vector(n.spots.groups))
   {
     n.spots.groups <- matrix(n.spots.groups,nrow=1)
-    colnames(n.spots.groups) <- unique(group.labels)
+    colnames(n.spots.groups) <- unique(env$group.labels)
   }
 
   n.spots.groups <- sapply(unique(env$group.labels), function(x)
